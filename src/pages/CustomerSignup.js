@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { auth, provider, db } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
@@ -150,6 +151,13 @@ const CustomerSignup = () => {
                     <span>Googleで新規登録</span>
 
                 </button>
+
+                <p className="mt-6 text-center text-gray-600">
+                    登録済みの方は{' '}
+                    <Link to="/customer-login" className="text-blue-600 hover:underline font-semibold">
+                        こちら
+                    </Link>
+                </p>                
 
                 {/* Google登録時のモーダル */}
                 {showModal && (
