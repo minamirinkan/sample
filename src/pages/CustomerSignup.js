@@ -154,7 +154,7 @@ const CustomerSignup = () => {
 
                 <p className="mt-6 text-center text-gray-600">
                     登録済みの方は{' '}
-                    <Link to="/customer-login" className="text-blue-600 hover:underline font-semibold">
+                    <Link to="/" className="text-blue-600 hover:underline font-semibold">
                         こちら
                     </Link>
                 </p>                
