@@ -1,8 +1,8 @@
 import { useState } from 'react';
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-//import GoogleSignIn from '../components/GoogleSignIn';
+import GoogleSignIn from '../components/GoogleSignIn';
 
 const CustomerLogin = () => {
     const [email, setEmail] = useState('');
@@ -43,6 +43,15 @@ const CustomerLogin = () => {
                 >
                     ログイン
                 </button>
+
+                <div className="my-6 flex items-center">
+                    <hr className="flex-grow border-gray-300" />
+                    <span className="mx-3 text-gray-400 font-semibold">OR</span>
+                    <hr className="flex-grow border-gray-300" />
+                </div>
+
+                {/* Googleログインはコンポーネントを呼び出すだけ */}
+                <GoogleSignIn />
                 
             </div>
         </div>
