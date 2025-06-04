@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
+import { filterStudents } from '../utils/filterStudents';
+import SearchForm from './SearchForm';
+import Breadcrumb from './Breadcrumb';
+import StudentTable from './StudentTable';
 
+// 仮データ（Firestore連携時に削除可）
 const mockStudents = [
     { id: 1, code: '20230001', lastName: '山田', firstName: '太郎', grade: '中3' },
     { id: 2, code: '20230002', lastName: '佐藤', firstName: '花子', grade: '中2' },
@@ -8,40 +13,33 @@ const mockStudents = [
 
 const SuperAdminStudents = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredStudents, setFilteredStudents] = useState(mockStudents);
+    const [filteredStudents, setFilteredStudents] = useState([]);
+    const breadcrumbItems = ['生徒マスタ', '一覧'];
 
     useEffect(() => {
-        const results = mockStudents.filter(student =>
-            `${student.lastName}${student.firstName}`.includes(searchTerm) ||
-            student.code.includes(searchTerm)
-        );
+        const results = filterStudents(mockStudents, searchTerm);
         setFilteredStudents(results);
     }, [searchTerm]);
 
+    const handleSearch = (term) => {
+        setSearchTerm(term);
+    };
+
     return (
         <div className="space-y-4">
-            {/* 検索条件フォーム */}
-            <div className="bg-white p-4 rounded shadow">
-                <h2 className="text-lg font-semibold mb-2">生徒検索</h2>
-                <input
-                    type="text"
-                    className="w-full border px-3 py-2 rounded"
-                    placeholder="氏名または生徒コードで検索"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
+            {/* タイトル + パンくず */}
+            <div className="flex items-center justify-between mb-4">
+                <h1 className="text-2xl font-bold">
+                    生徒マスタ <span className="text-lg font-normal ml-1">一覧</span>
+                </h1>
+                <Breadcrumb items={breadcrumbItems} />
             </div>
 
-            {/* 生徒一覧（カード形式） */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {filteredStudents.map(student => (
-                    <div key={student.id} className="bg-white p-4 rounded shadow">
-                        <h3 className="text-md font-bold mb-1">{student.lastName} {student.firstName}</h3>
-                        <p>学年: {student.grade}</p>
-                        <p>生徒コード: {student.code}</p>
-                    </div>
-                ))}
-            </div>
+            {/* ✅ SearchForm を挿入 */}
+            <SearchForm onSearch={handleSearch} />
+
+            {/* 生徒一覧 表形式 */}
+            <StudentTable students={filteredStudents} />
         </div>
     );
 };
