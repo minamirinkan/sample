@@ -10,6 +10,7 @@ import {
     FaDatabase,
     FaAngleLeft
 } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +48,7 @@ const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
 };
 
 const SuperAdminSidebar = ({ onSelectMenu }) => {
+    const navigate = useNavigate();
     return (
         <aside className="w-64 border-r border-gray-300 p-4 overflow-auto h-screen">
             <h4 className="text-lg font-bold mb-4 text-center text-gray-800" style={{ fontSize: '20px' }}>
@@ -65,6 +67,18 @@ const SuperAdminSidebar = ({ onSelectMenu }) => {
                 ]} onSelectMenu={onSelectMenu} />
                 <SidebarSection icon={FaYenSign} title="売上管理" subItems={[{ label: '請求情報', key: 'billing' }]} onSelectMenu={onSelectMenu} />
                 <SidebarSection icon={FaChartBar} title="目標管理" subItems={[{ label: '目標ファイル', key: 'goals' }]} onSelectMenu={onSelectMenu} />
+                <SidebarSection
+                    icon={FaBook}
+                    title="時間割"
+                    subItems={[
+                        { label: '時間割一覧', key: 'timetable' }
+                    ]}
+                    onSelectMenu={(key) => {
+                        if (key === 'timetable') {
+                            navigate('/superadmin/timetable'); // ← 遷移
+                        }
+                    }}
+                />
                 <SidebarSection icon={FaFileAlt} title="レポート" subItems={[
                     { label: '問合せ経路別入会率', key: 'report-entry-rate' },
                     { label: '問合せ昨対比', key: 'report-compare' },
