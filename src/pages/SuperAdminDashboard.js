@@ -2,6 +2,7 @@ import SuperAdminHeader from '../components/SuperAdminHeader';
 import SuperAdminSidebar from '../components/SuperAdminSidebar';
 import SuperAdminStudents from '../components/SuperAdminStudents';
 import { useState } from 'react';
+import SuperAdminTeachers from '../components/SuperAdminTeachers';
 
 const SuperAdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -12,7 +13,7 @@ const SuperAdminDashboard = () => {
             case 'students':
                 return <SuperAdminStudents />;
             case 'teachers':
-                return <div>講師情報コンテンツ</div>;
+                return <SuperAdminTeachers />;
             default:
                 return (
                     <>

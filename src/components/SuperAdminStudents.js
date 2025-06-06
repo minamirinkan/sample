@@ -3,13 +3,7 @@ import { filterStudents } from '../utils/filterStudents';
 import SearchForm from './SearchForm';
 import Breadcrumb from './Breadcrumb';
 import StudentTable from './StudentTable';
-
-// 仮データ（Firestore連携時に削除可）
-const mockStudents = [
-    { id: 1, code: '20230001', lastName: '山田', firstName: '太郎', grade: '中3' },
-    { id: 2, code: '20230002', lastName: '佐藤', firstName: '花子', grade: '中2' },
-    { id: 3, code: '20230003', lastName: '鈴木', firstName: '一郎', grade: '中1' },
-];
+import { mockStudents } from '../data/mockStudents';
 
 const SuperAdminStudents = () => {
     const [searchTerm, setSearchTerm] = useState('');
