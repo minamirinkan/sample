@@ -6,6 +6,7 @@ import TeacherLogin from './pages/TeacherLogin';
 import CustomerLogin from './pages/CustomerLogin';
 import StudentLogin from './pages/StudentLogin';
 import TimetablePage from './pages/TimetablePage';
+import CalendarPopup from './components/CalendarPopup';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/customer-login" element={<CustomerLogin />} />
         <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/superadmin/timetable" element={<TimetablePage />} />
+        <Route path="/calendar" element={<CalendarPopup />} />
       </Routes>
     </Router>
   );
