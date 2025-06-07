@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
+import { RiCalendarLine } from 'react-icons/ri';
 
 class CalendarPopup extends Component {
   constructor(props) {
@@ -7,14 +8,33 @@ class CalendarPopup extends Component {
     this.state = {
       showCalendar: false,
       year: today.getFullYear(),
-      month: today.getMonth(), // 0-11
-      selectedDate: null, // 選択した日付
+      month: today.getMonth(),
+      selectedDate: null,
       today: today.getDate(),
     };
+    this.popupRef = createRef(); // ← 追加
   }
 
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  handleClickOutside = (event) => {
+    if (
+      this.state.showCalendar &&
+      this.popupRef.current &&
+      !this.popupRef.current.contains(event.target)
+    ) {
+      this.setState({ showCalendar: false });
+    }
+  };
+
   toggleCalendar = () => {
-    this.setState({ showCalendar: !this.state.showCalendar });
+    this.setState((prev) => ({ showCalendar: !prev.showCalendar }));
   };
 
   handlePrevMonth = () => {
@@ -35,12 +55,10 @@ class CalendarPopup extends Component {
 
   handleDateClick = (date) => {
     this.setState({ selectedDate: date });
-
-    // 選択された日付を親コンポーネントに渡す
     if (this.props.onDateSelect) {
       this.props.onDateSelect({
         year: this.state.year,
-        month: this.state.month + 1, // 月は 0-index なので +1
+        month: this.state.month + 1,
         date,
       });
     }
@@ -58,15 +76,16 @@ class CalendarPopup extends Component {
     for (let d = 1; d <= lastDate; d++) calendarCells.push(d);
 
     return (
-      <div className="relative inline-block">
-        {/* 📅 カレンダーアイコン */}
-        <button onClick={this.toggleCalendar} className="text-2xl">
-          📅
+      <div className="relative inline-block" ref={this.popupRef}>
+        <button
+          onClick={this.toggleCalendar}
+          className="text-3xl text-blue-600 hover:text-blue-800 transform hover:scale-110 transition duration-150"
+        >
+          <RiCalendarLine />
         </button>
 
         {showCalendar && (
           <div className="absolute z-10 mt-2 p-4 bg-white border rounded shadow-md w-64">
-            {/* ヘッダー */}
             <div className="flex justify-between items-center mb-2">
               <button onClick={this.handlePrevMonth} className="text-gray-600 hover:text-black px-2">
                 ◀
@@ -79,7 +98,6 @@ class CalendarPopup extends Component {
               </button>
             </div>
 
-            {/* 曜日 */}
             <div className="grid grid-cols-7 text-center font-semibold mb-1">
               {days.map((d, i) => (
                 <div key={i} className={i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : ''}>
@@ -88,7 +106,6 @@ class CalendarPopup extends Component {
               ))}
             </div>
 
-            {/* 日付 */}
             <div className="grid grid-cols-7 text-center gap-y-1">
               {calendarCells.map((date, idx) => {
                 const weekday = idx % 7;
@@ -113,7 +130,6 @@ class CalendarPopup extends Component {
               })}
             </div>
 
-            {/* 選択された日付表示 */}
             {selectedDate && (
               <div className="mt-2 text-center text-sm text-gray-600">
                 選択した日付: {year}年 {month + 1}月 {selectedDate}日
