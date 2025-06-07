@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export default function TimetableRow({ rowIndex, row, onChange, allTeachers, allStudents }) {
-    const [selectingPeriod, setSelectingPeriod] = useState(null); // 生徒追加対象のperiod
+    const [selectingPeriod, setSelectingPeriod] = useState(null);
     const [selectedGrade, setSelectedGrade] = useState('');
     const [studentOptions, setStudentOptions] = useState([]);
 
@@ -15,13 +15,12 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
         const newRow = JSON.parse(JSON.stringify(row));
         newRow.periods[selectingPeriod].push({
             seat: '',
-            no: student.code.slice(-2), // 下2桁を仮の出席番号に
+            no: student.code.slice(-2),
             grade: student.grade,
             name: `${student.lastName} ${student.firstName}`,
-            subject: '', // 必要なら自動設定
+            subject: '',
         });
         onChange(rowIndex, newRow);
-        // リセット
         setSelectingPeriod(null);
         setSelectedGrade('');
         setStudentOptions([]);
@@ -31,6 +30,37 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
         setSelectedGrade(grade);
         const filtered = allStudents.filter((s) => s.grade === grade);
         setStudentOptions(filtered);
+    };
+
+    const handleDragStart = (e, student, fromRowIdx, fromPeriodIdx, studentIdx) => {
+        e.dataTransfer.setData('text/plain', JSON.stringify({
+            student,
+            fromRowIdx,
+            fromPeriodIdx,
+            studentIdx,
+        }));
+    };
+
+    const handleDrop = (e, toPeriodIdx) => {
+        e.preventDefault();
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        if (!data) return;
+
+        const { student, fromRowIdx, fromPeriodIdx, studentIdx } = data;
+        if (fromRowIdx === rowIndex && fromPeriodIdx === toPeriodIdx) return;
+
+        onChange((prevRows) => {
+            const updatedRows = [...prevRows];
+            const fromRow = JSON.parse(JSON.stringify(updatedRows[fromRowIdx]));
+            fromRow.periods[fromPeriodIdx].splice(studentIdx, 1);
+            updatedRows[fromRowIdx] = fromRow;
+
+            const toRow = JSON.parse(JSON.stringify(updatedRows[rowIndex]));
+            toRow.periods[toPeriodIdx].push(student);
+            updatedRows[rowIndex] = toRow;
+
+            return updatedRows;
+        });
     };
 
     return (
@@ -53,31 +83,56 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
             </td>
 
             {row.periods.map((students, periodIdx) => (
-    <td
-        key={periodIdx}
-        className="border p-1 align-top"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-            const code = e.dataTransfer.getData('studentCode');
-            const student = allStudents.find((s) => s.code === code);
-            if (student) {
-                const newRow = JSON.parse(JSON.stringify(row));
-                newRow.periods[periodIdx].push({
-                    seat: '',
-                    no: student.code.slice(-2),
-                    grade: student.grade,
-                    name: `${student.lastName} ${student.firstName}`,
-                    subject: '',
-                });
-                onChange(rowIndex, newRow);
-            }
-        }}
-    >
+                <td
+                    key={periodIdx}
+                    className="border p-1 align-top"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                        const json = e.dataTransfer.getData('application/json');
+                        if (!json) return;
+
+                        try {
+                            const { student, fromPeriod } = JSON.parse(json);
+
+                            // すでに同じperiodなら何もしない（移動ではない）
+                            if (fromPeriod === periodIdx) return;
+
+                            const newRow = JSON.parse(JSON.stringify(row));
+
+                            // 元の場所から削除
+                            newRow.periods[fromPeriod] = newRow.periods[fromPeriod].filter(
+                                (s) =>
+                                    !(
+                                        s.name === student.name &&
+                                        s.no === student.no &&
+                                        s.grade === student.grade
+                                    )
+                            );
+
+                            // 新しい場所に追加
+                            newRow.periods[periodIdx].push(student);
+
+                            onChange(rowIndex, newRow);
+                        } catch (err) {
+                            console.error('Drop error:', err);
+                        }
+                    }}
+                >
+
                     {students.map((student, studentIdx) => (
+                        // ドラッグ対象の生徒（1人分）に追加
                         <div
                             key={studentIdx}
                             className="mb-1 border-b border-dashed border-gray-300 pb-1"
+                            draggable
+                            onDragStart={(e) => {
+                                e.dataTransfer.setData(
+                                    'application/json',
+                                    JSON.stringify({ student, fromPeriod: periodIdx })
+                                );
+                            }}
                         >
+
                             <div className="flex gap-1 mb-1">
                                 <input
                                     placeholder="座席"
@@ -130,7 +185,6 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
                         + 生徒追加
                     </button>
 
-                    {/* 生徒追加セレクションUI */}
                     {selectingPeriod === periodIdx && (
                         <div className="mt-2 text-xs border p-2 rounded bg-gray-50">
                             <div className="mb-1">
@@ -141,11 +195,7 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
                                     className="ml-1 p-1 border text-xs"
                                 >
                                     <option value="">選択</option>
-                                    {[
-                                        '小学1年', '小学2年', '小学3年', '小学4年', '小学5年', '小学6年',
-                                        '中学1年', '中学2年', '中学3年',
-                                        '高校1年', '高校2年', '高校3年',
-                                    ].map((g) => (
+                                    {['小学1年', '小学2年', '小学3年', '小学4年', '小学5年', '小学6年', '中学1年', '中学2年', '中学3年', '高校1年', '高校2年', '高校3年'].map((g) => (
                                         <option key={g} value={g}>{g}</option>
                                     ))}
                                 </select>
