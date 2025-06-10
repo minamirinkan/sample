@@ -9,20 +9,35 @@ import StudentLogin from './pages/StudentLogin';
 import TimetablePage from './pages/TimetablePage';
 import CalendarPopup from './components/CalendarPopup';
 import DevLoginSelector from './pages/DevLoginSelector';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<DevLoginSelector />} />
-        <Route path="/superadmin/dashboard" element={<SuperAdminDashboard />} />
+        <Route
+          path="/superadmin/dashboard"
+          element={
+            <ProtectedRoute>
+              <SuperAdminDashboard />
+            </ProtectedRoute>
+          }
+           />
+        <Route
+          path="/superadmin/timetable"
+          element={
+            <ProtectedRoute>
+              <TimetablePage />
+            </ProtectedRoute>
+          }
+           />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/superadmin-login" element={<SuperAdminLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/teacher-login" element={<TeacherLogin />} />
         <Route path="/customer-login" element={<CustomerLogin />} />
         <Route path="/student-login" element={<StudentLogin />} />
-        <Route path="/superadmin/timetable" element={<TimetablePage />} />
         <Route path="/calendar" element={<CalendarPopup />} />
       </Routes>
     </Router>
