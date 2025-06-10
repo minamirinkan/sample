@@ -4,7 +4,7 @@ import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
-const SuperAdminLogin = () => {
+const CustomerLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -33,15 +33,20 @@ const SuperAdminLogin = () => {
             }
 
             const userData = userSnap.data();
-            if (userData.role !== 'superadmin') {
-                alert('このアカウントにはSuperAdminの権限がありません');
-                await signOut(auth);
-                setLoading(false);
-                return;
-            }
 
-            alert('SuperAdminとしてログイン成功！');
-            navigate('/superadmin/dashboard'); // SuperAdmin専用ページへ遷移
+            if (userData.role === 'superadmin') {
+                alert('SuperAdminとしてログイン成功');
+                navigate('/superadmin/dashboard');
+            } else if (userData.role === 'admin') {
+                alert('Adminとしてログイン成功');
+                navigate('/admin/dashboard');
+            } else if (userData.role === 'customer') {
+                alert('Customerとしてログイン成功');
+                navigate('/customer/dashboard');
+            } else {
+                alert('無効なユーザー種別です');
+                await signOut(auth);
+            }
 
         } catch (error) {
             if (error.code === 'auth/user-not-found') {
@@ -64,7 +69,7 @@ const SuperAdminLogin = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
                 <h2 className="text-3xl font-bold mb-8 text-center text-red-600">
-                    SuperAdmin ログイン
+                    Customer ログイン
                 </h2>
 
                 <input
@@ -96,4 +101,4 @@ const SuperAdminLogin = () => {
     );
 };
 
-export default SuperAdminLogin;
+export default CustomerLogin;

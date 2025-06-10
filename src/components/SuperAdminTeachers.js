@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FaExclamationTriangle } from 'react-icons/fa';
 import SearchForm from './SearchForm';
 import Breadcrumb from './Breadcrumb';
 import { mockTeachers } from '../data/mockTeachers';
@@ -78,13 +77,9 @@ const SuperAdminTeachers = () => {
                                 <td className="border px-4 py-2">{teacher.lastName} {teacher.firstName}</td>
                                 <td className="border px-4 py-2">{teacher.kana || '－'}</td>
                                 <td className="border px-4 py-2">{teacher.subject || '－'}</td>
-                                <td className="border px-4 py-2">{teacher.hireDate || '－'}</td>
+                                <td className="border px-4 py-2">{teacher.joinedDate || '－'}</td>
                                 <td className="border px-4 py-2 text-center">
-                                    {teacher.status === '未登録' ? (
-                                        <FaExclamationTriangle className="text-red-500 inline-block" />
-                                    ) : (
-                                        teacher.status
-                                    )}
+                                    {teacher.employmentStatus || '－'}
                                 </td>
                                 <td className="border px-4 py-2 text-blue-600 hover:underline cursor-pointer">
                                     詳細
