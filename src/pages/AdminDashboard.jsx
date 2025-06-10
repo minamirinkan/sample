@@ -1,10 +1,11 @@
 import SuperAdminHeader from '../components/SuperAdminHeader';
-import SuperAdminSidebar from '../components/SuperAdminSidebar';
+import AdminSidebar from '../components/AdminSidebar';
 import SuperAdminStudents from '../components/SuperAdminStudents';
 import { useState } from 'react';
 import SuperAdminTeachers from '../components/SuperAdminTeachers';
+import TimetablePage from './TimetablePage';
 
-const SuperAdminDashboard = () => {
+const AdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
     const [sidebarOpen, setSidebarOpen] = useState(true); // サイドバー開閉状態
 
@@ -14,6 +15,8 @@ const SuperAdminDashboard = () => {
                 return <SuperAdminStudents />;
             case 'teachers':
                 return <SuperAdminTeachers />;
+            case 'timetable':
+                return <TimetablePage />;
             default:
                 return (
                     <>
@@ -34,7 +37,7 @@ const SuperAdminDashboard = () => {
             </header>
             <div className="flex flex-1">
                 <aside className={`w-64 border-r border-gray-300 ${sidebarOpen ? 'block' : 'hidden'}`}>
-                    <SuperAdminSidebar onSelectMenu={setSelectedContent} />
+                    <AdminSidebar onSelectMenu={setSelectedContent} />
                 </aside>
                 <main className="flex-1 p-4 overflow-auto">
                     {renderContent()}
@@ -44,4 +47,4 @@ const SuperAdminDashboard = () => {
     );
 };
 
-export default SuperAdminDashboard;
+export default AdminDashboard;

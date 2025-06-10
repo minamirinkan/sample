@@ -1,4 +1,4 @@
-//src/components/SuperAdminSidebar.js
+//src/components/AdminSidebar.jsx
 import { useState } from 'react';
 import {
     FaTasks,
@@ -47,7 +47,7 @@ const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
     );
 };
 
-const SuperAdminSidebar = ({ onSelectMenu }) => {
+const AdminSidebar = ({ onSelectMenu }) => {
     return (
         <aside className="w-64 border-r border-gray-300 p-4 overflow-auto h-screen">
             <h4 className="text-lg font-bold mb-4 text-center text-gray-800" style={{ fontSize: '20px' }}>
@@ -92,7 +92,6 @@ const SuperAdminSidebar = ({ onSelectMenu }) => {
                     icon={FaDatabase}
                     title="マスタ管理"
                     subItems={[
-                        { label: '教室', key: 'admin' },
                         { label: '生徒', key: 'students' },
                         { label: '講師', key: 'teachers' }
                     ]}
@@ -103,4 +102,4 @@ const SuperAdminSidebar = ({ onSelectMenu }) => {
     );
 };
 
-export default SuperAdminSidebar;
+export default AdminSidebar;

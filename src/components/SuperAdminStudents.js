@@ -4,6 +4,7 @@ import SearchForm from './SearchForm';
 import Breadcrumb from './Breadcrumb';
 import StudentTable from './StudentTable';
 import { mockStudents } from '../data/mockStudents';
+import NewStudentModal from './NewStudentModal';
 
 const SuperAdminStudents = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +20,12 @@ const SuperAdminStudents = () => {
         setSearchTerm(term);
     };
 
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleAdded = () => {
+        setSearchTerm(''); // 検索リセットして全件再取得とか
+    };
+
     return (
         <div className="space-y-4">
             {/* タイトル + パンくず */}
@@ -27,13 +34,20 @@ const SuperAdminStudents = () => {
                     生徒マスタ <span className="text-lg font-normal ml-1">一覧</span>
                 </h1>
                 <Breadcrumb items={breadcrumbItems} />
+                <button onClick={() => setModalOpen(true)} className="btn-primary">
+                    新規登録
+                </button>
             </div>
 
-            {/* ✅ SearchForm を挿入 */}
             <SearchForm onSearch={handleSearch} />
 
-            {/* 生徒一覧 表形式 */}
             <StudentTable students={filteredStudents} />
+
+            <NewStudentModal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                onAdded={handleAdded}
+            />
         </div>
     );
 };
