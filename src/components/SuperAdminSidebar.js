@@ -1,5 +1,5 @@
 //src/components/SuperAdminSidebar.js
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     FaTasks,
     FaBell,
@@ -11,6 +11,9 @@ import {
     FaDatabase,
     FaAngleLeft
 } from 'react-icons/fa';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase'; // Firebase初期化済みファイル
+import { useAuth } from '../contexts/AuthContext'; // classroomCodeを取得できるAuthContext想定
 
 const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -48,10 +51,33 @@ const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
 };
 
 const SuperAdminSidebar = ({ onSelectMenu }) => {
+    const { adminData } = useAuth(); // adminData.classroomCodeがある想定
+    const [classroomName, setClassroomName] = useState('');
+
+    useEffect(() => {
+        const fetchClassroomName = async () => {
+            if (!adminData?.classroomCode) return;
+
+            const docRef = doc(db, 'classrooms', adminData.classroomCode);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                setClassroomName(docSnap.data().name);
+            } else {
+                setClassroomName('教室名なし');
+            }
+        };
+
+        fetchClassroomName();
+    }, [adminData]);
+
     return (
         <aside className="w-64 border-r border-gray-300 p-4 overflow-auto h-screen">
-            <h4 className="text-lg font-bold mb-4 text-center text-gray-800" style={{ fontSize: '20px' }}>
-                南林間教室
+            <h4
+                className="text-lg font-bold mb-4 text-center text-gray-800"
+                style={{ fontSize: '20px' }}
+            >
+                {classroomName ? `${classroomName}教室` : '管理者'}
             </h4>
             <ul className="sidebar-menu">
                 <SidebarSection icon={FaTasks} title="ToDo" subItems={[{ label: 'ToDo', key: 'todo' }]} onSelectMenu={onSelectMenu} />
@@ -73,11 +99,11 @@ const SuperAdminSidebar = ({ onSelectMenu }) => {
                         { label: '時間割一覧', key: 'timetable' }
                     ]}
                     onSelectMenu={onSelectMenu}
-                    /* onSelectMenu={(key) => {
-                        if (key === 'timetable') {
-                            navigate('/superadmin/timetable'); // ← 遷移
-                        }
-                    }} */
+                /* onSelectMenu={(key) => {
+                    if (key === 'timetable') {
+                        navigate('/superadmin/timetable'); // ← 遷移
+                    }
+                }} */
                 />
                 <SidebarSection icon={FaFileAlt} title="レポート" subItems={[
                     { label: '問合せ経路別入会率', key: 'report-entry-rate' },

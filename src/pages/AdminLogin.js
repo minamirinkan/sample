@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore'; // ← serverTimestamp を追加
 
 const AdminLogin = () => {
     const [email, setEmail] = useState('');
@@ -21,25 +21,36 @@ const AdminLogin = () => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Firestoreからroleを取得
-            const userRef = doc(db, 'users', user.uid);
-            const userSnap = await getDoc(userRef);
+            // 管理者データの取得（adminsコレクション）
+            const adminRef = doc(db, 'admins', user.uid);
+            const adminSnap = await getDoc(adminRef);
 
-            if (!userSnap.exists()) {
-                alert('ユーザー情報が見つかりません');
+            if (!adminSnap.exists()) {
+                alert('管理者データが見つかりません');
                 await signOut(auth);
                 return;
             }
 
-            const userData = userSnap.data();
-            if (userData.role !== 'superadmin' && userData.role !== 'admin') {
+            const adminData = adminSnap.data();
+            const role = adminData.role;
+            const classroomCode = adminData.classroomCode;
+
+            // ロールチェック
+            if (role !== 'superadmin' && role !== 'admin') {
                 alert('このアカウントには管理者権限がありません');
                 await signOut(auth);
                 return;
             }
 
+            // lastLogin 更新
+            await updateDoc(adminRef, { lastLogin: serverTimestamp() });
+            if (classroomCode) {
+                const classroomRef = doc(db, 'classrooms', classroomCode);
+                await updateDoc(classroomRef, { lastLogin: serverTimestamp() });
+            }
+
             // ロールに応じて遷移
-            if (userData.role === 'superadmin') {
+            if (role === 'superadmin') {
                 alert('SuperAdminとしてログイン成功');
                 navigate('/superadmin/dashboard');
             } else {

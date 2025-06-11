@@ -31,7 +31,7 @@ export default function TimetableTable({ rows, onChange }) {
     const gradeOrder = [
         '小1', '小2', '小3', '小4', '小5', '小6',
         '中1', '中2', '中3',
-        '高1', '高2', '高3',
+        '高1', '高2', '高3','既卒'
     ];
 
     const existingGrades = gradeOrder.filter((g) =>

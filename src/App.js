@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import SuperAdminLogin from './pages/SuperAdminLogin';
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -13,7 +13,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<DevLoginSelector />} />
         <Route
@@ -23,7 +22,7 @@ function App() {
               <SuperAdminDashboard />
             </ProtectedRoute>
           }
-           />
+        />
         <Route
           path="/superadmin/timetable"
           element={
@@ -31,7 +30,7 @@ function App() {
               <TimetablePage />
             </ProtectedRoute>
           }
-           />
+        />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/superadmin-login" element={<SuperAdminLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
@@ -40,7 +39,6 @@ function App() {
         <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/calendar" element={<CalendarPopup />} />
       </Routes>
-    </Router>
   );
 }
 

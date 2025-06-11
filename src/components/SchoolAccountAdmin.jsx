@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, doc, setDoc, query, where, orderBy } from 'firebase/firestore';
+import {
+    collection,
+    getDocs,
+    doc,
+    setDoc,
+    serverTimestamp,
+    query,
+    orderBy
+} from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { db, auth } from '../firebase';
 import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
@@ -16,7 +24,7 @@ const SchoolAccountAdmin = () => {
     }, []);
 
     const fetchSchools = async () => {
-        const q = query(collection(db, 'users'), where('role', '==', 'admin'), orderBy('code'));
+        const q = query(collection(db, 'classrooms'), orderBy('code'));
         const snapshot = await getDocs(q);
         const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setSchools(fetched);
@@ -37,16 +45,27 @@ const SchoolAccountAdmin = () => {
         }
 
         try {
+            // Firebase Authenticationにユーザー登録
             const userCredential = await createUserWithEmailAndPassword(auth, newEmail, newPassword);
             const uid = userCredential.user.uid;
 
-            await setDoc(doc(db, 'users', uid), {
+            // admins/{uid}
+            await setDoc(doc(db, 'admins', uid), {
                 uid,
                 name: newName.trim(),
-                code: newCode,
+                classroomCode: newCode,
                 email: newEmail.trim(),
                 role: 'admin',
-                createdAt: new Date().toISOString(),
+                createdAt: serverTimestamp(),
+            });
+
+            // classrooms/{code}
+            await setDoc(doc(db, 'classrooms', newCode), {
+                code: newCode,
+                name: newName.trim(),
+                adminUid: uid,
+                email: newEmail.trim(),
+                createdAt: serverTimestamp(),
             });
 
             setSuccess('教室アカウントを登録しました。');

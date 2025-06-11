@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+2025/6/12/04:10更新//urlは変更無しで進めていきます
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
