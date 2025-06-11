@@ -4,12 +4,30 @@ import SuperAdminStudents from '../components/SuperAdminStudents';
 import { useState } from 'react';
 import SuperAdminTeachers from '../components/SuperAdminTeachers';
 import TimetablePage from './TimetablePage';
+import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm'
 
 const AdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
-    const [sidebarOpen, setSidebarOpen] = useState(true); // サイドバー開閉状態
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [showStudentForm, setShowStudentForm] = useState(false);
+
+    const handleAddNewStudent = () => {
+        setShowStudentForm(true);
+    };
+
+    const handleFormSubmit = () => {
+        setShowStudentForm(false);
+        setSelectedContent('students'); // フォーム閉じて生徒一覧に戻る例
+    };
 
     const renderContent = () => {
+        if (selectedContent === 'students') {
+            return showStudentForm ? (
+                <StudentRegistrationForm onSubmit={handleFormSubmit} />
+            ) : (
+                <SuperAdminStudents onAddNewStudent={handleAddNewStudent} />
+            );
+        }
         switch (selectedContent) {
             case 'students':
                 return <SuperAdminStudents />;

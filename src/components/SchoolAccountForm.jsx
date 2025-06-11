@@ -9,11 +9,11 @@ const SchoolAccountForm = ({ onAdd }) => {
     const handleSubmit = () => {
         onAdd({ newName, newCode, newEmail, newPassword });
 
-        // フォームリセットしたい場合は以下を追加
-        // setNewName('');
-        // setNewCode('');
-        // setNewEmail('');
-        // setNewPassword('');
+        //フォームリセットしたい場合は以下を追加
+        setNewName('');
+        setNewCode('');
+        setNewEmail('');
+        setNewPassword('');
     };
 
     return (

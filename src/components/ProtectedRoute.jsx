@@ -1,31 +1,19 @@
 // src/components/ProtectedRoute.jsx
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
-  const navigate = useNavigate();
-  const [checking, setChecking] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthenticated(true);
-      } else {
-        setAuthenticated(false);
-        navigate('/');
-      }
-      setChecking(false);
-    });
+  if (loading) {
+    return <div>読み込み中...</div>;
+  }
 
-    return () => unsubscribe();
-  }, [navigate]);
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
 
-  if (checking) return <div>読み込み中...</div>;
-
-  return authenticated ? children : null;
+  return children;
 };
 
 export default ProtectedRoute;
