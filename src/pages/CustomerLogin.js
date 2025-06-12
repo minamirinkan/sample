@@ -22,7 +22,7 @@ const CustomerLogin = () => {
             const user = userCredential.user;
 
             // Firestoreからユーザーのroleを取得
-            const userRef = doc(db, 'users', user.uid);
+            const userRef = doc(db, 'customers', user.uid);
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) {
@@ -42,7 +42,11 @@ const CustomerLogin = () => {
                 navigate('/admin/dashboard');
             } else if (userData.role === 'customer') {
                 alert('Customerとしてログイン成功');
-                navigate('/customer/dashboard');
+                if (userData.isFirstLogin) {
+                    navigate('/customer/change-password');
+                } else {
+                    navigate('/customer/dashboard');
+                }
             } else {
                 alert('無効なユーザー種別です');
                 await signOut(auth);

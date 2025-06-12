@@ -24,7 +24,7 @@ const SuperAdminLogin = () => {
             const user = userCredential.user;
 
             // Firestoreからユーザーのroleを取得
-            const userRef = doc(db, 'users', user.uid);
+            const userRef = doc(db, 'superadmins', user.uid);
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) {

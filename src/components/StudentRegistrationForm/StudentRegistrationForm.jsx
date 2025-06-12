@@ -78,6 +78,7 @@ const StudentRegistrationForm = ({ onSubmit }) => {
             uid: formData.studentId,
             customerName: formData.guardianName,
             phoneNumber: formData.guardianPhone,
+            isFirstLogin: true,
             studentData: {
                 ...formData,
                 entryDate: formData.enrollmentDate,
