@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
-import { signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from 'firebase/auth';
 
 const SuperAdminLogin = () => {
     const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ const SuperAdminLogin = () => {
             const user = userCredential.user;
 
             // Firestoreからユーザーのroleを取得
-            const userRef = doc(db, 'superadmins', user.uid);
+            const userRef = doc(db, 'users', user.uid);
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) {
