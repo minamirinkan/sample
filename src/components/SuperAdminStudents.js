@@ -1,19 +1,43 @@
 import { useState, useEffect } from 'react';
-import { filterStudents } from '../utils/filterStudents';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import SearchForm from './SearchForm';
 import Breadcrumb from './Breadcrumb';
 import StudentTable from './StudentTable';
-import { mockStudents } from '../data/mockStudents';
+import { filterStudents } from '../utils/filterStudents';
 
 const SuperAdminStudents = ({ onAddNewStudent }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [students, setStudents] = useState([]);
     const [filteredStudents, setFilteredStudents] = useState([]);
     const breadcrumbItems = ['生徒マスタ', '一覧'];
 
     useEffect(() => {
-        const results = filterStudents(mockStudents, searchTerm);
-        setFilteredStudents(results);
-    }, [searchTerm]);
+        const fetchData = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'students'));
+                const studentData = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        ...data,
+                        entryDate: data.entryDate?.seconds
+                            ? new Date(data.entryDate.seconds * 1000).toLocaleDateString()
+                            : '－',
+                    };
+                });
+                setStudents(studentData);
+            } catch (error) {
+                console.error('データ取得エラー:', error);
+            }
+        };
+        fetchData();
+    }, []); // ← 初期データ取得だけ
+
+    useEffect(() => {
+        setFilteredStudents(filterStudents(students, searchTerm));
+    }, [searchTerm, students]); // ← フィルター専用
+
 
     const handleSearch = (term) => {
         setSearchTerm(term);
@@ -21,7 +45,6 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
 
     return (
         <div className="space-y-4">
-            {/* タイトル + パンくず */}
             <div className="flex items-center justify-between mb-4">
                 <h1 className="text-2xl font-bold">
                     生徒マスタ <span className="text-lg font-normal ml-1">一覧</span>

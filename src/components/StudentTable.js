@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { FaExclamationTriangle } from 'react-icons/fa';
+import StudentRow from './StudentRow';
+import PaginationControls from './PaginationControls';
 
 const StudentTable = ({ students }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -10,7 +11,6 @@ const StudentTable = ({ students }) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, students.length);
     const currentStudents = students.slice(startIndex, endIndex);
-    const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -63,28 +63,12 @@ const StudentTable = ({ students }) => {
                 </thead>
                 <tbody>
                     {currentStudents.map((student) => (
-                        <tr key={student.id} className="hover:bg-gray-50 text-sm">
-                            <td className="border px-4 py-2">
-                                <input
-                                    type="checkbox"
-                                    checked={selectedIds.includes(student.id)}
-                                    onChange={() => handleCheckboxChange(student.id)}
-                                />
-                            </td>
-                            <td className="border px-4 py-2">{student.code}</td>
-                            <td className="border px-4 py-2">{student.lastName} {student.firstName}</td>
-                            <td className="border px-4 py-2">{student.kana || '－'}</td>
-                            <td className="border px-4 py-2">{student.grade}</td>
-                            <td className="border px-4 py-2">{student.entryDate || '－'}</td>
-                            <td className="border px-4 py-2 text-center">
-                                {student.billingStatus === '未請求' && (
-                                    <FaExclamationTriangle className="text-red-500 inline-block" />
-                                )}
-                            </td>
-                            <td className="border px-4 py-2">
-                                <button className="text-blue-600 hover:underline text-sm">詳細</button>
-                            </td>
-                        </tr>
+                        <StudentRow
+                            key={student.id}
+                            student={student}
+                            isSelected={selectedIds.includes(student.id)}
+                            onSelect={handleCheckboxChange}
+                        />
                     ))}
                 </tbody>
             </table>
@@ -99,34 +83,11 @@ const StudentTable = ({ students }) => {
                 )}
             </div>
 
-            <div className="flex justify-center mt-4 space-x-2">
-                <button
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    前へ
-                </button>
-
-                {pageNumbers.map((number) => (
-                    <button
-                        key={number}
-                        onClick={() => setCurrentPage(number)}
-                        className={`px-3 py-1 rounded ${number === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                            }`}
-                    >
-                        {number}
-                    </button>
-                ))}
-
-                <button
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    次へ
-                </button>
-            </div>
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
 };

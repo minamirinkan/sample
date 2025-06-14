@@ -46,7 +46,7 @@ const SuperAdminHeader = ({ onToggleSidebar }) => {
                             管理者情報
                         </a>
                         <a
-                            href="/logout"
+                            href="/"
                             className="block px-4 py-2 hover:bg-gray-100"
                         >
                             ログアウト
