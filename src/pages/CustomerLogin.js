@@ -41,11 +41,11 @@ const CustomerLogin = () => {
                 alert('Adminとしてログイン成功');
                 navigate('/admin/dashboard');
             } else if (userData.role === 'customer') {
-                alert('Customerとしてログイン成功');
+                alert('customerとしてログイン成功');
                 if (userData.isFirstLogin) {
                     navigate('/customer/change-password');
                 } else {
-                    navigate('/customer/dashboard');
+                    navigate('/mypage/dashboard');
                 }
             } else {
                 alert('無効なユーザー種別です');

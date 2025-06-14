@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import SuperAdminLogin from './pages/SuperAdminLogin';
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import CustomerDashboard from "./pages/CustomerDashboard";
 import AdminLogin from './pages/AdminLogin';
 import TeacherLogin from './pages/TeacherLogin';
 import CustomerLogin from './pages/CustomerLogin';
@@ -10,6 +11,7 @@ import TimetablePage from './pages/TimetablePage';
 import CalendarPopup from './components/CalendarPopup';
 import DevLoginSelector from './pages/DevLoginSelector';
 import ProtectedRoute from './components/ProtectedRoute';
+import ChangePassword from './pages/ChangePassword';
 
 function App() {
   return (
@@ -32,12 +34,14 @@ function App() {
           }
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/mypage/dashboard" element={<CustomerDashboard />} />
         <Route path="/superadmin-login" element={<SuperAdminLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/teacher-login" element={<TeacherLogin />} />
         <Route path="/customer-login" element={<CustomerLogin />} />
         <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/calendar" element={<CalendarPopup />} />
+        <Route path="/customer/change-password" element={<ChangePassword />} />
       </Routes>
   );
 }
