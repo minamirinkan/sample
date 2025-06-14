@@ -1,5 +1,6 @@
 # Getting Started with Create React App
 
+2025/6/14/19:27更新// mockの廃止・生徒を全てfirebase接続・その他ファイルの細分化
 2025/6/12/04:10更新//urlは変更無しで進めていきます
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
