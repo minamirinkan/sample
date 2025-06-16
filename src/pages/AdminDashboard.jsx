@@ -5,19 +5,30 @@ import { useState } from 'react';
 import SuperAdminTeachers from '../components/SuperAdminTeachers';
 import TimetablePage from './TimetablePage';
 import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm'
+import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
 
 const AdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [showStudentForm, setShowStudentForm] = useState(false);
+    const [showTeacherForm, setShowTeacherForm] = useState(false);
 
     const handleAddNewStudent = () => {
         setShowStudentForm(true);
     };
 
+    const handleAddNewTeacher = () => {
+        setShowTeacherForm(true); // ←追加
+    };
+
     const handleFormSubmit = () => {
         setShowStudentForm(false);
         setSelectedContent('students'); // フォーム閉じて生徒一覧に戻る例
+    };
+
+    const handleTeacherFormSubmit = () => {
+        setShowTeacherForm(false);
+        setSelectedContent('teachers');
     };
 
     const renderContent = () => {
@@ -26,6 +37,13 @@ const AdminDashboard = () => {
                 <StudentRegistrationForm onSubmit={handleFormSubmit} />
             ) : (
                 <SuperAdminStudents onAddNewStudent={handleAddNewStudent} />
+            );
+        }
+        if (selectedContent === 'teachers') {
+            return showTeacherForm ? (
+                <TeacherRegistrationForm onSubmitSuccess={handleTeacherFormSubmit} />
+            ) : (
+                <SuperAdminTeachers onAddNewTeacher={handleAddNewTeacher} />
             );
         }
         switch (selectedContent) {

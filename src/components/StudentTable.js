@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import StudentTableHeader from './StudentTableHeader';
 import StudentRow from './StudentRow';
 import PaginationControls from './PaginationControls';
 
@@ -46,21 +47,7 @@ const StudentTable = ({ students }) => {
             </div>
 
             <table className="w-full table-auto border-collapse">
-                <thead>
-                    <tr className="bg-gray-100 text-sm">
-                        <th className="border px-4 py-2 text-center">選択</th>
-                        <th className="border px-4 py-2 text-center">生徒コード</th>
-                        <th className="border px-4 py-2 text-center">氏名</th>
-                        <th className="border px-4 py-2 text-center">フリガナ</th>
-                        <th className="border px-4 py-2 text-center">学年</th>
-                        <th className="border px-4 py-2 text-center">受付年月日</th>
-                        <th className="border px-4 py-2 text-center">
-                            <div>請求</div>
-                            <div>状況</div>
-                        </th>
-                        <th className="border px-4 py-2 text-center">操作</th>
-                    </tr>
-                </thead>
+                <StudentTableHeader />
                 <tbody>
                     {currentStudents.map((student) => (
                         <StudentRow

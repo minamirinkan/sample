@@ -7,6 +7,7 @@ import SuperAdminTeachers from '../components/SuperAdminTeachers';
 import TimetablePage from './TimetablePage';
 import SchoolAccountAdmin from '../components/SchoolAccountAdmin';
 import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm';
+import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
 
 const SuperAdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -17,13 +18,15 @@ const SuperAdminDashboard = () => {
             case 'students':
                 return <SuperAdminStudents onAddNewStudent={() => setSelectedContent('studentRegistration')} />;
             case 'teachers':
-                return <SuperAdminTeachers />;
+                return <SuperAdminTeachers onAddNewTeacher={() => setSelectedContent('teacherRegistration')} />;
             case 'timetable':
                 return <TimetablePage />;
             case 'admin': // ← 教室管理
                 return <SchoolAccountAdmin />;
             case 'studentRegistration':
                 return <StudentRegistrationForm onSubmitSuccess={() => setSelectedContent('students')} />;
+            case 'teacherRegistration':
+                return <TeacherRegistrationForm onSubmitSuccess={() => setSelectedContent('teachers')} />;
             default:
                 return (
                     <>

@@ -1,5 +1,8 @@
+// src/components/TeacherTable.js
 import { useState, useEffect } from 'react';
-import { FaUserSlash } from 'react-icons/fa';
+import TeacherTableHeader from './TeacherTableHeader';
+import TeacherRow from './TeacherRow';
+import Pagination from './PaginationControls';
 
 const TeacherTable = ({ teachers }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -10,11 +13,10 @@ const TeacherTable = ({ teachers }) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, teachers.length);
     const currentTeachers = teachers.slice(startIndex, endIndex);
-    const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [currentPage, itemsPerPage]);
+    }, [currentPage]);
 
     const handleItemsPerPageChange = (e) => {
         setItemsPerPage(Number(e.target.value));
@@ -46,44 +48,15 @@ const TeacherTable = ({ teachers }) => {
             </div>
 
             <table className="w-full table-auto border-collapse">
-                <thead>
-                    <tr className="bg-gray-100 text-sm">
-                        <th className="border px-4 py-2 text-center">選択</th>
-                        <th className="border px-4 py-2 text-center">講師コード</th>
-                        <th className="border px-4 py-2 text-center">氏名</th>
-                        <th className="border px-4 py-2 text-center">フリガナ</th>
-                        <th className="border px-4 py-2 text-center">担当科目</th>
-                        <th className="border px-4 py-2 text-center">雇用日</th>
-                        <th className="border px-4 py-2 text-center">状況</th>
-                        <th className="border px-4 py-2 text-center">操作</th>
-                    </tr>
-                </thead>
+                <TeacherTableHeader />
                 <tbody>
                     {currentTeachers.map((teacher) => (
-                        <tr key={teacher.id} className="hover:bg-gray-50 text-sm">
-                            <td className="border px-4 py-2">
-                                <input
-                                    type="checkbox"
-                                    checked={selectedIds.includes(teacher.id)}
-                                    onChange={() => handleCheckboxChange(teacher.id)}
-                                />
-                            </td>
-                            <td className="border px-4 py-2">{teacher.code}</td>
-                            <td className="border px-4 py-2">{teacher.lastName} {teacher.firstName}</td>
-                            <td className="border px-4 py-2">{teacher.kana || '－'}</td>
-                            <td className="border px-4 py-2">{teacher.subject}</td>
-                            <td className="border px-4 py-2">{teacher.hireDate || '－'}</td>
-                            <td className="border px-4 py-2 text-center">
-                                {teacher.status === '退職済' ? (
-                                    <FaUserSlash className="text-red-500 inline-block" title="退職済" />
-                                ) : (
-                                    <span className="text-green-600">在職中</span>
-                                )}
-                            </td>
-                            <td className="border px-4 py-2">
-                                <button className="text-blue-600 hover:underline text-sm">詳細</button>
-                            </td>
-                        </tr>
+                        <TeacherRow
+                            key={teacher.id}
+                            teacher={teacher}
+                            isSelected={selectedIds.includes(teacher.id)}
+                            onSelect={handleCheckboxChange}
+                        />
                     ))}
                 </tbody>
             </table>
@@ -98,34 +71,11 @@ const TeacherTable = ({ teachers }) => {
                 )}
             </div>
 
-            <div className="flex justify-center mt-4 space-x-2">
-                <button
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    前へ
-                </button>
-
-                {pageNumbers.map((number) => (
-                    <button
-                        key={number}
-                        onClick={() => setCurrentPage(number)}
-                        className={`px-3 py-1 rounded ${number === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                            }`}
-                    >
-                        {number}
-                    </button>
-                ))}
-
-                <button
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    次へ
-                </button>
-            </div>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+            />
         </div>
     );
 };
