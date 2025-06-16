@@ -1,7 +1,8 @@
+// src/components/SuperAdminStudents.js
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import SearchForm from './SearchForm';
+import StudentSearchForm from './StudentSearchForm';
 import Breadcrumb from './Breadcrumb';
 import StudentTable from './StudentTable';
 import { filterStudents } from '../utils/filterStudents';
@@ -55,7 +56,7 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
                 </button>
             </div>
 
-            <SearchForm onSearch={handleSearch} />
+            <StudentSearchForm onSearch={handleSearch} />
             <StudentTable students={filteredStudents} />
         </div>
     );

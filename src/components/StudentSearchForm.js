@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const SearchForm = ({ onSearch }) => {
+const StudentSearchForm = ({ onSearch }) => {
     const [input, setInput] = useState('');
 
     const handleSubmit = (e) => {
@@ -41,4 +41,4 @@ const SearchForm = ({ onSearch }) => {
     );
 };
 
-export default SearchForm;
+export default StudentSearchForm;
