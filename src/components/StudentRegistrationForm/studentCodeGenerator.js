@@ -1,4 +1,4 @@
-// utils/studentCodeGenerator.js
+// src/components/StudentRegistrationForm/studentCodeGenerator.js
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 export const generateStudentCode = async (classroomCode) => {

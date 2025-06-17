@@ -1,5 +1,6 @@
 import React from 'react';
 
+const genders = ['男性', '女性', 'その他'];
 const BasicInfoSection = ({ formData, onChange }) => {
     return (
         <>
@@ -36,7 +37,7 @@ const BasicInfoSection = ({ formData, onChange }) => {
 
             <div className="grid grid-cols-2 gap-4">
                 <div>
-                    <label className="block text-sm font-medium">セイ</label>
+                    <label className="block text-sm font-medium">フリガナ（姓）</label>
                     <input
                         type="text"
                         value={formData.kanalastname}
@@ -45,13 +46,20 @@ const BasicInfoSection = ({ formData, onChange }) => {
                     />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium">メイ</label>
+                    <label className="block text-sm font-medium">フリガナ（名）</label>
                     <input
                         type="text"
                         value={formData.kanafirstname}
                         onChange={(e) => onChange('kanafirstName', e.target.value)}
                         className="mt-1 w-full border rounded p-2"
                     />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium">性別</label>
+                    <select value={formData.gender} onChange={(e) => onChange('gender', e.target.value)} className="border rounded p-2">
+                    <option value="">性別を選択</option>
+                    {genders.map((g) => <option key={g} value={g}>{g}</option>)}
+                </select>
                 </div>
             </div>
         </>

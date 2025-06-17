@@ -1,6 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../firebase';
+// src/components/StudentRegistrationForm/StudentRegistrationForm.jsx
+import { useEffect, useState } from 'react';
 import { serverTimestamp } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../../utils/firebase/saveCustomerAndStudent';
 import { useAuth } from '../../contexts/AuthContext';
@@ -8,10 +7,11 @@ import BasicInfoSection from './BasicInfoSection';
 import GuardianInfoSection from './GuardianInfoSection';
 import InternalInfoSection from './InternalInfoSection';
 import EnrollmentInfosection from './EnrollmentInfoSection';
+import { generateStudentCode } from './studentCodeGenerator';
 
-const StudentRegistrationForm = ({ onSubmit }) => {
+const StudentRegistrationForm = ({ onCancel }) => {
     const { adminData } = useAuth();
-    const classroomCode = adminData?.classroomCode || '';
+    const classroomCode = adminData?.classroomCode;
 
     const initialFormData = {
         lastName: '',
@@ -36,33 +36,17 @@ const StudentRegistrationForm = ({ onSubmit }) => {
     };
 
     const [formData, setFormData] = useState(initialFormData);
-
-    const generateStudentId = useCallback(async () => {
-        if (!classroomCode) return;
-
-        const q = query(
-            collection(db, 'students'),
-            where('studentId', '>=', `s${classroomCode}`),
-            where('studentId', '<', `s${classroomCode}9999`)
-        );
-
-        const snapshot = await getDocs(q);
-
-        let maxNumber = 0;
-        snapshot.forEach((doc) => {
-            const id = doc.data().studentId;
-            const num = parseInt(id?.slice(4), 10);
-            if (!isNaN(num) && num > maxNumber) maxNumber = num;
-        });
-
-        const newNumber = String(maxNumber + 1).padStart(4, '0');
-        const newId = `s${classroomCode}${newNumber}`;
-        setFormData((prev) => ({ ...prev, studentId: newId }));
-    }, [classroomCode]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        generateStudentId();
-    }, [generateStudentId]);
+        const fetchAndSetStudentId = async () => {
+            if (!classroomCode) return;
+            const newId = await generateStudentCode(classroomCode);
+            setFormData((prev) => ({ ...prev, studentId: newId }));
+            setLoading(false);
+        };
+        fetchAndSetStudentId();
+    }, [classroomCode]);
 
     const handleChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
@@ -90,11 +74,33 @@ const StudentRegistrationForm = ({ onSubmit }) => {
 
         if (success) {
             alert('登録が完了しました');
-            setFormData(initialFormData); // 登録後リセット
+
+            const newStudentId = await generateStudentCode(classroomCode);
+            setFormData({
+                ...initialFormData,
+                studentId: newStudentId,
+            });
         } else {
             alert('登録に失敗しました');
         }
     };
+
+    const handleCancel = async () => {
+        if (!classroomCode) return;
+        const newCode = await generateStudentCode(classroomCode);
+        setFormData({
+            ...initialFormData,
+            studentId: newCode,
+        });
+
+        if (typeof onCancel === 'function') {
+            onCancel();
+        }
+    };
+
+    if (!adminData || !classroomCode || loading) {
+        return <div className="text-center text-gray-500">読み込み中...</div>;
+    }
 
     return (
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto p-4 bg-white rounded shadow space-y-6">
@@ -103,9 +109,23 @@ const StudentRegistrationForm = ({ onSubmit }) => {
             <GuardianInfoSection formData={formData} onChange={handleChange} />
             <InternalInfoSection formData={formData} onChange={handleChange} />
             <EnrollmentInfosection formData={formData} onChange={handleChange} />
-            <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-                登録する
-            </button>
+
+            <div className="flex justify-center gap-6 mt-8">
+                <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                >
+                    登録する
+                </button>
+
+                <button
+                    type="button"
+                    onClick={handleCancel}
+                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+                >
+                    キャンセル
+                </button>
+            </div>
         </form>
     );
 };

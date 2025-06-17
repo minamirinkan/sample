@@ -13,6 +13,12 @@ const AdminDashboard = () => {
     const [showStudentForm, setShowStudentForm] = useState(false);
     const [showTeacherForm, setShowTeacherForm] = useState(false);
 
+    const handleMenuSelect = (menu) => {
+        setSelectedContent(menu);
+        setShowStudentForm(false); // 生徒フォームを閉じる
+        setShowTeacherForm(false); // 講師フォームを閉じる
+    };
+
     const handleAddNewStudent = () => {
         setShowStudentForm(true);
     };
@@ -21,7 +27,7 @@ const AdminDashboard = () => {
         setShowTeacherForm(true); // ←追加
     };
 
-    const handleFormSubmit = () => {
+    const handleStudentFormSubmit = () => {
         setShowStudentForm(false);
         setSelectedContent('students'); // フォーム閉じて生徒一覧に戻る例
     };
@@ -34,23 +40,31 @@ const AdminDashboard = () => {
     const renderContent = () => {
         if (selectedContent === 'students') {
             return showStudentForm ? (
-                <StudentRegistrationForm onSubmit={handleFormSubmit} />
+                <StudentRegistrationForm
+                    onSubmitSuccess={handleStudentFormSubmit}
+                    onCancel={() => {
+                        setShowStudentForm(false);
+                        setSelectedContent('students');
+                    }}
+                />
             ) : (
                 <SuperAdminStudents onAddNewStudent={handleAddNewStudent} />
             );
         }
         if (selectedContent === 'teachers') {
             return showTeacherForm ? (
-                <TeacherRegistrationForm onSubmitSuccess={handleTeacherFormSubmit} />
+                <TeacherRegistrationForm
+                    onSubmitSuccess={handleTeacherFormSubmit}
+                    onCancel={() => {
+                        setShowTeacherForm(false);
+                        setSelectedContent('teachers');
+                    }}
+                />
             ) : (
                 <SuperAdminTeachers onAddNewTeacher={handleAddNewTeacher} />
             );
         }
         switch (selectedContent) {
-            case 'students':
-                return <SuperAdminStudents />;
-            case 'teachers':
-                return <SuperAdminTeachers />;
             case 'timetable':
                 return <TimetablePage />;
             default:
@@ -73,7 +87,7 @@ const AdminDashboard = () => {
             </header>
             <div className="flex flex-1">
                 <aside className={`w-64 border-r border-gray-300 ${sidebarOpen ? 'block' : 'hidden'}`}>
-                    <AdminSidebar onSelectMenu={setSelectedContent} />
+                    <AdminSidebar onSelectMenu={handleMenuSelect} />
                 </aside>
                 <main className="flex-1 p-4 overflow-auto">
                     {renderContent()}

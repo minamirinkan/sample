@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { registerTeacher } from '../../utils/firebase/saveTeacher';
 import { useAuth } from '../../contexts/AuthContext';
+import { getAuth } from 'firebase/auth';
 
 import { useGenerateTeacherCode } from './teacherCodeGenerator';
 import BasicInfoSection from './BasicInfoSection';
 import ContactInfoSection from './ContactInfoSection';
 import EmploymentInfoSection from './EmploymentInfoSection';
 
-const TeacherRegistrationForm = () => {
+const TeacherRegistrationForm = ({ onCancel }) => {
     const { adminData } = useAuth();
     const classroomCode = adminData?.classroomCode || '';
 
@@ -17,6 +18,7 @@ const TeacherRegistrationForm = () => {
         firstName: '',
         kanalastName: '',
         kanafirstName: '',
+        gender: '',
         university: '',
         universityGrade: '',
         phone: '',
@@ -50,26 +52,37 @@ const TeacherRegistrationForm = () => {
         }
 
         try {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
+
+            if (!currentUser) {
+                alert('ログイン情報が確認できません。再ログインしてください。');
+                return;
+            }
+
+            const idToken = await currentUser.getIdToken();
+
             const success = await registerTeacher({
                 code: formData.code,
-                teacherName: `${formData.lastName} ${formData.firstName}`, // 任意。使わないなら削除OK
+                teacherName: `${formData.lastName} ${formData.firstName}`,
                 teacherKanaName: `${formData.kanalastName} ${formData.kanafirstName}`,
                 email: formData.email,
-                phoneNumber: formData.phone,
                 teacherData: {
                     ...formData,
                     classroomCode,
                     registrationDate: new Date(),
-                    role: 'teacher',
-                    isFirstLogin: true,
                 },
+                idToken,
             });
 
             if (success) {
                 alert('講師登録が完了しました');
-                setFormData(initialFormData);
+
                 const newCode = await generateTeacherCode();
-                setFormData((prev) => ({ ...prev, code: newCode }));
+                setFormData({
+                    ...initialFormData,
+                    code: newCode,
+                });
             } else {
                 alert('講師登録に失敗しました。');
             }
@@ -86,12 +99,33 @@ const TeacherRegistrationForm = () => {
             <ContactInfoSection formData={formData} onChange={handleChange} />
             <EmploymentInfoSection formData={formData} onChange={handleChange} />
 
-            <button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-            >
-                登録する
-            </button>
+            <div className="flex justify-center gap-6 mt-8">
+                <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                >
+                    登録する
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => {
+                        setFormData(initialFormData);
+                        const setup = async () => {
+                            const newCode = await generateTeacherCode();
+                            setFormData((prev) => ({ ...prev, code: newCode }));
+                        };
+                        setup();
+
+                        if (typeof onCancel === 'function') {
+                            onCancel();
+                        }
+                    }}
+                    className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+                >
+                    キャンセル
+                </button>
+            </div>
         </form>
     );
 };
