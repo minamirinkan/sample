@@ -74,6 +74,7 @@ class CalendarPopup extends Component {
   };
 
   handleWeekdayClick = (weekdayIndex) => {
+    const { year, month } = this.state; // 今表示中の年月
     const weekdayNames = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
     const weekday = weekdayNames[weekdayIndex];
 
@@ -84,10 +85,13 @@ class CalendarPopup extends Component {
     if (this.props.onDateSelect) {
       this.props.onDateSelect({
         type: 'weekday',
+        year,            // ← 追加
+        month: month + 1, // ← 0-basedなので +1
         weekday,
       });
     }
   };
+
 
   render() {
     const { year, month, showCalendar, selectedDate, today, selectedWeekday } = this.state;
@@ -128,9 +132,8 @@ class CalendarPopup extends Component {
               {days.map((d, i) => (
                 <div
                   key={i}
-                  className={`cursor-pointer select-none px-1 py-0.5 rounded ${
-                    i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : ''
-                  } ${selectedWeekday === i ? 'bg-gray-200 font-bold' : ''}`}
+                  className={`cursor-pointer select-none px-1 py-0.5 rounded ${i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : ''
+                    } ${selectedWeekday === i ? 'bg-gray-200 font-bold' : ''}`}
                   onClick={() => this.handleWeekdayClick(i)}
                 >
                   {d}
@@ -150,11 +153,11 @@ class CalendarPopup extends Component {
                   weekday === 0
                     ? 'text-red-500'
                     : weekday === 6
-                    ? 'text-blue-500'
-                    : 'text-black';
+                      ? 'text-blue-500'
+                      : 'text-black';
                 const isSelected = date === selectedDate ? 'bg-gray-300' : '';
                 const isToday = date === today ? 'bg-yellow-300' : '';
-                
+
 
                 return (
                   <div
