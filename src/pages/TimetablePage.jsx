@@ -1,12 +1,10 @@
-// src/pages/TimetablePage.jsx
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import TimetableTable from '../components/TimetableTable';
 import CalendarPopup from '../components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from '../utils/firebase/timetableFirestore';
 import { formatDateDisplay } from '../utils/dateUtils';
-//import PDFButton from '../components/PDFButton';
-
+// import PDFButton from '../components/PDFButton';
 
 export default function TimetablePage() {
   const { adminData } = useAuth();
@@ -39,15 +37,34 @@ export default function TimetablePage() {
     if (!adminData?.classroomCode) return;
 
     fetchTimetableData(selectedDate, adminData.classroomCode).then(({ rows, periodLabels, classroomName }) => {
-      if (rows) setRows(rows);
+      if (rows) {
+        const newRows = [
+          ...rows,
+          { teacher: '振り替え', periods: Array(8).fill([]).map(() => []) },
+          { teacher: '欠席', periods: Array(8).fill([]).map(() => []) }
+        ];
+        setRows(newRows);
+      }
       if (periodLabels) setPeriodLabels(periodLabels);
       if (classroomName) setClassroomName(classroomName);
     });
   }, [selectedDate, adminData]);
 
+  // ✅ 追加: CustomEvent で rows を丸ごと更新する
+  useEffect(() => {
+    const handler = (e) => {
+      setRows(e.detail);
+    };
+    window.addEventListener('updateAllRows', handler);
+    return () => window.removeEventListener('updateAllRows', handler);
+  }, []);
+
   const saveTimetable = async () => {
     if (!adminData?.classroomCode) return;
-    await saveTimetableData(selectedDate, adminData.classroomCode, rows, periodLabels);
+
+    // 振り替え・欠席以外を保存する
+    const normalRows = rows.slice(0, -2);
+    await saveTimetableData(selectedDate, adminData.classroomCode, normalRows, periodLabels);
     alert(`${selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存しました！`);
   };
 
@@ -58,7 +75,9 @@ export default function TimetablePage() {
   };
 
   const addRow = () => {
-    setRows([...rows, { teacher: '', periods: Array(8).fill([]).map(() => []) }]);
+    const normalRows = rows.slice(0, -2);
+    const fixedRows = rows.slice(-2);
+    setRows([...normalRows, { teacher: '', periods: Array(8).fill([]).map(() => []) }, ...fixedRows]);
   };
 
   return (
@@ -78,7 +97,7 @@ export default function TimetablePage() {
         <button onClick={saveTimetable} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
-        {/*<PDFButton rows={rows} />*/}
+        {/* <PDFButton rows={rows} /> */}
       </div>
     </div>
   );
