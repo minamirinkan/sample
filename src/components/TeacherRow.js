@@ -1,5 +1,6 @@
 // src/components/TeacherRow.js
 import { FaUserSlash } from 'react-icons/fa';
+import { formatDate } from '../utils/dateFormatter';
 
 const TeacherRow = ({ teacher, isSelected, onSelect }) => (
     <tr className="hover:bg-gray-50 text-sm">
@@ -12,9 +13,9 @@ const TeacherRow = ({ teacher, isSelected, onSelect }) => (
         </td>
         <td className="border px-4 py-2">{teacher.code}</td>
         <td className="border px-4 py-2">{teacher.lastName} {teacher.firstName}</td>
-        <td className="border px-4 py-2">{teacher.kana || '－'}</td>
+        <td className="border px-4 py-2">{teacher.kanalastName} {teacher.kanafirstName}</td>
         <td className="border px-4 py-2">{teacher.subject}</td>
-        <td className="border px-4 py-2">{teacher.hireDate || '－'}</td>
+        <td className="border px-4 py-2">{formatDate(teacher.hireDate)}</td>
         <td className="border px-4 py-2 text-center">
             {teacher.status === '退職済' ? (
                 <FaUserSlash className="text-red-500 inline-block" title="退職済" />

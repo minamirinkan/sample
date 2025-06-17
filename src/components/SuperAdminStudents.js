@@ -1,6 +1,7 @@
 // src/components/SuperAdminStudents.js
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { useAuth } from '../contexts/AuthContext'; // ✅ 追加
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import StudentSearchForm from './StudentSearchForm';
 import Breadcrumb from './Breadcrumb';
@@ -12,11 +13,19 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
     const [students, setStudents] = useState([]);
     const [filteredStudents, setFilteredStudents] = useState([]);
     const breadcrumbItems = ['生徒マスタ', '一覧'];
+    const { adminData } = useAuth();
+    const classroomCode = adminData?.classroomCode || '';
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!classroomCode) return;
+
             try {
-                const snapshot = await getDocs(collection(db, 'students'));
+                const q = query(
+                    collection(db, 'students'),
+                    where('classroomCode', '==', classroomCode)
+                );
+                const snapshot = await getDocs(q);
                 const studentData = snapshot.docs.map(doc => {
                     const data = doc.data();
                     return {
@@ -32,8 +41,9 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
                 console.error('データ取得エラー:', error);
             }
         };
+
         fetchData();
-    }, []); // ← 初期データ取得だけ
+    }, [classroomCode]);
 
     useEffect(() => {
         setFilteredStudents(filterStudents(students, searchTerm));
