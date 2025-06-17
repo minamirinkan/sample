@@ -8,12 +8,12 @@ export const generateStudentCode = async (classroomCode) => {
     const prefix = `s${classroomCode}`;
     const q = query(
         collection(db, 'students'),
-        where('code', '>=', prefix),
-        where('code', '<', `${prefix}z`)
+        where('studentId', '>=', prefix),
+        where('studentId', '<', `${prefix}z`)
     );
 
     const snapshot = await getDocs(q);
-    const existingCodes = snapshot.docs.map(doc => doc.data().code);
+    const existingCodes = snapshot.docs.map(doc => doc.data().studentId);
 
     let maxNumber = 0;
     existingCodes.forEach(code => {
