@@ -12,6 +12,7 @@ import { generateStudentCode } from './studentCodeGenerator';
 const StudentRegistrationForm = ({ onCancel }) => {
     const { adminData } = useAuth();
     const classroomCode = adminData?.classroomCode;
+    const classroomName = adminData?.classroomName;
 
     const initialFormData = {
         lastName: '',
@@ -68,6 +69,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 ...formData,
                 entryDate: formData.enrollmentDate,
                 classroomCode,
+                classroomName,
                 registrationDate: serverTimestamp(),
             },
         });
