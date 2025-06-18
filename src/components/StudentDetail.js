@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StudentInfoSection from './StudentInfoSection';
 import GuardianInfoSection from './GuardianInfoSection';
 import ActionButtons from './ActionButtons';
+import StudentAttendanceTab from './StudentAttendanceTab.jsx'
 
 const TABS = ['基本情報', '在籍情報', '受講情報', '請求情報'];
 
@@ -49,7 +50,19 @@ const StudentDetail = ({ student, onBack }) => {
                     </div>
                 );
             case '在籍情報':
+                return (
+                    <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
+                );
             case '受講情報':
+                console.log('formData in AttendanceTab:', formData);
+                return (
+                    <div className="flex gap-6">
+                        <StudentAttendanceTab
+                            studentCode={formData.studentId}
+                            classroomCode={formData.classroomCode} // これが student データに含まれていれば
+                        />
+                    </div>
+                );
             case '請求情報':
                 return (
                     <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
