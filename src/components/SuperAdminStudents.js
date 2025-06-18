@@ -1,12 +1,13 @@
 // src/components/SuperAdminStudents.js
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext'; // ✅ 追加
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import StudentSearchForm from './StudentSearchForm';
 import Breadcrumb from './Breadcrumb';
 import StudentTable from './StudentTable';
 import { filterStudents } from '../utils/filterStudents';
+import StudentDetail from './StudentDetail';
 
 const SuperAdminStudents = ({ onAddNewStudent }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -15,6 +16,8 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
     const breadcrumbItems = ['生徒マスタ', '一覧'];
     const { adminData } = useAuth();
     const classroomCode = adminData?.classroomCode || '';
+    const [view, setView] = useState('list'); // 'list', 'detail', 'form'
+    const [selectedStudentDetail, setSelectedStudentDetail] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,26 +52,62 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
         setFilteredStudents(filterStudents(students, searchTerm));
     }, [searchTerm, students]); // ← フィルター専用
 
+    const handleShowDetail = async (student) => {
+        try {
+            let customerData = null;
 
+            if (student.customerUid) {
+                const customerRef = doc(db, 'customers', student.customerUid);
+                const customerSnap = await getDoc(customerRef);
+                if (customerSnap.exists()) {
+                    customerData = { id: customerSnap.id, ...customerSnap.data() };
+                }
+            }
+
+            setSelectedStudentDetail({ student, customer: customerData });
+            setView('detail');
+        } catch (error) {
+            console.error('詳細取得エラー:', error);
+        }
+    };
+
+    const handleBackToList = () => {
+        setSelectedStudentDetail(null);
+        setView('list');
+    };
+    
     const handleSearch = (term) => {
         setSearchTerm(term);
     };
 
     return (
-        <div className="space-y-4">
-            <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-bold">
-                    生徒マスタ <span className="text-lg font-normal ml-1">一覧</span>
-                </h1>
-                <Breadcrumb items={breadcrumbItems} />
-                <button onClick={onAddNewStudent} className="btn-primary">
-                    新規登録
-                </button>
-            </div>
+        <>
+            {view === 'list' && (
+                <div className="space-y-4">
+                    <div className="flex items-center justify-between mb-4">
+                        <h1 className="text-2xl font-bold">
+                            生徒マスタ <span className="text-lg font-normal ml-1">一覧</span>
+                        </h1>
+                        <Breadcrumb items={breadcrumbItems} />
+                        <button onClick={onAddNewStudent} className="btn-primary">
+                            新規登録
+                        </button>
+                    </div>
 
-            <StudentSearchForm onSearch={handleSearch} />
-            <StudentTable students={filteredStudents} />
-        </div>
+                    <StudentSearchForm onSearch={handleSearch} />
+                    <StudentTable students={filteredStudents} onShowDetail={handleShowDetail} />
+
+                </div>
+            )}
+
+            {view === 'detail' && selectedStudentDetail && (
+                <StudentDetail
+                    student={selectedStudentDetail.student}
+                    customer={selectedStudentDetail.customer}
+                    onBack={handleBackToList}
+                />
+            )}
+        </>
     );
 };
 

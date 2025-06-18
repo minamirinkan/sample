@@ -3,7 +3,7 @@ import StudentTableHeader from './StudentTableHeader';
 import StudentRow from './StudentRow';
 import PaginationControls from './PaginationControls';
 
-const StudentTable = ({ students }) => {
+const StudentTable = ({ students, onShowDetail }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [selectedIds, setSelectedIds] = useState([]);
@@ -55,6 +55,7 @@ const StudentTable = ({ students }) => {
                             student={student}
                             isSelected={selectedIds.includes(student.id)}
                             onSelect={handleCheckboxChange}
+                            onShowDetail={onShowDetail}
                         />
                     ))}
                 </tbody>
