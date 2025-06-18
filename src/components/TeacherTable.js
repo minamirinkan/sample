@@ -4,7 +4,7 @@ import TeacherTableHeader from './TeacherTableHeader';
 import TeacherRow from './TeacherRow';
 import Pagination from './PaginationControls';
 
-const TeacherTable = ({ teachers }) => {
+const TeacherTable = ({ teachers, onShowDetail }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [selectedIds, setSelectedIds] = useState([]);
@@ -56,6 +56,7 @@ const TeacherTable = ({ teachers }) => {
                             teacher={teacher}
                             isSelected={selectedIds.includes(teacher.id)}
                             onSelect={handleCheckboxChange}
+                            onShowDetail={onShowDetail}
                         />
                     ))}
                 </tbody>

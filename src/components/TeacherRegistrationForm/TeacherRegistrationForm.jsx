@@ -11,6 +11,7 @@ import EmploymentInfoSection from './EmploymentInfoSection';
 const TeacherRegistrationForm = ({ onCancel }) => {
     const { adminData } = useAuth();
     const classroomCode = adminData?.classroomCode || '';
+    const classroomName = adminData?.classroomName || '';
 
     const initialFormData = {
         code: '',
@@ -70,6 +71,7 @@ const TeacherRegistrationForm = ({ onCancel }) => {
                 teacherData: {
                     ...formData,
                     classroomCode,
+                    classroomName,
                     registrationDate: new Date(),
                 },
                 idToken,

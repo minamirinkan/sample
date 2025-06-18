@@ -18,7 +18,15 @@ export const AuthProvider = ({ children }) => {
                 if (user) {
                     const adminRef = doc(db, 'admins', user.uid);
                     const adminSnap = await getDoc(adminRef);
-                    setAdminData(adminSnap.exists() ? adminSnap.data() : null);
+                    if (adminSnap.exists()) {
+                        const rawData = adminSnap.data();
+                        setAdminData({
+                            ...rawData,
+                            classroomName: rawData.name, // ← ここで classroomName に変換
+                        });
+                    } else {
+                        setAdminData(null);
+                    }
                 } else {
                     setAdminData(null);
                 }
