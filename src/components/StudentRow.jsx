@@ -2,7 +2,7 @@ import React from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { formatDate } from '../utils/dateFormatter';
 
-const StudentRow = ({ student, isSelected, onSelect }) => {
+const StudentRow = ({ student, isSelected, onSelect, onShowDetail }) => {
     return (
         <tr className="hover:bg-gray-50 text-sm">
             <td className="border px-4 py-2">
@@ -23,7 +23,12 @@ const StudentRow = ({ student, isSelected, onSelect }) => {
                 )}
             </td>
             <td className="border px-4 py-2">
-                <button className="text-blue-600 hover:underline text-sm">詳細</button>
+                <button
+                    onClick={() => onShowDetail(student)}
+                    className="text-blue-600 hover:underline"
+                >
+                    詳細
+                </button>
             </td>
         </tr>
     );
