@@ -1,10 +1,13 @@
 import TimetableCell from './TimetableCell';
 
 export default function TimetableRow({ rowIndex, row, onChange, allTeachers, allRows }) {
+  // 振り替え・欠席の判定
   const isFixedRow = row.teacher === '振り替え' || row.teacher === '欠席';
 
   const handleTeacherChange = (e) => {
-    onChange(rowIndex, { ...row, teacher: e.target.value });
+    const selectedCode = e.target.value;
+    const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
+    onChange(rowIndex, { ...row, teacher: teacherObj });
   };
 
   return (
@@ -12,9 +15,10 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
       <td className="border p-2 text-left font-bold bg-gray-50">
         {isFixedRow ? row.teacher : (
           <select
-            value={row.teacher}
+            value={row.teacher?.code || ''}
             onChange={handleTeacherChange}
             className="w-auto min-w-[2rem] max-w-full border border-gray-200 p-1 rounded text-xs text-left"
+            title="講師を選択"
           >
             <option value="">選択</option>
             {allTeachers.map((t) => (
