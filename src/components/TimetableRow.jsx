@@ -14,12 +14,12 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
           <select
             value={row.teacher}
             onChange={handleTeacherChange}
-            className="w-full border border-gray-200 p-1 rounded text-xs text-center"
+            className="w-auto min-w-[2rem] max-w-full border border-gray-200 p-1 rounded text-xs text-left"
           >
             <option value="">選択</option>
             {allTeachers.map((t) => (
               <option key={t.code} value={t.code}>
-                {`${t.lastName} ${t.firstName}（${t.code}）`}
+                {`${t.lastName} ${t.firstName}`}
               </option>
             ))}
           </select>

@@ -1,9 +1,34 @@
+import { useEffect, useState } from 'react';
 import TimetableRow from './TimetableRow';
 import StudentList from './StudentList';
 import periods from '../constants/periods';
-import mockTeachers from '../data/mockTeachers';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function TimetableTable({ rows, onChange }) {
+  const { adminData } = useAuth();
+  const [teachers, setTeachers] = useState([]);
+
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      if (!adminData?.classroomCode) return;
+      const q = query(
+        collection(db, 'teachers'),
+        where('classroomCode', '==', adminData.classroomCode),
+        where('status', '==', '在職中')
+      );
+      const snapshot = await getDocs(q);
+      const list = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setTeachers(list);
+    };
+
+    fetchTeachers();
+  }, [adminData]);
+
   return (
     <div className="flex gap-4">
       {/* 左側：生徒一覧 */}
@@ -29,7 +54,7 @@ export default function TimetableTable({ rows, onChange }) {
                 rowIndex={rowIdx}
                 row={row}
                 onChange={onChange}
-                allTeachers={mockTeachers}
+                allTeachers={teachers}
                 allRows={rows}
               />
             ))}
