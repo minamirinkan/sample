@@ -27,13 +27,11 @@ export default function TimetableCell({
     const student = row.periods[periodIdx][studentIdx];
     const newAllRows = JSON.parse(JSON.stringify(allRows));
 
-    // 1️⃣ 元の行から削除
     newAllRows[rowIndex].periods[periodIdx] = newAllRows[rowIndex].periods[periodIdx].filter(
       (_, idx) => idx !== studentIdx
     );
 
     if (action === '振り替え' || action === '欠席') {
-      // 2️⃣ 振り替え or 欠席行に追加
       const targetRow = newAllRows.find(r => r.teacher === action);
       if (targetRow) {
         targetRow.periods[periodIdx].push({
@@ -43,7 +41,6 @@ export default function TimetableCell({
         });
       }
     } else if (action === '元に戻す') {
-      // 3️⃣ 元に戻す
       if (student.originRow !== undefined && student.originPeriod !== undefined) {
         const originRow = newAllRows[student.originRow];
         if (originRow) {
@@ -55,7 +52,7 @@ export default function TimetableCell({
         }
       }
     }
-    // 4️⃣ rows 全体を更新
+
     window.dispatchEvent(new CustomEvent('updateAllRows', { detail: newAllRows }));
 
     setMenuIndex(null);
@@ -63,43 +60,48 @@ export default function TimetableCell({
 
   return (
     <td
-      className="text-[10px] p-0.5 mb-0.5 border rounded bg-white shadow-sm relative"
+      className="border p-1 relative"
       onDragOver={(e) => {
         if (!isFixedRow) e.preventDefault();
       }}
       onDrop={(e) => {
-        if (isFixedRow) return; // 固定行は drop 禁止
+        if (isFixedRow) return;
 
         const json = e.dataTransfer.getData('application/json');
         if (!json) return;
 
         try {
-          const { student, fromPeriod } = JSON.parse(json);
-          if (fromPeriod === periodIdx) return;
+          const { student, fromRow, fromPeriod } = JSON.parse(json);
 
-          const existsInOtherRows = allRows.some((r, i) => {
-            if (i === rowIndex) return false;
-            return r.periods[periodIdx].some((s) => s.code === student.code);
-          });
-          if (existsInOtherRows) {
-            alert('他の講師の同じ時限に既にいます');
-            return;
-          }
+          const newAllRows = JSON.parse(JSON.stringify(allRows));
 
-          const newRow = JSON.parse(JSON.stringify(row));
-          const alreadyExists = newRow.periods[periodIdx].some(
-            (s) => s.code === student.code
-          );
-          if (alreadyExists) return;
-
-          if (fromPeriod !== null && fromPeriod !== undefined) {
-            newRow.periods[fromPeriod] = newRow.periods[fromPeriod].filter(
+          // 先に元から削除
+          if (
+            fromRow !== null &&
+            fromRow !== undefined &&
+            fromPeriod !== null &&
+            fromPeriod !== undefined
+          ) {
+            newAllRows[fromRow].periods[fromPeriod] = newAllRows[fromRow].periods[fromPeriod].filter(
               (s) => s.code !== student.code
             );
           }
 
-          newRow.periods[periodIdx].push(student);
-          onChange(rowIndex, newRow);
+          // その後で他講師の同じ時限を確認
+          const existsInOtherRows = newAllRows.some((r, i) => {
+            if (i === rowIndex) return false;
+            return r.periods[periodIdx].some((s) => s.code === student.code);
+          });
+
+          if (existsInOtherRows) {
+            alert('他の講師の同じ時限にすでにいます');
+            return;
+          }
+
+          newAllRows[rowIndex].periods[periodIdx].push(student);
+
+          window.dispatchEvent(new CustomEvent('updateAllRows', { detail: newAllRows }));
+
         } catch (err) {
           console.error('Drop error:', err);
         }
@@ -112,11 +114,11 @@ export default function TimetableCell({
               student={student}
               periodIdx={periodIdx}
               studentIdx={studentIdx}
+              rowIndex={rowIndex}
               handleChange={handleChange}
               handleRemove={() => handleRemoveClick(studentIdx)}
             />
 
-            {/* メニュー */}
             {menuIndex === studentIdx && (
               <div className="absolute top-6 right-0 bg-white border rounded shadow text-xs z-20">
                 {isFixedRow ? (

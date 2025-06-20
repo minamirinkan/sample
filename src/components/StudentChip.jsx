@@ -1,8 +1,8 @@
-// src/components/StudentChip.jsx
 export default function StudentChip({
     student,
     periodIdx,
     studentIdx,
+    rowIndex,  // 👈 追加
     handleChange,
     handleRemove,
 }) {
@@ -13,7 +13,11 @@ export default function StudentChip({
             onDragStart={(e) => {
                 e.dataTransfer.setData(
                     'application/json',
-                    JSON.stringify({ student, fromPeriod: periodIdx })
+                    JSON.stringify({
+                        student,
+                        fromRow: rowIndex,   // 👈 必須！
+                        fromPeriod: periodIdx
+                    })
                 );
             }}
         >
