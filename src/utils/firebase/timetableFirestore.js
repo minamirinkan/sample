@@ -76,6 +76,7 @@ export async function saveTimetableData(selectedDate, classroomCode, rows, perio
     docRef = doc(db, 'classrooms', classroomCode, 'weekdayTemplates', docId);
   }
 
+  // ✅ すべての rows を flatten
   const flattenedRows = rows.map((row) => {
     const flat = {};
     row.periods.forEach((p, idx) => {
@@ -86,6 +87,7 @@ export async function saveTimetableData(selectedDate, classroomCode, rows, perio
 
   await setDoc(docRef, { rows: flattenedRows, periodLabels });
 }
+
 
 /**
  * === Firestore snapshot を JSオブジェクトに変換 ===
