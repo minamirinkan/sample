@@ -48,8 +48,9 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
 
   // 見つからない場合の初期値
   return {
-    rows: [{ teacher: '', periods: Array(8).fill([]).map(() => []) }],
+    rows: [{ teacher: '', periods: Array(8).fill([]).map(() => []), status: '予定' }],
     classroomName,
+    periodLabels: []
   };
 }
 
@@ -76,19 +77,43 @@ export async function saveTimetableData(selectedDate, classroomCode, rows, perio
     docRef = doc(db, 'classrooms', classroomCode, 'weekdayTemplates', docId);
   }
 
-  // ✅ すべての rows を flatten
   const flattenedRows = rows.map((row) => {
-    const flat = {};
-    row.periods.forEach((p, idx) => {
-      flat[`period${idx + 1}`] = p;
+    const rowStatus = row.status ?? '予定';
+
+    const flatPeriods = {};
+    row.periods?.forEach((students, idx) => {
+      flatPeriods[`period${idx + 1}`] = students.map(student => ({
+        studentId: student?.studentId?? '',
+        grade: student?.grade ?? '',
+        name: student?.name ?? '',
+        seat: student?.seat ?? '',
+        subject: student?.subject ?? '',
+        status: rowStatus
+      }));
     });
-    return { teacher: row.teacher, periods: flat };
+
+    return {
+  teacher: row.teacher && (row.teacher.code || row.teacher.name)
+    ? {
+        code: row.teacher.code ?? '',
+        name: row.teacher.name ?? ''
+      }
+    : null,
+  periods: flatPeriods,
+  status: rowStatus
+};
   });
 
-  await setDoc(docRef, { rows: flattenedRows, periodLabels });
+  const safeData = {
+    rows: flattenedRows,
+    periodLabels: periodLabels ?? [],
+    updatedAt: new Date()
+  };
+try {
+  await setDoc(docRef, safeData); // ← periodLabels を削除したか確認
+} catch (error) {
 }
-
-
+}
 /**
  * === Firestore snapshot を JSオブジェクトに変換 ===
  */
@@ -97,9 +122,27 @@ function parseData(snap) {
   const rows = data.rows.map((row) => {
     const periodsArray = [];
     for (let i = 1; i <= 8; i++) {
-      periodsArray.push(row.periods?.[`period${i}`] || []);
+      const periodKey = `period${i}`;
+      const students = row.periods?.[periodKey] || [];
+      periodsArray.push(
+        students.map((s) => ({
+          studentId: s.studentId ?? '',
+          grade: s.grade ?? '',
+          name: s.name ?? '',
+          seat: s.seat ?? '',
+          subject: s.subject ?? '',
+        }))
+      );
     }
-    return { teacher: row.teacher, periods: periodsArray };
+    return {
+      teacher: row.teacher || null,
+      periods: periodsArray,
+      status: row.status || '予定'
+    };
   });
-  return { rows, periodLabels: data.periodLabels };
+
+  return {
+    rows,
+    periodLabels: data.periodLabels
+  };
 }

@@ -11,7 +11,8 @@ export default function TimetableCell({
 }) {
   const [menuIndex, setMenuIndex] = useState(null);
 
-  const isFixedRow = row.teacher === '振り替え' || row.teacher === '欠席';
+  const isFixedRow = ['振替', '欠席'].includes(row.status);
+  const isUndecidedRow = row.status === '未定';
 
   const handleChange = (periodIdx, studentIdx, field, value) => {
     const newRow = JSON.parse(JSON.stringify(row));
@@ -26,24 +27,32 @@ export default function TimetableCell({
   const handleAction = (studentIdx, action) => {
     const student = row.periods[periodIdx][studentIdx];
     const newAllRows = JSON.parse(JSON.stringify(allRows));
-
+    // 元の行から削除
     newAllRows[rowIndex].periods[periodIdx] = newAllRows[rowIndex].periods[periodIdx].filter(
       (_, idx) => idx !== studentIdx
     );
 
-    if (action === '振り替え' || action === '欠席') {
-      const targetRow = newAllRows.find(r => r.teacher === action);
+    if (['振替', '欠席', '未定'].includes(action)) {
+      const targetRow = newAllRows.find(r => r.status === action);
       if (targetRow) {
+        if (!Array.isArray(targetRow.periods[periodIdx])) {
+          targetRow.periods[periodIdx] = [];
+        }
         targetRow.periods[periodIdx].push({
           ...student,
           originRow: rowIndex,
           originPeriod: periodIdx,
         });
+      } else {
+        alert(`${action} 行が見つかりません`);
       }
     } else if (action === '元に戻す') {
       if (student.originRow !== undefined && student.originPeriod !== undefined) {
         const originRow = newAllRows[student.originRow];
         if (originRow) {
+          if (!Array.isArray(originRow.periods[student.originPeriod])) {
+            originRow.periods[student.originPeriod] = [];
+          }
           originRow.periods[student.originPeriod].push({
             ...student,
             originRow: undefined,
@@ -54,18 +63,17 @@ export default function TimetableCell({
     }
 
     window.dispatchEvent(new CustomEvent('updateAllRows', { detail: newAllRows }));
-
     setMenuIndex(null);
   };
 
   return (
     <td
-      className="border p-1 relative"
+      className="text-[10px] p-0.5 mb-0.5 border rounded bg-white shadow-sm relative"
       onDragOver={(e) => {
-        if (!isFixedRow) e.preventDefault();
+        if (!isFixedRow || isUndecidedRow) e.preventDefault();
       }}
       onDrop={(e) => {
-        if (isFixedRow) return;
+        if (isFixedRow && !isUndecidedRow) return;
 
         const json = e.dataTransfer.getData('application/json');
         if (!json) return;
@@ -74,7 +82,6 @@ export default function TimetableCell({
           const { student, fromRow, fromPeriod } = JSON.parse(json);
 
           const newAllRows = JSON.parse(JSON.stringify(allRows));
-
           // 先に元から削除
           if (
             fromRow !== null &&
@@ -83,14 +90,14 @@ export default function TimetableCell({
             fromPeriod !== undefined
           ) {
             newAllRows[fromRow].periods[fromPeriod] = newAllRows[fromRow].periods[fromPeriod].filter(
-              (s) => s.code !== student.code
+              (s) => s.studentId!== student.studentId
             );
           }
 
           // その後で他講師の同じ時限を確認
           const existsInOtherRows = newAllRows.some((r, i) => {
             if (i === rowIndex) return false;
-            return r.periods[periodIdx].some((s) => s.code === student.code);
+            return r.periods[periodIdx].some((s) => s.studentId === student.studentId);
           });
 
           if (existsInOtherRows) {
@@ -113,8 +120,8 @@ export default function TimetableCell({
             <StudentChip
               student={student}
               periodIdx={periodIdx}
-              studentIdx={studentIdx}
               rowIndex={rowIndex}
+              studentIdx={studentIdx}
               handleChange={handleChange}
               handleRemove={() => handleRemoveClick(studentIdx)}
             />
@@ -132,9 +139,15 @@ export default function TimetableCell({
                   <>
                     <button
                       className="block px-2 py-1 hover:bg-gray-100 w-full text-left"
-                      onClick={() => handleAction(studentIdx, '振り替え')}
+                      onClick={() => handleAction(studentIdx, '未定')}
                     >
-                      振り替え
+                      未定
+                    </button>
+                    <button
+                      className="block px-2 py-1 hover:bg-gray-100 w-full text-left"
+                      onClick={() => handleAction(studentIdx, '振替')}
+                    >
+                      振替
                     </button>
                     <button
                       className="block px-2 py-1 hover:bg-gray-100 w-full text-left"

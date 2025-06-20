@@ -56,7 +56,7 @@ export default function StudentList() {
                                     student: {
                                         name: `${s.lastName} ${s.firstName}`,
                                         grade: shortGrade(s.grade),
-                                        code: s.studentId || s.id,
+                                        studentId: s.studentId || s.id,
                                         seat: '',
                                         subject: '',
                                     },

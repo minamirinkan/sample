@@ -1,19 +1,30 @@
 import TimetableCell from './TimetableCell';
 
 export default function TimetableRow({ rowIndex, row, onChange, allTeachers, allRows }) {
-  // 振り替え・欠席の判定
-  const isFixedRow = row.teacher === '振り替え' || row.teacher === '欠席';
+  // statusに基づいて振替・欠席・未定などの固定行かどうかを判断
+  const isFixedRow = ['未定', '振替', '欠席'].includes(row.status);
 
   const handleTeacherChange = (e) => {
     const selectedCode = e.target.value;
     const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
-    onChange(rowIndex, { ...row, teacher: teacherObj });
+    const updatedTeacher = teacherObj
+      ? {
+        code: teacherObj.code,
+        name: `${teacherObj.lastName} ${teacherObj.firstName}`
+      }
+      : null;
+
+    onChange(rowIndex, { ...row, teacher: updatedTeacher });
   };
 
   return (
     <tr>
       <td className="border p-2 text-left font-bold bg-gray-50">
-        {isFixedRow ? row.teacher : (
+        {isFixedRow ? (
+          // 固定行 ― status文字列をそのまま表示
+          <span className="text-gray-700">{row.status}</span>
+        ) : (
+          // 通常行 ― 講師選択セレクトボックスを表示
           <select
             value={row.teacher?.code || ''}
             onChange={handleTeacherChange}
@@ -30,6 +41,7 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
         )}
       </td>
 
+      {/* 各時限のセルを表示 */}
       {row.periods.map((students, periodIdx) => (
         <TimetableCell
           key={periodIdx}
