@@ -38,19 +38,23 @@ export default function TimetablePage() {
 
     fetchTimetableData(selectedDate, adminData.classroomCode).then(({ rows, periodLabels, classroomName }) => {
       if (rows) {
-        const newRows = [
-          ...rows,
-          { teacher: '振り替え', periods: Array(8).fill([]).map(() => []) },
-          { teacher: '欠席', periods: Array(8).fill([]).map(() => []) }
+        // 🔑 必ず固定行が無い場合は追加
+        const hasTransfer = rows.find(r => r.teacher === '振り替え');
+        const hasAbsent = rows.find(r => r.teacher === '欠席');
+        const normalRows = rows.filter(r => r.teacher !== '振り替え' && r.teacher !== '欠席');
+        const finalRows = [
+          ...normalRows,
+          hasTransfer || { teacher: '振り替え', periods: Array(8).fill([]).map(() => []) },
+          hasAbsent || { teacher: '欠席', periods: Array(8).fill([]).map(() => []) },
         ];
-        setRows(newRows);
+        setRows(finalRows);
       }
       if (periodLabels) setPeriodLabels(periodLabels);
       if (classroomName) setClassroomName(classroomName);
     });
   }, [selectedDate, adminData]);
 
-  // ✅ 追加: CustomEvent で rows を丸ごと更新する
+  // ✅ rows全体更新をイベントで受ける
   useEffect(() => {
     const handler = (e) => {
       setRows(e.detail);
@@ -62,9 +66,8 @@ export default function TimetablePage() {
   const saveTimetable = async () => {
     if (!adminData?.classroomCode) return;
 
-    // 振り替え・欠席以外を保存する
-    const normalRows = rows.slice(0, -2);
-    await saveTimetableData(selectedDate, adminData.classroomCode, normalRows, periodLabels);
+    // 🔑 slice をやめて全 rows を保存する
+    await saveTimetableData(selectedDate, adminData.classroomCode, rows, periodLabels);
     alert(`${selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存しました！`);
   };
 
