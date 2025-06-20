@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useStudentAttendance } from './useStudentAttendance';
 import AttendanceTable from './AttendanceTable';
 
-const StudentAttendanceTab = ({ classroomCode, studentCode }) => {
+const StudentAttendanceTab = ({ classroomCode, studentId }) => {
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [monthOptions, setMonthOptions] = useState([]);
 
@@ -20,12 +20,12 @@ const StudentAttendanceTab = ({ classroomCode, studentCode }) => {
         setSelectedMonth(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`);
     }, []);
 
-    const { loading, attendanceList } = useStudentAttendance(classroomCode, studentCode, selectedMonth);
+    const { loading, attendanceList } = useStudentAttendance(classroomCode, studentId, selectedMonth);
 
     return (
         <div>
             <select
-                value={selectedMonth}
+                value={selectedMonth || ''}
                 onChange={(e) => setSelectedMonth(e.target.value)}
                 className="mb-4 p-2 border rounded"
             >

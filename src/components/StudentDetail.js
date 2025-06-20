@@ -23,7 +23,6 @@ const StudentDetail = ({ student, onBack }) => {
     };
 
     const handleSaveClick = () => {
-        console.log('保存されました（仮）');
         setIsEditing(false);
     };
 
@@ -54,11 +53,10 @@ const StudentDetail = ({ student, onBack }) => {
                     <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
                 );
             case '受講情報':
-                console.log('formData in AttendanceTab:', formData);
                 return (
                     <div className="flex gap-6">
                         <StudentAttendanceTab
-                            studentCode={formData.studentId}
+                            studentId={formData.studentId}
                             classroomCode={formData.classroomCode} // これが student データに含まれていれば
                         />
                     </div>

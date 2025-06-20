@@ -1,3 +1,4 @@
+// src/pages/TimetablePage.jsx
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import TimetableTable from '../components/TimetableTable';
@@ -36,25 +37,56 @@ export default function TimetablePage() {
   useEffect(() => {
     if (!adminData?.classroomCode) return;
 
-    fetchTimetableData(selectedDate, adminData.classroomCode).then(({ rows, periodLabels, classroomName }) => {
-      if (rows) {
-        // 🔑 必ず固定行が無い場合は追加
-        const hasTransfer = rows.find(r => r.teacher === '振り替え');
-        const hasAbsent = rows.find(r => r.teacher === '欠席');
-        const normalRows = rows.filter(r => r.teacher !== '振り替え' && r.teacher !== '欠席');
-        const finalRows = [
-          ...normalRows,
-          hasTransfer || { teacher: '振り替え', periods: Array(8).fill([]).map(() => []) },
-          hasAbsent || { teacher: '欠席', periods: Array(8).fill([]).map(() => []) },
+    (async () => {
+      const { rows, periodLabels, classroomName } = await fetchTimetableData(selectedDate, adminData.classroomCode);
+
+      const defaultPeriodLabels = [
+        { label: '1限', time: '09:50〜11:10' },
+        { label: '2限', time: '11:20〜12:40' },
+        { label: '3限', time: '12:50〜14:10' },
+        { label: '4限', time: '14:20〜15:40' },
+        { label: '5限', time: '15:50〜17:10' },
+        { label: '6限', time: '17:20〜18:40' },
+        { label: '7限', time: '18:50〜20:10' },
+        { label: '8限', time: '20:20〜21:40' },
+      ];
+
+      let finalPeriodLabels = periodLabels?.length > 0 ? periodLabels : defaultPeriodLabels;
+      setPeriodLabels(finalPeriodLabels);
+
+      let finalRows;
+      if (rows && rows.length > 0) {
+        const hasUndecided = rows.find(r => r.status === '未定');
+        const hasTransfer = rows.find(r => r.status === '振替');
+        const hasAbsent = rows.find(r => r.status === '欠席');
+        const normalRows = rows.filter(r => !['未定', '振替', '欠席'].includes(r.status));
+
+        finalRows = [
+          ...normalRows.map(r => ({ ...r, status: '予定' })),
+          hasUndecided || { status: '未定', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          hasTransfer || { status: '振替', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          hasAbsent || { status: '欠席', teacher: null, periods: Array(8).fill([]).map(() => []) },
         ];
-        setRows(finalRows);
+      } else {
+        finalRows = [
+          { status: '未定', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          { status: '振替', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          { status: '欠席', teacher: null, periods: Array(8).fill([]).map(() => []) },
+        ];
       }
-      if (periodLabels) setPeriodLabels(periodLabels);
+
+      setRows(finalRows);
+
+      // Firestoreに periodLabels がなかった場合は保存
+      if (!periodLabels || periodLabels.length === 0) {
+        await saveTimetableData(selectedDate, adminData.classroomCode, finalRows, defaultPeriodLabels);
+      }
+
       if (classroomName) setClassroomName(classroomName);
-    });
+    })();
   }, [selectedDate, adminData]);
 
-  // ✅ rows全体更新をイベントで受ける
+
   useEffect(() => {
     const handler = (e) => {
       setRows(e.detail);
@@ -65,9 +97,11 @@ export default function TimetablePage() {
 
   const saveTimetable = async () => {
     if (!adminData?.classroomCode) return;
-
-    // 🔑 slice をやめて全 rows を保存する
-    await saveTimetableData(selectedDate, adminData.classroomCode, rows, periodLabels);
+    const cleanedRows = rows.map(row => ({
+      ...row,
+      status: row.status || '予定'
+    }));
+    await saveTimetableData(selectedDate, adminData.classroomCode, cleanedRows, periodLabels);
     alert(`${selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存しました！`);
   };
 
@@ -78,9 +112,13 @@ export default function TimetablePage() {
   };
 
   const addRow = () => {
-    const normalRows = rows.slice(0, -2);
-    const fixedRows = rows.slice(-2);
-    setRows([...normalRows, { teacher: '', periods: Array(8).fill([]).map(() => []) }, ...fixedRows]);
+    const normalRows = rows.filter(r => !['未定', '振替', '欠席'].includes(r.status));
+    const fixedRows = rows.filter(r => ['未定', '振替', '欠席'].includes(r.status));
+    setRows([
+      ...normalRows,
+      { teacher: null, status: '予定', periods: Array(8).fill([]).map(() => []) },
+      ...fixedRows
+    ]);
   };
 
   return (

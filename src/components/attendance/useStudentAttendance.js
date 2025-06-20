@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import { getJapaneseDayOfWeek, getDayOfWeekFromYyyyMmDd } from '../../utils/dateFormatter';
 
-export const useStudentAttendance = (classroomCode, studentCode, selectedMonth) => {
+export const useStudentAttendance = (classroomCode, studentId, selectedMonth) => {
     const [loading, setLoading] = useState(true);
     const [attendanceList, setAttendanceList] = useState([]);
 
     useEffect(() => {
-        if (!classroomCode || !studentCode || !selectedMonth) return;
+        if (!classroomCode || !studentId || !selectedMonth) return;
 
         const fetchData = async () => {
             setLoading(true);
@@ -83,7 +83,7 @@ export const useStudentAttendance = (classroomCode, studentCode, selectedMonth) 
                             const students = periods[key] || [];
 
                             students.forEach((student) => {
-                                if (student.code === studentCode) {
+                                if (student.studentId === studentId) {
                                     results.push({
                                         date: yyyyMMdd,
                                         weekday: getJapaneseDayOfWeek(yyyyMMdd),
@@ -104,7 +104,6 @@ export const useStudentAttendance = (classroomCode, studentCode, selectedMonth) 
                 setAttendanceList(results);
 
             } catch (error) {
-                console.error('読み込みエラー:', error);
                 setAttendanceList([]);
             } finally {
                 setLoading(false);
@@ -112,7 +111,7 @@ export const useStudentAttendance = (classroomCode, studentCode, selectedMonth) 
         };
 
         fetchData();
-    }, [classroomCode, studentCode, selectedMonth]);
+    }, [classroomCode, studentId, selectedMonth]);
 
     return { loading, attendanceList };
 };
