@@ -95,6 +95,18 @@ export default function TimetablePage() {
     return () => window.removeEventListener('updateAllRows', handler);
   }, []);
 
+  const changeDateBy = (days) => {
+    const date = new Date(selectedDate.year, selectedDate.month - 1, selectedDate.date);
+    date.setDate(date.getDate() + days);
+    setSelectedDate({
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      date: date.getDate(),
+      weekday: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'][date.getDay()],
+      type: 'date'
+    });
+  };
+
   const saveTimetable = async () => {
     if (!adminData?.classroomCode) return;
     const cleanedRows = rows.map(row => ({
@@ -127,6 +139,19 @@ export default function TimetablePage() {
         <h1 className="text-2xl font-bold">時間割（{classroomName || '教室名取得中...'}）</h1>
         <span className="text-gray-700 text-sm">{formatDateDisplay(selectedDate)}</span>
         <CalendarPopup onDateSelect={setSelectedDate} />
+        {/* 前日・翌日ボタン */}
+        <button
+          onClick={() => changeDateBy(-1)}
+          className="bg-gray-300 hover:bg-gray-400 text-sm px-2 py-1 rounded"
+        >
+          前日
+        </button>
+        <button
+          onClick={() => changeDateBy(1)}
+          className="bg-gray-300 hover:bg-gray-400 text-sm px-2 py-1 rounded"
+        >
+          翌日
+        </button>
       </div>
 
       <TimetableTable rows={rows} onChange={updateRow} periodLabels={periodLabels} />

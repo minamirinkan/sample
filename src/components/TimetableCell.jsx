@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import StudentChip from './StudentChip';
 
 export default function TimetableCell({
@@ -13,6 +13,21 @@ export default function TimetableCell({
 
   const isFixedRow = ['振替', '欠席'].includes(row.status);
   const isUndecidedRow = row.status === '未定';
+
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuIndex(null); // 外をクリックしたら閉じる
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleChange = (periodIdx, studentIdx, field, value) => {
     const newRow = JSON.parse(JSON.stringify(row));
@@ -90,7 +105,7 @@ export default function TimetableCell({
             fromPeriod !== undefined
           ) {
             newAllRows[fromRow].periods[fromPeriod] = newAllRows[fromRow].periods[fromPeriod].filter(
-              (s) => s.studentId!== student.studentId
+              (s) => s.studentId !== student.studentId
             );
           }
 
@@ -127,7 +142,10 @@ export default function TimetableCell({
             />
 
             {menuIndex === studentIdx && (
-              <div className="absolute top-6 right-0 bg-white border rounded shadow text-xs z-20">
+              <div
+                ref={menuRef}
+                className="absolute top-6 right-0 bg-white border rounded shadow text-xs z-20"
+              >
                 {isFixedRow ? (
                   <button
                     className="block px-2 py-1 hover:bg-gray-100 w-full text-left"
