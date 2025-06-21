@@ -12,6 +12,7 @@ import CalendarPopup from './components/CalendarPopup';
 import DevLoginSelector from './pages/DevLoginSelector';
 import ProtectedRoute from './components/ProtectedRoute';
 import ChangePassword from './pages/ChangePassword';
+import ScheduleCalendarPage from './pages/ScheduleCalendarPage.jsx'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/calendar" element={<CalendarPopup />} />
         <Route path="/customer/change-password" element={<ChangePassword />} />
+        <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
       </Routes>
   );
 }

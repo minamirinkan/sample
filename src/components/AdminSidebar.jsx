@@ -93,6 +93,12 @@ const AdminSidebar = ({ onSelectMenu }) => {
                 <SidebarSection icon={FaYenSign} title="売上管理" subItems={[{ label: '請求情報', key: 'billing' }]} onSelectMenu={onSelectMenu} />
                 <SidebarSection icon={FaChartBar} title="目標管理" subItems={[{ label: '目標ファイル', key: 'goals' }]} onSelectMenu={onSelectMenu} />
                 <SidebarSection
+                    icon={FaBook} // 他のアイコンでもOK
+                    title="スケジュール"
+                    subItems={[{ label: 'カレンダー', key: 'schedule-calendar' }]}
+                    onSelectMenu={onSelectMenu}
+                />
+                <SidebarSection
                     icon={FaBook}
                     title="時間割"
                     subItems={[
@@ -105,15 +111,6 @@ const AdminSidebar = ({ onSelectMenu }) => {
                     }
                 }} */
                 />
-                <SidebarSection icon={FaFileAlt} title="レポート" subItems={[
-                    { label: '問合せ経路別入会率', key: 'report-entry-rate' },
-                    { label: '問合せ昨対比', key: 'report-compare' },
-                    { label: '学年区分別実績集計', key: 'report-grade-summary' },
-                    { label: '日計表', key: 'daily-sheet' },
-                    { label: '売上集計', key: 'sales-summary' },
-                    { label: '一括分析/教室別', key: 'bulk-by-class' },
-                    { label: '一括分析/複数教室', key: 'bulk-multi-class' },
-                ]} onSelectMenu={onSelectMenu} />
                 <SidebarSection
                     icon={FaDatabase}
                     title="マスタ管理"
@@ -123,6 +120,15 @@ const AdminSidebar = ({ onSelectMenu }) => {
                     ]}
                     onSelectMenu={onSelectMenu}
                 />
+                <SidebarSection icon={FaFileAlt} title="レポート" subItems={[
+                    { label: '問合せ経路別入会率', key: 'report-entry-rate' },
+                    { label: '問合せ昨対比', key: 'report-compare' },
+                    { label: '学年区分別実績集計', key: 'report-grade-summary' },
+                    { label: '日計表', key: 'daily-sheet' },
+                    { label: '売上集計', key: 'sales-summary' },
+                    { label: '一括分析/教室別', key: 'bulk-by-class' },
+                    { label: '一括分析/複数教室', key: 'bulk-multi-class' },
+                ]} onSelectMenu={onSelectMenu} />
             </ul>
         </aside>
     );

@@ -6,6 +6,7 @@ import SuperAdminTeachers from '../components/SuperAdminTeachers';
 import TimetablePage from './TimetablePage';
 import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm'
 import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
+import ScheduleCalendarPage from './ScheduleCalendarPage';
 
 const AdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -67,6 +68,8 @@ const AdminDashboard = () => {
         switch (selectedContent) {
             case 'timetable':
                 return <TimetablePage />;
+            case 'schedule-calendar':   // ここを追加
+                return <ScheduleCalendarPage />;
             default:
                 return (
                     <>
