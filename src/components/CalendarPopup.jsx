@@ -60,7 +60,10 @@ class CalendarPopup extends Component {
     const weekdayNames = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
     const weekday = weekdayNames[selected.getDay()];
 
-    this.setState({ selectedDate: date });
+    this.setState({
+      selectedDate: date,
+      showCalendar: false, // ← カレンダーを閉じる
+    });
 
     if (this.props.onDateSelect) {
       this.props.onDateSelect({

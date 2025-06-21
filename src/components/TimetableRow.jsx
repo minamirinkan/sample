@@ -19,7 +19,7 @@ export default function TimetableRow({ rowIndex, row, onChange, allTeachers, all
 
   return (
     <tr>
-      <td className="border p-2 text-left font-bold bg-gray-50">
+      <td className="border p-2 text-center font-bold bg-gray-50">
         {isFixedRow ? (
           // 固定行 ― status文字列をそのまま表示
           <span className="text-gray-700">{row.status}</span>
