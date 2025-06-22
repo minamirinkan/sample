@@ -57,8 +57,9 @@ const ScheduleCalendarPage = () => {
                 id: String(Date.now()),
                 title: eventData.title,
                 start: eventData.start,
-                end: eventData.end,  // ← 追加
-                backgroundColor: eventData.color,
+                end: eventData.end,
+                color: eventData.color, // ← backgroundColor ではなく color を使う
+                allDay: false,          // ← 時間付きイベントとして扱う
             };
             setEvents([...events, newEvent]);
         }
@@ -155,6 +156,11 @@ const ScheduleCalendarPage = () => {
                         setSelectedDate(null);
                         setModalOpen(true);
                     }
+                }}
+                eventTimeFormat={{
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false // ← 24時間表示にしたい場合
                 }}
                 eventClick={handleEventClick}
                 eventDrop={handleEventDrop}

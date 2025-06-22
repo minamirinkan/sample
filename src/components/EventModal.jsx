@@ -5,10 +5,9 @@ const EventModal = ({ mode = 'time', date, event, onClose, onSave, onDelete }) =
     const [color, setColor] = useState('#3788d8');
     const [hour, setHour] = useState('09');
     const [minute, setMinute] = useState('00');
-    const [endHour, setEndHour] = useState('10');  // 初期値は開始時間の1時間後などでOK
+    const [endHour, setEndHour] = useState('10');
     const [endMinute, setEndMinute] = useState('00');
 
-    // 時間と分の選択肢を用意
     const hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
     const minutes = Array.from({ length: 12 }, (_, i) => (i * 5).toString().padStart(2, '0'));
 
@@ -29,14 +28,24 @@ const EventModal = ({ mode = 'time', date, event, onClose, onSave, onDelete }) =
             setColor('#3788d8');
             setHour('09');
             setMinute('00');
-            setEndHour('10');    // 開始時間の1時間後を仮初期値に
+            setEndHour('10');
             setEndMinute('00');
         }
     }, [event]);
 
-
     const handleSubmit = () => {
-        if (!title || !title.trim()) return;
+        if (!title || !title.trim()) {
+            alert('イベント名を入力してください');
+            return;
+        }
+
+        const startTime = new Date(`2000-01-01T${hour}:${minute}:00`);
+        const endTime = new Date(`2000-01-01T${endHour}:${endMinute}:00`);
+
+        if (endTime <= startTime) {
+            alert('終了時間は開始時間より後にしてください');
+            return;
+        }
 
         let fullDateTimeStart = '';
         let fullDateTimeEnd = '';
@@ -45,8 +54,7 @@ const EventModal = ({ mode = 'time', date, event, onClose, onSave, onDelete }) =
         const timeStrEnd = `${endHour}:${endMinute}`;
 
         if (!event) {
-            // 新規作成時（modeにかかわらず）
-            const datePart = date?.slice(0, 10);  // YYYY-MM-DD
+            const datePart = date?.slice(0, 10);
             if (!datePart) {
                 console.error('dateが不正です');
                 return;
@@ -54,7 +62,6 @@ const EventModal = ({ mode = 'time', date, event, onClose, onSave, onDelete }) =
             fullDateTimeStart = `${datePart}T${timeStrStart}:00`;
             fullDateTimeEnd = `${datePart}T${timeStrEnd}:00`;
         } else {
-            // 既存イベント編集時
             const startDate = new Date(event.startStr);
             startDate.setHours(Number(hour));
             startDate.setMinutes(Number(minute));
@@ -77,8 +84,14 @@ const EventModal = ({ mode = 'time', date, event, onClose, onSave, onDelete }) =
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded shadow-md w-96">
+        <div
+            className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white p-6 rounded shadow-md w-96"
+                onClick={e => e.stopPropagation()}
+            >
                 <h3 className="text-lg font-bold mb-4">
                     {event ? 'イベントを編集' : '新規イベント'}
                 </h3>
@@ -90,114 +103,65 @@ const EventModal = ({ mode = 'time', date, event, onClose, onSave, onDelete }) =
                     onChange={e => setTitle(e.target.value)}
                 />
 
-                {mode === 'month' ? (
-                    <div className="mb-4">
-                        {/* 開始時間 */}
-                        <label className="block mb-1 font-semibold">開始時間</label>
-                        <div className="flex items-center gap-2 mb-2">
-                            <select
-                                value={hour}
-                                onChange={e => setHour(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {hours.map(h => (
-                                    <option key={h} value={h}>{h}</option>
-                                ))}
-                            </select>
-                            <span>:</span>
-                            <select
-                                value={minute}
-                                onChange={e => setMinute(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {minutes.map(m => (
-                                    <option key={m} value={m}>{m}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* 終了時間 */}
-                        <label className="block mb-1 font-semibold">終了時間</label>
-                        <div className="flex items-center gap-2">
-                            <select
-                                value={endHour}
-                                onChange={e => setEndHour(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {hours.map(h => (
-                                    <option key={h} value={h}>{h}</option>
-                                ))}
-                            </select>
-                            <span>:</span>
-                            <select
-                                value={endMinute}
-                                onChange={e => setEndMinute(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {minutes.map(m => (
-                                    <option key={m} value={m}>{m}</option>
-                                ))}
-                            </select>
-                        </div>
+                {/* 時間入力 */}
+                <div className="mb-4">
+                    <label className="block mb-1 font-semibold">開始時間</label>
+                    <div className="flex items-center gap-2 mb-2">
+                        <select
+                            value={hour}
+                            onChange={e => setHour(e.target.value)}
+                            className="border px-3 py-2 rounded"
+                        >
+                            {hours.map(h => (
+                                <option key={h} value={h}>{h}</option>
+                            ))}
+                        </select>
+                        <span>:</span>
+                        <select
+                            value={minute}
+                            onChange={e => setMinute(e.target.value)}
+                            className="border px-3 py-2 rounded"
+                        >
+                            {minutes.map(m => (
+                                <option key={m} value={m}>{m}</option>
+                            ))}
+                        </select>
                     </div>
-                ) : (
-                    <div className="mb-4">
-                        {/* 開始時間 */}
-                        <label className="block mb-1 font-semibold">開始時間</label>
-                        <div className="flex items-center gap-2">
-                            <select
-                                value={hour}
-                                onChange={e => setHour(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {hours.map(h => (
-                                    <option key={h} value={h}>{h}</option>
-                                ))}
-                            </select>
-                            <span>:</span>
-                            <select
-                                value={minute}
-                                onChange={e => setMinute(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {minutes.map(m => (
-                                    <option key={m} value={m}>{m}</option>
-                                ))}
-                            </select>
-                        </div>
 
-                        {/* 終了時間 */}
-                        <label className="block mt-4 mb-1 font-semibold">終了時間</label>
-                        <div className="flex items-center gap-2">
-                            <select
-                                value={endHour}
-                                onChange={e => setEndHour(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {hours.map(h => (
-                                    <option key={h} value={h}>{h}</option>
-                                ))}
-                            </select>
-                            <span>:</span>
-                            <select
-                                value={endMinute}
-                                onChange={e => setEndMinute(e.target.value)}
-                                className="border px-3 py-2 rounded"
-                            >
-                                {minutes.map(m => (
-                                    <option key={m} value={m}>{m}</option>
-                                ))}
-                            </select>
-                        </div>
+                    <label className="block mb-1 font-semibold">終了時間</label>
+                    <div className="flex items-center gap-2">
+                        <select
+                            value={endHour}
+                            onChange={e => setEndHour(e.target.value)}
+                            className="border px-3 py-2 rounded"
+                        >
+                            {hours.map(h => (
+                                <option key={h} value={h}>{h}</option>
+                            ))}
+                        </select>
+                        <span>:</span>
+                        <select
+                            value={endMinute}
+                            onChange={e => setEndMinute(e.target.value)}
+                            className="border px-3 py-2 rounded"
+                        >
+                            {minutes.map(m => (
+                                <option key={m} value={m}>{m}</option>
+                            ))}
+                        </select>
                     </div>
-                )}
+                </div>
 
-                <input
-                    type="color"
-                    className="mb-4"
-                    value={color}
-                    onChange={e => setColor(e.target.value)}
-                />
+                {/* カラー選択 */}
+                <div className="mb-4">
+                    <label className="block mb-1 font-semibold">カラー</label>
+                    <input
+                        type="color"
+                        className="w-full h-10"
+                        value={color}
+                        onChange={e => setColor(e.target.value)}
+                    />
+                </div>
 
                 <div className="flex justify-end gap-2">
                     {event && (
@@ -222,7 +186,7 @@ const EventModal = ({ mode = 'time', date, event, onClose, onSave, onDelete }) =
                     </button>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 
