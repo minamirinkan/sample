@@ -1,16 +1,18 @@
 import SuperAdminHeader from '../components/SuperAdminHeader';
-import CustomerSidebar from '../components/AdminSidebar';
+import CustomerSidebar from '../components/CustomerSidebar';
 import { useState } from 'react';
 import TimetablePage from './TimetablePage';
+import TimetablePageC from './TimetableCustomerPage';
+
 
 const CustomerDashboard = () => {
-    const [selectedContent, setSelectedContent] = useState('welcome');
+    const [selectedContent, setSelectedContent] = useState('timetable');
     const [sidebarOpen, setSidebarOpen] = useState(true); // サイドバー開閉状態
 
     const renderContent = () => {
         switch (selectedContent) {
             case 'timetable':
-                return <TimetablePage />;
+                return <TimetablePageC />;
             default:
                 return (
                     <>
