@@ -1,11 +1,17 @@
-// src/components/CustomerCalendar.jsx
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { db } from '../firebase';
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs
+} from 'firebase/firestore';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-// === シンプルモーダルを同ファイル内に定義 ===
+// === モーダル ===
 function LessonModal({ lesson, onClose }) {
   if (!lesson) return null;
 
@@ -21,7 +27,8 @@ function LessonModal({ lesson, onClose }) {
         <h2 className="text-xl font-bold mb-4">授業詳細</h2>
         <p className="mb-2"><strong>時間割:</strong> {lesson.extendedProps.period}</p>
         <p className="mb-2"><strong>時間:</strong> {lesson.extendedProps.time}</p>
-        <p className="mb-2"><strong>教科:</strong> {lesson.title}</p>
+        <p className="mb-2"><strong>教科:</strong> {lesson.extendedProps.subject}</p>
+        <p className="mb-2"><strong>生徒:</strong> {lesson.extendedProps.studentName}</p>
         <button
           onClick={onClose}
           className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
@@ -34,43 +41,154 @@ function LessonModal({ lesson, onClose }) {
 }
 
 export default function CustomerCalendar() {
+  const { user, loading } = useAuth();
+  const [studentIds, setStudentIds] = useState([]);
+  const [matchedLessons, setMatchedLessons] = useState([]);
+  const [events, setEvents] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState(null);
 
-  // === ✅ モック授業データ ===
-  const lessons = [
-    { date: '2025-06-22', period: '1限', time: '09:50~11:10', subject: '英語' },
-    { date: '2025-06-22', period: '2限', time: '11:20~12:40', subject: '数学' },
-    { date: '2025-06-22', period: '3限', time: '18:50~20:10', subject: '国語' },
-    { date: '2025-06-25', period: '2限', time: '11:20~12:40', subject: '数学' },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      if (loading) return;
+      if (!user) {
+        console.log("❌ ログインユーザーなし");
+        return;
+      }
 
-  // === FullCalendar の events 用に変換 ===
-  const events = lessons.map((lesson, idx) => ({
-    id: idx,
-    title: `${lesson.period} ${lesson.subject}`,
-    start: lesson.date,
-    extendedProps: {
-      period: lesson.period,
-      time: lesson.time,
-    },
-  }));
+      try {
+        // === 1) 自分の customer データ
+        const customerRef = doc(db, 'customers', user.uid);
+        const customerSnap = await getDoc(customerRef);
+        if (!customerSnap.exists()) {
+          console.log("❌ customer ドキュメントなし");
+          return;
+        }
+
+        const customerData = customerSnap.data();
+        const ids = customerData.studentIds || [];
+        setStudentIds(ids);
+
+        if (ids.length === 0) {
+          console.log("❌ studentIds が空です");
+          return;
+        }
+
+        // === 2) 1つ目の studentId から classroomCode を抽出
+        const extractedClassroomCode = ids[0].substring(1, 4);
+        console.log("✅ 抽出した classroomCode:", extractedClassroomCode);
+
+        // === 3) classrooms/{code} が存在するか確認
+        const classroomRef = doc(db, 'classrooms', extractedClassroomCode);
+        const classroomSnap = await getDoc(classroomRef);
+        if (!classroomSnap.exists()) {
+          console.log("❌ classroom が存在しません:", extractedClassroomCode);
+          return;
+        }
+
+        // === 4) timetables を取得
+        const timetablesRef = collection(db, 'classrooms', extractedClassroomCode, 'timetables');
+        const timetableDocs = await getDocs(timetablesRef);
+
+        let matched = [];
+        let eventList = [];
+
+        timetableDocs.forEach((doc) => {
+          const data = doc.data();
+          const date = doc.id; // ex: "2025-06-22"
+          const rows = data.rows || [];
+          const periodLabels = data.periodLabels || [];
+
+          rows.forEach((row) => {
+            const periods = row.periods || {};
+            Object.entries(periods).forEach(([periodKey, periodValue]) => {
+              periodValue.forEach((student) => {
+                if (ids.includes(student.studentId)) {
+                  const periodIndex = parseInt(periodKey.replace('period', '')) - 1;
+                  const periodLabel = periodLabels[periodIndex]?.label || periodKey;
+                  const time = periodLabels[periodIndex]?.time || '';
+                  const subject = student.subject || '';
+                  const studentName = student.name || '';
+
+                  matched.push({
+                    date,
+                    periodLabel,
+                    time,
+                    subject,
+                    studentName,
+                  });
+
+                  eventList.push({
+                    title: `${periodLabel} ${subject}`,
+                    start: date,
+                    extendedProps: {
+                      period: periodLabel,
+                      time: time,
+                      subject: subject,
+                      studentName: studentName,
+                    },
+                  });
+                }
+              });
+            });
+          });
+        });
+
+        console.log("✅ 一致した授業:", matched);
+        setMatchedLessons(matched);
+        setEvents(eventList);
+
+      } catch (error) {
+        console.error("❌ Firestore エラー:", error);
+      }
+    };
+
+    fetchData();
+  }, [user, loading]);
+
+  const handleEventClick = (info) => {
+    setSelectedLesson(info.event);
+  };
 
   return (
     <div className="p-6">
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        locale="ja"
-        events={events}
-        eventClick={(info) => {
-          setSelectedLesson(info.event);
-        }}
-      />
+      <h1 className="text-xl font-bold mb-4">📅 Customer Calendar</h1>
 
-      <LessonModal
-        lesson={selectedLesson}
-        onClose={() => setSelectedLesson(null)}
-      />
+      {loading && <p>AuthContext loading中...</p>}
+
+      {!loading && user && (
+        <>
+          <p><strong>ログイン中の uid:</strong> {user.uid}</p>
+          <p><strong>studentIds:</strong> {studentIds.join(', ')}</p>
+
+          <h2 className="mt-4 font-semibold">カレンダー表示:</h2>
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            locale="ja"
+            events={events}
+            eventClick={handleEventClick}
+          />
+
+          <LessonModal
+            lesson={selectedLesson}
+            onClose={() => setSelectedLesson(null)}
+          />
+
+          <h2 className="mt-4 font-semibold">一致した授業一覧:</h2>
+          {matchedLessons.length === 0 && <p>一致する授業がありません。</p>}
+          <ul className="list-disc ml-6">
+            {matchedLessons.map((lesson, idx) => (
+              <li key={idx}>
+                📅 {lesson.date} | {lesson.periodLabel} ({lesson.time}) | {lesson.subject} | {lesson.studentName}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {!loading && !user && (
+        <p>❌ ログインしていません</p>
+      )}
     </div>
   );
 }
