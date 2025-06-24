@@ -1,9 +1,11 @@
+// src/pages/TimetablePage.jsx
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import TimetableTable from '../components/TimetableTable';
 import CalendarPopup from '../components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from '../utils/firebase/timetableFirestore';
 import { formatDateDisplay } from '../utils/dateUtils';
+// import PDFButton from '../components/PDFButton';
 
 export default function TimetablePage() {
   const { adminData } = useAuth();
@@ -36,16 +38,7 @@ export default function TimetablePage() {
     if (!adminData?.classroomCode) return;
 
     (async () => {
-      console.log('[TimetablePage] === useEffect triggered ===');
-      console.log('SelectedDate:', selectedDate);
-      console.log('ClassroomCode:', adminData.classroomCode);
-
-      const { rows: fetchedRows, periodLabels: fetchedLabels, classroomName } =
-        await fetchTimetableData(selectedDate, adminData.classroomCode);
-
-      console.log('[TimetablePage] 🔑 Fetched Rows:', fetchedRows);
-      console.log('[TimetablePage] 🔑 Fetched Period Labels:', fetchedLabels);
-      console.log('[TimetablePage] 🔑 Fetched Classroom Name:', classroomName);
+      const { rows, periodLabels, classroomName } = await fetchTimetableData(selectedDate, adminData.classroomCode);
 
       const defaultPeriodLabels = [
         { label: '1限', time: '09:50〜11:10' },
@@ -58,35 +51,34 @@ export default function TimetablePage() {
         { label: '8限', time: '20:20〜21:40' },
       ];
 
-      const finalPeriodLabels = fetchedLabels?.length > 0 ? fetchedLabels : defaultPeriodLabels;
+      let finalPeriodLabels = periodLabels?.length > 0 ? periodLabels : defaultPeriodLabels;
       setPeriodLabels(finalPeriodLabels);
 
       let finalRows;
-      if (fetchedRows && fetchedRows.length > 0) {
-        const hasUndecided = fetchedRows.find(r => r.teacher?.status === '未定');
-        const hasTransfer = fetchedRows.find(r => r.teacher?.status === '振替');
-        const hasAbsent = fetchedRows.find(r => r.teacher?.status === '欠席');
-        const normalRows = fetchedRows.filter(r => !['未定', '振替', '欠席'].includes(r.teacher?.status));
+      if (rows && rows.length > 0) {
+        const hasUndecided = rows.find(r => r.status === '未定');
+        const hasTransfer = rows.find(r => r.status === '振替');
+        const hasAbsent = rows.find(r => r.status === '欠席');
+        const normalRows = rows.filter(r => !['未定', '振替', '欠席'].includes(r.status));
 
         finalRows = [
-          ...normalRows,
-          hasUndecided || { teacher: { status: '未定' }, periods: Array(8).fill([]).map(() => []) },
-          hasTransfer || { teacher: { status: '振替' }, periods: Array(8).fill([]).map(() => []) },
-          hasAbsent || { teacher: { status: '欠席' }, periods: Array(8).fill([]).map(() => []) },
+          ...normalRows.map(r => ({ ...r, status: '予定' })),
+          hasUndecided || { status: '未定', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          hasTransfer || { status: '振替', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          hasAbsent || { status: '欠席', teacher: null, periods: Array(8).fill([]).map(() => []) },
         ];
       } else {
         finalRows = [
-          { teacher: { status: '未定' }, periods: Array(8).fill([]).map(() => []) },
-          { teacher: { status: '振替' }, periods: Array(8).fill([]).map(() => []) },
-          { teacher: { status: '欠席' }, periods: Array(8).fill([]).map(() => []) },
+          { status: '未定', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          { status: '振替', teacher: null, periods: Array(8).fill([]).map(() => []) },
+          { status: '欠席', teacher: null, periods: Array(8).fill([]).map(() => []) },
         ];
       }
 
-      console.log('[TimetablePage] ✅ Final Rows after merging:', finalRows);
       setRows(finalRows);
 
-      if (!fetchedLabels || fetchedLabels.length === 0) {
-        console.log('[TimetablePage] 💾 Saving default period labels to Firestore...');
+      // Firestoreに periodLabels がなかった場合は保存
+      if (!periodLabels || periodLabels.length === 0) {
         await saveTimetableData(selectedDate, adminData.classroomCode, finalRows, defaultPeriodLabels);
       }
 
@@ -94,9 +86,9 @@ export default function TimetablePage() {
     })();
   }, [selectedDate, adminData]);
 
+
   useEffect(() => {
     const handler = (e) => {
-      console.log('[TimetablePage] ⚡ updateAllRows triggered:', e.detail);
       setRows(e.detail);
     };
     window.addEventListener('updateAllRows', handler);
@@ -119,9 +111,8 @@ export default function TimetablePage() {
     if (!adminData?.classroomCode) return;
     const cleanedRows = rows.map(row => ({
       ...row,
-      status: row.teacher?.status || '予定'
+      status: row.status || '予定'
     }));
-    console.log('[TimetablePage] 💾 Saving Rows:', cleanedRows);
     await saveTimetableData(selectedDate, adminData.classroomCode, cleanedRows, periodLabels);
     alert(`${selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存しました！`);
   };
@@ -129,20 +120,17 @@ export default function TimetablePage() {
   const updateRow = (rowIdx, newRow) => {
     const updated = [...rows];
     updated[rowIdx] = newRow;
-    console.log('[TimetablePage] 📝 Updated Row:', updated);
     setRows(updated);
   };
 
   const addRow = () => {
-    const normalRows = rows.filter(r => !['未定', '振替', '欠席'].includes(r.teacher?.status));
-    const fixedRows = rows.filter(r => ['未定', '振替', '欠席'].includes(r.teacher?.status));
-    const newRows = [
+    const normalRows = rows.filter(r => !['未定', '振替', '欠席'].includes(r.status));
+    const fixedRows = rows.filter(r => ['未定', '振替', '欠席'].includes(r.status));
+    setRows([
       ...normalRows,
-      { teacher: { status: '予定' }, periods: Array(8).fill([]).map(() => []) },
+      { teacher: null, status: '予定', periods: Array(8).fill([]).map(() => []) },
       ...fixedRows
-    ];
-    console.log('[TimetablePage] ➕ Row Added:', newRows);
-    setRows(newRows);
+    ]);
   };
 
   return (
@@ -151,6 +139,7 @@ export default function TimetablePage() {
         <h1 className="text-2xl font-bold">時間割（{classroomName || '教室名取得中...'}）</h1>
         <span className="text-gray-700 text-sm">{formatDateDisplay(selectedDate)}</span>
         <CalendarPopup onDateSelect={setSelectedDate} />
+        {/* 前日・翌日ボタン */}
         <button
           onClick={() => changeDateBy(-1)}
           className="bg-gray-300 hover:bg-gray-400 text-sm px-2 py-1 rounded"
