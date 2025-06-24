@@ -10,59 +10,87 @@ import {
 } from '../dateUtils';
 
 /**
- * === 並列取得版 ===
+ * === 日付 or 曜日テンプレを Firestore から取得 ===
  * 日付 → dailySchedules/{code}_{dateKey}
- * 曜日 → 履歴を 12ヶ月分一括 Promise.all
+ * 曜日 → classrooms/{code}/weekdayTemplates/{ym-weekdayIndex}
+ * periodLabels → periodLabelsBySchool > fallback common
+ * classroomName → classrooms/{code}.name
  */
 export async function fetchTimetableData(selectedDate, classroomCode) {
   const dateKey = getDateKey(selectedDate);
 
-  // === ✅ 修正: 日付の場合の読み取り先を dailySchedules に変更 ===
+  // === ✅ 教室名を必ず取得 ===
+  let classroomName = '';
+  const classroomSnap = await getDoc(doc(db, 'classrooms', classroomCode));
+  if (classroomSnap.exists()) {
+    classroomName = classroomSnap.data().name ?? '';
+  }
+
+  // === rows ===
+  let rows = [];
   if (selectedDate.type === 'date') {
     const snap = await getDoc(
       doc(db, 'dailySchedules', `${classroomCode}_${dateKey}`)
     );
     if (snap.exists()) {
-      return { ...parseData(snap) };
+      rows = parseData(snap).rows;
     }
   }
 
-  // === 曜日テンプレ履歴（従来どおり）
-  const weekdayIndex = getWeekdayIndex(selectedDate);
-  const maxLookback = 12;
-  const ids = [];
-  let ym = getYearMonthKey(selectedDate);
-  for (let i = 0; i < maxLookback; i++) {
-    ids.push(`${ym}-${weekdayIndex}`);
-    ym = getPreviousYearMonth(ym);
+  // === periodLabels ===
+  let periodLabels = [];
+  const schoolLabelsSnap = await getDoc(doc(db, 'periodLabelsBySchool', classroomCode));
+  if (schoolLabelsSnap.exists()) {
+    periodLabels = schoolLabelsSnap.data().periodLabels;
+  } else {
+    const commonLabelsSnap = await getDoc(doc(db, 'common', 'periodLabels'));
+    if (commonLabelsSnap.exists()) {
+      periodLabels = commonLabelsSnap.data().periodLabels;
+    }
   }
 
-  const promises = ids.map(id =>
-    getDoc(doc(db, 'classrooms', classroomCode, 'weekdayTemplates', id))
-  );
+  // === 曜日テンプレ履歴 ===
+  if (!rows || rows.length === 0) {
+    const weekdayIndex = getWeekdayIndex(selectedDate);
+    const maxLookback = 12;
+    const ids = [];
+    let ym = getYearMonthKey(selectedDate);
+    for (let i = 0; i < maxLookback; i++) {
+      ids.push(`${ym}-${weekdayIndex}`);
+      ym = getPreviousYearMonth(ym);
+    }
 
-  const snaps = await Promise.all(promises);
-  const found = snaps.find(snap => snap.exists());
-  if (found) return { ...parseData(found) };
+    const promises = ids.map(id =>
+      getDoc(doc(db, 'classrooms', classroomCode, 'weekdayTemplates', id))
+    );
 
-  // 見つからない場合の初期値
+    const snaps = await Promise.all(promises);
+    const found = snaps.find(snap => snap.exists());
+    if (found) rows = parseData(found).rows;
+  }
+
+  if (!rows || rows.length === 0) {
+    rows = [{ teacher: '', periods: Array(8).fill([]).map(() => []), status: '予定' }];
+  }
+
   return {
-    rows: [{ teacher: '', periods: Array(8).fill([]).map(() => []), status: '予定' }],
-    periodLabels: []
+    rows,
+    periodLabels,
+    classroomName
   };
 }
 
 /**
- * === 保存ロジック ===
- * 日付 → dailySchedules/{code}_{dateKey}
- * 曜日 → 従来の weekdayTemplates
+ * === 保存 ===
+ * 日付: dailySchedules/{code}_{dateKey}
+ * 曜日: classrooms/{code}/weekdayTemplates/{ym-weekdayIndex}
+ * periodLabels は保存しない
  */
-export async function saveTimetableData(selectedDate, classroomCode, rows, periodLabels) {
+export async function saveTimetableData(selectedDate, classroomCode, rows) {
   const isDate = selectedDate.type === 'date';
 
   let docRef;
   if (isDate) {
-    // === ✅ 修正: 保存先を dailySchedules に変更 ===
     docRef = doc(
       db,
       'dailySchedules',
@@ -104,8 +132,8 @@ export async function saveTimetableData(selectedDate, classroomCode, rows, perio
 
   const safeData = {
     rows: flattenedRows,
-    periodLabels: periodLabels ?? [],
     updatedAt: new Date()
+    // ✅ periodLabels は保存しない
   };
 
   try {
@@ -116,7 +144,7 @@ export async function saveTimetableData(selectedDate, classroomCode, rows, perio
 }
 
 /**
- * === Firestore snapshot を JSオブジェクトに変換 ===
+ * === snapshot → rows 変換 ===
  */
 function parseData(snap) {
   const data = snap.data();
@@ -142,8 +170,5 @@ function parseData(snap) {
     };
   });
 
-  return {
-    rows,
-    periodLabels: data.periodLabels
-  };
+  return { rows };
 }
