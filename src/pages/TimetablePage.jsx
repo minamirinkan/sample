@@ -1,11 +1,9 @@
-// src/pages/TimetablePage.jsx
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import TimetableTable from '../components/TimetableTable';
 import CalendarPopup from '../components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from '../utils/firebase/timetableFirestore';
 import { formatDateDisplay } from '../utils/dateUtils';
-// import PDFButton from '../components/PDFButton';
 
 export default function TimetablePage() {
   const { adminData } = useAuth();
@@ -23,16 +21,7 @@ export default function TimetablePage() {
     { teacher: '', periods: Array(8).fill([]).map(() => []) }
   ]);
   const [classroomName, setClassroomName] = useState('');
-  const [periodLabels, setPeriodLabels] = useState([
-    { label: '1限', time: '09:50〜11:10' },
-    { label: '2限', time: '11:20〜12:40' },
-    { label: '3限', time: '12:50〜14:10' },
-    { label: '4限', time: '14:20〜15:40' },
-    { label: '5限', time: '15:50〜17:10' },
-    { label: '6限', time: '17:20〜18:40' },
-    { label: '7限', time: '18:50〜20:10' },
-    { label: '8限', time: '20:20〜21:40' },
-  ]);
+  const [periodLabels, setPeriodLabels] = useState([]); // ✅ デフォルトなし
 
   useEffect(() => {
     if (!adminData?.classroomCode) return;
@@ -40,19 +29,7 @@ export default function TimetablePage() {
     (async () => {
       const { rows, periodLabels, classroomName } = await fetchTimetableData(selectedDate, adminData.classroomCode);
 
-      const defaultPeriodLabels = [
-        { label: '1限', time: '09:50〜11:10' },
-        { label: '2限', time: '11:20〜12:40' },
-        { label: '3限', time: '12:50〜14:10' },
-        { label: '4限', time: '14:20〜15:40' },
-        { label: '5限', time: '15:50〜17:10' },
-        { label: '6限', time: '17:20〜18:40' },
-        { label: '7限', time: '18:50〜20:10' },
-        { label: '8限', time: '20:20〜21:40' },
-      ];
-
-      let finalPeriodLabels = periodLabels?.length > 0 ? periodLabels : defaultPeriodLabels;
-      setPeriodLabels(finalPeriodLabels);
+      setPeriodLabels(periodLabels ?? []);
 
       let finalRows;
       if (rows && rows.length > 0) {
@@ -76,16 +53,9 @@ export default function TimetablePage() {
       }
 
       setRows(finalRows);
-
-      // Firestoreに periodLabels がなかった場合は保存
-      if (!periodLabels || periodLabels.length === 0) {
-        await saveTimetableData(selectedDate, adminData.classroomCode, finalRows, defaultPeriodLabels);
-      }
-
-      if (classroomName) setClassroomName(classroomName);
+      setClassroomName(classroomName); // ✅ 必ずセット
     })();
   }, [selectedDate, adminData]);
-
 
   useEffect(() => {
     const handler = (e) => {
@@ -113,7 +83,7 @@ export default function TimetablePage() {
       ...row,
       status: row.status || '予定'
     }));
-    await saveTimetableData(selectedDate, adminData.classroomCode, cleanedRows, periodLabels);
+    await saveTimetableData(selectedDate, adminData.classroomCode, cleanedRows);
     alert(`${selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存しました！`);
   };
 
@@ -139,7 +109,6 @@ export default function TimetablePage() {
         <h1 className="text-2xl font-bold">時間割（{classroomName || '教室名取得中...'}）</h1>
         <span className="text-gray-700 text-sm">{formatDateDisplay(selectedDate)}</span>
         <CalendarPopup onDateSelect={setSelectedDate} />
-        {/* 前日・翌日ボタン */}
         <button
           onClick={() => changeDateBy(-1)}
           className="bg-gray-300 hover:bg-gray-400 text-sm px-2 py-1 rounded"
@@ -163,7 +132,6 @@ export default function TimetablePage() {
         <button onClick={saveTimetable} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
-        {/* <PDFButton rows={rows} /> */}
       </div>
     </div>
   );
