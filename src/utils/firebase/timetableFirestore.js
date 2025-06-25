@@ -5,8 +5,6 @@ import { db } from '../../firebase';
 import {
   getDateKey,
   getWeekdayIndex,
-  getYearMonthKey,
-  getPreviousYearMonth
 } from '../dateUtils';
 
 /**
@@ -28,12 +26,32 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
 
   // === rows ===
   let rows = [];
+
   if (selectedDate.type === 'date') {
-    const snap = await getDoc(
+    // 日別スケジュールを取得
+    const dailySnap = await getDoc(
       doc(db, 'dailySchedules', `${classroomCode}_${dateKey}`)
     );
-    if (snap.exists()) {
-      rows = parseData(snap).rows;
+    if (dailySnap.exists()) {
+      rows = parseData(dailySnap).rows;
+    } else {
+      // フォールバックで曜日スケジュールを取得
+      const weekdayIndex = getWeekdayIndex(selectedDate);
+      const weeklySnap = await getDoc(
+        doc(db, 'weeklySchedules', `${classroomCode}_${weekdayIndex}`)
+      );
+      if (weeklySnap.exists()) {
+        rows = parseData(weeklySnap).rows;
+      }
+    }
+  } else {
+    // type !== 'date' → 直接 weeklySchedules を使用
+    const weekdayIndex = getWeekdayIndex(selectedDate);
+    const weeklySnap = await getDoc(
+      doc(db, 'weeklySchedules', `${classroomCode}_${weekdayIndex}`)
+    );
+    if (weeklySnap.exists()) {
+      rows = parseData(weeklySnap).rows;
     }
   }
 
@@ -49,26 +67,7 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
     }
   }
 
-  // === 曜日テンプレ履歴 ===
-  if (!rows || rows.length === 0) {
-    const weekdayIndex = getWeekdayIndex(selectedDate);
-    const maxLookback = 12;
-    const ids = [];
-    let ym = getYearMonthKey(selectedDate);
-    for (let i = 0; i < maxLookback; i++) {
-      ids.push(`${ym}-${weekdayIndex}`);
-      ym = getPreviousYearMonth(ym);
-    }
-
-    const promises = ids.map(id =>
-      getDoc(doc(db, 'classrooms', classroomCode, 'weekdayTemplates', id))
-    );
-
-    const snaps = await Promise.all(promises);
-    const found = snaps.find(snap => snap.exists());
-    if (found) rows = parseData(found).rows;
-  }
-
+  // === 空なら初期値を入れる ===
   if (!rows || rows.length === 0) {
     rows = [{ teacher: '', periods: Array(8).fill([]).map(() => []), status: '予定' }];
   }
@@ -97,10 +96,12 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
       `${classroomCode}_${getDateKey(selectedDate)}`
     );
   } else {
-    const ymKey = getYearMonthKey(selectedDate);
     const weekdayIndex = getWeekdayIndex(selectedDate);
-    const docId = `${ymKey}-${weekdayIndex}`;
-    docRef = doc(db, 'classrooms', classroomCode, 'weekdayTemplates', docId);
+    docRef = doc(
+      db,
+      'weeklySchedules',
+      `${classroomCode}_${weekdayIndex}`
+    );
   }
 
   const flattenedRows = rows.map((row) => {

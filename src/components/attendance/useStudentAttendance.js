@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { getJapaneseDayOfWeek, getDayOfWeekFromYyyyMmDd } from '../../utils/dateFormatter';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { getJapaneseDayOfWeek } from '../../utils/dateFormatter';
 
 export const useStudentAttendance = (classroomCode, studentId, selectedMonth) => {
     const [loading, setLoading] = useState(true);
@@ -9,81 +9,78 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
     useEffect(() => {
         if (!classroomCode || !studentId || !selectedMonth) return;
 
+        const fetchPeriodLabels = async (db, classroomCode) => {
+            // 教室コード優先で取得
+            const schoolDocRef = doc(db, 'periodLabelsBySchool', classroomCode);
+            const schoolSnap = await getDoc(schoolDocRef);
+            if (schoolSnap.exists()) {
+                return schoolSnap.data().periodLabels || [];
+            }
+            // commonから取得
+            const commonDocRef = doc(db, 'common', 'periodLabels');
+            const commonSnap = await getDoc(commonDocRef);
+            if (commonSnap.exists()) {
+                return commonSnap.data().periodLabels || [];
+            }
+            return [];
+        };
+
         const fetchData = async () => {
             setLoading(true);
             try {
                 const db = getFirestore();
 
-                const timetableSnap = await getDocs(
-                    collection(db, 'classrooms', classroomCode, 'timetables')
-                );
-
-                const timetableMap = new Map();
-                timetableSnap.forEach((doc) => {
-                    timetableMap.set(doc.id, doc.data());
-                });
-
-                const templateSnap = await getDocs(
-                    collection(db, 'classrooms', classroomCode, 'weekdayTemplates')
-                );
-
-                const templateMap = new Map();
-                templateSnap.forEach((doc) => {
-                    const [year, month, weekday] = doc.id.split('-').map((v, i) => i < 2 ? parseInt(v) : parseInt(v));
-                    const key = parseInt(weekday);
-                    if (!templateMap.has(key)) templateMap.set(key, []);
-                    templateMap.get(key).push({ year, month, data: doc.data() });
-                });
-
-                for (const key of templateMap.keys()) {
-                    templateMap.get(key).sort((a, b) => {
-                        if (a.year !== b.year) return b.year - a.year;
-                        return b.month - a.month;
-                    });
-                }
+                // periodLabelsを先に取得
+                const periodLabels = await fetchPeriodLabels(db, classroomCode);
 
                 // 選択された年月の範囲を計算
                 const [selectedYear, selectedMonthNum] = selectedMonth.split('-').map(Number);
                 const monthStart = new Date(selectedYear, selectedMonthNum - 1, 1);
                 const monthEnd = new Date(selectedYear, selectedMonthNum, 0); // その月の最終日
 
+                // weeklySchedules の曜日別テンプレを全部まとめて取得してキャッシュ（0〜6のキーでMapに）
+                const weeklySchedulesCache = new Map();
+                for (let weekday = 0; weekday <= 6; weekday++) {
+                    const docId = `${classroomCode}_${weekday}`;
+                    const weeklySnap = await getDoc(doc(db, 'weeklySchedules', docId));
+                    if (weeklySnap.exists()) {
+                        weeklySchedulesCache.set(weekday, weeklySnap.data());
+                    }
+                }
+
                 const results = [];
 
-                // 日単位ループを、選択された月の1日〜最終日に限定
                 for (let d = new Date(monthStart); d <= monthEnd; d.setDate(d.getDate() + 1)) {
                     const yyyyMMdd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-                    const weekday = getDayOfWeekFromYyyyMmDd(yyyyMMdd);
+                    const weekdayIndex = d.getDay();
+
+                    // dailySchedules から取得
+                    const dailyDocId = `${classroomCode}_${yyyyMMdd}`;
+                    const dailySnap = await getDoc(doc(db, 'dailySchedules', dailyDocId));
+
                     let data;
-                    if (timetableMap.has(yyyyMMdd)) {
-                        data = timetableMap.get(yyyyMMdd);
+                    if (dailySnap.exists()) {
+                        data = dailySnap.data();
+                        console.log(`[daily] ${dailyDocId}`, data);
+                    } else if (weeklySchedulesCache.has(weekdayIndex)) {
+                        data = weeklySchedulesCache.get(weekdayIndex);
+                        console.log(`[weekly fallback] weekday ${weekdayIndex}`, data);
                     } else {
-                        const templates = templateMap.get(weekday);
-                        if (templates) {
-                            for (const tpl of templates) {
-                                if (
-                                    d.getFullYear() > tpl.year ||
-                                    (d.getFullYear() === tpl.year && d.getMonth() + 1 >= tpl.month)
-                                ) {
-                                    data = tpl.data;
-                                    break;
-                                }
-                            }
-                        }
+                        console.log(`[skip] No data for ${yyyyMMdd}`);
+                        continue; // データなしはスキップ
                     }
 
-                    if (!data) continue;
-
-                    const periodLabels = data.periodLabels || [];
+                    // periodLabelsはdaily/weeklyに無くても事前に取得済みを使う
                     const rows = data.rows || [];
 
-                    rows.forEach((row) => {
+                    rows.forEach((row, rowIndex) => {
                         const periods = row.periods || {};
                         periodLabels.forEach((periodLabel, i) => {
                             const key = `period${i + 1}`;
                             const students = periods[key] || [];
 
                             students.forEach((student) => {
-                                if (student.studentId === studentId) {
+                                if (student.studentId?.trim().toLowerCase() === studentId.trim().toLowerCase()) {
                                     results.push({
                                         date: yyyyMMdd,
                                         weekday: getJapaneseDayOfWeek(yyyyMMdd),
@@ -102,8 +99,8 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
                 }
 
                 setAttendanceList(results);
-
             } catch (error) {
+                console.error(error);
                 setAttendanceList([]);
             } finally {
                 setLoading(false);
