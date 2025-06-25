@@ -5,17 +5,49 @@ import { db } from '../../firebase';
 import {
   getDateKey,
   getWeekdayIndex,
+  getYearMonthKey,
+  getPreviousYearMonth
 } from '../dateUtils';
+
+// === 共通：週次キー作成 ===
+function getWeeklyDocId(selectedDate, classroomCode) {
+  const date = new Date(
+    selectedDate.year,
+    selectedDate.month - 1,
+    selectedDate.date || 1
+  );
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const weekdayIndex = getWeekdayIndex(selectedDate);
+  return `${classroomCode}-${yyyy}-${mm}-${weekdayIndex}`;
+}
+
+// === 過去から直近の週次テンプレートIDを検索 ===
+async function findLatestWeeklyDoc(selectedDate, classroomCode) {
+  const weekdayIndex = getWeekdayIndex(selectedDate);
+  let ym = getYearMonthKey(selectedDate);
+  const maxLookback = 12;
+  const ids = [];
+  for (let i = 0; i < maxLookback; i++) {
+    ids.push(`${classroomCode}-${ym}-${weekdayIndex}`);
+    ym = getPreviousYearMonth(ym);
+  }
+  const snaps = await Promise.all(
+    ids.map(id => getDoc(doc(db, 'weeklySchedules', id)))
+  );
+  return snaps.find(snap => snap.exists());
+}
 
 /**
  * === 日付 or 曜日テンプレを Firestore から取得 ===
  * 日付 → dailySchedules/{code}_{dateKey}
- * 曜日 → classrooms/{code}/weekdayTemplates/{ym-weekdayIndex}
+ * 曜日 → weeklySchedules/{code-yyyy-mm-weekdayIndex}
  * periodLabels → periodLabelsBySchool > fallback common
  * classroomName → classrooms/{code}.name
  */
 export async function fetchTimetableData(selectedDate, classroomCode) {
   const dateKey = getDateKey(selectedDate);
+  const weeklyDocId = getWeeklyDocId(selectedDate, classroomCode);
 
   // === ✅ 教室名を必ず取得 ===
   let classroomName = '';
@@ -36,22 +68,23 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
       rows = parseData(dailySnap).rows;
     } else {
       // フォールバックで曜日スケジュールを取得
-      const weekdayIndex = getWeekdayIndex(selectedDate);
-      const weeklySnap = await getDoc(
-        doc(db, 'weeklySchedules', `${classroomCode}_${weekdayIndex}`)
-      );
-      if (weeklySnap.exists()) {
-        rows = parseData(weeklySnap).rows;
+      const fallbackSnap = await findLatestWeeklyDoc(selectedDate, classroomCode);
+      if (fallbackSnap) {
+        rows = parseData(fallbackSnap).rows;
       }
     }
   } else {
     // type !== 'date' → 直接 weeklySchedules を使用
-    const weekdayIndex = getWeekdayIndex(selectedDate);
     const weeklySnap = await getDoc(
-      doc(db, 'weeklySchedules', `${classroomCode}_${weekdayIndex}`)
+      doc(db, 'weeklySchedules', weeklyDocId)
     );
     if (weeklySnap.exists()) {
       rows = parseData(weeklySnap).rows;
+    } else {
+      const fallbackSnap = await findLatestWeeklyDoc(selectedDate, classroomCode);
+      if (fallbackSnap) {
+        rows = parseData(fallbackSnap).rows;
+      }
     }
   }
 
@@ -82,7 +115,7 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
 /**
  * === 保存 ===
  * 日付: dailySchedules/{code}_{dateKey}
- * 曜日: classrooms/{code}/weekdayTemplates/{ym-weekdayIndex}
+ * 曜日: weeklySchedules/{code-yyyy-mm-weekdayIndex}
  * periodLabels は保存しない
  */
 export async function saveTimetableData(selectedDate, classroomCode, rows) {
@@ -96,11 +129,11 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
       `${classroomCode}_${getDateKey(selectedDate)}`
     );
   } else {
-    const weekdayIndex = getWeekdayIndex(selectedDate);
+    const weeklyDocId = getWeeklyDocId(selectedDate, classroomCode);
     docRef = doc(
       db,
       'weeklySchedules',
-      `${classroomCode}_${weekdayIndex}`
+      weeklyDocId
     );
   }
 

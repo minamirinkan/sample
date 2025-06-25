@@ -77,8 +77,39 @@ export default function TimetablePage() {
     });
   };
 
+  // ✅ 追加：同じ生徒が同じ時限に2回以上入っていないかチェック
+  const checkDuplicateStudentsPerPeriod = (rows) => {
+    const periodStudentMap = Array(8).fill(null).map(() => new Set());
+    const duplicates = [];
+
+    rows.forEach((row, rowIndex) => {
+      row.periods.forEach((students, periodIdx) => {
+        students.forEach((student) => {
+          const id = student?.studentId;
+          if (id) {
+            if (periodStudentMap[periodIdx].has(id)) {
+              duplicates.push({ studentId: id, period: periodIdx + 1 });
+            } else {
+              periodStudentMap[periodIdx].add(id);
+            }
+          }
+        });
+      });
+    });
+
+    return duplicates;
+  };
+
   const saveTimetable = async () => {
     if (!adminData?.classroomCode) return;
+
+    // ✅ チェック：同一時限に同一生徒がいないか
+    const duplicates = checkDuplicateStudentsPerPeriod(rows);
+    if (duplicates.length > 0) {
+      alert('同じ生徒が同じ時限に複数の講師に割り当てられています。保存できません。');
+      return;
+    }
+
     const cleanedRows = rows.map(row => ({
       ...row,
       status: row.status || '予定'
