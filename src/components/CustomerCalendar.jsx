@@ -56,7 +56,6 @@ export default function CustomerCalendar() {
       }
 
       try {
-        // === 1) 自分の customer データ
         const customerRef = doc(db, 'customers', user.uid);
         const customerSnap = await getDoc(customerRef);
         if (!customerSnap.exists()) {
@@ -73,30 +72,39 @@ export default function CustomerCalendar() {
           return;
         }
 
-        // === 2) 1つ目の studentId から classroomCode を抽出
-        const extractedClassroomCode = ids[0].substring(1, 4);
-        console.log("✅ 抽出した classroomCode:", extractedClassroomCode);
+        const classroomCode = ids[0].substring(1, 4);
+        console.log("✅ 抽出した classroomCode:", classroomCode);
 
-        // === 3) classrooms/{code} が存在するか確認
-        const classroomRef = doc(db, 'classrooms', extractedClassroomCode);
-        const classroomSnap = await getDoc(classroomRef);
+        const classroomSnap = await getDoc(doc(db, 'classrooms', classroomCode));
         if (!classroomSnap.exists()) {
-          console.log("❌ classroom が存在しません:", extractedClassroomCode);
+          console.log("❌ classroom が存在しません:", classroomCode);
           return;
         }
 
-        // === 4) timetables を取得
-        const timetablesRef = collection(db, 'classrooms', extractedClassroomCode, 'timetables');
-        const timetableDocs = await getDocs(timetablesRef);
+        const schedulesRef = collection(db, 'dailySchedules');
+        const scheduleDocs = await getDocs(schedulesRef);
 
         let matched = [];
         let eventList = [];
 
-        timetableDocs.forEach((doc) => {
-          const data = doc.data();
-          const date = doc.id; // ex: "2025-06-22"
+        let periodLabels = [];
+        const schoolLabelsSnap = await getDoc(doc(db, 'periodLabelsBySchool', classroomCode));
+        if (schoolLabelsSnap.exists()) {
+          periodLabels = schoolLabelsSnap.data().periodLabels;
+        } else {
+          const commonLabelsSnap = await getDoc(doc(db, 'common', 'periodLabels'));
+          if (commonLabelsSnap.exists()) {
+            periodLabels = commonLabelsSnap.data().periodLabels;
+          }
+        }
+
+        scheduleDocs.forEach((docSnap) => {
+          const docId = docSnap.id;
+          if (!docId.startsWith(`${classroomCode}_`)) return;
+
+          const date = docId.split('_')[1];
+          const data = docSnap.data();
           const rows = data.rows || [];
-          const periodLabels = data.periodLabels || [];
 
           rows.forEach((row) => {
             const periods = row.periods || {};
