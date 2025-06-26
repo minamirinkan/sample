@@ -19,7 +19,7 @@ function getWeeklyDocId(selectedDate, classroomCode) {
   const yyyy = date.getFullYear();
   const mm = String(date.getMonth() + 1).padStart(2, '0');
   const weekdayIndex = getWeekdayIndex(selectedDate);
-  return `${classroomCode}-${yyyy}-${mm}-${weekdayIndex}`;
+  return `${classroomCode}-${yyyy}-${mm}_${weekdayIndex}`;
 }
 
 // === 過去から直近の週次テンプレートIDを検索 ===
@@ -29,7 +29,7 @@ async function findLatestWeeklyDoc(selectedDate, classroomCode) {
   const maxLookback = 12;
   const ids = [];
   for (let i = 0; i < maxLookback; i++) {
-    ids.push(`${classroomCode}-${ym}-${weekdayIndex}`);
+    ids.push(`${classroomCode}-${ym}_${weekdayIndex}`);
     ym = getPreviousYearMonth(ym);
   }
   const snaps = await Promise.all(
