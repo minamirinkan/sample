@@ -1,5 +1,5 @@
 // src/utils/firebase/EventFetcher.js
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import {
   getDateKey,
@@ -55,19 +55,17 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
       }
     }
 
-    // === 🔁 表示月 + 直前月のみ fallback 用に weeklySchedules をキャッシュ ===
-    const baseYM = getYearMonthKey({ year: startDate.getFullYear(), month: startDate.getMonth() + 1 });
-    const prevYM = getPreviousYearMonth(baseYM);
-    const targetMonths = [baseYM, prevYM];
-    const weekdayIndices = [...Array(7).keys()];
-
+    // === 事前に fallback 用 weeklySchedules をキャッシュ ===
     const weeklyDocIds = [];
-    for (const ym of targetMonths) {
+    const baseYM = getYearMonthKey({ year: startDate.getFullYear(), month: startDate.getMonth() + 1 });
+    const weekdayIndices = [...Array(7).keys()];
+    let ym = baseYM;
+    for (let i = 0; i < 12; i++) {
       for (const weekdayIndex of weekdayIndices) {
         weeklyDocIds.push(`${classroomCode}_${ym}_${weekdayIndex}`);
       }
+      ym = getPreviousYearMonth(ym);
     }
-
     const weeklySnaps = await Promise.all(
       weeklyDocIds.map(id => getDoc(doc(db, 'weeklySchedules', id)))
     );
@@ -110,20 +108,49 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
         const periods = row.periods || {};
         for (const [periodKey, periodValue] of Object.entries(periods)) {
           for (const student of periodValue) {
-            if (ids.includes(student.studentId)) {
-              const index = parseInt(periodKey.replace('period', '')) - 1;
-              const periodLabel = periodLabels[index]?.label || periodKey;
-              const time = periodLabels[index]?.time || '';
-              const subject = student.subject || '';
-              const studentName = student.name || '';
+            if (!ids.includes(student.studentId)) continue;
 
-              result.matchedLessons.push({ date: dateKey, periodLabel, time, subject, studentName });
-              result.events.push({
-                title: `${periodLabel} ${subject}`,
-                start: dateKey,
-                extendedProps: { period: periodLabel, time, subject, studentName }
-              });
+            const status = student.status || '';
+            if (status === '未定') continue; // 未定はスキップ
+
+            const index = parseInt(periodKey.replace('period', '')) - 1;
+            const periodLabel = periodLabels[index]?.label || periodKey;
+            const time = periodLabels[index]?.time || '';
+            const subject = student.subject || '';
+            const studentName = student.name || '';
+
+            let title = `${periodLabel} ${subject}`;
+            let color = '';
+
+            if (status === '欠席') {
+              title = `${periodLabel} 欠席`;
+              color = '#FF6347'; // 赤
+            } else if (status === '振替') {
+              title = `${periodLabel} 振替`;
+              color = '#FFA500'; // オレンジ
             }
+
+            result.matchedLessons.push({
+              date: dateKey,
+              periodLabel,
+              time,
+              subject,
+              studentName,
+              status
+            });
+
+            result.events.push({
+              title,
+              start: dateKey,
+              color: color || undefined,
+              extendedProps: {
+                period: periodLabel,
+                time,
+                subject,
+                studentName,
+                status
+              }
+            });
           }
         }
       }
