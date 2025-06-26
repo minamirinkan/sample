@@ -53,6 +53,7 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
     }, [searchTerm, students]); // ← フィルター専用
 
     const handleShowDetail = async (student) => {
+        console.log('選択されたstudent:', student); // ← ここで表示！
         try {
             let customerData = null;
 
@@ -104,6 +105,7 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
                 <StudentDetail
                     student={selectedStudentDetail.student}
                     customer={selectedStudentDetail.customer}
+                    classroomCode={classroomCode} // ← ここで渡す！
                     onBack={handleBackToList}
                 />
             )}

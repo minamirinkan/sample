@@ -1,6 +1,9 @@
+// src/hooks/useStudentAttendance.js
 import { useEffect, useState } from 'react';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import { getJapaneseDayOfWeek } from '../../utils/dateFormatter';
+import { getJapaneseDayOfWeek } from '../utils/dateFormatter';
+import { fetchPeriodLabels } from './usePeriodLabels';
+import { getLatestExistingWeeklySchedule } from './useWeeklySchedules';
 
 export const useStudentAttendance = (classroomCode, studentId, selectedMonth) => {
     const [loading, setLoading] = useState(true);
@@ -9,42 +12,23 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
     useEffect(() => {
         if (!classroomCode || !studentId || !selectedMonth) return;
 
-        const fetchPeriodLabels = async (db, classroomCode) => {
-            // 教室コード優先で取得
-            const schoolDocRef = doc(db, 'periodLabelsBySchool', classroomCode);
-            const schoolSnap = await getDoc(schoolDocRef);
-            if (schoolSnap.exists()) {
-                return schoolSnap.data().periodLabels || [];
-            }
-            // commonから取得
-            const commonDocRef = doc(db, 'common', 'periodLabels');
-            const commonSnap = await getDoc(commonDocRef);
-            if (commonSnap.exists()) {
-                return commonSnap.data().periodLabels || [];
-            }
-            return [];
-        };
-
         const fetchData = async () => {
             setLoading(true);
             try {
                 const db = getFirestore();
 
-                // periodLabelsを先に取得
                 const periodLabels = await fetchPeriodLabels(db, classroomCode);
 
-                // 選択された年月の範囲を計算
                 const [selectedYear, selectedMonthNum] = selectedMonth.split('-').map(Number);
                 const monthStart = new Date(selectedYear, selectedMonthNum - 1, 1);
-                const monthEnd = new Date(selectedYear, selectedMonthNum, 0); // その月の最終日
+                const monthEnd = new Date(selectedYear, selectedMonthNum, 0);
 
-                // weeklySchedules の曜日別テンプレを全部まとめて取得してキャッシュ（0〜6のキーでMapに）
                 const weeklySchedulesCache = new Map();
+
                 for (let weekday = 0; weekday <= 6; weekday++) {
-                    const docId = `${classroomCode}_${weekday}`;
-                    const weeklySnap = await getDoc(doc(db, 'weeklySchedules', docId));
-                    if (weeklySnap.exists()) {
-                        weeklySchedulesCache.set(weekday, weeklySnap.data());
+                    const data = await getLatestExistingWeeklySchedule(db, classroomCode, selectedMonth, weekday);
+                    if (data) {
+                        weeklySchedulesCache.set(weekday, data);
                     }
                 }
 
@@ -54,26 +38,21 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
                     const yyyyMMdd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                     const weekdayIndex = d.getDay();
 
-                    // dailySchedules から取得
                     const dailyDocId = `${classroomCode}_${yyyyMMdd}`;
                     const dailySnap = await getDoc(doc(db, 'dailySchedules', dailyDocId));
 
                     let data;
                     if (dailySnap.exists()) {
                         data = dailySnap.data();
-                        console.log(`[daily] ${dailyDocId}`, data);
                     } else if (weeklySchedulesCache.has(weekdayIndex)) {
                         data = weeklySchedulesCache.get(weekdayIndex);
-                        console.log(`[weekly fallback] weekday ${weekdayIndex}`, data);
                     } else {
-                        console.log(`[skip] No data for ${yyyyMMdd}`);
-                        continue; // データなしはスキップ
+                        continue;
                     }
 
-                    // periodLabelsはdaily/weeklyに無くても事前に取得済みを使う
                     const rows = data.rows || [];
 
-                    rows.forEach((row, rowIndex) => {
+                    rows.forEach((row) => {
                         const periods = row.periods || {};
                         periodLabels.forEach((periodLabel, i) => {
                             const key = `period${i + 1}`;
@@ -91,6 +70,8 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
                                         seat: student.seat || '',
                                         teacher: row.teacher || '',
                                         status: student.status || '－',
+                                        classroomCode,
+                                        studentId: student.studentId,
                                     });
                                 }
                             });
@@ -110,5 +91,5 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
         fetchData();
     }, [classroomCode, studentId, selectedMonth]);
 
-    return { loading, attendanceList };
+    return { loading, attendanceList, setAttendanceList };
 };

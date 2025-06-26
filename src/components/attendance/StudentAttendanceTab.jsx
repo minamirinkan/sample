@@ -1,8 +1,9 @@
+//src/components/attendance/StudentAttendanceTab.jsx
 import { useState, useEffect } from 'react';
-import { useStudentAttendance } from './useStudentAttendance';
+import { useStudentAttendance } from '../../hooks/useStudentAttendance';
 import AttendanceTable from './AttendanceTable';
 
-const StudentAttendanceTab = ({ classroomCode, studentId }) => {
+const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [monthOptions, setMonthOptions] = useState([]);
 
@@ -20,7 +21,11 @@ const StudentAttendanceTab = ({ classroomCode, studentId }) => {
         setSelectedMonth(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`);
     }, []);
 
-    const { loading, attendanceList } = useStudentAttendance(classroomCode, studentId, selectedMonth);
+    const { loading, attendanceList, setAttendanceList } = useStudentAttendance(
+        classroomCode,
+        studentId,
+        selectedMonth
+    );
 
     return (
         <div>
@@ -36,7 +41,16 @@ const StudentAttendanceTab = ({ classroomCode, studentId }) => {
                 ))}
             </select>
 
-            {loading ? <p>読み込み中...</p> : <AttendanceTable attendanceList={attendanceList} />}
+            {loading ? (
+                <p>読み込み中...</p>
+            ) : (
+                <AttendanceTable
+                    attendanceList={attendanceList}
+                    setAttendanceList={setAttendanceList}
+                    classroomCode={classroomCode} // ここに渡す！
+                    studentName={studentName} // ← ここを追加
+                />
+            )}
         </div>
     );
 };

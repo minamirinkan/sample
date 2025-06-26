@@ -57,6 +57,7 @@ const StudentDetail = ({ student, onBack }) => {
                     <div className="flex gap-6">
                         <StudentAttendanceTab
                             studentId={formData.studentId}
+                            studentName={`${formData?.lastName ?? ''} ${formData?.firstName ?? ''}`}
                             classroomCode={formData.classroomCode} // これが student データに含まれていれば
                         />
                     </div>
