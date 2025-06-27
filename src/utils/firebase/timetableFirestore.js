@@ -1,6 +1,6 @@
 // === Firestore の時間割取得・保存ユーティリティ ===
 
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import {
   getDateKey,
@@ -9,7 +9,6 @@ import {
   getPreviousYearMonth
 } from '../dateUtils';
 
-// === 共通：週次キー作成 ===
 function getWeeklyDocId(selectedDate, classroomCode) {
   const date = new Date(
     selectedDate.year,
@@ -22,7 +21,6 @@ function getWeeklyDocId(selectedDate, classroomCode) {
   return `${classroomCode}_${yyyy}-${mm}_${weekdayIndex}`;
 }
 
-// === 過去から直近の週次テンプレートIDを検索 ===
 async function findLatestWeeklyDoc(selectedDate, classroomCode) {
   const weekdayIndex = getWeekdayIndex(selectedDate);
   let ym = getYearMonthKey(selectedDate);
@@ -38,57 +36,34 @@ async function findLatestWeeklyDoc(selectedDate, classroomCode) {
   return snaps.find(snap => snap.exists());
 }
 
-/**
- * === 日付 or 曜日テンプレを Firestore から取得 ===
- * 日付 → dailySchedules/{code}_{dateKey}
- * 曜日 → weeklySchedules/{code-yyyy-mm-weekdayIndex}
- * periodLabels → periodLabelsBySchool > fallback common
- * classroomName → classrooms/{code}.name
- */
 export async function fetchTimetableData(selectedDate, classroomCode) {
   const dateKey = getDateKey(selectedDate);
   const weeklyDocId = getWeeklyDocId(selectedDate, classroomCode);
-
-  // === ✅ 教室名を必ず取得 ===
   let classroomName = '';
   const classroomSnap = await getDoc(doc(db, 'classrooms', classroomCode));
   if (classroomSnap.exists()) {
     classroomName = classroomSnap.data().name ?? '';
   }
 
-  // === rows ===
   let rows = [];
-
   if (selectedDate.type === 'date') {
-    // 日別スケジュールを取得
-    const dailySnap = await getDoc(
-      doc(db, 'dailySchedules', `${classroomCode}_${dateKey}`)
-    );
+    const dailySnap = await getDoc(doc(db, 'dailySchedules', `${classroomCode}_${dateKey}`));
     if (dailySnap.exists()) {
       rows = parseData(dailySnap).rows;
     } else {
-      // フォールバックで曜日スケジュールを取得
       const fallbackSnap = await findLatestWeeklyDoc(selectedDate, classroomCode);
-      if (fallbackSnap) {
-        rows = parseData(fallbackSnap).rows;
-      }
+      if (fallbackSnap) rows = parseData(fallbackSnap).rows;
     }
   } else {
-    // type !== 'date' → 直接 weeklySchedules を使用
-    const weeklySnap = await getDoc(
-      doc(db, 'weeklySchedules', weeklyDocId)
-    );
+    const weeklySnap = await getDoc(doc(db, 'weeklySchedules', weeklyDocId));
     if (weeklySnap.exists()) {
       rows = parseData(weeklySnap).rows;
     } else {
       const fallbackSnap = await findLatestWeeklyDoc(selectedDate, classroomCode);
-      if (fallbackSnap) {
-        rows = parseData(fallbackSnap).rows;
-      }
+      if (fallbackSnap) rows = parseData(fallbackSnap).rows;
     }
   }
 
-  // === periodLabels ===
   let periodLabels = [];
   const schoolLabelsSnap = await getDoc(doc(db, 'periodLabelsBySchool', classroomCode));
   if (schoolLabelsSnap.exists()) {
@@ -100,10 +75,55 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
     }
   }
 
-  // === 空なら初期値を入れる ===
+  // === 🔍 振替データの取得 ===
+  if (selectedDate.type === 'date') {
+    const dateStr = getDateKey(selectedDate);
+    const makeupRows = [];
+    const allStudentsSnap = await getDocs(collection(db, 'students'));
+    for (const studentDoc of allStudentsSnap.docs) {
+      const studentId = studentDoc.id;
+      const prefix = studentId.slice(1, 4); // 例: s0240001 → '024'
+      if (prefix !== classroomCode) continue;
+
+      const makeupDocRef = doc(db, 'students', studentId, 'makeupLessons', dateStr);
+      const makeupSnap = await getDoc(makeupDocRef);
+      if (makeupSnap.exists()) {
+        const lessons = makeupSnap.data().lessons || [];
+        if (makeupRows.length === 0) {
+          makeupRows.push({
+            teacher: null,
+            periods: Array(8).fill().map(() => []),
+            status: '振替'
+          });
+        }
+        for (const lesson of lessons) {
+          const idx = lesson.period - 1;
+          if (!makeupRows[0].periods[idx].some(s => s.studentId === lesson.studentId && s.subject === lesson.subject)) {
+            makeupRows[0].periods[idx].push({
+              studentId: lesson.studentId ?? '',
+              grade: lesson.grade ?? '',
+              name: lesson.name ?? '',
+              seat: lesson.seat ?? '',
+              subject: lesson.subject ?? '',
+              status: '振替'
+            });
+          }
+        }
+      }
+    }
+    if (makeupRows.length > 0) {
+      console.log('📦 振替取得:', makeupRows);
+      rows.push(...makeupRows);
+    } else {
+      console.log('ℹ️ 振替データなし');
+    }
+  }
+
   if (!rows || rows.length === 0) {
     rows = [{ teacher: '', periods: Array(8).fill([]).map(() => []), status: '予定' }];
   }
+
+  console.log('✅ 取得完了 rows:', rows);
 
   return {
     rows,
@@ -112,34 +132,34 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
   };
 }
 
-/**
- * === 保存 ===
- * 日付: dailySchedules/{code}_{dateKey}
- * 曜日: weeklySchedules/{code-yyyy-mm-weekdayIndex}
- * periodLabels は保存しない
- */
 export async function saveTimetableData(selectedDate, classroomCode, rows) {
   const isDate = selectedDate.type === 'date';
-
   let docRef;
   if (isDate) {
-    docRef = doc(
-      db,
-      'dailySchedules',
-      `${classroomCode}_${getDateKey(selectedDate)}`
-    );
+    docRef = doc(db, 'dailySchedules', `${classroomCode}_${getDateKey(selectedDate)}`);
   } else {
     const weeklyDocId = getWeeklyDocId(selectedDate, classroomCode);
-    docRef = doc(
-      db,
-      'weeklySchedules',
-      weeklyDocId
-    );
+    docRef = doc(db, 'weeklySchedules', weeklyDocId);
   }
 
-  const flattenedRows = rows.map((row) => {
+  const makeupStudents = [];
+  const flattenedRows = rows.filter(row => {
+    if (row.status === '振替') {
+      row.periods.forEach((students, idx) => {
+        students.forEach((student) => {
+          if (student?.studentId) {
+            makeupStudents.push({
+              ...student,
+              period: idx + 1
+            });
+          }
+        });
+      });
+      return false;
+    }
+    return true;
+  }).map((row) => {
     const rowStatus = row.status ?? '予定';
-
     const flatPeriods = {};
     row.periods?.forEach((students, idx) => {
       flatPeriods[`period${idx + 1}`] = students.map(student => ({
@@ -151,58 +171,70 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
         status: rowStatus
       }));
     });
-
     return {
       teacher: row.teacher && (row.teacher.code || row.teacher.name)
-        ? {
-            code: row.teacher.code ?? '',
-            name: row.teacher.name ?? ''
-          }
+        ? { code: row.teacher.code ?? '', name: row.teacher.name ?? '' }
         : null,
       periods: flatPeriods,
       status: rowStatus
     };
   });
 
-  const safeData = {
-    rows: flattenedRows,
-    updatedAt: new Date()
-    // ✅ periodLabels は保存しない
-  };
-
   try {
-    await setDoc(docRef, safeData);
+    await setDoc(docRef, { rows: flattenedRows, updatedAt: new Date() });
   } catch (error) {
-    console.error(error);
+    console.error('❌ 保存エラー:', error);
+  }
+
+  const dateStr = getDateKey(selectedDate);
+  for (const student of makeupStudents) {
+    const makeupDocRef = doc(db, 'students', student.studentId, 'makeupLessons', dateStr);
+    try {
+      const snap = await getDoc(makeupDocRef);
+      const existingLessons = snap.exists() ? snap.data().lessons || [] : [];
+      const alreadyExists = existingLessons.some(l => l.period === student.period && l.studentId === student.studentId && l.subject === student.subject);
+      if (!alreadyExists) {
+        existingLessons.push({
+          period: student.period,
+          subject: student.subject,
+          seat: student.seat,
+          name: student.name,
+          grade: student.grade,
+          studentId: student.studentId,
+          status: '振替'
+        });
+        await setDoc(makeupDocRef, { lessons: existingLessons });
+        console.log('✅ 振替保存成功:', student.studentId, dateStr);
+      } else {
+        console.log('⏩ 振替重複スキップ:', student.studentId, dateStr);
+      }
+    } catch (err) {
+      console.error('❌ 振替保存エラー:', student.studentId, err);
+    }
   }
 }
 
-/**
- * === snapshot → rows 変換 ===
- */
 function parseData(snap) {
   const data = snap.data();
-  const rows = data.rows.map((row) => {
-    const periodsArray = [];
-    for (let i = 1; i <= 8; i++) {
-      const periodKey = `period${i}`;
-      const students = row.periods?.[periodKey] || [];
-      periodsArray.push(
-        students.map((s) => ({
+  return {
+    rows: data.rows.map((row) => {
+      const periodsArray = [];
+      for (let i = 1; i <= 8; i++) {
+        const periodKey = `period${i}`;
+        const students = row.periods?.[periodKey] || [];
+        periodsArray.push(students.map((s) => ({
           studentId: s.studentId ?? '',
           grade: s.grade ?? '',
           name: s.name ?? '',
           seat: s.seat ?? '',
-          subject: s.subject ?? '',
-        }))
-      );
-    }
-    return {
-      teacher: row.teacher || null,
-      periods: periodsArray,
-      status: row.status || '予定'
-    };
-  });
-
-  return { rows };
+          subject: s.subject ?? ''
+        })));
+      }
+      return {
+        teacher: row.teacher || null,
+        periods: periodsArray,
+        status: row.status || '予定'
+      };
+    })
+  };
 }

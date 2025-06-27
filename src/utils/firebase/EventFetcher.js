@@ -1,4 +1,3 @@
-// src/utils/firebase/EventFetcher.js
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import {
@@ -8,7 +7,6 @@ import {
   getPreviousYearMonth
 } from '../dateUtils';
 
-// === 🔁 改良版 fallback 検索（キャッシュ使用） ===
 function findLatestWeeklyDoc(selectedDate, classroomCode, cachedWeeklyDocs) {
   const weekdayIndex = getWeekdayIndex(selectedDate);
   let ym = getYearMonthKey(selectedDate);
@@ -30,6 +28,7 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
     studentIds: [],
     matchedLessons: [],
     events: [],
+    makeupCount: 0,
   };
 
   try {
@@ -43,7 +42,6 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
 
     const classroomCode = ids[0].substring(1, 4);
 
-    // === periodLabels 取得 ===
     let periodLabels = [];
     const schoolLabelsSnap = await getDoc(doc(db, 'periodLabelsBySchool', classroomCode));
     if (schoolLabelsSnap.exists()) {
@@ -55,7 +53,6 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
       }
     }
 
-    // === 事前に fallback 用 weeklySchedules をキャッシュ ===
     const weeklyDocIds = [];
     const baseYM = getYearMonthKey({ year: startDate.getFullYear(), month: startDate.getMonth() + 1 });
     const weekdayIndices = [...Array(7).keys()];
@@ -66,13 +63,13 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
       }
       ym = getPreviousYearMonth(ym);
     }
+
     const weeklySnaps = await Promise.all(
       weeklyDocIds.map(id => getDoc(doc(db, 'weeklySchedules', id)))
     );
     const cachedWeeklyDocs = new Map();
     weeklyDocIds.forEach((id, i) => cachedWeeklyDocs.set(id, weeklySnaps[i]));
 
-    // === 日付配列の作成 ===
     const dateList = [];
     const dateMap = {};
     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
@@ -88,7 +85,6 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
       dateMap[docId] = { dateKey, selectedDate };
     }
 
-    // === dailySchedules 一括取得 ===
     const dailySnaps = await Promise.all(
       dateList.map(docId => getDoc(doc(db, 'dailySchedules', docId)))
     );
@@ -109,9 +105,8 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
         for (const [periodKey, periodValue] of Object.entries(periods)) {
           for (const student of periodValue) {
             if (!ids.includes(student.studentId)) continue;
-
             const status = student.status || '';
-            if (status === '未定') continue; // 未定はスキップ
+            if (status === '未定') continue;
 
             const index = parseInt(periodKey.replace('period', '')) - 1;
             const periodLabel = periodLabels[index]?.label || periodKey;
@@ -121,13 +116,12 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
 
             let title = `${periodLabel} ${subject}`;
             let color = '';
-
             if (status === '欠席') {
               title = `${periodLabel} 欠席`;
-              color = '#FF6347'; // 赤
+              color = '#FF6347';
             } else if (status === '振替') {
               title = `${periodLabel} 振替`;
-              color = '#FFA500'; // オレンジ
+              color = '#32CD32';
             }
 
             result.matchedLessons.push({
@@ -152,6 +146,50 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
               }
             });
           }
+        }
+      }
+    }
+
+    // 🔁 全期間の振替データ取得
+    for (const studentId of ids) {
+      const prefix = studentId.slice(1, 4);
+      if (prefix !== classroomCode) continue;
+
+      const makeupCollection = collection(db, 'students', studentId, 'makeupLessons');
+      const makeupSnaps = await getDocs(makeupCollection);
+
+      for (const snap of makeupSnaps.docs) {
+        const dateKey = snap.id;
+        const lessons = snap.data().lessons || [];
+        result.makeupCount += lessons.length;
+
+        for (const lesson of lessons) {
+          const index = lesson.period - 1;
+          const periodLabel = periodLabels[index]?.label || `period${lesson.period}`;
+          const time = periodLabels[index]?.time || '';
+          const title = `${periodLabel} 振替`;
+
+          result.matchedLessons.push({
+            date: dateKey,
+            periodLabel,
+            time,
+            subject: lesson.subject,
+            studentName: lesson.name,
+            status: '振替'
+          });
+
+          result.events.push({
+            title,
+            start: dateKey,
+            color: '#32CD32',
+            extendedProps: {
+              period: periodLabel,
+              time,
+              subject: lesson.subject,
+              studentName: lesson.name,
+              status: '振替'
+            }
+          });
         }
       }
     }
