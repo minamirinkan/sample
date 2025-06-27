@@ -13,9 +13,11 @@ import DevLoginSelector from './pages/DevLoginSelector';
 import ProtectedRoute from './components/ProtectedRoute';
 import ChangePassword from './pages/ChangePassword';
 import ScheduleCalendarPage from './pages/ScheduleCalendarPage.jsx'
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
+    <>
       <Routes>
         <Route path="/" element={<DevLoginSelector />} />
         <Route
@@ -45,6 +47,11 @@ function App() {
         <Route path="/customer/change-password" element={<ChangePassword />} />
         <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
       </Routes>
+      <ToastContainer
+        position="top-center"
+        className="custom-toast-container"
+      />
+    </>
   );
 }
 

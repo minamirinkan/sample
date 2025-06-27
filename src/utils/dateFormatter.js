@@ -1,3 +1,4 @@
+//src/utils/dateFormatter.js
 export const formatDate = (input) => {
     if (!input) return '－';
 
