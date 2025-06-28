@@ -159,7 +159,8 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
       const makeupSnaps = await getDocs(makeupCollection);
 
       for (const snap of makeupSnaps.docs) {
-        const dateKey = snap.id;
+        const docId = snap.id;
+        const [prefix, dateKey] = docId.split('_');
         const lessons = snap.data().lessons || [];
         result.makeupCount += lessons.length;
 
