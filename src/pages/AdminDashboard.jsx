@@ -7,6 +7,7 @@ import TimetablePage from './TimetablePage';
 import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm'
 import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
 import ScheduleCalendarPage from './ScheduleCalendarPage';
+import AdminStudentCalendar from './AdminStudentCalendar';
 
 const AdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -70,6 +71,8 @@ const AdminDashboard = () => {
                 return <TimetablePage />;
             case 'schedule-calendar':   // ここを追加
                 return <ScheduleCalendarPage />;
+            case 'student-timetable':
+                return <AdminStudentCalendar />;
             default:
                 return (
                     <>

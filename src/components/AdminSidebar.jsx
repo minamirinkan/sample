@@ -102,7 +102,8 @@ const AdminSidebar = ({ onSelectMenu }) => {
                     icon={FaBook}
                     title="時間割"
                     subItems={[
-                        { label: '時間割一覧', key: 'timetable' }
+                        { label: '時間割一覧', key: 'timetable' },
+                        { label: '生徒時間割', key: 'student-timetable' }
                     ]}
                     onSelectMenu={onSelectMenu}
                 /* onSelectMenu={(key) => {
