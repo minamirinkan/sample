@@ -78,14 +78,15 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
   // === 🔍 振替データの取得 ===
   if (selectedDate.type === 'date') {
     const dateStr = getDateKey(selectedDate);
+    const makeupDocId = `${classroomCode}_${dateStr}`;
     const makeupRows = [];
     const allStudentsSnap = await getDocs(collection(db, 'students'));
     for (const studentDoc of allStudentsSnap.docs) {
       const studentId = studentDoc.id;
-      const prefix = studentId.slice(1, 4); // 例: s0240001 → '024'
+      const prefix = studentId.slice(1, 4);
       if (prefix !== classroomCode) continue;
 
-      const makeupDocRef = doc(db, 'students', studentId, 'makeupLessons', dateStr);
+      const makeupDocRef = doc(db, 'students', studentId, 'makeupLessons', makeupDocId);
       const makeupSnap = await getDoc(makeupDocRef);
       if (makeupSnap.exists()) {
         const lessons = makeupSnap.data().lessons || [];
@@ -187,8 +188,9 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
   }
 
   const dateStr = getDateKey(selectedDate);
+  const makeupDocId = `${classroomCode}_${dateStr}`;
   for (const student of makeupStudents) {
-    const makeupDocRef = doc(db, 'students', student.studentId, 'makeupLessons', dateStr);
+    const makeupDocRef = doc(db, 'students', student.studentId, 'makeupLessons', makeupDocId);
     try {
       const snap = await getDoc(makeupDocRef);
       const existingLessons = snap.exists() ? snap.data().lessons || [] : [];
@@ -204,9 +206,9 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
           status: '振替'
         });
         await setDoc(makeupDocRef, { lessons: existingLessons });
-        console.log('✅ 振替保存成功:', student.studentId, dateStr);
+        console.log('✅ 振替保存成功:', student.studentId, makeupDocId);
       } else {
-        console.log('⏩ 振替重複スキップ:', student.studentId, dateStr);
+        console.log('⏩ 振替重複スキップ:', student.studentId, makeupDocId);
       }
     } catch (err) {
       console.error('❌ 振替保存エラー:', student.studentId, err);
