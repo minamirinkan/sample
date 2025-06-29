@@ -7,6 +7,7 @@ import StudentAttendanceTab from './attendance/StudentAttendanceTab.jsx'
 const TABS = ['基本情報', '在籍情報', '受講情報', '請求情報'];
 
 const StudentDetail = ({ student, onBack }) => {
+    console.log("✅ StudentDetail 受け取った student:", student);
     const [activeTab, setActiveTab] = useState('基本情報');
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({ ...student });
@@ -53,10 +54,11 @@ const StudentDetail = ({ student, onBack }) => {
                     <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
                 );
             case '受講情報':
+                console.log("🟨 renderTabContent - formData:", formData);
                 return (
                     <div className="flex gap-6">
                         <StudentAttendanceTab
-                            studentId={formData.studentId}
+                            studentId={formData.id}
                             studentName={`${formData?.lastName ?? ''} ${formData?.firstName ?? ''}`}
                             classroomCode={formData.classroomCode} // これが student データに含まれていれば
                         />
