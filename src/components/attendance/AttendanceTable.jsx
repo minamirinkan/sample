@@ -21,6 +21,8 @@ const AttendanceTable = ({ attendanceList, setAttendanceList, classroomCode, stu
         editingIndexMakeup,
         setEditingIndexMakeup,
         editValues,
+        editingMakeupLesson,
+        setEditingMakeupLesson,
         setEditValues,
         handleChange,
         handleSaveClick,
@@ -50,8 +52,12 @@ const AttendanceTable = ({ attendanceList, setAttendanceList, classroomCode, stu
                         editValues={editValues}
                         handleEditClick={(idx) => {
                             setEditingIndexRegular(null);
+                            const entry = makeupLessons[idx];
+                            console.log('🔍 makeupLessons[idx]:', entry);
+                            console.log('🔍 makeupLessons[idx].date:', entry?.date);
+                            setEditingMakeupLesson(makeupLessons[idx]);
                             setEditingIndexMakeup(idx);
-                            setEditValues(makeupLessons[idx]);
+                            setEditValues({ ...entry }); // 🔁 安全に浅くコピーしてからセット
                         }}
                         handleChange={handleChange}
                         handleSaveClick={() => handleSaveClick('makeup')}

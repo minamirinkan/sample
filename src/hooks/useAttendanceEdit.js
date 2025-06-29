@@ -9,11 +9,64 @@ import {
     saveScheduleDoc,
     saveMakeupLesson,
 } from '../utils/firebase/attendanceFirestore';
-import { onSnapshot, doc } from 'firebase/firestore';
+import { onSnapshot, doc, getDoc, setDoc, collection, addDoc,deleteDoc } from 'firebase/firestore';
+
+// 🔽 振替レッスン削除ユーティリティ
+async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
+    const docId = `${classroomCode}_${date}`;
+    console.log(`🪵 removeFromMakeupLessons → docId: ${docId}`);
+    const docRef = doc(db, 'students', studentId, 'makeupLessons', docId);
+    const snap = await getDoc(docRef);
+  
+    if (!snap.exists()) {
+      console.warn(`⛔ makeupLessons/${docId} does not exist for ${studentId}`);
+      return;
+    }
+  
+    const data = snap.data();
+    const lessons = data.lessons || [];
+  
+    console.log('🟡 現在のlessons:', lessons);
+    console.log('🟠 削除対象: studentId=', studentId, ' period=', period);
+  
+    const filtered = lessons.filter(
+      l => !(l.studentId === studentId && l.period === period)
+    );
+  
+    console.log('✅ 削除後のlessons:', filtered);
+  
+    if (filtered.length === 0) {
+      console.log(`🗑️ lessonsが空になったため、${docId} を削除します`);
+      await deleteDoc(docRef);
+    } else {
+      await setDoc(docRef, { lessons: filtered }, { merge: true });
+    }
+  }
+
+
+// ✅ 振替レッスンをアーカイブに移動
+async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomCode) {
+  try {
+    const docId = `${classroomCode}_${date}`;
+    const archiveDocRef = doc(db, 'students', studentId, 'makeupLessonsArchive', docId);
+
+    await setDoc(archiveDocRef, {
+      ...lessonData,
+      date,
+      movedAt: new Date().toISOString(),
+    });
+
+    console.log(`✅ アーカイブ保存成功: ${docId}`);
+  } catch (error) {
+    console.error('❌ アーカイブ保存エラー:', error);
+  }
+}
+
 
 export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabels, teachers, classroomCode, studentName) => {
     const [editingIndexRegular, setEditingIndexRegular] = useState(null);
     const [editingIndexMakeup, setEditingIndexMakeup] = useState(null);
+    const [editingMakeupLesson, setEditingMakeupLesson] = useState(null);
     const [editValues, setEditValues] = useState({});
 
     const [makeUpList, setMakeUpList] = useState(attendanceList.filter(e => e.status === '振替'));
@@ -24,6 +77,10 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
     };
 
     const handleSaveClick = async (listType) => {
+        console.log('🎯 editingIndexMakeup:', editingIndexMakeup);
+        console.log('🎯 makeUpList.length:', makeUpList.length);
+        console.log('🎯 makeUpList:', makeUpList);
+
         try {
             let originalEntry = null;
             if (listType === 'makeup') {
@@ -31,7 +88,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     showErrorToast('振替リストの編集対象がありません');
                     return;
                 }
-                originalEntry = makeUpList[editingIndexMakeup];
+                originalEntry = editingMakeupLesson;
             } else if (listType === 'regular') {
                 if (editingIndexRegular === null) {
                     showErrorToast('通常リストの編集対象がありません');
@@ -43,6 +100,8 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 return;
             }
 
+            console.log('🪵 edit:', makeUpList[editingIndexMakeup]);
+            console.log('🪵 originalEntry:', originalEntry);
             const selectedTeacher = teachers.find(t => t.code === editValues.teacherCode);
             const student = {
                 studentId: editValues.studentId,
@@ -69,6 +128,15 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
             if (editValues.date) {
                 const oldDocId = `${classroomCode}_${originalEntry.date}`;
                 const newDocId = `${classroomCode}_${editValues.date}`;
+
+                // 🔽 振替 → 通常への変更だった場合、元の振替データを削除
+                const oldPeriod = originalEntry.period;
+                if (originalEntry.status === '振替' && editValues.status !== '振替') {
+                    await removeFromMakeupLessons(targetStudentId, originalEntry.date, oldPeriod, classroomCode);
+
+                    // ✅ アーカイブ用に移動させる
+                    await moveMakeupLessonToArchive(targetStudentId, originalEntry.date, originalEntry, classroomCode);
+                }
 
                 let newData = await fetchScheduleDoc('dailySchedules', newDocId);
                 if (!newData) {
@@ -114,7 +182,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
 
                 if (editValues.status === '振替') {
-                    // 振替授業は saveMakeupLesson で保存
                     await saveMakeupLesson(
                         String(editValues.studentId).trim(),
                         newDocId,
@@ -125,8 +192,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                             status: editValues.status,
                         }
                     );
-                    // 🔽 ここで再フェッチして setMakeUpList などを更新する！
-                    // 🔽 保存後に最新の振替データを取得して state 更新
+
                     const docRef = doc(db, 'students', String(editValues.studentId).trim(), 'makeupLessons', newDocId);
                     const updatedMakeupDoc = onSnapshot(
                         docRef,
@@ -142,7 +208,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                                     });
                                 }
                             }
-                            // 監視を1回でやめる（再取得の必要がなければ）
                             updatedMakeupDoc();
                         },
                         (error) => {
@@ -151,7 +216,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     );
 
                     if (updatedMakeupDoc?.lessons) {
-                        // 振替リストを更新（個別 or 全体 depending on your structure）
                         setMakeUpList(prev => {
                             const filtered = prev.filter(
                                 l => !(l.studentId === editValues.studentId && l.date === editValues.date)
@@ -160,7 +224,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         });
                     }
                 } else {
-                    // 通常授業はこれまで通り
                     const grouped = [...(newData.rows || [])];
                     let inserted = false;
 
@@ -198,7 +261,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 }
             }
 
-            // ローカルリストの更新は共通処理のまま
             const updatedList = attendanceList.map((entry, index) => {
                 if (
                     (listType === 'makeup' && index === editingIndexMakeup) ||
@@ -236,6 +298,8 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
         editValues,
         setEditValues,
         handleChange,
+        editingMakeupLesson,
+        setEditingMakeupLesson,
         handleSaveClick,
         makeUpList,
         regularList,
