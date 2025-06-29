@@ -4,6 +4,7 @@ import { useStudentAttendance } from '../../hooks/useStudentAttendance';
 import AttendanceTable from './AttendanceTable';
 
 const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
+    console.log("🟩 StudentAttendanceTab props:", { studentId, studentName, classroomCode });
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [monthOptions, setMonthOptions] = useState([]);
 
@@ -49,6 +50,7 @@ const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
                     setAttendanceList={setAttendanceList}
                     classroomCode={classroomCode} // ここに渡す！
                     studentName={studentName} // ← ここを追加
+                    studentId={studentId}
                 />
             )}
         </div>
