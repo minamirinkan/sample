@@ -22,24 +22,29 @@ const useMakeupLessons = (studentId) => {
                 const allLessons = [];
 
                 snapshot.forEach(doc => {
-                    console.log("📄 ドキュメントID（＝classroomCode_日付）:", doc.id);
-                    const data = doc.data();
-                    console.log("📦 データ内容:", data);
+                    const rawId = doc.id;
+                    const parts = rawId.split('_');
+                    const date = parts.length === 2 ? parts[1] : parts[0];
 
-                    // doc.idから日付だけ抜き出す
-                    const rawId = doc.id; // 例: "047_2025-06-26"
-                    const date = rawId.split('_')[1] || rawId; // '_'がなければそのまま
+                    const data = doc.data();
+
+                    console.log("📄 ドキュメントID:", rawId);
+                    console.log("🧩 parts:", parts);
+                    console.log("📆 抽出された date:", date);
+                    console.log("📦 ドキュメントデータ:", data);
 
                     if (Array.isArray(data.lessons)) {
-                        data.lessons.forEach(lesson => {
-                            allLessons.push({
-                                ...lesson,
-                                date,
-                            });
+                        data.lessons.forEach((lesson, i) => {
+                            const withDate = { ...lesson, date };
+                            console.log(`✅ lesson[${i}] + date:`, withDate);
+                            allLessons.push(withDate);
                         });
+                    } else {
+                        console.warn("⚠️ lessons が配列ではありません:", data);
                     }
                 });
 
+                console.log("✅ setMakeupLessons に渡すデータ:", allLessons);
                 setMakeupLessons(allLessons);
             } catch (err) {
                 console.error("振替データの取得エラー:", err);
