@@ -56,8 +56,13 @@ const AttendanceTable = ({ attendanceList, setAttendanceList, classroomCode, stu
                             console.log('🔍 makeupLessons[idx]:', entry);
                             console.log('🔍 makeupLessons[idx].date:', entry?.date);
                             setEditingMakeupLesson(makeupLessons[idx]);
-                            setEditingIndexMakeup(idx);
-                            setEditValues({ ...entry }); // 🔁 安全に浅くコピーしてからセット
+                            setEditingIndexMakeup(idx);const periodLabel = periodLabels[entry.period - 1]?.label || '';
+
+                            setEditValues({
+                              ...entry,
+                              periodLabel, // ✅ 明示的に追加！
+                            });
+                            
                         }}
                         handleChange={handleChange}
                         handleSaveClick={() => handleSaveClick('makeup')}

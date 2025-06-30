@@ -190,6 +190,52 @@ export async function fetchCustomerEvents(user, startDate, endDate, selectedStud
       }
     }
 
+    for (const studentId of ids) {
+      const prefix = studentId.slice(1, 4);
+      if (prefix !== classroomCode) continue;
+    
+      const archiveCollection = collection(db, 'students', studentId, 'makeupLessonsArchive');
+      const archiveSnaps = await getDocs(archiveCollection);
+    
+      for (const snap of archiveSnaps.docs) {
+        const docId = snap.id;
+        const [_, dateKey] = docId.split('_');
+        const lessons = snap.data().lessons || [];
+    
+        for (const lesson of lessons) {
+          // 🔍 必須フィールドの抽出
+          const index = lesson.period - 1;
+          const periodLabel = periodLabels[index]?.label || `period${lesson.period}`;
+          const time = periodLabels[index]?.time || '';
+          const title = `${periodLabel} 振替済`;
+    
+          result.matchedLessons.push({
+            date: dateKey,
+            periodLabel,
+            time,
+            subject: lesson.subject,
+            studentName: lesson.name,
+            status: '振替済'
+          });
+    
+          result.events.push({
+            title: `${periodLabel} 振替済`,
+            start: dateKey,
+            backgroundColor: 'rgba(209, 250, 229, 1)', // 振替回数と同じ色
+            textColor: '#065f46',
+            display: 'block',
+            extendedProps: {
+              period: periodLabel,
+              time,
+              subject: lesson.subject,
+              studentName: lesson.name,
+              status: '振替済'
+            }
+          });          
+        }
+      }
+    }
+    
     result.studentIds = ids;
     console.log("\u2705 fetchCustomerEvents 完了:", result);
     return result;
