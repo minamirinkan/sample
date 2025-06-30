@@ -195,6 +195,51 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
       }
     }
 
+    for (const studentId of ids) {
+      const prefix = studentId.slice(1, 4);
+      if (prefix !== classroomCode) continue;
+    
+      const archiveCollection = collection(db, 'students', studentId, 'makeupLessonsArchive');
+      const archiveSnaps = await getDocs(archiveCollection);
+    
+      for (const snap of archiveSnaps.docs) {
+        const docId = snap.id;
+        const [_, dateKey] = docId.split('_');
+        const lessons = snap.data().lessons || [];
+    
+        // ❌ 振替済は makeupCount に **加算しない**
+    
+        for (const lesson of lessons) {
+          const index = lesson.period - 1;
+          const periodLabel = periodLabels[index]?.label || `period${lesson.period}`;
+          const time = periodLabels[index]?.time || '';
+          const title = `${periodLabel} 振替済`;
+    
+          result.matchedLessons.push({
+            date: dateKey,
+            periodLabel,
+            time,
+            subject: lesson.subject,
+            studentName: lesson.name,
+            status: '振替済'
+          });
+    
+          result.events.push({
+            title,
+            start: dateKey,
+            color: '#00CED1',  // 青緑
+            extendedProps: {
+              period: periodLabel,
+              time,
+              subject: lesson.subject,
+              studentName: lesson.name,
+              status: '振替済'
+            }
+          });
+        }
+      }
+    }
+    
     result.studentIds = ids;
     return result;
   } catch (error) {

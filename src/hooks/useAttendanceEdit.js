@@ -45,22 +45,22 @@ async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
 
 
 // ✅ 振替レッスンをアーカイブに移動
+// ✅ 振替レッスンをアーカイブに移動（形式を makeupLessons と同じに）
 async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomCode) {
-  try {
-    const docId = `${classroomCode}_${date}`;
-    const archiveDocRef = doc(db, 'students', studentId, 'makeupLessonsArchive', docId);
-
-    await setDoc(archiveDocRef, {
-      ...lessonData,
-      date,
-      movedAt: new Date().toISOString(),
-    });
-
-    console.log(`✅ アーカイブ保存成功: ${docId}`);
-  } catch (error) {
-    console.error('❌ アーカイブ保存エラー:', error);
+    try {
+      const docId = `${classroomCode}_${date}`;
+      const archiveDocRef = doc(db, 'students', studentId, 'makeupLessonsArchive', docId);
+  
+      await setDoc(archiveDocRef, {
+        lessons: [lessonData] // ← 🔧 ここを配列で保存！
+      });
+  
+      console.log(`✅ アーカイブ保存成功: ${docId}`);
+    } catch (error) {
+      console.error('❌ アーカイブ保存エラー:', error);
+    }
   }
-}
+  
 
 
 export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabels, teachers, classroomCode, studentName) => {
