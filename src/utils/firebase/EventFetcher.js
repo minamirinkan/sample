@@ -207,9 +207,8 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
         const [_, dateKey] = docId.split('_');
         const lessons = snap.data().lessons || [];
     
-        // ❌ 振替済は makeupCount に **加算しない**
-    
         for (const lesson of lessons) {
+          // 🔍 必須フィールドの抽出
           const index = lesson.period - 1;
           const periodLabel = periodLabels[index]?.label || `period${lesson.period}`;
           const time = periodLabels[index]?.time || '';
@@ -225,9 +224,11 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
           });
     
           result.events.push({
-            title,
+            title: `${periodLabel} 振替済`,
             start: dateKey,
-            color: '#00CED1',  // 青緑
+            backgroundColor: 'rgba(209, 250, 229, 1)', // 振替回数と同じ色
+            textColor: '#065f46',
+            display: 'block',
             extendedProps: {
               period: periodLabel,
               time,
@@ -236,10 +237,11 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
               status: '振替済'
             }
           });
+          
         }
       }
     }
-    
+
     result.studentIds = ids;
     return result;
   } catch (error) {

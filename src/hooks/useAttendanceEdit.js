@@ -61,12 +61,15 @@ async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomC
     }
 }
 
+
+
 export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabels, teachers, classroomCode, studentName) => {
     const [editingIndexRegular, setEditingIndexRegular] = useState(null);
     const [editingIndexMakeup, setEditingIndexMakeup] = useState(null);
     const [editingMakeupLesson, setEditingMakeupLesson] = useState(null);
     const [editValues, setEditValues] = useState({});
 
+    console.log('🐛 editingMakeupLesson:', editingMakeupLesson);
     const [makeUpList, setMakeUpList] = useState(attendanceList.filter(e => e.status === '振替'));
     const regularList = attendanceList.filter((e) => e.status !== '振替');
 
@@ -108,13 +111,26 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 status: editValues.status || '',
                 seat: editValues.seat || '',
                 grade: editValues.grade || '',
+                teacher: editValues.status === '予定'
+                    ? {
+                        code: editValues.teacherCode || '',
+                        name: selectedTeacher ? `${selectedTeacher.lastName} ${selectedTeacher.firstName}` : '',
+                    }
+                    : null,
             };
 
             const isDateChanged = originalEntry.date !== editValues.date;
             const isPeriodChanged = originalEntry.periodLabel !== editValues.periodLabel;
 
+            console.log('🔍 originalEntry.periodLabel:', originalEntry.periodLabel);
+            console.log('🔍 editValues.periodLabel:', editValues.periodLabel);
+            console.log('🔍 periodLabels:', periodLabels.map(p => p.label));
+
             const oldPeriodKey = getPeriodKey(periodLabels, originalEntry.periodLabel);
             const newPeriodKey = getPeriodKey(periodLabels, editValues.periodLabel);
+
+            console.log('✅ oldPeriodKey:', oldPeriodKey);
+            console.log('✅ newPeriodKey:', newPeriodKey);
             const targetStudentId = String(editValues.studentId).trim();
 
             if (editValues.date) {
@@ -233,7 +249,8 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                                     ...row.periods,
                                     [newPeriodKey]: [...students, student],
                                 },
-                                teacher: null,                               
+                                status: editValues.status,
+                                teacher: editValues.status === '予定' ? student.teacher : null,
                             };
                             inserted = true;
                             break;
@@ -244,7 +261,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         grouped.push({
                             periods: { [newPeriodKey]: [student] },
                             status: editValues.status,
-                            teacher: null,
+                            teacher: editValues.status === '予定' ? student.teacher : null,
                         });
                     }
 
