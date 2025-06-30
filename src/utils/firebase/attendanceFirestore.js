@@ -10,6 +10,7 @@ export const buildWeeklyDocId = (classroomCode, date) => {
 };
 
 export const getPeriodKey = (periodLabels, label) => {
+    console.warn('⚠️ 無効な periodLabel:', label);
     const index = periodLabels.findIndex(p => p.label === label);
     return `period${index + 1}`;
 };

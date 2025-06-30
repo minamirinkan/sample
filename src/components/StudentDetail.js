@@ -12,8 +12,11 @@ const StudentDetail = ({ student, onBack }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({ ...student });
     const [originalData, setOriginalData] = useState({ ...student });
+    console.log("📌 初期 formData.period:", formData.period); // 数値？ undefined？
+    console.log("📌 初期 formData:", formData); // 数値？ undefined？
 
     const handleEditClick = () => {
+        console.log("📝 編集開始前の formData:", formData);
         setOriginalData(formData);
         setIsEditing(true);
     };

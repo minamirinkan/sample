@@ -94,7 +94,7 @@ const AttendanceSubTable = ({
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <select
-                                            value={editValues.periodLabel || ''}
+                                            value={editValues.periodLabel || (periodOptions[entry.period - 1] || '－')}
                                             onChange={(e) => handleChange('periodLabel', e.target.value)}
                                         >
                                             {periodOptions.map((p) => (

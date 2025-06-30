@@ -9,7 +9,7 @@ import {
     saveScheduleDoc,
     saveMakeupLesson,
 } from '../utils/firebase/attendanceFirestore';
-import { onSnapshot, doc, getDoc, setDoc, collection, addDoc,deleteDoc } from 'firebase/firestore';
+import { onSnapshot, doc, getDoc, setDoc, collection, addDoc, deleteDoc } from 'firebase/firestore';
 
 // 🔽 振替レッスン削除ユーティリティ
 async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
@@ -17,51 +17,49 @@ async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
     console.log(`🪵 removeFromMakeupLessons → docId: ${docId}`);
     const docRef = doc(db, 'students', studentId, 'makeupLessons', docId);
     const snap = await getDoc(docRef);
-  
+
     if (!snap.exists()) {
-      console.warn(`⛔ makeupLessons/${docId} does not exist for ${studentId}`);
-      return;
+        console.warn(`⛔ makeupLessons/${docId} does not exist for ${studentId}`);
+        return;
     }
-  
+
     const data = snap.data();
     const lessons = data.lessons || [];
-  
+
     console.log('🟡 現在のlessons:', lessons);
     console.log('🟠 削除対象: studentId=', studentId, ' period=', period);
-  
+
     const filtered = lessons.filter(
-      l => !(l.studentId === studentId && l.period === period)
+        l => !(l.studentId === studentId && l.period === period)
     );
-  
+
     console.log('✅ 削除後のlessons:', filtered);
-  
+
     if (filtered.length === 0) {
-      console.log(`🗑️ lessonsが空になったため、${docId} を削除します`);
-      await deleteDoc(docRef);
+        console.log(`🗑️ lessonsが空になったため、${docId} を削除します`);
+        await deleteDoc(docRef);
     } else {
-      await setDoc(docRef, { lessons: filtered }, { merge: true });
+        await setDoc(docRef, { lessons: filtered }, { merge: true });
     }
-  }
+}
 
 
 // ✅ 振替レッスンをアーカイブに移動
 // ✅ 振替レッスンをアーカイブに移動（形式を makeupLessons と同じに）
 async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomCode) {
     try {
-      const docId = `${classroomCode}_${date}`;
-      const archiveDocRef = doc(db, 'students', studentId, 'makeupLessonsArchive', docId);
-  
-      await setDoc(archiveDocRef, {
-        lessons: [lessonData] // ← 🔧 ここを配列で保存！
-      });
-  
-      console.log(`✅ アーカイブ保存成功: ${docId}`);
-    } catch (error) {
-      console.error('❌ アーカイブ保存エラー:', error);
-    }
-  }
-  
+        const docId = `${classroomCode}_${date}`;
+        const archiveDocRef = doc(db, 'students', studentId, 'makeupLessonsArchive', docId);
 
+        await setDoc(archiveDocRef, {
+            lessons: [lessonData] // ← 🔧 ここを配列で保存！
+        });
+
+        console.log(`✅ アーカイブ保存成功: ${docId}`);
+    } catch (error) {
+        console.error('❌ アーカイブ保存エラー:', error);
+    }
+}
 
 export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabels, teachers, classroomCode, studentName) => {
     const [editingIndexRegular, setEditingIndexRegular] = useState(null);
@@ -110,12 +108,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 status: editValues.status || '',
                 seat: editValues.seat || '',
                 grade: editValues.grade || '',
-                teacher: editValues.status === '予定'
-                    ? {
-                        code: editValues.teacherCode || '',
-                        name: selectedTeacher ? `${selectedTeacher.lastName} ${selectedTeacher.firstName}` : '',
-                    }
-                    : null,
             };
 
             const isDateChanged = originalEntry.date !== editValues.date;
@@ -241,8 +233,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                                     ...row.periods,
                                     [newPeriodKey]: [...students, student],
                                 },
-                                status: editValues.status,
-                                teacher: editValues.status === '予定' ? student.teacher : null,
+                                teacher: null,                               
                             };
                             inserted = true;
                             break;
@@ -253,7 +244,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         grouped.push({
                             periods: { [newPeriodKey]: [student] },
                             status: editValues.status,
-                            teacher: editValues.status === '予定' ? student.teacher : null,
+                            teacher: null,
                         });
                     }
 
