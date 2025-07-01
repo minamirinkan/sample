@@ -7,7 +7,7 @@ import TimetablePageC from './TimetableCustomerPage';
 
 const CustomerDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('timetable');
-    const [sidebarOpen, setSidebarOpen] = useState(true); // サイドバー開閉状態
+    const [sidebarOpen, setSidebarOpen] = useState(false); // サイドバー開閉状態
 
     const renderContent = () => {
         switch (selectedContent) {

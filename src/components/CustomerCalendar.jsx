@@ -54,8 +54,8 @@ export default function CustomerCalendar() {
   };
 
   return (
-    <div className="p-6 relative">
-      <h1 className="text-xl font-bold mb-4">📅 Customer Calendar</h1>
+    <div className="p-6 sm:p-6 relative">
+      <h1 className="text-lg sm:text-xl font-bold mb-4">📅 Customer Calendar</h1>
 
       {loading && <p>AuthContext loading中...</p>}
 
@@ -65,7 +65,7 @@ export default function CustomerCalendar() {
           <p><strong>studentIds:</strong> {studentIds.join(', ')}</p>
 
           <h2 className="mt-4 font-semibold">カレンダー表示:</h2>
-          <div className="relative">
+          <div className="relative overflow-x-auto">
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -73,9 +73,12 @@ export default function CustomerCalendar() {
               events={events}
               eventClick={handleEventClick}
               datesSet={handleDatesSet}
-              fixedWeekCount={false} // 月末の未条件週を消す
+              fixedWeekCount={false}
+              height="auto"
+              contentHeight="auto"
+              aspectRatio={1.0}
             />
-            <div className="absolute right-0 bottom-[-3rem] bg-green-100 text-green-700 px-3 py-1 rounded shadow">
+            <div className="absolute right-0 bottom-[-3rem] bg-green-100 text-green-700 px-3 py-1 rounded shadow text-sm sm:text-base">
               振替回数: {makeupCount}
             </div>
           </div>
