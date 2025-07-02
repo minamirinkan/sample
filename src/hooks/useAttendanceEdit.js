@@ -9,7 +9,7 @@ import {
     saveScheduleDoc,
     saveMakeupLesson,
 } from '../utils/firebase/attendanceFirestore';
-import { onSnapshot, doc, getDoc, setDoc, collection, addDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 
 // 🔽 振替レッスン削除ユーティリティ
 async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
@@ -39,10 +39,10 @@ async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
         console.log(`🗑️ lessonsが空になったため、${docId} を削除します`);
         await deleteDoc(docRef);
     } else {
-        await setDoc(docRef, { lessons: filtered }, { merge: true });
+        console.log('📝 setDocする前のデータ:', { lessons: filtered }); // ←ここにログを入れる
+        await setDoc(docRef, { lessons: filtered }, { merge: false });
     }
 }
-
 
 // ✅ 振替レッスンをアーカイブに移動
 // ✅ 振替レッスンをアーカイブに移動（形式を makeupLessons と同じに）
@@ -61,8 +61,6 @@ async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomC
     }
 }
 
-
-
 export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabels, teachers, classroomCode, studentName) => {
     const [editingIndexRegular, setEditingIndexRegular] = useState(null);
     const [editingIndexMakeup, setEditingIndexMakeup] = useState(null);
@@ -70,7 +68,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
     const [editValues, setEditValues] = useState({});
 
     console.log('🐛 editingMakeupLesson:', editingMakeupLesson);
-    const [makeUpList, setMakeUpList] = useState(attendanceList.filter(e => e.status === '振替'));
+    const [makeUpList] = useState(attendanceList.filter(e => e.status === '振替'));
     const regularList = attendanceList.filter((e) => e.status !== '振替');
 
     const handleChange = (field, value) => {
@@ -78,9 +76,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
     };
 
     const handleSaveClick = async (listType) => {
-        console.log('🎯 editingIndexMakeup:', editingIndexMakeup);
-        console.log('🎯 makeUpList.length:', makeUpList.length);
-        console.log('🎯 makeUpList:', makeUpList);
 
         try {
             let originalEntry = null;
@@ -119,15 +114,12 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     : null,
             };
 
-            const isDateChanged = originalEntry.date !== editValues.date;
-            const isPeriodChanged = originalEntry.periodLabel !== editValues.periodLabel;
-
-            console.log('🔍 originalEntry.periodLabel:', originalEntry.periodLabel);
-            console.log('🔍 editValues.periodLabel:', editValues.periodLabel);
-            console.log('🔍 periodLabels:', periodLabels.map(p => p.label));
-
             const oldPeriodKey = getPeriodKey(periodLabels, originalEntry.periodLabel);
-            const newPeriodKey = getPeriodKey(periodLabels, editValues.periodLabel);
+            console.log("🟡 oldPeriodKey:", oldPeriodKey);
+            console.log("🟡 originalEntry.periodLabel:", originalEntry.periodLabel);
+            console.log("🟡 periodLabels:", periodLabels);
+            const periodIndex = periodLabels.findIndex(p => p.label === editValues.periodLabel);
+            const newPeriodKey = `period${periodIndex + 1}`;
 
             console.log('✅ oldPeriodKey:', oldPeriodKey);
             console.log('✅ newPeriodKey:', newPeriodKey);
@@ -145,7 +137,16 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     // ✅ アーカイブ用に移動させる
                     await moveMakeupLessonToArchive(targetStudentId, originalEntry.date, originalEntry, classroomCode);
                 }
+                const noChange =
+                    editValues.date === originalEntry.date &&
+                    editValues.periodLabel === originalEntry.periodLabel &&
+                    editValues.status === originalEntry.status &&
+                    editValues.teacherCode === originalEntry.teacher?.code;
 
+                if (noChange) {
+                    showErrorToast('変更はありません');
+                    return;
+                }
                 let newData = await fetchScheduleDoc('dailySchedules', newDocId);
                 if (!newData) {
                     const weeklyRefId = buildWeeklyDocId(classroomCode, editValues.date);
@@ -154,40 +155,65 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     await createScheduleFromWeeklyTemplate('dailySchedules', newDocId, weeklyRefId, newData);
                 }
 
-                if (isDateChanged || isPeriodChanged) {
-                    const newPeriodStudents = newData?.rows?.flatMap(row =>
-                        row.periods?.[newPeriodKey] || []
-                    ) || [];
+                const newPeriodStudents = newData?.rows?.flatMap(row =>
+                    row.periods?.[newPeriodKey] || []
+                ) || [];
 
-                    const isDuplicate = newPeriodStudents.some(s =>
-                        String(s.studentId).trim() === targetStudentId &&
-                        !(editValues.date === originalEntry.date && editValues.periodLabel === originalEntry.periodLabel)
-                    );
+                const isDuplicate = newPeriodStudents.some(s =>
+                    String(s.studentId).trim() === targetStudentId &&
+                    !(editValues.date === originalEntry.date && editValues.periodLabel === originalEntry.periodLabel)
+                );
 
-                    if (isDuplicate) {
-                        showErrorToast('既に授業が入っているため変更できません');
-                        return;
-                    }
+                if (isDuplicate) {
+                    showErrorToast('既に授業が入っているため変更できません');
+                    return;
                 }
 
                 let oldData = await fetchScheduleDoc('dailySchedules', oldDocId);
+                console.log('🟢 oldData (before fallback):', oldData);
                 if (!oldData) {
                     const weeklyRefId = buildWeeklyDocId(classroomCode, originalEntry.date);
                     const weeklyData = await fetchScheduleDoc('weeklySchedules', weeklyRefId);
+                    console.log('🟢 weeklyData (fallback):', weeklyData);
                     oldData = weeklyData || { rows: [] };
                 }
+                console.log('oldPeriodKey:', oldPeriodKey);
+                console.log('targetStudentId:', targetStudentId);
+                console.log('🟢 final oldData used:', oldData);
+                const isSameDate = oldDocId === newDocId;
+                
+                if (isSameDate) {
+                    // 🔁 同じ日付の場合 → newData.rows を直接編集（削除 + 追加）
+                    const updatedRows = (newData.rows || []).map(row => {
+                        if (row.periods?.[oldPeriodKey]) {
+                            return {
+                                ...row,
+                                periods: {
+                                    ...row.periods,
+                                    [oldPeriodKey]: (row.periods[oldPeriodKey] || []).filter(
+                                        s => String(s.studentId).trim() !== targetStudentId
+                                    ),
+                                }
+                            };
+                        }
+                        return row;
+                    });
 
-                const updatedOldRows = (oldData.rows || []).map(row => ({
-                    ...row,
-                    periods: {
-                        ...row.periods,
-                        [oldPeriodKey]: (row.periods?.[oldPeriodKey] || []).filter(
-                            s => String(s.studentId).trim() !== targetStudentId
-                        ),
-                    },
-                }));
-
-                await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
+                    newData.rows = updatedRows;
+                }
+                else {
+                    // 📅 日付が異なる → oldDataに削除だけして保存
+                    const updatedOldRows = (oldData.rows || []).map(row => ({
+                        ...row,
+                        periods: {
+                            ...row.periods,
+                            [oldPeriodKey]: (row.periods?.[oldPeriodKey] || []).filter(
+                                s => String(s.studentId).trim() !== targetStudentId
+                            ),
+                        },
+                    }));
+                    await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
+                }
 
                 if (editValues.status === '振替') {
                     await saveMakeupLesson(
@@ -196,41 +222,12 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         {
                             student,
                             periodKey: newPeriodKey,
+                            period: periodIndex,
                             date: editValues.date,
                             status: editValues.status,
                         }
                     );
 
-                    const docRef = doc(db, 'students', String(editValues.studentId).trim(), 'makeupLessons', newDocId);
-                    const updatedMakeupDoc = onSnapshot(
-                        docRef,
-                        (snapshot) => {
-                            if (snapshot.exists()) {
-                                const data = snapshot.data();
-                                if (data.lessons) {
-                                    setMakeUpList(prev => {
-                                        const filtered = prev.filter(
-                                            l => !(l.studentId === editValues.studentId && l.date === data.date)
-                                        );
-                                        return [...filtered, ...data.lessons];
-                                    });
-                                }
-                            }
-                            updatedMakeupDoc();
-                        },
-                        (error) => {
-                            console.error('onSnapshot error:', error);
-                        }
-                    );
-
-                    if (updatedMakeupDoc?.lessons) {
-                        setMakeUpList(prev => {
-                            const filtered = prev.filter(
-                                l => !(l.studentId === editValues.studentId && l.date === editValues.date)
-                            );
-                            return [...filtered, ...updatedMakeupDoc.lessons];
-                        });
-                    }
                 } else {
                     const grouped = [...(newData.rows || [])];
                     let inserted = false;

@@ -1,11 +1,8 @@
-//src/components/attendance/StudentAttendanceTab.jsx
 import { useState, useEffect } from 'react';
-import { useStudentAttendance } from '../../hooks/useStudentAttendance';
 import AttendanceTable from './AttendanceTable';
 
 const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
-    console.log("🟩 StudentAttendanceTab props:", { studentId, studentName, classroomCode });
-    const [selectedMonth, setSelectedMonth] = useState(null);
+    const [selectedMonth, setSelectedMonth] = useState('');
     const [monthOptions, setMonthOptions] = useState([]);
 
     useEffect(() => {
@@ -22,16 +19,12 @@ const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
         setSelectedMonth(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`);
     }, []);
 
-    const { loading, attendanceList, setAttendanceList } = useStudentAttendance(
-        classroomCode,
-        studentId,
-        selectedMonth
-    );
+    if (!selectedMonth) return <p>初期化中...</p>;
 
     return (
         <div>
             <select
-                value={selectedMonth || ''}
+                value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
                 className="mb-4 p-2 border rounded"
             >
@@ -42,17 +35,12 @@ const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
                 ))}
             </select>
 
-            {loading ? (
-                <p>読み込み中...</p>
-            ) : (
-                <AttendanceTable
-                    attendanceList={attendanceList}
-                    setAttendanceList={setAttendanceList}
-                    classroomCode={classroomCode} // ここに渡す！
-                    studentName={studentName} // ← ここを追加
-                    studentId={studentId}
-                />
-            )}
+            <AttendanceTable
+                classroomCode={classroomCode}
+                studentId={studentId}
+                studentName={studentName}
+                selectedMonth={selectedMonth}
+            />
         </div>
     );
 };

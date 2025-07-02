@@ -10,6 +10,7 @@ export const buildWeeklyDocId = (classroomCode, date) => {
 };
 
 export const getPeriodKey = (periodLabels, label) => {
+    console.log('label:', label);
     console.warn('⚠️ 無効な periodLabel:', label);
     const index = periodLabels.findIndex(p => p.label === label);
     return `period${index + 1}`;
@@ -36,10 +37,12 @@ export async function createScheduleFromWeeklyTemplate(collection, docId, weekly
 export async function saveScheduleDoc(collection, docId, data) {
     const db = getFirestore();
     const docRef = doc(db, collection, docId);
+    console.log("📝 保存前のデータ:", data); // ←ここでログを出す
     await setDoc(docRef, {
         ...data,
         updatedAt: serverTimestamp(),
-    }, { merge: true });
+    }, { merge: false });
+    console.log("Saved doc:", docRef.path, data);
 }
 
 export async function saveMakeupLesson(studentId, docId, lessonData) {
