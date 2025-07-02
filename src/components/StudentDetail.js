@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StudentInfoSection from './StudentInfoSection';
 import GuardianInfoSection from './GuardianInfoSection';
 import ActionButtons from './ActionButtons';
@@ -34,6 +34,12 @@ const StudentDetail = ({ student, onBack }) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
+
+    useEffect(() => {
+        console.log("🔁 props.student が更新されたので再同期:", student);
+        setFormData({ ...student });
+        setOriginalData({ ...student });
+    }, [student]);
 
     const renderTabContent = () => {
         switch (activeTab) {

@@ -3,25 +3,32 @@ import { useTeachers } from '../../hooks/useTeachers';
 import usePeriodLabels from '../../hooks/usePeriodLabels';
 import { useAttendanceEdit } from '../../hooks/useAttendanceEdit';
 import useMakeupLessons from '../../hooks/useMakeupLessons';
+import { useStudentAttendance } from '../../hooks/useStudentAttendance';
 
-const AttendanceTable = ({ attendanceList, setAttendanceList, classroomCode, studentId, studentName }) => {
+const AttendanceTable = ({ classroomCode, studentId, studentName, selectedMonth }) => {
     const { teachers } = useTeachers();
     const { periodLabels } = usePeriodLabels(classroomCode);
 
+    // 通常の出席データを取得
+    const {
+        loading: loadingAttendance,
+        attendanceList,
+        setAttendanceList,
+    } = useStudentAttendance(classroomCode, studentId, selectedMonth);
+
+    // 振替出席データを取得
     const {
         makeupLessons,
         loading: loadingMakeup,
     } = useMakeupLessons(studentId || null);
-    console.log('makeupLessons:', makeupLessons);
-    console.log('✅ studentId passed to useMakeupLessons:', studentId);
 
+    // 編集用のフック
     const {
         editingIndexRegular,
         setEditingIndexRegular,
         editingIndexMakeup,
         setEditingIndexMakeup,
         editValues,
-        editingMakeupLesson,
         setEditingMakeupLesson,
         setEditValues,
         handleChange,
@@ -37,41 +44,40 @@ const AttendanceTable = ({ attendanceList, setAttendanceList, classroomCode, stu
     };
     const getStatusClass = (status) => statusStyles[status] || '';
 
+    if (loadingAttendance || loadingMakeup) {
+        return <p>読み込み中...</p>;
+    }
+
     return (
         <div className="space-y-6">
+            {/* 振替出席情報 */}
             <div className="min-w-[700px]">
                 <h2 className="text-lg font-bold mb-2 text-yellow-600">振替出席情報</h2>
-                {loadingMakeup ? (
-                    <p>読み込み中...</p>
-                ) : (
-                    <AttendanceSubTable
-                        data={makeupLessons || []}
-                        teachers={teachers}
-                        editingIndex={editingIndexMakeup}
-                        setEditingIndex={setEditingIndexMakeup}
-                        editValues={editValues}
-                        handleEditClick={(idx) => {
-                            setEditingIndexRegular(null);
-                            const entry = makeupLessons[idx];
-                            console.log('🔍 makeupLessons[idx]:', entry);
-                            console.log('🔍 makeupLessons[idx].date:', entry?.date);
-                            setEditingMakeupLesson(makeupLessons[idx]);
-                            setEditingIndexMakeup(idx);const periodLabel = periodLabels[entry.period - 1]?.label || '';
-
-                            setEditValues({
-                              ...entry,
-                              periodLabel, // ✅ 明示的に追加！
-                            });
-                            
-                        }}
-                        handleChange={handleChange}
-                        handleSaveClick={() => handleSaveClick('makeup')}
-                        getStatusClass={getStatusClass}
-                        periodLabels={periodLabels}
-                    />
-                )}
+                <AttendanceSubTable
+                    data={makeupLessons || []}
+                    teachers={teachers}
+                    editingIndex={editingIndexMakeup}
+                    setEditingIndex={setEditingIndexMakeup}
+                    editValues={editValues}
+                    handleEditClick={(idx) => {
+                        setEditingIndexRegular(null);
+                        const entry = makeupLessons[idx];
+                        setEditingMakeupLesson(entry);
+                        setEditingIndexMakeup(idx);
+                        const periodLabel = periodLabels[entry.period - 1]?.label || '';
+                        setEditValues({
+                            ...entry,
+                            periodLabel, // 明示的に追加
+                        });
+                    }}
+                    handleChange={handleChange}
+                    handleSaveClick={() => handleSaveClick('makeup')}
+                    getStatusClass={getStatusClass}
+                    periodLabels={periodLabels}
+                />
             </div>
 
+            {/* 通常出席情報 */}
             <div className="min-w-[700px]">
                 <h2 className="text-lg font-bold mb-2 text-blue-600">通常出席情報</h2>
                 <AttendanceSubTable
@@ -83,7 +89,11 @@ const AttendanceTable = ({ attendanceList, setAttendanceList, classroomCode, stu
                     handleEditClick={(idx) => {
                         setEditingIndexMakeup(null);
                         setEditingIndexRegular(idx);
-                        setEditValues(regularList[idx]);
+                        const entry = regularList[idx];
+                        setEditValues({
+                            ...entry,
+                            teacherCode: entry.teacher?.code || '',
+                        });
                     }}
                     handleChange={handleChange}
                     handleSaveClick={() => handleSaveClick('regular')}

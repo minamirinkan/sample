@@ -1,5 +1,5 @@
 // src/pages/AdminStudentCalendar.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -10,6 +10,7 @@ import SelectableStudentList from '../components/SelectableStudentList';
 
 export default function AdminStudentCalendar() {
   const { user, loading } = useAuth();
+  const calendarRef = useRef(null);
   const [studentIds, setStudentIds] = useState([]);
   const [matchedLessons, setMatchedLessons] = useState([]);
   const [events, setEvents] = useState([]);
@@ -44,6 +45,17 @@ export default function AdminStudentCalendar() {
     fetchAndSetEvents(firstDay, lastDay);
   }, [user, loading, selectedStudentId]);
 
+  // FullCalendarのサイズ再調整（初期化後）
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (calendarRef.current) {
+        calendarRef.current.getApi().updateSize();
+      }
+    }, 300); // 少し遅延してサイズ調整
+
+    return () => clearTimeout(timer);
+  }, [events]);
+
   const handleEventClick = (info) => {
     setSelectedLesson(info.event);
   };
@@ -63,36 +75,42 @@ export default function AdminStudentCalendar() {
   };
 
   return (
-    <div className="p-6 relative">
-      <h1 className="text-xl font-bold mb-4">📅 Customer Calendar</h1>
+    <div className="p-4 md:p-6 relative w-full">
+      <h1 className="text-lg md:text-xl font-bold mb-4">📅 Customer Calendar</h1>
 
       {loading && <p>AuthContext loading中...</p>}
 
       {!loading && user && (
         <>
-          <div className="flex justify-between items-start">
-            <div className="mb-4">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+            <div className="mb-2">
               <p><strong>ログイン中の uid:</strong> {user.uid}</p>
               <p><strong>studentIds:</strong> {studentIds.join(', ')}</p>
               <p><strong>選択中の studentId:</strong> {selectedStudentId}</p>
             </div>
 
-            <div className="ml-4">
+            <div className="w-full">
               <SelectableStudentList onStudentSelect={handleStudentSelect} />
             </div>
           </div>
 
           <h2 className="mt-4 font-semibold">カレンダー表示:</h2>
-          <div className="relative">
-            <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
-              locale="ja"
-              events={events}
-              eventClick={handleEventClick}
-              datesSet={handleDatesSet}
-              fixedWeekCount={false}
-            />
+
+          <div className="relative w-full max-w-full overflow-auto min-h-[400px]">
+            {selectedStudentId && (
+              <FullCalendar
+                height="auto"
+                ref={calendarRef}
+                plugins={[dayGridPlugin, interactionPlugin]}
+                initialView="dayGridMonth"
+                locale="ja"
+                events={events}
+                eventClick={handleEventClick}
+                datesSet={handleDatesSet}
+                fixedWeekCount={false}
+              />
+            )}
+
             <div className="absolute right-0 bottom-[-3rem] bg-green-100 text-green-700 px-3 py-1 rounded shadow">
               振替回数: {makeupCount}
             </div>
