@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+/* FullCalendarのボタンを小さく */
+.fc .fc-button {
+  font-size: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+/* イベント表示のテキストサイズを調整 */
+.fc-event {
+  font-size: 0.7rem !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}

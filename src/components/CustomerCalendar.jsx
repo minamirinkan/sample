@@ -5,6 +5,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import LessonModal from '../data/LessonModal';
+import '../styles/fullcalendar-overrides.css';
 import { fetchCustomerEvents } from '../utils/firebase/EventFetcher';
 
 export default function CustomerCalendar() {
@@ -55,17 +56,16 @@ export default function CustomerCalendar() {
 
   return (
     <div className="p-6 sm:p-6 relative">
-      <h1 className="text-lg sm:text-xl font-bold mb-4">📅 Customer Calendar</h1>
+      <h1 className="text-base sm:text-xl font-bold mb-4">📅 Customer Calendar</h1>
 
       {loading && <p>AuthContext loading中...</p>}
 
       {!loading && user && (
         <>
-          <p><strong>ログイン中の uid:</strong> {user.uid}</p>
-          <p><strong>studentIds:</strong> {studentIds.join(', ')}</p>
 
           <h2 className="mt-4 font-semibold">カレンダー表示:</h2>
-          <div className="relative overflow-x-auto">
+
+          <div className="relative w-full overflow-x-auto">
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView="dayGridMonth"
@@ -75,9 +75,26 @@ export default function CustomerCalendar() {
               datesSet={handleDatesSet}
               fixedWeekCount={false}
               height="auto"
-              contentHeight="auto"
-              aspectRatio={1.0}
+              aspectRatio={0.8}
+              headerToolbar={{
+                start: 'prev,next',
+                center: 'title',
+                end: 'today'
+              }}
+              titleFormat={{ year: 'numeric', month: 'short' }}
+              dayMaxEventRows={true}
+              dayMaxEvents={2}
+              moreLinkClick="popover"
+              dayCellContent={(arg) => {
+                return { html: `<div class="text-xs text-gray-800">${arg.date.getDate()}</div>` };
+              }}
+              eventContent={(arg) => {
+                return {
+                  html: `<div class="text-xs truncate">${arg.event.title}</div>`
+                };
+              }}
             />
+
             <div className="absolute right-0 bottom-[-3rem] bg-green-100 text-green-700 px-3 py-1 rounded shadow text-sm sm:text-base">
               振替回数: {makeupCount}
             </div>
@@ -87,19 +104,6 @@ export default function CustomerCalendar() {
             lesson={selectedLesson}
             onClose={() => setSelectedLesson(null)}
           />
-
-          {/* <h2 className="mt-4 font-semibold">一致した授業一覧:</h2>
-          {matchedLessons.length === 0 ? (
-            <p>一致する授業がありません。</p>
-          ) : (
-            <ul className="list-disc ml-6">
-              {matchedLessons.map((lesson, idx) => (
-                <li key={idx}>
-                  📅 {lesson.date} | {lesson.periodLabel} ({lesson.time}) | {lesson.subject} | {lesson.studentName}
-                </li>
-              ))}
-            </ul>
-          )} */}
         </>
       )}
 
