@@ -40,7 +40,7 @@ function App() {
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/mypage/dashboard" element={<CustomerDashboard />} />
-        <Route path="/teacher/mypage/dashboard" element={<TeacherDashboard />} />
+        <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/superadmin-login" element={<SuperAdminLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/teacher-login" element={<TeacherLogin />} />

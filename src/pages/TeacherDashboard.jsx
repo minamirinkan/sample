@@ -1,7 +1,7 @@
 import SuperAdminHeader from '../components/SuperAdminHeader';
 import TeacherSidebar from '../components/TeacherSidebar';
 import { useState } from 'react';
-import TimetablePageC from './TimetableCustomerPage';
+import TimetablePageC from './TimetableTeacherPage';
 
 const TeacherDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('timetable');
