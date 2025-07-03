@@ -11,6 +11,7 @@ const DevLoginSelector = () => {
             <button className="btn" onClick={() => navigate('/superadmin-login')}>🔑 SuperAdminログイン</button>
             <button className="btn" onClick={() => navigate('/admin-login')}>🏫 Adminログイン</button>
             <button className="btn" onClick={() => navigate('/customer-login')}>👤 Customerログイン</button>
+            <button className="btn" onClick={() => navigate('/teacher-login')}>👤 Teacherログイン</button>
         </div>
     );
 };

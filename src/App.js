@@ -3,6 +3,7 @@ import SuperAdminLogin from './pages/SuperAdminLogin';
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import CustomerDashboard from "./pages/CustomerDashboard";
+import TeacherDashboard from "./pages/TeacherDashboard";
 import AdminLogin from './pages/AdminLogin';
 import TeacherLogin from './pages/TeacherLogin';
 import CustomerLogin from './pages/CustomerLogin';
@@ -12,6 +13,7 @@ import CalendarPopup from './components/CalendarPopup';
 import DevLoginSelector from './pages/DevLoginSelector';
 import ProtectedRoute from './components/ProtectedRoute';
 import ChangePassword from './pages/ChangePassword';
+import TeacherChangePassword from './pages/TeacherChangePassword';
 import ScheduleCalendarPage from './pages/ScheduleCalendarPage.jsx'
 import { ToastContainer } from 'react-toastify';
 
@@ -38,6 +40,7 @@ function App() {
         />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/mypage/dashboard" element={<CustomerDashboard />} />
+        <Route path="/teacher/mypage/dashboard" element={<TeacherDashboard />} />
         <Route path="/superadmin-login" element={<SuperAdminLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/teacher-login" element={<TeacherLogin />} />
@@ -45,6 +48,7 @@ function App() {
         <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/calendar" element={<CalendarPopup />} />
         <Route path="/customer/change-password" element={<ChangePassword />} />
+        <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
         <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
       </Routes>
       <ToastContainer
