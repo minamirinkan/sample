@@ -110,21 +110,8 @@ const StudentDetail = ({ student, onBack }) => {
                 ))}
             </div>
 
-
-            {/* ボタン */}
-            <ActionButtons
-                isEditing={isEditing}
-                onBack={onBack}
-                onEdit={handleEditClick}
-                onCancel={handleCancelClick}
-                onSave={handleSaveClick}
-            />
-
-            {/* メイン内容 */}
-            <div className="mt-4">{renderTabContent()}</div>
-
-            {/* 下部ボタン */}
-            <div className="mt-6">
+            {/* ボタン（上） */}
+            {activeTab === '基本情報' && (
                 <ActionButtons
                     isEditing={isEditing}
                     onBack={onBack}
@@ -132,7 +119,23 @@ const StudentDetail = ({ student, onBack }) => {
                     onCancel={handleCancelClick}
                     onSave={handleSaveClick}
                 />
-            </div>
+            )}
+
+            {/* メイン内容 */}
+            <div className="mt-4">{renderTabContent()}</div>
+
+            {/* ボタン（下） */}
+            {activeTab === '基本情報' && (
+                <div className="mt-6">
+                    <ActionButtons
+                        isEditing={isEditing}
+                        onBack={onBack}
+                        onEdit={handleEditClick}
+                        onCancel={handleCancelClick}
+                        onSave={handleSaveClick}
+                    />
+                </div>
+            )}
         </div>
     );
 };
