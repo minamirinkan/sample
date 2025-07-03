@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { doc, getFirestore, onSnapshot} from 'firebase/firestore';
+import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { getJapaneseDayOfWeek } from '../utils/dateFormatter';
 import { fetchPeriodLabels } from './usePeriodLabels';
 import { getLatestExistingWeeklySchedule } from './useWeeklySchedules';
@@ -7,9 +7,8 @@ import { getLatestExistingWeeklySchedule } from './useWeeklySchedules';
 export const useStudentAttendance = (classroomCode, studentId, selectedMonth) => {
     const [loading, setLoading] = useState(true);
     const [attendanceList, setAttendanceList] = useState([]);
-console.log("hook called with:", { classroomCode, studentId, selectedMonth });
+
     useEffect(() => {
-        console.log("useEffect in hook fired", { classroomCode, studentId, selectedMonth });
         if (!classroomCode || !studentId || !selectedMonth) return;
 
         const db = getFirestore();
@@ -17,6 +16,7 @@ console.log("hook called with:", { classroomCode, studentId, selectedMonth });
 
         const fetchAndSubscribe = async () => {
             setLoading(true);
+            setAttendanceList([]); // ← 月が変わったらリセット
 
             try {
                 const periodLabels = await fetchPeriodLabels(db, classroomCode);
@@ -48,7 +48,12 @@ console.log("hook called with:", { classroomCode, studentId, selectedMonth });
                                 data = weeklySchedulesCache.get(weekdayIndex);
                             } else {
                                 // データが存在しない日 → 削除
-                                setAttendanceList(prev => prev.filter(entry => entry.date !== yyyyMMdd));
+                                setAttendanceList(prev =>
+                                    prev.filter(entry =>
+                                        entry.date !== yyyyMMdd &&
+                                        entry.date.startsWith(selectedMonth) // ← この月のデータ以外は残す
+                                    )
+                                );
                                 return;
                             }
 
@@ -81,10 +86,12 @@ console.log("hook called with:", { classroomCode, studentId, selectedMonth });
                                 });
                             });
 
-                            // 指定日の出席データだけ更新
+                            // 指定月だけ反映
                             setAttendanceList(prev => {
-                                const others = prev.filter(entry => entry.date !== yyyyMMdd);
-                                return [...others, ...newResults].sort((a, b) => a.date.localeCompare(b.date));
+                                const filtered = prev.filter(
+                                    entry => entry.date !== yyyyMMdd && entry.date.startsWith(selectedMonth)
+                                );
+                                return [...filtered, ...newResults].sort((a, b) => a.date.localeCompare(b.date));
                             });
                         },
                         (error) => {
