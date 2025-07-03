@@ -52,7 +52,7 @@ const AttendanceTable = ({ classroomCode, studentId, studentName, selectedMonth 
         <div className="space-y-6">
             {/* 振替出席情報 */}
             <div className="min-w-[700px]">
-                <h2 className="text-lg font-bold mb-2 text-yellow-600">振替出席情報</h2>
+                <h2 className="text-lg font-bold mb-2 text-yellow-600">振替情報</h2>
                 <AttendanceSubTable
                     data={makeupLessons || []}
                     teachers={teachers}
