@@ -104,55 +104,48 @@ export async function fetchTeacherEvents(user, startDate, endDate) {
 
         const periods = row.periods || {};
         for (const [periodKey, periodValue] of Object.entries(periods)) {
-          for (const student of periodValue) {
-            const status = student.status || '';
-            if (status === '未定') continue;
+          const index = parseInt(periodKey.replace('period', '')) - 1;
+          const periodLabel = periodLabels[index]?.label || periodKey;
+          const time = periodLabels[index]?.time || '';
 
-            const index = parseInt(periodKey.replace('period', '')) - 1;
-            const periodLabel = periodLabels[index]?.label || periodKey;
-            const time = periodLabels[index]?.time || '';
-            const subject = student.subject || '';
-            const grade = student.grade || '';
-
-            let title = `${periodLabel} ${subject}（${grade}）`;
-            let color = '';
-            if (status === '欠席') {
-              title = `${periodLabel} 欠席`;
-              color = '#FF6347';
-            } else if (status === '振替') {
-              title = `${periodLabel} 振替`;
-              color = '#32CD32';
-            }
-
-            result.matchedLessons.push({
-              date: dateKey,
-              periodLabel,
-              time,
-              subject,
-              grade,
-              status
-            });
-
-            result.events.push({
-              title,
-              start: dateKey,
-              color: color || undefined,
-              extendedProps: {
-                period: periodLabel,
+          const teachingList = periodValue
+            .filter(student => student.status !== '未定')
+            .map(student => {
+              result.matchedLessons.push({
+                date: dateKey,
+                periodLabel,
                 time,
-                subject,
-                grade,
-                status
-              }
+                subject: student.subject || '',
+                grade: student.grade || '',
+                status: student.status || ''
+              });
+              return {
+                subject: student.subject || '',
+                grade: student.grade || '',
+                status: student.status || ''
+              };
             });
-          }
+
+          if (teachingList.length === 0) continue;
+
+          const titleLines = teachingList.map(s => `- ${s.subject}（${s.grade}）`).join('\n');
+
+          result.events.push({
+            title: `${periodLabel}\n${titleLines}`,
+            start: dateKey,
+            extendedProps: {
+              period: periodLabel,
+              time,
+              teachingList
+            }
+          });
         }
       }
     }
 
     return result;
   } catch (error) {
-    console.error("\u274C Firestore エラー:", error.message);
+    console.error("❌ Firestore エラー:", error.message);
     return result;
   }
 }
