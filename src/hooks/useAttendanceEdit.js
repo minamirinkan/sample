@@ -137,6 +137,27 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     // ✅ アーカイブ用に移動させる
                     await moveMakeupLessonToArchive(targetStudentId, originalEntry.date, originalEntry, classroomCode);
                 }
+                if (originalEntry.status === '予定' && editValues.status === '振替') {
+                    let oldData = await fetchScheduleDoc('dailySchedules', oldDocId);
+                    if (!oldData) {
+                        const weeklyRefId = buildWeeklyDocId(classroomCode, originalEntry.date);
+                        const weeklyData = await fetchScheduleDoc('weeklySchedules', weeklyRefId);
+                        oldData = weeklyData || { rows: [] };
+                    }
+                
+                    const updatedOldRows = (oldData.rows || []).map(row => ({
+                        ...row,
+                        periods: {
+                            ...row.periods,
+                            [oldPeriodKey]: (row.periods?.[oldPeriodKey] || []).filter(
+                                s => String(s.studentId).trim() !== targetStudentId
+                            ),
+                        },
+                    }));
+                
+                    await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
+                }
+                
                 const noChange =
                     editValues.date === originalEntry.date &&
                     editValues.periodLabel === originalEntry.periodLabel &&
