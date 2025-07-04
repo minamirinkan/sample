@@ -222,7 +222,7 @@ class CalendarPopup extends Component {
                   >
                     <span className="text-sm font-medium">{date}</span>
                     {isConfirmed && (
-                      <span className="absolute bottom-1 right-1 text-green-600 text-[10px] opacity-60 pointer-events-none">
+                      <span className="absolute bottom-1 right-1 text-green-600 text-[10px] opacity-80 pointer-events-none">
                         ✅
                       </span>
                     )}
