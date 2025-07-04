@@ -46,7 +46,18 @@ export default function StudentCourseTable({ studentId }) {
 
     return (
         <div className="space-y-4">
-            <h2 className="text-lg font-semibold">受講情報</h2>
+            <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold">受講情報</h2>
+                <button
+                    className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 text-sm"
+                    onClick={() => {
+                        // 必要ならここにクリック処理を書く
+                        console.log('受講情報の登録クリック');
+                    }}
+                >
+                    受講情報の登録
+                </button>
+            </div>
             <table className="w-full table-auto border">
                 <thead>
                     <tr className="bg-blue-50">
