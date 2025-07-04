@@ -1,4 +1,4 @@
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import {
   getDateKey,
@@ -98,49 +98,49 @@ export async function fetchTeacherEvents(user, startDate, endDate) {
       }
 
       const rows = snap.data().rows || [];
+      const teachingList = [];
+
       for (const row of rows) {
         const rowTeacher = row.teacher;
         if (!rowTeacher || rowTeacher.code !== teacherCode) continue;
 
         const periods = row.periods || {};
         for (const [periodKey, periodValue] of Object.entries(periods)) {
-          const index = parseInt(periodKey.replace('period', '')) - 1;
-          const periodLabel = periodLabels[index]?.label || periodKey;
-          const time = periodLabels[index]?.time || '';
+          const periodIndex = parseInt(periodKey.replace('period', '')) - 1;
+          const periodLabel = periodLabels[periodIndex]?.label || periodKey;
+          const time = periodLabels[periodIndex]?.time || '';
 
-          const teachingList = periodValue
-            .filter(student => student.status !== '未定')
-            .map(student => {
-              result.matchedLessons.push({
-                date: dateKey,
-                periodLabel,
-                time,
-                subject: student.subject || '',
-                grade: student.grade || '',
-                status: student.status || ''
-              });
-              return {
-                subject: student.subject || '',
-                grade: student.grade || '',
-                status: student.status || ''
-              };
-            });
-
-          if (teachingList.length === 0) continue;
-
-          const titleLines = teachingList.map(s => `- ${s.subject}（${s.grade}）`).join('\n');
-
-          result.events.push({
-            title: `${periodLabel}\n${titleLines}`,
-            start: dateKey,
-            extendedProps: {
-              period: periodLabel,
-              time,
-              teachingList
-            }
-          });
+          for (const student of periodValue) {
+            const subject = student.subject || '';
+            const grade = student.grade || '';
+            teachingList.push({ periodIndex, periodLabel, time, subject, grade });
+          }
         }
       }
+
+      if (teachingList.length === 0) continue;
+
+      // 範囲ラベル作成
+      const periodIndices = teachingList.map(t => t.periodIndex);
+      const minPeriod = Math.min(...periodIndices) + 1;
+      const maxPeriod = Math.max(...periodIndices) + 1;
+      const periodRange = (minPeriod === maxPeriod)
+        ? `${minPeriod}限`
+        : `${minPeriod}～${maxPeriod}限`;
+
+      result.events.push({
+        title: periodRange,
+        start: dateKey,
+        extendedProps: {
+          periodRange,
+          teachingList
+        }
+      });
+
+      result.matchedLessons.push(...teachingList.map(t => ({
+        date: dateKey,
+        ...t
+      })));
     }
 
     return result;
