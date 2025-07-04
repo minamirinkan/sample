@@ -1,10 +1,11 @@
+//pages/TimetablePage.jsx
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import TimetableTable from '../components/TimetableTable';
 import CalendarPopup from '../components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from '../utils/firebase/timetableFirestore';
-import { confirmAttendanceStatus } from '../utils/firestoreAttendanceUtils';
+import { confirmAttendanceStatus, fetchConfirmedAttendanceDatesFromDailySchedules } from '../utils/firestoreAttendanceUtils';
 import ConfirmAttendanceModal from '../components/ConfirmAttendanceModal';
 import { formatDateDisplay } from '../utils/dateUtils';
 import ConfirmOverwriteModal from "../components/ConfirmOverwriteModal";
@@ -80,6 +81,18 @@ export default function TimetablePage() {
     window.addEventListener('updateAllRows', handler);
     return () => window.removeEventListener('updateAllRows', handler);
   }, []);
+
+  const [confirmedDates, setConfirmedDates] = useState([]);
+
+  useEffect(() => {
+    const loadConfirmedDates = async () => {
+      if (!adminData?.classroomCode) return;
+      const dates = await fetchConfirmedAttendanceDatesFromDailySchedules(adminData.classroomCode);
+      setConfirmedDates(dates);
+    };
+
+    loadConfirmedDates();
+  }, [adminData?.classroomCode]);
 
   const changeDateBy = (days) => {
     const date = new Date(selectedDate.year, selectedDate.month - 1, selectedDate.date);
@@ -210,7 +223,11 @@ export default function TimetablePage() {
           </span>
         </h1>
         <span className="text-gray-700 text-sm">{formatDateDisplay(selectedDate)}</span>
-        <CalendarPopup onDateSelect={setSelectedDate} />
+        <CalendarPopup
+          onDateSelect={setSelectedDate}
+          confirmedDates={confirmedDates}
+          classroomCode={adminData?.classroomCode}  // ここを追加
+        />
         <button
           onClick={() => changeDateBy(-1)}
           className="bg-gray-300 hover:bg-gray-400 text-sm px-2 py-1 rounded"

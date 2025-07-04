@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, collection, getDocs} from 'firebase/firestore';
 import { db } from '../firebase'; // Firebase初期化ファイルなど
 
 export async function confirmAttendanceStatus(classroomCode, date) {
@@ -46,3 +46,36 @@ export async function confirmAttendanceStatus(classroomCode, date) {
         isSaved: true, // ← この行を追加
     });
 }
+
+/**
+ * 教室IDに対応する dailySchedules から出席確定日付を取得
+ * @param {string} classroomCode - 教室コード（例: "047"）
+ * @returns {Promise<string[]>} - yyyy-mm-dd の文字列配列
+ */
+export const fetchConfirmedAttendanceDatesFromDailySchedules = async (classroomCode) => {
+    const snapshot = await getDocs(collection(db, "dailySchedules"));
+    const confirmedDates = [];
+
+    snapshot.forEach(doc => {
+        const docId = doc.id; // 例: "047_2025-07-04"
+        const [code, date] = docId.split("_");
+
+        if (code !== classroomCode) return;
+
+        const data = doc.data();
+        const rows = data.rows || [];
+
+        const hasConfirmedAttendance = rows.some(row => {
+            return row.periods && Object.values(row.periods).some(periodArray =>
+                Array.isArray(periodArray) &&
+                periodArray.some(p => p.status === "出席")
+            );
+        });
+
+        if (hasConfirmedAttendance) {
+            confirmedDates.push(date);
+        }
+    });
+
+    return confirmedDates;
+};
