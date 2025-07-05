@@ -26,12 +26,14 @@ const PERIOD_MAP = {
 
 const RegularLessonTable = ({ classroomCode, studentId, selectedMonth }) => {
     const [lessons, setLessons] = useState([]);
+    const [loading, setLoading] = useState(true); // 追加
 
     useEffect(() => {
         const fetchLessons = async () => {
+            setLoading(true);  // 読み込み開始
+
             const extracted = [];
 
-            // 曜日0〜6までループして最新の週予定を取得
             for (let weekday = 0; weekday <= 6; weekday++) {
                 const data = await fetchLatestWeeklySchedule(db, classroomCode, selectedMonth, weekday);
                 if (!data) continue;
@@ -60,10 +62,19 @@ const RegularLessonTable = ({ classroomCode, studentId, selectedMonth }) => {
             }
 
             setLessons(extracted);
+            setLoading(false);  // 読み込み終了
         };
 
         fetchLessons();
     }, [classroomCode, studentId, selectedMonth]);
+
+    if (loading) {
+        return (
+            <div className="p-4 border rounded text-center text-gray-500">
+                読み込み中...
+            </div>
+        );
+    }
 
     return (
         <div className="p-4 border rounded">

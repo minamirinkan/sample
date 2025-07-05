@@ -25,7 +25,6 @@ const MonthlyAttendanceTable = ({ classroomCode, studentId, studentName, selecte
 
     const statusStyles = {
         '未定': 'bg-blue-100 text-blue-800',
-        '振替': 'bg-green-100 text-green-800',
         '欠席': 'bg-red-100 text-red-800',
         '出席': 'bg-gray-100 text-gray-800',
     };
@@ -50,6 +49,7 @@ const MonthlyAttendanceTable = ({ classroomCode, studentId, studentName, selecte
                     setEditValues({
                         ...entry,
                         teacherCode: entry.teacher?.code || '',
+                        name: entry.name || studentName || '',
                     });
                 }}
                 handleChange={handleChange}

@@ -10,7 +10,7 @@ const AttendanceTabs = ({
     selectedMonth,
 }) => {
     const [activeTab, setActiveTab] = useState('月間出席記録');
-
+console.log('studentname:', studentName);
     const tabs = ['レギュラー授業', '月間出席記録', '講習授業'];
 
     const renderActiveTable = () => {

@@ -1,6 +1,5 @@
 // src/components/StudentRegistrationForm/BasicInfoSection.jsx
 const genders = ['男性', '女性', 'その他'];
-const grades = ['小1', '小2', '小3', '小4', '小5', '小6', '中1', '中2', '中3', '高1', '高2', '高3'];
 
 const BasicInfoSection = ({ formData, onChange }) => (
     <fieldset>
@@ -15,12 +14,6 @@ const BasicInfoSection = ({ formData, onChange }) => (
                 <option value="">性別を選択</option>
                 {genders.map((g) => <option key={g} value={g}>{g}</option>)}
             </select>
-            <select value={formData.grade} onChange={(e) => onChange('grade', e.target.value)} className="border rounded p-2">
-                <option value="">学年を選択</option>
-                {grades.map((g) => <option key={g} value={g}>{g}</option>)}
-            </select>
-            <input type="text" placeholder="学校名" value={formData.schoolName} onChange={(e) => onChange('schoolName', e.target.value)} className="border rounded p-2" />
-            <input type="text" placeholder="住所" value={formData.address} onChange={(e) => onChange('address', e.target.value)} className="border rounded p-2" />
         </div>
     </fieldset>
 );

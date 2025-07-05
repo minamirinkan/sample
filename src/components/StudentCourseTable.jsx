@@ -65,7 +65,7 @@ export default function StudentCourseTable({ studentId }) {
                         <th className="border p-2">受講終了月</th>
                         <th className="border p-2">授業種別</th>
                         <th className="border p-2">授業形態</th>
-                        <th className="border p-2">週あたり授業回数</th>
+                        <th className="border p-2">週回数</th>
                         <th className="border p-2">授業時間</th>
                         <th className="border p-2">講習時期</th>
                         <th className="border p-2">備考</th>

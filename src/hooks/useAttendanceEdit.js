@@ -98,10 +98,11 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
 
             console.log('🪵 edit:', makeUpList[editingIndexMakeup]);
             console.log('🪵 originalEntry:', originalEntry);
+            console.log('editValues.studentName:', studentName);
             const selectedTeacher = teachers.find(t => t.code === editValues.teacherCode);
             const student = {
                 studentId: editValues.studentId,
-                name: studentName || '',
+                name: editValues.studentName || originalEntry.student?.name || studentName || '',
                 subject: editValues.subject || '',
                 status: editValues.status || '',
                 seat: editValues.seat || '',

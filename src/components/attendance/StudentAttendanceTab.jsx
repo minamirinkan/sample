@@ -6,7 +6,7 @@ const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
     const today = new Date();
     const [selectedYear, setSelectedYear] = useState(today.getFullYear());
     const [selectedMonth, setSelectedMonth] = useState(`${selectedYear}-${String(today.getMonth() + 1).padStart(2, '0')}`);
-
+console.log('studentname:', studentName);
     const months = [...Array(12)].map((_, i) => {
         const month = i + 1;
         return `${selectedYear}-${String(month).padStart(2, '0')}`;
@@ -50,7 +50,7 @@ const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
             </div>
 
             {/* 振替出席情報（上） */}
-            <MakeupAttendanceTable studentId={studentId} classroomCode={classroomCode} />
+            <MakeupAttendanceTable studentId={studentId} classroomCode={classroomCode} studentName={studentName} />
 
             {/* 授業情報（下） */}
             <AttendanceTabs
