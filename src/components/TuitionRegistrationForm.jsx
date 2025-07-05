@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import ExistingLocationsList from './ExistingLocationsList';
+import TuitionDetails from './TuitionDetails';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { saveTuitionSettings } from '../utils/firebase/saveTuitionSettings';
 
 const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'];
 
@@ -25,6 +30,7 @@ const createInitialData = (rows, cols) => {
   return rows.map(() => new Array(cols.length).fill(''));
 };
 
+
 const TuitionRegistrationForm = () => {
   const [schedulesW, setSchedulesW] = useState(initialSchedulesW);
   const [schedulesA, setSchedulesA] = useState(initialSchedulesA);
@@ -40,7 +46,10 @@ const TuitionRegistrationForm = () => {
   const [expenses, setExpenses] = useState({
     admissionFee: '',
     materialFee: '',
-    testFee: '',
+    testFee: {
+      elementary: '',
+      middle: ''
+    },
     maintenanceFee: '',
   });
 
@@ -53,11 +62,33 @@ const TuitionRegistrationForm = () => {
     setData(updated);
   };
 
+  const [selectedLocationData, setSelectedLocationData] = useState(null);
+
+  if (selectedLocationData) {
+    return (
+      <TuitionDetails
+        data={selectedLocationData}
+        onBack={() => setSelectedLocationData(null)}
+      />
+    );
+  }
   const handleExpenseChange = (e) => {
-    setExpenses({
-      ...expenses,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if (name === 'testFee_elementary' || name === 'testFee_middle') {
+      const key = name === 'testFee_elementary' ? 'elementary' : 'middle';
+      setExpenses((prev) => ({
+        ...prev,
+        testFee: {
+          ...prev.testFee,
+          [key]: value
+        }
+      }));
+    } else {
+      setExpenses({
+        ...expenses,
+        [name]: value,
+      });
+    }
   };
 
   const handleAddWeek6 = () => {
@@ -96,16 +127,54 @@ const TuitionRegistrationForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('マンツーマンW:', tuitionDataW);
-    console.log('マンツーマンA:', tuitionDataA);
-    console.log('諸費用:', expenses);
-    alert('すべての情報を送信しました（仮）');
+
+    const tuitionDataW_flattened = schedulesW.map((label, rowIdx) => {
+      const row = tuitionDataW[rowIdx];
+      const obj = { scheduleLabel: label };
+      grades.forEach((grade, colIdx) => {
+        obj[grade] = row[colIdx];
+      });
+      return obj;
+    });
+
+    const tuitionDataA_flattened = schedulesA.map((label, rowIdx) => {
+      const row = tuitionDataA[rowIdx];
+      const obj = { scheduleLabel: label };
+      grades.forEach((grade, colIdx) => {
+        obj[grade] = row[colIdx];
+      });
+      return obj;
+    });
+
+    try {
+      const id = await saveTuitionSettings({
+        registrationLocation,
+        tuitionDataW: tuitionDataW_flattened,
+        tuitionDataA: tuitionDataA_flattened,
+        expenses,
+        testPreparationData: testPrices
+      });
+      alert(`保存完了（tuitionCode: ${id}）`);
+    } catch (err) {
+      alert('保存に失敗しました');
+    }
+    
   };
 
   return (
     <form onSubmit={handleSubmit} className="overflow-x-auto space-y-12">
+      <ExistingLocationsList
+        onLocationClick={async (locationName) => {
+          const snapshot = await getDocs(collection(db, 'tuitionSettings'));
+          const match = snapshot.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .find((doc) => doc.registrationLocation === locationName);
+
+          if (match) setSelectedLocationData(match);
+        }}
+      />
       {/* ▼ Wコース */}
       <div>
         <div className="flex items-center justify-between mb-4">
@@ -245,34 +314,97 @@ const TuitionRegistrationForm = () => {
         <h2 className="text-2xl font-bold mb-4">諸費用 登録フォーム</h2>
         <table className="table-auto border border-collapse border-gray-400 w-full">
           <tbody>
-            {[
-              { label: '① 入会金', name: 'admissionFee' },
-              { label: '② 教材費', name: 'materialFee' },
-              { label: '③ 塾内テスト代', name: 'testFee' },
-              { label: '④ 教室維持費', name: 'maintenanceFee' }
-            ].map((item, i) => (
-              <tr key={i}>
-                <td className="border px-3 py-2 w-1/4 font-semibold">{item.label}</td>
-                <td className="border px-2 py-1">
-                  <div className="flex items-center">
-                    <input
-                      type="number"
-                      name={item.name}
-                      value={expenses[item.name]}
-                      onChange={handleExpenseChange}
-                      className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
-                        [&::-webkit-outer-spin-button]:appearance-none 
-                        [&::-webkit-inner-spin-button]:appearance-none"
-                      required
-                    />
-                    <span className="ml-1 text-sm">円</span>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            <tr>
+              <td className="border px-3 py-2 w-1/4 font-semibold">① 入会金</td>
+              <td className="border px-2 py-1">
+                <div className="flex items-center">
+                  <input
+                    type="number"
+                    name="admissionFee"
+                    value={expenses.admissionFee}
+                    onChange={handleExpenseChange}
+                    className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
+                [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none"
+                    required
+                  />
+                  <span className="ml-1 text-sm">円</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-3 py-2 w-1/4 font-semibold">② 教材費</td>
+              <td className="border px-2 py-1">
+                <div className="flex items-center">
+                  <input
+                    type="number"
+                    name="materialFee"
+                    value={expenses.materialFee}
+                    onChange={handleExpenseChange}
+                    className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
+                [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none"
+                    required
+                  />
+                  <span className="ml-1 text-sm">円</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-3 py-2 w-1/4 font-semibold">③ 塾内テスト代</td>
+              <td className="border px-2 py-1 space-y-1">
+                <div className="flex items-center">
+                  <span className="mr-2">小学生：</span>
+                  <input
+                    type="number"
+                    name="testFee_elementary"
+                    value={expenses.testFee.elementary}
+                    onChange={handleExpenseChange}
+                    className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
+                [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none"
+                    required
+                  />
+                  <span className="ml-1 text-sm">円</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="mr-2">中学生：</span>
+                  <input
+                    type="number"
+                    name="testFee_middle"
+                    value={expenses.testFee.middle}
+                    onChange={handleExpenseChange}
+                    className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
+                [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none"
+                    required
+                  />
+                  <span className="ml-1 text-sm">円</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td className="border px-3 py-2 w-1/4 font-semibold">④ 教室維持費</td>
+              <td className="border px-2 py-1">
+                <div className="flex items-center">
+                  <input
+                    type="number"
+                    name="maintenanceFee"
+                    value={expenses.maintenanceFee}
+                    onChange={handleExpenseChange}
+                    className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
+                [&::-webkit-outer-spin-button]:appearance-none 
+                [&::-webkit-inner-spin-button]:appearance-none"
+                    required
+                  />
+                  <span className="ml-1 text-sm">円</span>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
+
 
       {/* ▼ 登録地入力欄 */}
       <div className="mb-6">
