@@ -8,6 +8,8 @@ import TimetablePage from './TimetablePage';
 import SchoolAccountAdmin from '../components/SchoolAccountAdmin';
 import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm';
 import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
+import TuitionRegistrationForm from '../components/TuitionRegistrationForm';
+
 
 const SuperAdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -23,6 +25,8 @@ const SuperAdminDashboard = () => {
                 return <TimetablePage />;
             case 'admin': // ← 教室管理
                 return <SchoolAccountAdmin />;
+            case 'tuition':
+                return <TuitionRegistrationForm />;
             case 'studentRegistration':
                 return <StudentRegistrationForm onSubmitSuccess={() => setSelectedContent('students')} />;
             case 'teacherRegistration':
