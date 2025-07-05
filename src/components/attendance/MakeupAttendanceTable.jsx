@@ -20,12 +20,9 @@ const MakeupAttendanceTable = ({ studentId, classroomCode, studentName }) => {
         handleChange,
         handleSaveClick,
     } = useAttendanceEdit(makeupLessons, () => {}, periodLabels, teachers, classroomCode, studentName);
-
+console.log('studentname:', studentName);
     const statusStyles = {
-        '未定': 'bg-blue-100 text-blue-800',
         '振替': 'bg-green-100 text-green-800',
-        '欠席': 'bg-red-100 text-red-800',
-        '出席': 'bg-gray-100 text-gray-800',
     };
     const getStatusClass = (status) => statusStyles[status] || '';
 
@@ -50,6 +47,7 @@ const MakeupAttendanceTable = ({ studentId, classroomCode, studentName }) => {
                     setEditValues({
                         ...entry,
                         periodLabel,
+                        name: entry.name || studentName || '',
                     });
                 }}
                 handleChange={handleChange}
