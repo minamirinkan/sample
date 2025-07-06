@@ -243,6 +243,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                                         onChange={(e) =>
                                                             handleChange(tuitionDataW, setTuitionDataW, rowIdx, colIdx, e.target.value)
                                                         }
+                                                        onWheel={(e) => e.target.blur()}
                                                         required
                                                     />
                                                     <span className="ml-1 text-sm">円</span>
@@ -285,6 +286,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                                 onChange={(e) =>
                                                     handleChange(tuitionDataA, setTuitionDataA, rowIdx, colIdx, e.target.value)
                                                 }
+                                                onWheel={(e) => e.target.blur()}
                                                 required
                                             />
                                             <span className="ml-1 text-sm">円</span>
@@ -324,6 +326,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                                 updated[setNum - 1] = e.target.value;
                                                 setTestPrices(updated);
                                             }}
+                                            onWheel={(e) => e.target.blur()}
                                         />
                                         <span className="text-sm">円</span>
                                     </div>
@@ -351,6 +354,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                         className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
                 [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none"
+                onWheel={(e) => e.target.blur()}
                                         required
                                     />
                                     <span className="ml-1 text-sm">円</span>
@@ -369,6 +373,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                         className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
                 [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none"
+                onWheel={(e) => e.target.blur()}
                                         required
                                     />
                                     <span className="ml-1 text-sm">円</span>
@@ -388,6 +393,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                         className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
                 [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none"
+                onWheel={(e) => e.target.blur()}
                                         required
                                     />
                                     <span className="ml-1 text-sm">円</span>
@@ -402,6 +408,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                         className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
                 [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none"
+                onWheel={(e) => e.target.blur()}
                                         required
                                     />
                                     <span className="ml-1 text-sm">円</span>
@@ -420,6 +427,7 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                                         className="border w-[100px] px-1 py-0.5 text-blue-600 text-center appearance-none 
                 [&::-webkit-outer-spin-button]:appearance-none 
                 [&::-webkit-inner-spin-button]:appearance-none"
+                onWheel={(e) => e.target.blur()}
                                         required
                                     />
                                     <span className="ml-1 text-sm">円</span>
