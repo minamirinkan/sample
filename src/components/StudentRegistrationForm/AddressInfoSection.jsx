@@ -14,18 +14,23 @@ const AddressInfoSection = ({ formData, onChange }) => {
 
     // 郵便番号補完による自動入力 → formData へ反映
     useEffect(() => {
+        // Reactのレンダリング後に補完スクリプトを明示的に再実行
+        if (window.YubinBango?.MicroformatDom) {
+            new window.YubinBango.MicroformatDom();
+        }
+    
         const interval = setInterval(() => {
             const newData = {
                 prefecture: prefectureRef.current?.value || '',
                 address2: cityRef.current?.value || '',
                 address3: streetRef.current?.value || '',
             };
-
+    
             const hasChanged =
                 newData.prefecture !== formData.prefecture ||
                 newData.address2 !== formData.address2 ||
                 newData.address3 !== formData.address3;
-
+    
             if (hasChanged) {
                 onChange({
                     ...formData,
@@ -33,20 +38,21 @@ const AddressInfoSection = ({ formData, onChange }) => {
                 });
             }
         }, 500);
-
+    
         return () => clearInterval(interval);
     }, [formData, onChange]);
+    
 
     return (
-        <div className="p-4 yubinbango">
+        <div className="p-4 h-adr">
             <span className="p-country-name" style={{ display: 'none' }}>Japan</span>
 
             {/* 郵便番号 */}
             <label className="block mb-2 font-bold" htmlFor="postalCode">郵便番号</label>
             <input
                 type="text"
-                name="postal-code"
-                className="postal-code"
+                name="postal"
+                className="p-postal-code"
                 id="postalCode"
                 maxLength={7}
                 value={formData.postalCode || ''}
