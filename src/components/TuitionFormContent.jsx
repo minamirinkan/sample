@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ExistingLocationsList from './ExistingLocationsList';
 import TuitionDetails from './TuitionDetails';
 import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { doc,getDoc,collection, getDocs } from 'firebase/firestore';
 import { saveTuitionSettings } from '../utils/firebase/saveTuitionSettings';
 
 const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'];
@@ -30,7 +30,7 @@ const createInitialData = (rows, cols) => {
   return rows.map(() => new Array(cols.length).fill(''));
 };
 
-const TuitionFormContent = () => {
+const TuitionFormContent = ({ onRegistered }) => {
   const [schedulesW, setSchedulesW] = useState(initialSchedulesW);
   const [schedulesA, setSchedulesA] = useState(initialSchedulesA);
   const [addedWeek6, setAddedWeek6] = useState(false);
@@ -131,7 +131,13 @@ const TuitionFormContent = () => {
         expenses,
         testPreparationData: testPrices
       });
+
       alert(`保存完了（tuitionCode: ${id}）`);
+
+      // 🔽 登録完了を親に通知（モーダルを閉じ、選択状態をセット）
+      if (onRegistered && typeof onRegistered === 'function') {
+        onRegistered(registrationLocation);
+      }
     } catch (err) {
       alert('保存に失敗しました');
     }
@@ -150,13 +156,22 @@ const TuitionFormContent = () => {
     <form onSubmit={handleSubmit} className="space-y-12 overflow-x-auto">
       <ExistingLocationsList
         onLocationClick={async (locationName) => {
-          const snapshot = await getDocs(collection(db, 'tuitionSettings'));
-          const match = snapshot.docs
-            .map((doc) => ({ id: doc.id, ...doc.data() }))
-            .find((doc) => doc.registrationLocation === locationName);
-          if (match) setSelectedLocationData(match);
+          try {
+            const docRef = doc(db, 'Tuition', locationName); // ← ドキュメントIDがlocationName
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+              const data = { id: docSnap.id, ...docSnap.data() }; // ← idも渡す
+              setSelectedLocationData(data);
+            } else {
+              alert(`"${locationName}" に該当するデータが見つかりませんでした`);
+            }
+          } catch (error) {
+            console.error('教室データの取得に失敗:', error);
+          }
         }}
       />
+
       {/* ▼ Wコース */}
       <div>
         <div className="flex items-center justify-between mb-4">

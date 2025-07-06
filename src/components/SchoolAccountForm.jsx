@@ -1,19 +1,49 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+import TuitionViewModal from './TuitionViewModal';
+import SchoolAccountFormFee from './SchoolAccountFormFee';
 
 const SchoolAccountForm = ({ onAdd }) => {
     const [newName, setNewName] = useState('');
     const [newCode, setNewCode] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [tuitionOptions, setTuitionOptions] = useState([]);
+    const [selectedTuition, setSelectedTuition] = useState('');
+    const [showTuitionModal, setShowTuitionModal] = useState(false); // モーダル表示制御
+
+    // Firestoreから登録済み授業料の一覧を取得
+    useEffect(() => {
+        const fetchTuitions = async () => {
+            const snap = await getDocs(collection(db, 'Tuition'));
+            const names = snap.docs.map(doc => doc.id);
+            setTuitionOptions(names);
+        };
+        fetchTuitions();
+    }, []);
 
     const handleSubmit = () => {
-        onAdd({ newName, newCode, newEmail, newPassword });
-
-        //フォームリセットしたい場合は以下を追加
+        onAdd({
+            newName,
+            newCode,
+            newEmail,
+            newPassword,
+            tuitionName: selectedTuition,
+        });
         setNewName('');
         setNewCode('');
         setNewEmail('');
         setNewPassword('');
+        setSelectedTuition('');
+    };
+
+    const handleTuitionSelect = (value) => {
+        if (value === 'add_new') {
+            setShowTuitionModal(true);
+        } else {
+            setSelectedTuition(value);
+        }
     };
 
     return (
@@ -65,12 +95,53 @@ const SchoolAccountForm = ({ onAdd }) => {
                 </div>
             </div>
 
+            {/* ▼ 授業料モーダル起動ボタン風エリア */}
+            <div className="flex flex-col">
+                <label className="mb-1 text-sm font-medium text-gray-700">授業料（登録地名）</label>
+                <div
+                    onClick={() => setShowTuitionModal(true)}
+                    className="border border-gray-300 rounded px-3 py-2 bg-white cursor-pointer relative"
+                >
+                    {selectedTuition || '＋ 新規登録'}
+                    
+                </div>
+            </div>
+
             <button
                 onClick={handleSubmit}
                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-fit self-end"
             >
                 新規登録
             </button>
+
+            {/* ▼ モーダル表示 */}
+            {showTuitionModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg w-[90%] max-w-5xl relative">
+                        {/* ✕ ボタンで閉じる */}
+                        <button
+                            onClick={() => setShowTuitionModal(false)}
+                            className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
+                        >
+                            ✕
+                        </button>
+
+                        {/* TuitionFormContent に登録完了後のコールバックを渡す */}
+                        <SchoolAccountFormFee
+                            onRegistered={(newLocationName) => {
+                                setShowTuitionModal(false);                    // モーダルを閉じる
+                                setSelectedTuition(newLocationName);           // 自動選択
+                                setTuitionOptions((prev) => {
+                                    if (!prev.includes(newLocationName)) {
+                                        return [...prev, newLocationName];         // 新規地名を選択肢に追加
+                                    }
+                                    return prev;
+                                });
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
