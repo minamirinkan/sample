@@ -3,7 +3,7 @@ import { updateTuitionSettings } from '../utils/firebase/updateTuitionSettings';
 
 const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'];
 
-const TuitionDetails = ({ data, onBack }) => {
+const TuitionDetails = ({ data, locationId, onBack }) => {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState(data ? structuredClone(data) : {});
   const [isSaving, setIsSaving] = useState(false);
@@ -31,15 +31,6 @@ const TuitionDetails = ({ data, onBack }) => {
     }
   };
 
-  const formatDateTime = (dateObj) => {
-    const yyyy = dateObj.getFullYear();
-    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const dd = String(dateObj.getDate()).padStart(2, '0');
-    const hh = String(dateObj.getHours()).padStart(2, '0');
-    const min = String(dateObj.getMinutes()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
-  };
-
   const extractRow = (row) =>
     typeof row.scheduleLabel === 'object' ? row.scheduleLabel : row;
 
@@ -57,7 +48,6 @@ const TuitionDetails = ({ data, onBack }) => {
         </thead>
         <tbody>
           {formData[type].map((row, rowIdx) => {
-            console.log('🚨 row', row);
             const rowData = extractRow(row);
             return (
               <tr key={rowIdx}>
@@ -92,7 +82,7 @@ const TuitionDetails = ({ data, onBack }) => {
 
   return (
     <div className="space-y-10">
-      <h1 className="text-2xl font-bold underline">料金詳細：{formData.registrationLocation}</h1>
+      <h1 className="text-2xl font-bold underline">料金詳細：{locationId}</h1>
 
       <div className="flex items-center gap-4">
         <button onClick={onBack} className="text-blue-600 underline">
@@ -215,8 +205,6 @@ const TuitionDetails = ({ data, onBack }) => {
           </li>
         </ul>
       </section>
-
-      
     </div>
   );
 };

@@ -30,8 +30,7 @@ const createInitialData = (rows, cols) => {
   return rows.map(() => new Array(cols.length).fill(''));
 };
 
-
-const TuitionRegistrationForm = () => {
+const TuitionFormContent = () => {
   const [schedulesW, setSchedulesW] = useState(initialSchedulesW);
   const [schedulesA, setSchedulesA] = useState(initialSchedulesA);
   const [addedWeek6, setAddedWeek6] = useState(false);
@@ -46,15 +45,13 @@ const TuitionRegistrationForm = () => {
   const [expenses, setExpenses] = useState({
     admissionFee: '',
     materialFee: '',
-    testFee: {
-      elementary: '',
-      middle: ''
-    },
+    testFee: { elementary: '', middle: '' },
     maintenanceFee: '',
   });
 
   const [testPrices, setTestPrices] = useState(['', '']);
   const [registrationLocation, setRegistrationLocation] = useState('');
+  const [selectedLocationData, setSelectedLocationData] = useState(null);
 
   const handleChange = (data, setData, rowIdx, colIdx, value) => {
     const updated = [...data];
@@ -62,32 +59,16 @@ const TuitionRegistrationForm = () => {
     setData(updated);
   };
 
-  const [selectedLocationData, setSelectedLocationData] = useState(null);
-
-  if (selectedLocationData) {
-    return (
-      <TuitionDetails
-        data={selectedLocationData}
-        onBack={() => setSelectedLocationData(null)}
-      />
-    );
-  }
   const handleExpenseChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'testFee_elementary' || name === 'testFee_middle') {
+    if (name.startsWith('testFee_')) {
       const key = name === 'testFee_elementary' ? 'elementary' : 'middle';
       setExpenses((prev) => ({
         ...prev,
-        testFee: {
-          ...prev.testFee,
-          [key]: value
-        }
+        testFee: { ...prev.testFee, [key]: value },
       }));
     } else {
-      setExpenses({
-        ...expenses,
-        [name]: value,
-      });
+      setExpenses((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -113,16 +94,10 @@ const TuitionRegistrationForm = () => {
 
       setAddedWeek6(true);
     } else {
-      const newSchedulesW = schedulesW.filter(row => row !== '週6回');
-      setSchedulesW(newSchedulesW);
-      const newW = tuitionDataW.filter((_, idx) => schedulesW[idx] !== '週6回');
-      setTuitionDataW(newW);
-
-      const newSchedulesA = schedulesA.filter(row => row !== '週6回');
-      setSchedulesA(newSchedulesA);
-      const newA = tuitionDataA.filter((_, idx) => schedulesA[idx] !== '週6回');
-      setTuitionDataA(newA);
-
+      setSchedulesW(schedulesW.filter(row => row !== '週6回'));
+      setTuitionDataW(tuitionDataW.filter((_, idx) => schedulesW[idx] !== '週6回'));
+      setSchedulesA(schedulesA.filter(row => row !== '週6回'));
+      setTuitionDataA(tuitionDataA.filter((_, idx) => schedulesA[idx] !== '週6回'));
       setAddedWeek6(false);
     }
   };
@@ -160,18 +135,25 @@ const TuitionRegistrationForm = () => {
     } catch (err) {
       alert('保存に失敗しました');
     }
-    
   };
 
+  if (selectedLocationData) {
+    return (
+      <TuitionDetails
+        data={selectedLocationData}
+        onBack={() => setSelectedLocationData(null)}
+      />
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="overflow-x-auto space-y-12">
+    <form onSubmit={handleSubmit} className="space-y-12 overflow-x-auto">
       <ExistingLocationsList
         onLocationClick={async (locationName) => {
           const snapshot = await getDocs(collection(db, 'tuitionSettings'));
           const match = snapshot.docs
             .map((doc) => ({ id: doc.id, ...doc.data() }))
             .find((doc) => doc.registrationLocation === locationName);
-
           if (match) setSelectedLocationData(match);
         }}
       />
@@ -436,4 +418,4 @@ const TuitionRegistrationForm = () => {
   );
 };
 
-export default TuitionRegistrationForm;
+export default TuitionFormContent;
