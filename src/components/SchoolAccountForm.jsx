@@ -44,9 +44,9 @@ const SchoolAccountForm = ({ onAdd }) => {
 
     useEffect(() => {
         const fetchPeriods = async () => {
-                const snap = await getDocs(collection(db, 'PeriodTimes'));
-                const names = snap.docs.map(doc => doc.id);
-                setPeriodOptions(names);
+            const snap = await getDocs(collection(db, 'PeriodTimes'));
+            const names = snap.docs.map(doc => doc.id);
+            setPeriodOptions(names);
         };
         fetchPeriods();
     }, []);
@@ -59,13 +59,20 @@ const SchoolAccountForm = ({ onAdd }) => {
             newEmail,
             newPassword,
             tuitionName: selectedTuition,
+            teacherFeeName: selectedTeacherLocation,
+            periodTimeName: selectedPeriodLocation,
         });
+
+        // フォーム初期化
         setNewName('');
         setNewCode('');
         setNewEmail('');
         setNewPassword('');
         setSelectedTuition('');
+        setSelectedTeacherLocation('');
+        setSelectedPeriodLocation('');
     };
+
 
     const handleTuitionSelect = (value) => {
         if (value === 'add_new') {
@@ -190,6 +197,13 @@ const SchoolAccountForm = ({ onAdd }) => {
                     <option value="add_new">＋ 新規登録</option>
                 </select>
             </div>
+
+            <button
+                onClick={handleSubmit}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-fit self-end"
+            >
+                新規登録
+            </button>
 
             {/* ▼ モーダル表示 */}
             {showTuitionModal && (

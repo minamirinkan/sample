@@ -30,7 +30,7 @@ const SchoolAccountAdmin = () => {
         setSchools(fetched);
     };
 
-    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword }) => {
+    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword, tuitionName, teacherFeeName, periodTimeName }) => {
         setError('');
         setSuccess('');
 
@@ -66,6 +66,9 @@ const SchoolAccountAdmin = () => {
                 adminUid: uid,
                 email: newEmail.trim(),
                 createdAt: serverTimestamp(),
+                tuitionName: tuitionName || '',
+                teacherFeeName: teacherFeeName || '',
+                periodTimeName: periodTimeName || ''
             });
 
             setSuccess('教室アカウントを登録しました。');
