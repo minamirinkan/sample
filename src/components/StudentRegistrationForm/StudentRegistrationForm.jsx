@@ -24,30 +24,17 @@ const StudentRegistrationForm = ({ onCancel }) => {
         birthDate: '',
         gender: '',
         grade: '',
-        schoolName: '',
-        address: '',
-        guardianName: '',
-        guardianNameKana: '',
+        guardianLastName: '',
+        guardianFirstName: '',
+        guardianKanaLastName: '',
+        guardianKanaFirstName: '',
         relationship: '',
         guardianPhone: '',
         guardianEmail: '',
         emergencyContact: '',
         studentId: '',
-        status: '在籍中',
-        enrollmentDate: '',
-        courseClass: '',
-        courseSelected: false,
-        courseType: '',
-        courseStyle: '',
-        weeklyCount: '',
-        courseTime: '',
-        startMonth: '',
-        endMonth: '',
+        registrationDate: '',
         remarks: '',
-        locality: '',
-        streetAddress: '',
-        localityKana: '',
-        streetAddressKana: '',
         postalCode: '',
         prefecture: '',
         address2: '',       // 市区町村
@@ -56,11 +43,40 @@ const StudentRegistrationForm = ({ onCancel }) => {
         address3Kana: '',   // 番地等フリガナ
     };
 
+    const initialCourseFormData = {
+        kind: '通常',         // コース種別（講習・通常など）
+        subject: '',   // 科目など
+        classType: '',  // スタイル（1:1、集団）
+        times: '',  // 週回数
+        duration: '',   // 時間帯
+        startMonth: '',   // 開始月
+        endMonth: '',     // 終了月
+        startYear: '',    // 年（←保存に必要）
+        endYear: '',
+        note: '',         // 備考
+    };
+
     const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(true);
-    const [courseFormData, setCourseFormData] = useState([
-        { selected: false, classType: '', subject: '', times: '', duration: '', startYear: '', startMonth: '', endYear: '', endMonth: '', note: '' }
-    ]);
+    const [lessonType, setLessonType] = useState('');
+    const [courseFormData, setCourseFormData] = useState([]);
+    console.log('保存するデータ:', courseFormData);
+    useEffect(() => {
+        if (lessonType === 'regular') {
+            if (courseFormData.length === 0) {
+                setCourseFormData([initialCourseFormData]);
+            }
+        } else {
+            if (courseFormData.length > 0) {
+                setCourseFormData([]);
+            }
+        }
+    }, [lessonType]);
+
+    const handleLessonTypeChange = (value) => {
+        setLessonType(value);
+        setCourseFormData([]); // レギュラー/非レギュラー切り替え時に初期化！
+    };
 
     useEffect(() => {
         const fetchAndSetStudentId = async () => {
@@ -76,12 +92,6 @@ const StudentRegistrationForm = ({ onCancel }) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleAddressChange = (updatedAddress) => {
-        setFormData((prev) => ({
-            ...prev,
-            ...updatedAddress,
-        }));
-    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.lastName || !formData.firstName) {
@@ -91,20 +101,22 @@ const StudentRegistrationForm = ({ onCancel }) => {
 
         const success = await registerCustomerAndStudent({
             uid: formData.studentId,
-            customerName: formData.guardianName,
+            customerName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
             phoneNumber: formData.guardianPhone,
             isFirstLogin: true,
             studentData: {
                 ...formData,
-                entryDate: formData.enrollmentDate,
                 classroomCode,
                 classroomName,
                 registrationDate: serverTimestamp(),
+                courseFormData,
             },
         });
 
         if (success) {
             alert('登録が完了しました');
+
+            setLessonType("");
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
@@ -142,7 +154,12 @@ const StudentRegistrationForm = ({ onCancel }) => {
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="w-full md:w-1/2 space-y-4">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
-                        <InternalInfoSection formData={formData} onChange={handleChange} />
+                        <InternalInfoSection
+                            lessonType={lessonType}
+                            formData={formData}
+                            onChange={handleChange}
+                            onLessonTypeChange={handleLessonTypeChange}
+                        />
                     </div>
                     <div className=
                         "bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
@@ -162,10 +179,20 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 <div className="w-full md:w-1/2 space-y-4">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                         <SchoolInfoSection
-                            schoolData={formData.school || {}}
-                            onChange={(newSchoolData) =>
-                                setFormData((prev) => ({ ...prev, school: newSchoolData }))
-                            }
+                            schoolData={{
+                                schoolingStatus: formData.schoolingStatus,
+                                schoolType: formData.schoolType,
+                                schoolLevel: formData.schoolLevel,
+                                schoolName: formData.schoolName,
+                                schoolKana: formData.schoolKana,
+                                grade: formData.grade, // ← ここでトップレベルの grade を渡す
+                            }}
+                            onChange={(updatedSchoolData) => {
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    ...updatedSchoolData, // ← grade もここでトップレベルに入る
+                                }));
+                            }}
                         />
                     </div>
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
@@ -178,8 +205,10 @@ const StudentRegistrationForm = ({ onCancel }) => {
             <div className="w-full overflow-x-auto">
                 <div className="min-w-[800px] bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                     <CourseInfoSection
+                        lessonType={lessonType}
                         formData={courseFormData}
-                        onChange={(newData) => setCourseFormData(newData)}
+                        onChange={setCourseFormData}
+                        setLessonType={setLessonType}
                     />
                 </div>
             </div>
