@@ -1,9 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 
 const SchoolInfoSection = ({ schoolData, onChange }) => {
     const handleChange = (field, value) => {
-        onChange({ ...schoolData, [field]: value });
+        onChange({ [field]: value }); // ← 全体ではなく1項目だけ返す
     };
+
 
     const schoolingStatuses = ['未就学児', '在学生', '既卒生'];
     const schoolTypes = ['国立', '公立', '私立', '通信制'];
@@ -13,6 +15,16 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
         '中1', '中2', '中3',
         '高1', '高2', '高3'
     ];
+
+    const isUnenrolled = schoolData.schoolingStatus === '未就学児';
+    const isGraduated = schoolData.schoolingStatus === '既卒生';
+    const disableAllExceptGrade = isUnenrolled || isGraduated;
+
+    useEffect(() => {
+        if (schoolData.schoolingStatus === '既卒生') {
+            onChange({ grade: '既卒' }); // ← ここもトップレベルgrade
+        }
+    }, [schoolData.schoolingStatus, onChange]);
 
     return (
         <div className="space-y-4">
@@ -44,6 +56,7 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
                     value={schoolData.schoolType || ''}
                     onChange={(e) => handleChange('schoolType', e.target.value)}
                     className="w-full border rounded px-2 py-1"
+                    disabled={disableAllExceptGrade}
                 >
                     <option value="">選択してください</option>
                     {schoolTypes.map((type) => (
@@ -66,6 +79,7 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
                                 value={level}
                                 checked={schoolData.schoolLevel === level}
                                 onChange={() => handleChange('schoolLevel', level)}
+                                disabled={disableAllExceptGrade}
                             />
                             {level}
                         </label>
@@ -82,18 +96,20 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
                     onChange={(e) => handleChange('schoolName', e.target.value)}
                     className="w-full border rounded px-2 py-1"
                     placeholder="○○中学校"
+                    disabled={disableAllExceptGrade}
                 />
             </div>
 
             {/* 学校名ふりがな */}
             <div>
-                <label className="block font-medium mb-1">学校名（ふりがな）</label>
+                <label className="block font-medium mb-1">学校名（フリガナ）</label>
                 <input
                     type="text"
                     value={schoolData.schoolKana || ''}
                     onChange={(e) => handleChange('schoolKana', e.target.value)}
                     className="w-full border rounded px-2 py-1"
-                    placeholder="○○ちゅうがっこう"
+                    placeholder="○○チュウガッコウ"
+                    disabled={disableAllExceptGrade}
                 />
             </div>
 
@@ -104,6 +120,7 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
                     value={schoolData.grade || ''}
                     onChange={(e) => handleChange('grade', e.target.value)}
                     className="w-full border rounded px-2 py-1"
+                    disabled={isUnenrolled}
                 >
                     <option value="">選択してください</option>
                     {schoolGrades.map((grade) => (
@@ -111,6 +128,7 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
                             {grade}
                         </option>
                     ))}
+                    {isGraduated && <option value="既卒">既卒</option>}
                 </select>
             </div>
         </div>
