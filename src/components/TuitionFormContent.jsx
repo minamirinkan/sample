@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ExistingLocationsList from './ExistingLocationsList';
-import TuitionDetails from './TuitionDetails';
+import ExistingLocationsList from './AdminRegistrationForm/ExistingLocationsList';
+import TuitionDetails from './AdminRegistrationForm/TuitionDetails';
 import { db } from '../firebase';
 import { doc,getDoc,collection, getDocs } from 'firebase/firestore';
 import { saveTuitionSettings } from '../utils/firebase/saveTuitionSettings';

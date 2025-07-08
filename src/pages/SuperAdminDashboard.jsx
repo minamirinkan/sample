@@ -5,11 +5,11 @@ import SuperAdminStudents from '../components/SuperAdminStudents';
 import { useState } from 'react';
 import SuperAdminTeachers from '../components/SuperAdminTeachers';
 import TimetablePage from './TimetablePage';
-import SchoolAccountAdmin from '../components/SchoolAccountAdmin';
+import SchoolAccountAdmin from '../components/AdminRegistrationForm/SchoolAccountAdmin';
 import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm';
 import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
 import TuitionRegistrationForm from '../components/TuitionRegistrationTabs';
-import TeacherFeeRegistration from '../components/TeacherFeeRegistration';
+import TeacherFeeRegistration from '../components/AdminRegistrationForm/TeacherFeeRegistration';
 
 const SuperAdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
