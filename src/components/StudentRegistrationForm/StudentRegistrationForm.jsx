@@ -60,6 +60,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
     const [loading, setLoading] = useState(true);
     const [lessonType, setLessonType] = useState('');
     const [courseFormData, setCourseFormData] = useState([]);
+
     console.log('保存するデータ:', courseFormData);
     useEffect(() => {
         if (lessonType === 'regular') {
@@ -72,6 +73,14 @@ const StudentRegistrationForm = ({ onCancel }) => {
             }
         }
     }, [lessonType]);
+
+    useEffect(() => {
+        if (formData.schoolLevel) {
+            setCourseFormData((prev) =>
+                prev.map((row) => ({ ...row, subject: '' }))
+            );
+        }
+    }, [formData.schoolLevel]);
 
     const handleLessonTypeChange = (value) => {
         setLessonType(value);
@@ -109,7 +118,11 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 classroomCode,
                 classroomName,
                 registrationDate: serverTimestamp(),
-                courseFormData,
+                courseFormData: courseFormData.map((course) => ({
+                    ...course,
+                    subject: course.subject === 'その他' ? course.subjectOther || '' : course.subject,
+                    subjectOther: undefined,
+                })),
             },
         });
 
@@ -175,7 +188,6 @@ const StudentRegistrationForm = ({ onCancel }) => {
                         />
                     </div>
                 </div>
-
                 <div className="w-full md:w-1/2 space-y-4">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                         <SchoolInfoSection
@@ -206,9 +218,10 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 <div className="min-w-[800px] bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                     <CourseInfoSection
                         lessonType={lessonType}
-                        formData={courseFormData}
+                        formData={courseFormData || []}
                         onChange={setCourseFormData}
                         setLessonType={setLessonType}
+                        schoolLevel={formData.schoolLevel}
                     />
                 </div>
             </div>
