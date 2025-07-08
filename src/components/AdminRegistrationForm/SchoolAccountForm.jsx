@@ -21,6 +21,7 @@ const SchoolAccountForm = ({ onAdd }) => {
     const [selectedPeriodLocation, setSelectedPeriodLocation] = useState('');
     const [periodOptions, setPeriodOptions] = useState([]);
     const [minimumWage, setMinimumWage] = useState('');
+    const [faxNumber, setFaxNumber] = useState('');
     const [formData, setFormData] = useState({
         postalCode: '',
         prefecture: '',
@@ -72,6 +73,7 @@ const SchoolAccountForm = ({ onAdd }) => {
             periodTimeName: selectedPeriodLocation,
             addressInfo: formData,
             minimumWage: minimumWage !== '' ? Number(minimumWage) : null,
+            faxNumber,
         });
 
         // フォーム初期化
@@ -83,6 +85,7 @@ const SchoolAccountForm = ({ onAdd }) => {
         setSelectedTeacherLocation('');
         setSelectedPeriodLocation('');
         setMinimumWage('');
+        setFaxNumber('');
     };
 
 
@@ -147,19 +150,33 @@ const SchoolAccountForm = ({ onAdd }) => {
                 </div>
             </div>
 
-            <div className="flex flex-col mt-6">
-                <label className="mb-1 text-sm font-medium text-gray-700">最低賃金（円）</label>
-                <input
-                    type="number"
-                    className="border border-gray-300 rounded px-3 py-2 bg-white no-spinner"
-                    value={minimumWage}
-                    onChange={(e) => setMinimumWage(e.target.value)}
-                    placeholder="例: 1120"
-                    min="0"
-                    onWheel={(e) => e.target.blur()}
-                />
-            </div>
+            <div className="flex flex-row gap-4 mt-6">
+                {/* ▼ FAX欄 */}
+                <div className="flex flex-col w-1/2">
+                    <label className="mb-1 text-sm font-medium text-gray-700">FAX番号</label>
+                    <input
+                        type="text"
+                        className="border border-gray-300 rounded px-3 py-2 bg-white"
+                        value={faxNumber}
+                        onChange={(e) => setFaxNumber(e.target.value)}
+                        placeholder="例: 03-1234-5678"
+                    />
+                </div>
 
+                {/* ▼ 最低賃金欄 */}
+                <div className="flex flex-col w-1/2">
+                    <label className="mb-1 text-sm font-medium text-gray-700">最低賃金（円）</label>
+                    <input
+                        type="number"
+                        className="border border-gray-300 rounded px-3 py-2 bg-white appearance-none"
+                        value={minimumWage}
+                        onChange={(e) => setMinimumWage(e.target.value)}
+                        placeholder="例: 1120"
+                        min="0"
+                        onWheel={(e) => e.target.blur()}
+                    />
+                </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
                 {/* ▼ 授業料 */}
