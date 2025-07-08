@@ -1,30 +1,90 @@
 import React, { useState } from 'react';
-
-const categories = ['小学生', '中学生', '高校生'];
-const types = ['1対1', '1対2', '1対6まで'];
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase'; // ← dbは正しいパスに合わせて調整してください
+import { saveTeacherFees } from '../utils/firebase/saveTeacherFees'; // ✅ 追加
+import ExistingTeacherFeeLocationsList from './ExistingTeacherFeeLocationsList';
 
 const TeacherFeeRegistration = () => {
-  const [fees, setFees] = useState(
-    categories.map(() => types.map(() => ''))
-  );
+  const categories = ['小学生', '中学生', '高校生'];
+  const types = ['1対1', '1対2', '1対6まで'];
 
-  const handleChange = (rowIdx, colIdx, value) => {
-    const newFees = [...fees];
-    newFees[rowIdx][colIdx] = value;
-    setFees(newFees);
+  const initialMatrix = () => categories.map(() => types.map(() => ''));
+  const [fees80, setFees80] = useState(initialMatrix());
+  const [fees70, setFees70] = useState(initialMatrix());
+  const [registrationLocation, setRegistrationLocation] = useState('');
+
+
+  const [fees40, setFees40] = useState([types.map(() => '')]);
+
+  const [workFees, setWorkFees] = useState({
+    admin: ''
+  });
+
+  const handleChange = (rowIdx, colIdx, value, duration) => {
+    if (duration === '80') {
+      const newFees = [...fees80];
+      newFees[rowIdx][colIdx] = value;
+      setFees80(newFees);
+    } else if (duration === '70') {
+      const newFees = [...fees70];
+      newFees[rowIdx][colIdx] = value;
+      setFees70(newFees);
+    } else if (duration === '40') {
+      const newFees = [...fees40];
+      newFees[rowIdx][colIdx] = value;
+      setFees40(newFees);
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleWorkFeeChange = (field, value) => {
+    setWorkFees(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('講師料金データ:', fees);
-    alert('講師料金を保存しました（実装例）');
-    // TODO: Firestoreなどに保存処理を実装
+
+    if (!registrationLocation.trim()) {
+      alert('登録地を入力してください');
+      return;
+    }
+
+    // 🔁 2次元配列 → オブジェクトに変換（Firestore対応）
+    const convertMatrixToObjectArray = (matrix) => {
+      return matrix.map((row) => {
+        const obj = {};
+        types.forEach((type, idx) => {
+          obj[type] = row[idx] || '';
+        });
+        return obj;
+      });
+    };
+
+
+    // 修正すべき箇所（convertMatrixToObject をやめる）
+    const payload = {
+      registrationLocation,
+      fees80: convertMatrixToObjectArray(fees80),
+      fees70: convertMatrixToObjectArray(fees70),
+      fees40: convertMatrixToObjectArray(fees40),
+      workFees,
+    };
+
+
+
+    try {
+      await saveTeacherFees(registrationLocation, payload);
+      alert('講師料金と作業給を保存しました');
+    } catch (error) {
+      console.error('保存エラー:', error);
+      alert('保存に失敗しました');
+    }
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-4">
-      <h2 className="text-2xl font-bold mb-4">講師料金登録フォーム</h2>
-      <table className="table-auto border border-collapse border-gray-400">
+
+  const renderTable = (title, fees, duration) => (
+    <div className="mb-8">
+      <h3 className="text-xl font-semibold mb-2">{title}</h3>
+      <table className="table-auto border border-collapse border-gray-400 w-full">
         <thead>
           <tr className="bg-gray-200">
             <th className="border px-4 py-2">対象</th>
@@ -48,11 +108,11 @@ const TeacherFeeRegistration = () => {
                         inputMode="numeric"
                         pattern="[0-9]*"
                         value={fees[rowIdx][colIdx]}
-                        onChange={(e) => handleChange(rowIdx, colIdx, e.target.value)}
+                        onChange={(e) => handleChange(rowIdx, colIdx, e.target.value, duration)}
+                        onWheel={(e) => e.target.blur()}
                         className="border w-[80px] px-1 py-0.5 text-blue-600 text-center appearance-none
                           [&::-webkit-outer-spin-button]:appearance-none 
                           [&::-webkit-inner-spin-button]:appearance-none"
-                        required
                       />
                       <span className="ml-1 text-sm">円</span>
                     </div>
@@ -63,13 +123,130 @@ const TeacherFeeRegistration = () => {
           ))}
         </tbody>
       </table>
+    </div>
+  );
 
-      <div className="mt-4">
+  const renderTable40 = () => (
+    <div className="mb-8">
+      <h3 className="text-xl font-semibold mb-2">■ 40分コース</h3>
+      <table className="table-auto border border-collapse border-gray-400 w-full">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="border px-4 py-2">対象</th>
+            {types.map((type, idx) => (
+              <th key={idx} className="border px-4 py-2">{type}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td className="border px-4 py-2 bg-gray-100 font-semibold">小学生</td>
+            {types.map((_, colIdx) => (
+              <td key={colIdx} className="border px-2 py-1 text-center">
+                {colIdx === 2 ? (
+                  <span className="text-gray-400">—</span>
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={fees40[0][colIdx]}
+                      onChange={(e) => handleChange(0, colIdx, e.target.value, '40')}
+                      onWheel={(e) => e.target.blur()}
+                      className="border w-[80px] px-1 py-0.5 text-blue-600 text-center appearance-none
+                        [&::-webkit-outer-spin-button]:appearance-none 
+                        [&::-webkit-inner-spin-button]:appearance-none"
+                    />
+                    <span className="ml-1 text-sm">円</span>
+                  </div>
+                )}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6 p-4">
+      <ExistingTeacherFeeLocationsList
+        onLocationClick={async (locationName) => {
+          try {
+            const docRef = doc(db, 'TeacherFees', locationName);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+
+              // オブジェクト配列 → 2次元配列 に復元
+              const parseObjectArrayToMatrix = (objArray) =>
+                objArray.map((obj) => types.map((type) => obj[type] || ''));
+
+              setFees80(parseObjectArrayToMatrix(data.fees80 || []));
+              setFees70(parseObjectArrayToMatrix(data.fees70 || []));
+              setFees40(parseObjectArrayToMatrix(data.fees40 || []));
+
+              setWorkFees({
+                admin: data.workFees?.admin || '',
+                training: data.workFees?.training || '',
+                other: data.workFees?.other || '',
+              });
+            } else {
+              alert(`"${locationName}" に該当するデータが見つかりませんでした`);
+            }
+          } catch (error) {
+            console.error('教師給与データの取得に失敗:', error);
+          }
+        }}
+      />
+
+
+      <h2 className="text-2xl font-bold mb-4">講師料金登録フォーム</h2>
+
+      {renderTable('■ 80分コース', fees80, '80')}
+      {renderTable('■ 70分コース', fees70, '70')}
+      {renderTable40()}
+
+      <div className="border-t pt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label className="block mb-1 text-sm font-medium">事務作業給</label>
+            <div className="flex items-center">
+              <input
+                type="number"
+                value={workFees.admin}
+                onChange={(e) => handleWorkFeeChange('admin', e.target.value)}
+                onWheel={(e) => e.target.blur()}
+                className="border px-2 py-1 w-[100px] text-center
+    appearance-none
+    [&::-webkit-inner-spin-button]:appearance-none 
+    [&::-webkit-outer-spin-button]:appearance-none"
+              />
+              <span className="ml-1 text-sm">円</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label className="block mb-1 text-sm font-medium">登録地</label>
+        <input
+          type="text"
+          placeholder="例：渋谷校"
+          value={registrationLocation}
+          onChange={(e) => setRegistrationLocation(e.target.value)}
+          className="border px-2 py-1 w-full"
+        />
+      </div>
+
+      <div className="mt-6">
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
         >
-          講師料金を保存
+          全て保存
         </button>
       </div>
     </form>
