@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase'; // ← dbは正しいパスに合わせて調整してください
-import { saveTeacherFees } from '../utils/firebase/saveTeacherFees'; // ✅ 追加
+import { db } from '../../firebase'; // ← dbは正しいパスに合わせて調整してください
+import { saveTeacherFees } from '../../utils/firebase/saveTeacherFees'; // ✅ 追加
 import ExistingTeacherFeeLocationsList from './ExistingTeacherFeeLocationsList';
 
 const TeacherFeeRegistration = ({ onRegistered }) => {

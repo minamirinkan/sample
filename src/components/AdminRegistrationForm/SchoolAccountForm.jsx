@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../../firebase';
 import SchoolAccountFormFee from './SchoolAccountFormFee';
 import TeacherFeeRegistration from './TeacherFeeRegistration';
 import PeriodTimeForm from './PeriodTimeForm';
+import AddressInfoSection from '../StudentRegistrationForm/AddressInfoSection';
 
 const SchoolAccountForm = ({ onAdd }) => {
     const [newName, setNewName] = useState('');
@@ -19,7 +20,15 @@ const SchoolAccountForm = ({ onAdd }) => {
     const [showPeriodModal, setShowPeriodModal] = useState(false);
     const [selectedPeriodLocation, setSelectedPeriodLocation] = useState('');
     const [periodOptions, setPeriodOptions] = useState([]);
-
+    const [minimumWage, setMinimumWage] = useState('');
+    const [formData, setFormData] = useState({
+        postalCode: '',
+        prefecture: '',
+        address2: '',
+        address3: '',
+        address2Kana: '',
+        address3Kana: ''
+    });
 
 
     // Firestoreから登録済み授業料の一覧を取得
@@ -61,6 +70,8 @@ const SchoolAccountForm = ({ onAdd }) => {
             tuitionName: selectedTuition,
             teacherFeeName: selectedTeacherLocation,
             periodTimeName: selectedPeriodLocation,
+            addressInfo: formData,
+            minimumWage: minimumWage !== '' ? Number(minimumWage) : null,
         });
 
         // フォーム初期化
@@ -71,6 +82,7 @@ const SchoolAccountForm = ({ onAdd }) => {
         setSelectedTuition('');
         setSelectedTeacherLocation('');
         setSelectedPeriodLocation('');
+        setMinimumWage('');
     };
 
 
@@ -108,6 +120,10 @@ const SchoolAccountForm = ({ onAdd }) => {
                 </div>
             </div>
 
+            <AddressInfoSection
+                formData={formData}
+                onChange={(newData) => setFormData(newData)}
+            />
             <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col flex-1">
                     <label className="mb-1 text-sm font-medium text-gray-700">メールアドレス</label>
@@ -131,72 +147,91 @@ const SchoolAccountForm = ({ onAdd }) => {
                 </div>
             </div>
 
-            {/* ▼ 授業料モーダル起動ボタン風エリア */}
-            <label className="mb-1 text-sm font-medium text-gray-700">授業料（登録地名）</label>
-            <select
-                className="border border-gray-300 rounded px-3 py-2 bg-white"
-                value={selectedTuition}
-                onChange={(e) => {
-                    const value = e.target.value;
-                    if (value === 'add_new') {
-                        setShowTuitionModal(true);
-                    } else {
-                        setSelectedTuition(value);
-                    }
-                }}
-            >
-                <option value="" disabled>選択してください</option>
-                {tuitionOptions.map((name) => (
-                    <option key={name} value={name}>{name}</option>
-                ))}
-                <option value="add_new">＋ 新規登録</option>
-            </select>
-
-
             <div className="flex flex-col mt-6">
-                <label className="mb-1 text-sm font-medium text-gray-700">講師給与（登録地名）</label>
-                <select
-                    className="border border-gray-300 rounded px-3 py-2 bg-white"
-                    value={selectedTeacherLocation}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === 'add_new') {
-                            setShowTeacherModal(true);
-                        } else {
-                            setSelectedTeacherLocation(value);
-                        }
-                    }}
-                >
-                    <option value="" disabled>選択してください</option>
-                    {teacherOptions.map((name) => (
-                        <option key={name} value={name}>{name}</option>
-                    ))}
-                    <option value="add_new">＋ 新規登録</option>
-                </select>
+                <label className="mb-1 text-sm font-medium text-gray-700">最低賃金（円）</label>
+                <input
+                    type="number"
+                    className="border border-gray-300 rounded px-3 py-2 bg-white no-spinner"
+                    value={minimumWage}
+                    onChange={(e) => setMinimumWage(e.target.value)}
+                    placeholder="例: 1120"
+                    min="0"
+                    onWheel={(e) => e.target.blur()}
+                />
             </div>
 
 
-            <div className="flex flex-col mt-6">
-                <label className="mb-1 text-sm font-medium text-gray-700">時限（80分・70分）</label>
-                <select
-                    className="border border-gray-300 rounded px-3 py-2 bg-white"
-                    value={selectedPeriodLocation}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === 'add_new') {
-                            setShowPeriodModal(true);
-                        } else {
-                            setSelectedPeriodLocation(value);
-                        }
-                    }}
-                >
-                    <option value="" disabled>選択してください</option>
-                    {periodOptions.map((name) => (
-                        <option key={name} value={name}>{name}</option>
-                    ))}
-                    <option value="add_new">＋ 新規登録</option>
-                </select>
+            <div className="flex flex-col sm:flex-row gap-4 mt-6">
+                {/* ▼ 授業料 */}
+                <div className="flex flex-col flex-1">
+                    <label className="mb-1 text-sm font-medium text-gray-700">授業料（登録地名）</label>
+                    <select
+                        className="border border-gray-300 rounded px-3 py-2 bg-white"
+                        value={selectedTuition}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === 'add_new') {
+                                setShowTuitionModal(true);
+                            } else {
+                                setSelectedTuition(value);
+                            }
+                        }}
+                    >
+                        <option value="" disabled>選択してください</option>
+                        {tuitionOptions.map((name) => (
+                            <option key={name} value={name}>{name}</option>
+                        ))}
+                        <option value="add_new">＋ 新規登録</option>
+                    </select>
+                </div>
+
+                {/* ▼ 講師給与 */}
+                <div className="flex flex-col flex-1">
+                    <label className="mb-1 text-sm font-medium text-gray-700">講師給与（登録地名）</label>
+                    <select
+                        className="border border-gray-300 rounded px-3 py-2 bg-white"
+                        value={selectedTeacherLocation}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === 'add_new') {
+                                setShowTeacherModal(true);
+                            } else {
+                                setSelectedTeacherLocation(value);
+                            }
+                        }}
+                    >
+                        <option value="" disabled>選択してください</option>
+                        {teacherOptions.map((name) => (
+                            <option key={name} value={name}>{name}</option>
+                        ))}
+                        <option value="add_new">＋ 新規登録</option>
+                    </select>
+                </div>
+
+                {/* ▼ 時限 */}
+                <div className="flex flex-col flex-1">
+                    <label className="mb-1 text-sm font-medium text-gray-700">時限（80分・70分）</label>
+                    <select
+                        className="border border-gray-300 rounded px-3 py-2 bg-white"
+                        value={selectedPeriodLocation}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === 'add_new') {
+                                setShowPeriodModal(true);
+                            } else {
+                                setSelectedPeriodLocation(value);
+                            }
+                        }}
+                    >
+                        <option value="" disabled>選択してください</option>
+                        {periodOptions.map((name) => (
+                            <option key={name} value={name}>{name}</option>
+                        ))}
+                        <option value="add_new">＋ 新規登録</option>
+                    </select>
+                </div>
             </div>
+
 
             <button
                 onClick={handleSubmit}

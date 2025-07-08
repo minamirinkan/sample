@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { updateTuitionSettings } from '../utils/firebase/updateTuitionSettings';
+import { updateTuitionSettings } from '../../utils/firebase/updateTuitionSettings';
 
 const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'];
 
