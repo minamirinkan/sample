@@ -4,7 +4,7 @@ import { db } from '../firebase'; // ← dbは正しいパスに合わせて調�
 import { saveTeacherFees } from '../utils/firebase/saveTeacherFees'; // ✅ 追加
 import ExistingTeacherFeeLocationsList from './ExistingTeacherFeeLocationsList';
 
-const TeacherFeeRegistration = () => {
+const TeacherFeeRegistration = ({ onRegistered }) => {
   const categories = ['小学生', '中学生', '高校生'];
   const types = ['1対1', '1対2', '1対6まで'];
 
@@ -63,9 +63,9 @@ const TeacherFeeRegistration = () => {
     // 修正すべき箇所（convertMatrixToObject をやめる）
     const payload = {
       registrationLocation,
-      fees80: convertMatrixToObjectArray(fees80),
-      fees70: convertMatrixToObjectArray(fees70),
-      fees40: convertMatrixToObjectArray(fees40),
+      '80minutes': convertMatrixToObjectArray(fees80),
+      '70minutes': convertMatrixToObjectArray(fees70),
+      '40minutes': convertMatrixToObjectArray(fees40),
       workFees,
     };
 
@@ -74,6 +74,9 @@ const TeacherFeeRegistration = () => {
     try {
       await saveTeacherFees(registrationLocation, payload);
       alert('講師料金と作業給を保存しました');
+      if (onRegistered) {
+        onRegistered(registrationLocation); // ← 地名を親に渡す
+      }
     } catch (error) {
       console.error('保存エラー:', error);
       alert('保存に失敗しました');
@@ -184,9 +187,9 @@ const TeacherFeeRegistration = () => {
               const parseObjectArrayToMatrix = (objArray) =>
                 objArray.map((obj) => types.map((type) => obj[type] || ''));
 
-              setFees80(parseObjectArrayToMatrix(data.fees80 || []));
-              setFees70(parseObjectArrayToMatrix(data.fees70 || []));
-              setFees40(parseObjectArrayToMatrix(data.fees40 || []));
+              setFees80(parseObjectArrayToMatrix(data['80minutes'] || []));
+              setFees70(parseObjectArrayToMatrix(data['70minutes'] || []));
+              setFees40(parseObjectArrayToMatrix(data['40minutes'] || []));
 
               setWorkFees({
                 admin: data.workFees?.admin || '',
@@ -205,6 +208,17 @@ const TeacherFeeRegistration = () => {
 
       <h2 className="text-2xl font-bold mb-4">講師料金登録フォーム</h2>
 
+      <div>
+        <label className="block mb-1 text-sm font-medium">登録地</label>
+        <input
+          type="text"
+          placeholder="例：渋谷校"
+          value={registrationLocation}
+          onChange={(e) => setRegistrationLocation(e.target.value)}
+          className="border px-2 py-1 w-full"
+        />
+      </div>
+      
       {renderTable('■ 80分コース', fees80, '80')}
       {renderTable('■ 70分コース', fees70, '70')}
       {renderTable40()}
@@ -230,16 +244,7 @@ const TeacherFeeRegistration = () => {
         </div>
       </div>
 
-      <div>
-        <label className="block mb-1 text-sm font-medium">登録地</label>
-        <input
-          type="text"
-          placeholder="例：渋谷校"
-          value={registrationLocation}
-          onChange={(e) => setRegistrationLocation(e.target.value)}
-          className="border px-2 py-1 w-full"
-        />
-      </div>
+
 
       <div className="mt-6">
         <button

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import TuitionViewModal from './TuitionViewModal';
 import SchoolAccountFormFee from './SchoolAccountFormFee';
 import TeacherFeeRegistration from './TeacherFeeRegistration';
+import PeriodTimeForm from './PeriodTimeForm';
 
 const SchoolAccountForm = ({ onAdd }) => {
     const [newName, setNewName] = useState('');
@@ -16,6 +16,9 @@ const SchoolAccountForm = ({ onAdd }) => {
     const [showTeacherModal, setShowTeacherModal] = useState(false);
     const [selectedTeacherLocation, setSelectedTeacherLocation] = useState('');
     const [teacherOptions, setTeacherOptions] = useState([]);
+    const [showPeriodModal, setShowPeriodModal] = useState(false);
+    const [selectedPeriodLocation, setSelectedPeriodLocation] = useState('');
+    const [periodOptions, setPeriodOptions] = useState([]);
 
 
 
@@ -28,6 +31,26 @@ const SchoolAccountForm = ({ onAdd }) => {
         };
         fetchTuitions();
     }, []);
+
+    useEffect(() => {
+        // 講師給与一覧の取得
+        const fetchTeacherFees = async () => {
+            const snap = await getDocs(collection(db, 'TeacherFees'));
+            const names = snap.docs.map(doc => doc.id);
+            setTeacherOptions(names);
+        };
+        fetchTeacherFees();
+    }, []);
+
+    useEffect(() => {
+        const fetchPeriods = async () => {
+                const snap = await getDocs(collection(db, 'PeriodTimes'));
+                const names = snap.docs.map(doc => doc.id);
+                setPeriodOptions(names);
+        };
+        fetchPeriods();
+    }, []);
+
 
     const handleSubmit = () => {
         onAdd({
@@ -102,27 +125,71 @@ const SchoolAccountForm = ({ onAdd }) => {
             </div>
 
             {/* ▼ 授業料モーダル起動ボタン風エリア */}
-            <div className="flex flex-col">
-                <label className="mb-1 text-sm font-medium text-gray-700">授業料（登録地名）</label>
-                <div
-                    onClick={() => setShowTuitionModal(true)}
-                    className="border border-gray-300 rounded px-3 py-2 bg-white cursor-pointer relative"
-                >
-                    {selectedTuition || '＋ 新規登録'}
+            <label className="mb-1 text-sm font-medium text-gray-700">授業料（登録地名）</label>
+            <select
+                className="border border-gray-300 rounded px-3 py-2 bg-white"
+                value={selectedTuition}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === 'add_new') {
+                        setShowTuitionModal(true);
+                    } else {
+                        setSelectedTuition(value);
+                    }
+                }}
+            >
+                <option value="" disabled>選択してください</option>
+                {tuitionOptions.map((name) => (
+                    <option key={name} value={name}>{name}</option>
+                ))}
+                <option value="add_new">＋ 新規登録</option>
+            </select>
 
-                </div>
-            </div>
 
             <div className="flex flex-col mt-6">
                 <label className="mb-1 text-sm font-medium text-gray-700">講師給与（登録地名）</label>
-                <div
-                    onClick={() => setShowTeacherModal(true)}
-                    className="border border-gray-300 rounded px-3 py-2 bg-white cursor-pointer relative"
+                <select
+                    className="border border-gray-300 rounded px-3 py-2 bg-white"
+                    value={selectedTeacherLocation}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        if (value === 'add_new') {
+                            setShowTeacherModal(true);
+                        } else {
+                            setSelectedTeacherLocation(value);
+                        }
+                    }}
                 >
-                    {selectedTeacherLocation || '＋ 新規登録'}
-                </div>
+                    <option value="" disabled>選択してください</option>
+                    {teacherOptions.map((name) => (
+                        <option key={name} value={name}>{name}</option>
+                    ))}
+                    <option value="add_new">＋ 新規登録</option>
+                </select>
             </div>
 
+
+            <div className="flex flex-col mt-6">
+                <label className="mb-1 text-sm font-medium text-gray-700">時限（80分・70分）</label>
+                <select
+                    className="border border-gray-300 rounded px-3 py-2 bg-white"
+                    value={selectedPeriodLocation}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        if (value === 'add_new') {
+                            setShowPeriodModal(true);
+                        } else {
+                            setSelectedPeriodLocation(value);
+                        }
+                    }}
+                >
+                    <option value="" disabled>選択してください</option>
+                    {periodOptions.map((name) => (
+                        <option key={name} value={name}>{name}</option>
+                    ))}
+                    <option value="add_new">＋ 新規登録</option>
+                </select>
+            </div>
 
             {/* ▼ モーダル表示 */}
             {showTuitionModal && (
@@ -181,7 +248,33 @@ const SchoolAccountForm = ({ onAdd }) => {
                 </div>
             )}
 
+            {showPeriodModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg w-[90%] max-w-5xl relative">
+                        {/* ✕ ボタンで閉じる */}
+                        <button
+                            onClick={() => setShowPeriodModal(false)}
+                            className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
+                        >
+                            ✕
+                        </button>
 
+                        {/* PeriodTimeForm に登録完了後のコールバックを渡す */}
+                        <PeriodTimeForm
+                            onRegistered={(locationName) => {
+                                setShowPeriodModal(false);               // モーダルを閉じる
+                                setSelectedPeriodLocation(locationName); // 自動選択（必要なら）
+                                setPeriodOptions((prev) => {
+                                    if (!prev.includes(locationName)) {
+                                        return [...prev, locationName];      // 新規地名をリストに追加
+                                    }
+                                    return prev;
+                                });
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
