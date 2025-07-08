@@ -3,6 +3,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import TuitionViewModal from './TuitionViewModal';
 import SchoolAccountFormFee from './SchoolAccountFormFee';
+import TeacherFeeRegistration from './TeacherFeeRegistration';
 
 const SchoolAccountForm = ({ onAdd }) => {
     const [newName, setNewName] = useState('');
@@ -12,6 +13,11 @@ const SchoolAccountForm = ({ onAdd }) => {
     const [tuitionOptions, setTuitionOptions] = useState([]);
     const [selectedTuition, setSelectedTuition] = useState('');
     const [showTuitionModal, setShowTuitionModal] = useState(false); // モーダル表示制御
+    const [showTeacherModal, setShowTeacherModal] = useState(false);
+    const [selectedTeacherLocation, setSelectedTeacherLocation] = useState('');
+    const [teacherOptions, setTeacherOptions] = useState([]);
+
+
 
     // Firestoreから登録済み授業料の一覧を取得
     useEffect(() => {
@@ -103,16 +109,20 @@ const SchoolAccountForm = ({ onAdd }) => {
                     className="border border-gray-300 rounded px-3 py-2 bg-white cursor-pointer relative"
                 >
                     {selectedTuition || '＋ 新規登録'}
-                    
+
                 </div>
             </div>
 
-            <button
-                onClick={handleSubmit}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-fit self-end"
-            >
-                新規登録
-            </button>
+            <div className="flex flex-col mt-6">
+                <label className="mb-1 text-sm font-medium text-gray-700">講師給与（登録地名）</label>
+                <div
+                    onClick={() => setShowTeacherModal(true)}
+                    className="border border-gray-300 rounded px-3 py-2 bg-white cursor-pointer relative"
+                >
+                    {selectedTeacherLocation || '＋ 新規登録'}
+                </div>
+            </div>
+
 
             {/* ▼ モーダル表示 */}
             {showTuitionModal && (
@@ -142,6 +152,36 @@ const SchoolAccountForm = ({ onAdd }) => {
                     </div>
                 </div>
             )}
+
+            {showTeacherModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white max-h-[90vh] overflow-y-auto p-6 rounded shadow-lg w-[90%] max-w-5xl relative">
+                        {/* ✕ ボタンで閉じる */}
+                        <button
+                            onClick={() => setShowTeacherModal(false)}
+                            className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
+                        >
+                            ✕
+                        </button>
+
+                        {/* TeacherFeeRegistration に登録完了後のコールバックを渡す */}
+                        <TeacherFeeRegistration
+                            onRegistered={(locationName) => {
+                                setShowTeacherModal(false);                   // モーダルを閉じる
+                                setSelectedTeacherLocation(locationName);     // 自動選択（必要なら）
+                                setTeacherOptions((prev) => {
+                                    if (!prev.includes(locationName)) {
+                                        return [...prev, locationName];       // 新規地名をリストに追加
+                                    }
+                                    return prev;
+                                });
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
+
+
         </div>
     );
 };
