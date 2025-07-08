@@ -199,6 +199,22 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                 }}
             />
 
+            {/* ▼ 登録地入力欄 */}
+            <div className="mb-6">
+                <label htmlFor="registrationLocation" className="block text-lg font-bold mb-2">
+                    登録地
+                </label>
+                <input
+                    type="text"
+                    id="registrationLocation"
+                    name="registrationLocation"
+                    value={registrationLocation}
+                    onChange={(e) => setRegistrationLocation(e.target.value)}
+                    className="border border-gray-400 px-2 py-1 w-64 text-blue-600"
+                    placeholder="例：渋谷校"
+                    required
+                />
+            </div>
 
             {/* ▼ Wコース */}
             <div>
@@ -436,24 +452,6 @@ const SchoolAccountFormFee = ({ onRegistered }) => {
                         </tr>
                     </tbody>
                 </table>
-            </div>
-
-
-            {/* ▼ 登録地入力欄 */}
-            <div className="mb-6">
-                <label htmlFor="registrationLocation" className="block text-lg font-bold mb-2">
-                    登録地
-                </label>
-                <input
-                    type="text"
-                    id="registrationLocation"
-                    name="registrationLocation"
-                    value={registrationLocation}
-                    onChange={(e) => setRegistrationLocation(e.target.value)}
-                    className="border border-gray-400 px-2 py-1 w-64 text-blue-600"
-                    placeholder="例：渋谷校"
-                    required
-                />
             </div>
 
             {/* ▼ 一括登録ボタン */}
