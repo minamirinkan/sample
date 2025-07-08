@@ -30,7 +30,7 @@ const SchoolAccountAdmin = () => {
         setSchools(fetched);
     };
 
-    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword, tuitionName, teacherFeeName, periodTimeName,addressInfo,minimumWage }) => {
+    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword, tuitionName, teacherFeeName, periodTimeName,addressInfo,minimumWage,faxNumber }) => {
         setError('');
         setSuccess('');
 
@@ -66,6 +66,7 @@ const SchoolAccountAdmin = () => {
                 email: newEmail.trim(),
                 createdAt: serverTimestamp(),
                 addressInfo,
+                faxNumber,
                 minimumWage: minimumWage ?? null,
                 tuitionName: tuitionName || '',
                 teacherFeeName: teacherFeeName || '',
