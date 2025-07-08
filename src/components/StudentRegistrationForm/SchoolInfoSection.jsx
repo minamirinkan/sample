@@ -6,7 +6,6 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
         onChange({ [field]: value }); // ← 全体ではなく1項目だけ返す
     };
 
-
     const schoolingStatuses = ['未就学児', '在学生', '既卒生'];
     const schoolTypes = ['国立', '公立', '私立', '通信制'];
     const schoolLevels = ['小学校', '中学校', '高等学校'];
