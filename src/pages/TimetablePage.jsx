@@ -4,6 +4,7 @@ import TimetableTable from '../components/TimetableTable';
 import CalendarPopup from '../components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from '../utils/firebase/timetableFirestore';
 import { formatDateDisplay } from '../utils/dateUtils';
+import PDFButton from '../components/PDFButton';
 
 export default function TimetablePage() {
   const { adminData } = useAuth();
@@ -18,8 +19,121 @@ export default function TimetablePage() {
   });
 
   const [rows, setRows] = useState([
-    { teacher: '', periods: Array(8).fill([]).map(() => []) }
-  ]);
+  {
+    status: '予定',
+    teacher: '佐藤1先生',
+    periods: [
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中太郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中三郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中四郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中五郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中六郎' }],
+      [],
+      [],
+      [],
+      [],
+      []
+    ]
+  },
+  {
+    status: '予定',
+    teacher: '鈴木1先生',
+    periods: [
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '佐々木太郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '佐々木次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中1郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中2郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中3郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中4郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中5郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中6郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '小林次郎' }],
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '木村次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '村上次郎' }]
+    ]
+  },
+
+  {
+    status: '予定',
+    teacher: '鈴木2先生',
+    periods: [
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '鈴木次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '鈴木次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '高橋次郎' }],
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '大山次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '岩田次郎' }]
+    ]
+  },
+  {
+    status: '予定',
+    teacher: '鈴木3先生',
+    periods: [
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '大谷次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '赤井次郎' }],
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '中村次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '毛利次郎' }]
+    ]
+  },
+  {
+    status: '予定',
+    teacher: '鈴木4先生',
+    periods: [
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' }],
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '小田次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '武田次郎' }]
+    ]
+  },
+  {
+    status: '予定',
+    teacher: '鈴木5先生',
+    periods: [
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中三郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '向山次郎' }],
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '大木次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '村田次郎' }]
+    ]
+  },
+  {
+    status: '予定',
+    teacher: '鈴木6先生',
+    periods: [
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中三郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' },{ subject: '国語',grade : '中1',studentId: 'stu003', name: '田中次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '向山次郎' }],
+      [],
+      [],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '大木次郎' }],
+      [{ subject: '国語',grade : '中1',studentId: 'stu003', name: '村田次郎' }]
+    ]
+  },
+  {
+    status: '未定',
+    teacher: null,
+    periods: Array(8).fill([]).map(() => [])
+  },
+  {
+    status: '振替',
+    teacher: null,
+    periods: Array(8).fill([]).map(() => [])
+  },
+  {
+    status: '欠席',
+    teacher: null,
+    periods: Array(8).fill([]).map(() => [])
+  }
+]);
   const [classroomName, setClassroomName] = useState('');
   const [periodLabels, setPeriodLabels] = useState([]); // ✅ デフォルトなし
 
@@ -135,6 +249,7 @@ export default function TimetablePage() {
   };
 
   return (
+    
     <div className="p-6">
       <div className="flex items-center justify-center mb-4 space-x-4">
         <h1 className="text-2xl font-bold">時間割（{classroomName || '教室名取得中...'}）</h1>
@@ -163,6 +278,10 @@ export default function TimetablePage() {
         <button onClick={saveTimetable} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
+        
+        {<PDFButton rows={rows} />}
+
+
       </div>
     </div>
   );
