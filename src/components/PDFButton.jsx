@@ -214,17 +214,17 @@ const TimetablePDF = ({ rows }) => {
   const mm = String(today.getMonth() + 1);
   const dd = String(today.getDate());
   const formattedDate = `${mm}月${dd}日（${dayOfWeek}）`;
-  
+
   const visibleRows = rows.filter(
     (row) => !['未定', '振替', '欠席'].includes(row.status)
   );
-  
+
   const periodCount = periods.length;
   const hasStudentInPeriod = Array(periodCount).fill(false);
-  
+
   // 時限ごとの合計生徒数を計算
   const studentsPerPeriod = Array(periodCount).fill(0);
-  
+
   visibleRows.forEach(row => {
     if (Array.isArray(row.periods)) {
       row.periods.forEach((students, idx) => {
@@ -243,7 +243,7 @@ const TimetablePDF = ({ rows }) => {
   // 20を超える場合は小さいフォントを使用、23を超える場合は折り返し
   const isSmallFont = maxStudentsInPeriod > 20;
   const isWrapMode = maxStudentsInPeriod > 23;
-  
+
   // 動的な列幅を計算
   let columnWidth;
   if (maxStudentsInPeriod > 23) {
@@ -281,14 +281,14 @@ const TimetablePDF = ({ rows }) => {
 
   // 表示する期間だけスライス
   const visiblePeriods = periods.slice(startIdx, endIdx + 1);
-  
+
   // 動的な表の幅を計算
   const totalColumns = visiblePeriods.length;
   const dynamicTableWidth = totalColumns * columnWidth;
 
   // 折り返し処理：全体の生徒数が一定値を超えたら折り返し
   const WRAP_THRESHOLD = 23;
-  
+
   // 全体の生徒を時限ごとに集計して分割
   const processedData = {
     firstHalf: [],
@@ -298,19 +298,19 @@ const TimetablePDF = ({ rows }) => {
   if (isWrapMode) {
     // 左側から順に講師を配置
     const middleIndex = Math.ceil(visibleRows.length / 2);
-    
+
     // 前半のデータ（左側）
     processedData.firstHalf = visibleRows.slice(0, middleIndex).map(row => ({
       ...row,
       periods: Array.isArray(row.periods) ? row.periods.slice(startIdx, endIdx + 1) : []
     }));
-    
+
     // 後半のデータ（右側）
     processedData.secondHalf = visibleRows.slice(middleIndex).map(row => ({
       ...row,
       periods: Array.isArray(row.periods) ? row.periods.slice(startIdx, endIdx + 1) : []
     }));
-    
+
     // 左右の行数を揃えるために空行を追加
     const maxRows = Math.max(processedData.firstHalf.length, processedData.secondHalf.length);
     while (processedData.firstHalf.length < maxRows) {
@@ -361,24 +361,24 @@ const TimetablePDF = ({ rows }) => {
           <View style={[styles.studentInfoSection, styles.seatSection]}>
             <Text style={styles.sectionValue}>{s.seat ?? '―'}</Text>
           </View>
-          
+
           {/* 学年セクション */}
           <View style={[styles.studentInfoSection, styles.gradeSection]}>
             <Text style={styles.sectionValue}>{s.grade ?? '―'}</Text>
           </View>
-          
+
           {/* 名前セクション */}
           <View style={[styles.studentInfoSection, styles.nameSection]}>
             <Text style={styles.nameValue}>
               {s.name ?? '―'}
             </Text>
           </View>
-          
+
           {/* 科目セクション */}
           <View style={[styles.studentInfoSection, styles.subjectSection]}>
             <Text style={styles.sectionValue}>{s.subject ?? '―'}</Text>
           </View>
-          
+
           {/* 講師セクション */}
           <View style={[styles.studentInfoSection_for_teacher, styles.teacherSection]}>
             <Text style={styles.teacherValue}>{row.teacher ?? '―'}</Text>
@@ -398,7 +398,7 @@ const TimetablePDF = ({ rows }) => {
           <View
             key={idx}
             style={[
-              styles.tableCell, 
+              styles.tableCell,
               { width: columnWidth },
               (!students || students.length === 0) && styles.emptyCell
             ]}
@@ -416,7 +416,7 @@ const TimetablePDF = ({ rows }) => {
     ))
   );
 
-  return(
+  return (
     <Document>
       <Page size="B4" orientation="landscape" style={styles.page}>
         <View style={styles.contentWrapper}>
