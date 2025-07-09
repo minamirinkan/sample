@@ -9,9 +9,9 @@ import {
     orderBy
 } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { db, auth } from '../firebase';
+import { db, auth } from '../../firebase';
 import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import SchoolAccountList from './SchoolAccountList';
+import SchoolAccountList from '../SchoolAccountList';
 import SchoolAccountForm from './SchoolAccountForm';
 
 const SchoolAccountAdmin = () => {
@@ -30,7 +30,7 @@ const SchoolAccountAdmin = () => {
         setSchools(fetched);
     };
 
-    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword }) => {
+    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword, tuitionName, teacherFeeName, periodTimeName,addressInfo,minimumWage,faxNumber }) => {
         setError('');
         setSuccess('');
 
@@ -58,7 +58,6 @@ const SchoolAccountAdmin = () => {
                 role: 'admin',
                 createdAt: serverTimestamp(),
             });
-
             // classrooms/{code}
             await setDoc(doc(db, 'classrooms', newCode), {
                 code: newCode,
@@ -66,6 +65,12 @@ const SchoolAccountAdmin = () => {
                 adminUid: uid,
                 email: newEmail.trim(),
                 createdAt: serverTimestamp(),
+                addressInfo,
+                faxNumber,
+                minimumWage: minimumWage ?? null,
+                tuitionName: tuitionName || '',
+                teacherFeeName: teacherFeeName || '',
+                periodTimeName: periodTimeName || ''
             });
 
             setSuccess('教室アカウントを登録しました。');

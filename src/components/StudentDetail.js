@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StudentInfoSection from './StudentInfoSection';
 import GuardianInfoSection from './GuardianInfoSection';
 import ActionButtons from './ActionButtons';
-import StudentAttendanceTab from './attendance/StudentAttendanceTab.jsx'
+import StudentAttendanceTab from './attendance/StudentAttendanceTab'
+import StudentCourseTable from './StudentCourseTable.jsx';
 
-const TABS = ['基本情報', '在籍情報', '受講情報', '請求情報'];
+const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報'];
 
 const StudentDetail = ({ student, onBack }) => {
     console.log("✅ StudentDetail 受け取った student:", student);
@@ -35,6 +36,12 @@ const StudentDetail = ({ student, onBack }) => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    useEffect(() => {
+        console.log("🔁 props.student が更新されたので再同期:", student);
+        setFormData({ ...student });
+        setOriginalData({ ...student });
+    }, [student]);
+
     const renderTabContent = () => {
         switch (activeTab) {
             case '基本情報':
@@ -57,6 +64,12 @@ const StudentDetail = ({ student, onBack }) => {
                     <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
                 );
             case '受講情報':
+                return (
+                    <div className="flex flex-col gap-4">
+                        <StudentCourseTable studentId={formData.id} />
+                    </div>
+                );
+            case '授業情報':
                 console.log("🟨 renderTabContent - formData:", formData);
                 return (
                     <div className="flex gap-6">
@@ -104,21 +117,8 @@ const StudentDetail = ({ student, onBack }) => {
                 ))}
             </div>
 
-
-            {/* ボタン */}
-            <ActionButtons
-                isEditing={isEditing}
-                onBack={onBack}
-                onEdit={handleEditClick}
-                onCancel={handleCancelClick}
-                onSave={handleSaveClick}
-            />
-
-            {/* メイン内容 */}
-            <div className="mt-4">{renderTabContent()}</div>
-
-            {/* 下部ボタン */}
-            <div className="mt-6">
+            {/* ボタン（上） */}
+            {activeTab === '基本情報' && (
                 <ActionButtons
                     isEditing={isEditing}
                     onBack={onBack}
@@ -126,7 +126,23 @@ const StudentDetail = ({ student, onBack }) => {
                     onCancel={handleCancelClick}
                     onSave={handleSaveClick}
                 />
-            </div>
+            )}
+
+            {/* メイン内容 */}
+            <div className="mt-4">{renderTabContent()}</div>
+
+            {/* ボタン（下） */}
+            {activeTab === '基本情報' && (
+                <div className="mt-6">
+                    <ActionButtons
+                        isEditing={isEditing}
+                        onBack={onBack}
+                        onEdit={handleEditClick}
+                        onCancel={handleCancelClick}
+                        onSave={handleSaveClick}
+                    />
+                </div>
+            )}
         </div>
     );
 };

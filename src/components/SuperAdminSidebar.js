@@ -119,6 +119,8 @@ const SuperAdminSidebar = ({ onSelectMenu }) => {
                     title="マスタ管理"
                     subItems={[
                         { label: '教室', key: 'admin' },
+                        { label: '料金', key: 'tuition' },
+                        { label: '講師給与', key: 'TeacherFee' },
                         { label: '生徒', key: 'students' },
                         { label: '講師', key: 'teachers' }
                     ]}

@@ -5,11 +5,10 @@ import {
     signInWithEmailAndPassword,
     signOut
 } from 'firebase/auth';
-import { doc, setDoc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, arrayUnion, getDoc, collection } from 'firebase/firestore';
 
 export const registerCustomerAndStudent = async ({
     uid,              // 生徒ID
-    customerName,     // 保護者名
     phoneNumber,      // 保護者電話
     studentData,
     isFirstLogin = true,
@@ -31,41 +30,77 @@ export const registerCustomerAndStudent = async ({
         const userCredential = await createUserWithEmailAndPassword(auth, guardianEmail, tempPassword);
         const customerUid = userCredential.user.uid;
 
-        // Firestore参照
-        const customerRef = doc(db, 'customers', customerUid);
-        const customerSnap = await getDoc(customerRef);
+        try {
+            // Firestore参照
+            const customerRef = doc(db, 'customers', customerUid);
+            const customerSnap = await getDoc(customerRef);
 
-        if (customerSnap.exists()) {
-            // 既に保護者がいる場合 → 生徒IDを配列に追加
-            await updateDoc(customerRef, {
-                studentIds: arrayUnion(uid),
+            if (customerSnap.exists()) {
+                await updateDoc(customerRef, {
+                    studentIds: arrayUnion(uid),
+                });
+            } else {
+                await setDoc(customerRef, {
+                    uid: customerUid,
+                    name: `${studentData.guardianLastName} ${studentData.guardianFirstName}`, // 👈 ここでguardianNameを合成
+                    email: guardianEmail,
+                    phoneNumber,
+                    role: 'customer',
+                    isFirstLogin,
+                    createdAt: studentData.registrationDate,
+                    studentIds: [uid],
+                });
+            }
+
+            // 生徒情報登録（student に customerUid をセット）
+            const studentRef = doc(db, 'students', uid);
+            const { courseFormData, school, grade, ...restStudentData } = studentData;
+
+            console.log('Firestoreに保存する生徒データ:', {
+                ...restStudentData,
+                grade,         // school の外に出す
+                customerUid,
             });
-        } else {
-            // 新規保護者登録
-            await setDoc(customerRef, {
-                uid: customerUid,
-                name: customerName,
-                email: guardianEmail,
-                phoneNumber,
-                role: 'customer',
-                isFirstLogin,
-                createdAt: studentData.registrationDate,
-                studentIds: [uid], // 最初の生徒IDをセット
+
+            await setDoc(studentRef, {
+                ...restStudentData,
+                grade,               // 学年はschoolの外にセット
+                customerUid,
             });
+            // コースデータ保存
+            // サブコレクション courses にコースデータを追加
+            if (Array.isArray(studentData.courseFormData)) {
+                const coursesCollectionRef = collection(db, 'students', uid, 'courses');
+
+                for (const course of studentData.courseFormData) {
+                    if (!course.kind || !course.startYear) continue;
+
+                    const { kind, subject, startYear, startMonth } = course;
+
+                    // ドキュメントID生成
+                    let docId = '';
+                    if (['通常', '補習'].includes(kind) && startMonth) {
+                        docId = `${kind}-${subject}-${startYear}-${startMonth}`;
+                    } else {
+                        docId = `${kind}-${subject}-${startYear}`;
+                    }
+
+                    const { ...courseData } = course; // selected は不要
+
+                    await setDoc(doc(coursesCollectionRef, docId), courseData);
+                }
+            }
+        } catch (error) {
+            // 👇 Firestore 保存失敗 → Auth ユーザー削除
+            await userCredential.user.delete();
+            throw error;
         }
 
-        // 生徒情報登録（student に customerUid をセット）
-        const studentRef = doc(db, 'students', uid);
-        await setDoc(studentRef, {
-            ...studentData,
-            customerUid,
-        });
-
-        // 一旦サインアウトして管理者復帰
+        // 👇 管理者復帰処理（成功時）
         await signOut(auth);
         await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
-
         return true;
+
     } catch (error) {
         console.error('登録失敗:', error);
         alert('登録に失敗しました: ' + error.message);

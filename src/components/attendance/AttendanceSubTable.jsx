@@ -31,6 +31,7 @@ const AttendanceSubTable = ({
                     <th className="border px-2 py-1">科目</th>
                     <th className="border px-2 py-1">講師</th>
                     <th className="border px-2 py-1">備考</th>
+                    <th className="border px-2 py-1">授業種別</th>
                     <th className="border px-2 py-1">操作</th>
                 </tr>
             </thead>
@@ -141,6 +142,7 @@ const AttendanceSubTable = ({
                                         teacherName || '－'
                                     )}
                                 </td>
+                                <td className="border px-2 py-1">－</td>
                                 <td className="border px-2 py-1">－</td>
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
