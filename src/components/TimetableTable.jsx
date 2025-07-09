@@ -1,3 +1,4 @@
+//components/TimetableTable.jsx
 import TimetableRow from './TimetableRow';
 import StudentList from './StudentList';
 import periods from '../constants/periods';

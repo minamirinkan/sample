@@ -1,7 +1,6 @@
-// hooks/useMakeupLessons.js
 import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase'; // ← パスはプロジェクトに合わせて調整
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const useMakeupLessons = (studentId) => {
     const [makeupLessons, setMakeupLessons] = useState([]);
@@ -13,47 +12,33 @@ const useMakeupLessons = (studentId) => {
             return;
         }
 
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const colRef = collection(db, 'students', studentId, 'makeupLessons');
-                const snapshot = await getDocs(colRef);
+        const colRef = collection(db, 'students', studentId, 'makeupLessons');
 
-                const allLessons = [];
+        setLoading(true);
+        const unsubscribe = onSnapshot(colRef, (snapshot) => {
+            const allLessons = [];
 
-                snapshot.forEach(doc => {
-                    const rawId = doc.id;
-                    const parts = rawId.split('_');
-                    const date = parts.length === 2 ? parts[1] : parts[0];
+            snapshot.forEach(doc => {
+                const rawId = doc.id;
+                const parts = rawId.split('_');
+                const date = parts.length === 2 ? parts[1] : parts[0];
+                const data = doc.data();
 
-                    const data = doc.data();
+                if (Array.isArray(data.lessons)) {
+                    data.lessons.forEach((lesson) => {
+                        allLessons.push({ ...lesson, date });
+                    });
+                }
+            });
 
-                    console.log("📄 ドキュメントID:", rawId);
-                    console.log("🧩 parts:", parts);
-                    console.log("📆 抽出された date:", date);
-                    console.log("📦 ドキュメントデータ:", data);
+            setMakeupLessons(allLessons);
+            setLoading(false);
+        }, (error) => {
+            console.error("🔥 onSnapshot error:", error);
+            setLoading(false);
+        });
 
-                    if (Array.isArray(data.lessons)) {
-                        data.lessons.forEach((lesson, i) => {
-                            const withDate = { ...lesson, date };
-                            console.log(`✅ lesson[${i}] + date:`, withDate);
-                            allLessons.push(withDate);
-                        });
-                    } else {
-                        console.warn("⚠️ lessons が配列ではありません:", data);
-                    }
-                });
-
-                console.log("✅ setMakeupLessons に渡すデータ:", allLessons);
-                setMakeupLessons(allLessons);
-            } catch (err) {
-                console.error("振替データの取得エラー:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
+        return () => unsubscribe();
     }, [studentId]);
 
     return { makeupLessons, loading };
