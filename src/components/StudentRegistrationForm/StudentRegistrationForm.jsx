@@ -118,11 +118,14 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 classroomCode,
                 classroomName,
                 registrationDate: serverTimestamp(),
-                courseFormData: courseFormData.map((course) => ({
-                    ...course,
-                    subject: course.subject === 'その他' ? course.subjectOther || '' : course.subject,
-                    subjectOther: undefined,
-                })),
+                courseFormData: courseFormData.map((course) => {
+                    const updated = { ...course };
+                    if (updated.subject === 'その他') {
+                        updated.subject = updated.subjectOther || '';
+                    }
+                    delete updated.subjectOther;
+                    return updated;
+                }),
             },
         });
 
