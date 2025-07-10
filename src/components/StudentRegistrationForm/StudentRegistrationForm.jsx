@@ -17,10 +17,12 @@ const StudentRegistrationForm = ({ onCancel }) => {
     const classroomName = adminData?.classroomName;
 
     const initialFormData = {
+        entryDate: '',
         lastName: '',
         firstName: '',
         lastNameKana: '',
         firstNameKana: '',
+        name: '',
         birthDate: '',
         gender: '',
         grade: '',
@@ -28,6 +30,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
         guardianFirstName: '',
         guardianKanaLastName: '',
         guardianKanaFirstName: '',
+        guardianName: '',
         relationship: '',
         guardianPhone: '',
         guardianEmail: '',
@@ -117,6 +120,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 ...formData,
                 classroomCode,
                 classroomName,
+                name: `${formData.lastName} ${formData.firstName}`,
                 registrationDate: serverTimestamp(),
                 courseFormData: courseFormData.map((course) => {
                     const updated = { ...course };

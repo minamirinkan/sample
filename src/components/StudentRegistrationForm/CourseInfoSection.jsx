@@ -39,7 +39,6 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
     const classTypes = ['1名クラス', '2名クラス', '演習クラス'];
     const WEEKDAY_OPTIONS = ['日', '月', '火', '水', '木', '金', '土'];
     const PERIOD_OPTIONS = ['1限', '2限', '3限', '4限', '5限', '6限', '7限', '8限'];
-    const timesOptions = Array.from({ length: 12 }, (_, i) => i + 1);
     const years = [2025, 2026, 2027];
     const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
@@ -89,16 +88,22 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
                                             </select>
                                         </td>
                                         <td className="border px-4 py-2 min-w-[100px] text-center whitespace-nowrap text-ellipsis">
-                                            <select
-                                                value={data.times || ''}
-                                                onChange={(e) => handleChange(index, { times: e.target.value })}
-                                                className="w-full border rounded px-2 py-1"
-                                            >
-                                                <option value="">選択</option>
-                                                {timesOptions.map((num) => (
-                                                    <option key={num} value={num}>{num}回</option>
-                                                ))}
-                                            </select>
+                                            {lessonType === 'regular' ? (
+                                                <input
+                                                    type="text"
+                                                    value="1回"
+                                                    readOnly
+                                                    className="w-full border rounded px-2 py-1 bg-gray-100 text-center cursor-not-allowed"
+                                                />
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    value={data.times || ''}
+                                                    onChange={(e) => handleChange(index, { times: e.target.value })}
+                                                    className="w-full border rounded px-2 py-1 text-center"
+                                                    placeholder="例：1回"
+                                                />
+                                            )}
                                         </td>
                                         <td className="border px-4 py-2 min-w-[100px] text-center whitespace-nowrap text-ellipsis">
                                             <div className="flex flex-col gap-1">

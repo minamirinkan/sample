@@ -13,8 +13,8 @@ const InternalInfoSection = ({ formData, onChange, lessonType, onLessonTypeChang
             <input
                 type="date"
                 placeholder="登録日"
-                value={formData.registrationDate}
-                onChange={(e) => onChange('registrationDate', e.target.value)}
+                value={formData.entryDate}
+                onChange={(e) => onChange('entryDate', e.target.value)}
                 className="border rounded p-2"
             />
 
