@@ -6,6 +6,7 @@ import {
     signOut
 } from 'firebase/auth';
 import { doc, setDoc, updateDoc, arrayUnion, getDoc, collection } from 'firebase/firestore';
+import { saveToWeeklySchedules } from './saveToWeeklySchedules';
 
 export const registerCustomerAndStudent = async ({
     uid,              // 生徒ID
@@ -42,7 +43,9 @@ export const registerCustomerAndStudent = async ({
             } else {
                 await setDoc(customerRef, {
                     uid: customerUid,
-                    name: `${studentData.guardianLastName} ${studentData.guardianFirstName}`, // 👈 ここでguardianNameを合成
+                    guardianLastName: studentData.guardianLastName,
+                    guardianFirstName: studentData.guardianFirstName,
+                    guardianName: `${studentData.guardianLastName} ${studentData.guardianFirstName}`, // 👈 ここでguardianNameを合成
                     email: guardianEmail,
                     phoneNumber,
                     role: 'customer',
@@ -87,8 +90,10 @@ export const registerCustomerAndStudent = async ({
 
                     const { ...courseData } = course; // selected は不要
 
-                    await setDoc(doc(coursesCollectionRef, docId), courseData);
+                    await setDoc(doc(coursesCollectionRef, docId), courseData);                    
                 }
+                // 生徒情報の保存後に追加する
+                    await saveToWeeklySchedules(studentData);
             }
         } catch (error) {
             // 👇 Firestore 保存失敗 → Auth ユーザー削除
