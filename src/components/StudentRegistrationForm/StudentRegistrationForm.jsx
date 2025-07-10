@@ -40,10 +40,11 @@ const StudentRegistrationForm = ({ onCancel }) => {
         remarks: '',
         postalCode: '',
         prefecture: '',
-        address2: '',       // 市区町村
-        address3: '',       // 番地等
-        address2Kana: '',   // 市区町村フリガナ
-        address3Kana: '',   // 番地等フリガナ
+        city: '',       // 市区町村
+        streetAddress: '',       // 番地等
+        buildingName: '',       // 建物名・部屋番号
+        cityKana: '',   // 市区町村フリガナ
+        streetAddressKana: '',   // 番地等フリガナ
     };
 
     const initialCourseFormData = {

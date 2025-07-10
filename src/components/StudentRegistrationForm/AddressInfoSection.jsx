@@ -21,14 +21,14 @@ const AddressInfoSection = ({ formData, onChange }) => {
         const interval = setInterval(() => {
             const newData = {
                 prefecture: prefectureRef.current?.value || '',
-                address2: cityRef.current?.value || '',
-                address3: streetRef.current?.value || '',
+                city: cityRef.current?.value || '',
+                streetAddress: streetRef.current?.value || '',
             };
 
             const hasChanged =
                 newData.prefecture !== formData.prefecture ||
-                newData.address2 !== formData.address2 ||
-                newData.address3 !== formData.address3;
+                newData.city !== formData.city ||
+                newData.streetAddress !== formData.streetAddress;
 
             if (hasChanged) {
                 onChange({
@@ -76,11 +76,11 @@ const AddressInfoSection = ({ formData, onChange }) => {
             <label className="block mt-4 mb-2 font-bold" htmlFor="city">市区町村</label>
             <input
                 type="text"
-                name="address2"
-                className="p-locality address2"
+                name="city"
+                className="p-locality city"
                 id="city"
-                value={formData.address2 || ''}
-                onChange={(e) => handleChange('address2', e.target.value)}
+                value={formData.city || ''}
+                onChange={(e) => handleChange('city', e.target.value)}
                 ref={cityRef}
             />
 
@@ -88,12 +88,22 @@ const AddressInfoSection = ({ formData, onChange }) => {
             <label className="block mt-4 mb-2 font-bold" htmlFor="street">番地等</label>
             <input
                 type="text"
-                name="address3"
-                className="p-street-address address3"
+                name="streetAddress"
+                className="p-street-address streetAddress"
                 id="street"
-                value={formData.address3 || ''}
-                onChange={(e) => handleChange('address3', e.target.value)}
+                value={formData.streetAddress || ''}
+                onChange={(e) => handleChange('streetAddress', e.target.value)}
                 ref={streetRef}
+            />
+
+            {/* 建物名・部屋番号 */}
+            <label className="block mt-4 mb-2 font-bold" htmlFor="cityKana">建物名・部屋番号</label>
+            <input
+                type="text"
+                id="buildingName"
+                value={formData.buildingName || ''}
+                onChange={(e) => handleChange('buildingName', e.target.value)}
+                placeholder="建物名・部屋番号"
             />
 
             {/* 市区町村フリガナ */}
@@ -101,8 +111,8 @@ const AddressInfoSection = ({ formData, onChange }) => {
             <input
                 type="text"
                 id="cityKana"
-                value={formData.address2Kana || ''}
-                onChange={(e) => handleChange('address2Kana', e.target.value)}
+                value={formData.cityKana || ''}
+                onChange={(e) => handleChange('cityKana', e.target.value)}
                 placeholder="カタカナで入力"
             />
 
@@ -111,8 +121,8 @@ const AddressInfoSection = ({ formData, onChange }) => {
             <input
                 type="text"
                 id="streetKana"
-                value={formData.address3Kana || ''}
-                onChange={(e) => handleChange('address3Kana', e.target.value)}
+                value={formData.streetAddressKana || ''}
+                onChange={(e) => handleChange('streetAddressKana', e.target.value)}
                 placeholder="カタカナで入力"
             />
         </div>

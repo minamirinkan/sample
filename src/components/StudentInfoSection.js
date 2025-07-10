@@ -11,8 +11,7 @@ const StudentInfoSection = ({ formData, isEditing, onChange }) => (
             </h2>
             <InfoRow label="在籍状況" value={formData.status} isEditing={false} />
             <InfoRow label="受付日" value={formatDate(formData.entryDate)} isEditing={false} />
-            <InfoRow label="入塾日" value={formatDate(formData.enrollmentDate)} isEditing={false} />
-            <InfoRow label="コース/クラス" value={formData.courseClass} isEditing={isEditing} onChange={onChange}/>
+            <InfoRow label="入塾日" value={formatDate(formData.entryDate)} isEditing={false} />
         </div>
 
         <div className="p-3 rounded-md border border-gray-300 border-t-4 border-t-blue-500 shadow-sm">
@@ -33,6 +32,7 @@ const StudentInfoSection = ({ formData, isEditing, onChange }) => (
             <h2 className="text-lg font-semibold mb-3 text-blue-600">
                 学校情報
             </h2>
+            <InfoRow label="学校名" value={formData.schoolType} name="schoolName" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="学校名" value={formData.schoolName} name="schoolName" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="学年" value={formData.grade} name="grade" isEditing={isEditing} onChange={onChange} />
         </div>

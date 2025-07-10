@@ -27,6 +27,8 @@ const StudentTable = ({ students, onShowDetail }) => {
             prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
         );
     };
+console.log('students:', students);
+console.log('currentStudents:', currentStudents);
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md">
