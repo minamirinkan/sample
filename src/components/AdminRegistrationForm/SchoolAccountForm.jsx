@@ -22,6 +22,11 @@ const SchoolAccountForm = ({ onAdd }) => {
     const [periodOptions, setPeriodOptions] = useState([]);
     const [minimumWage, setMinimumWage] = useState('');
     const [faxNumber, setFaxNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [leaderLastName, setLeaderLastName] = useState('');
+    const [leaderFirstName, setLeaderFirstName] = useState('');
+    const [leaderLastKana, setLeaderLastKana] = useState('');
+    const [leaderFirstKana, setLeaderFirstKana] = useState('');
     const [formData, setFormData] = useState({
         postalCode: '',
         prefecture: '',
@@ -74,6 +79,11 @@ const SchoolAccountForm = ({ onAdd }) => {
             addressInfo: formData,
             minimumWage: minimumWage !== '' ? Number(minimumWage) : null,
             faxNumber,
+            phoneNumber,
+            leaderLastName,
+            leaderFirstName,
+            leaderLastKana,
+            leaderFirstKana,
         });
 
         // フォーム初期化
@@ -86,6 +96,11 @@ const SchoolAccountForm = ({ onAdd }) => {
         setSelectedPeriodLocation('');
         setMinimumWage('');
         setFaxNumber('');
+        setPhoneNumber('');
+        setLeaderLastName('');
+        setLeaderFirstName('');
+        setLeaderLastKana('');
+        setLeaderFirstKana('');
     };
 
 
@@ -123,10 +138,69 @@ const SchoolAccountForm = ({ onAdd }) => {
                 </div>
             </div>
 
-            <AddressInfoSection
-                formData={formData}
-                onChange={(newData) => setFormData(newData)}
-            />
+            <div className="flex flex-row gap-6 mt-4">
+                {/* ▼ 住所入力フォーム（既存） */}
+                <div className="w-1/2">
+                    <AddressInfoSection
+                        formData={formData}
+                        onChange={(newData) => setFormData(newData)}
+                    />
+                </div>
+
+                {/* ▼ 室長名入力欄（新規） */}
+                <div className="w-1/2">
+                    <label className="block mb-2 font-bold">室長名</label>
+
+                    {/* 姓・名 */}
+                    <div className="grid grid-cols-2 gap-4 mt-6">
+                        {/* 姓・名 */}
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">室長 姓</label>
+                            <input
+                                type="text"
+                                value={leaderLastName}
+                                onChange={(e) => setLeaderLastName(e.target.value)}
+                                className="border border-gray-300 rounded px-3 py-2 w-full"
+                                placeholder="例: 山田"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">室長 名</label>
+                            <input
+                                type="text"
+                                value={leaderFirstName}
+                                onChange={(e) => setLeaderFirstName(e.target.value)}
+                                className="border border-gray-300 rounded px-3 py-2 w-full"
+                                placeholder="例: 太郎"
+                            />
+                        </div>
+
+                        {/* フリガナ */}
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">室長 姓（フリガナ）</label>
+                            <input
+                                type="text"
+                                value={leaderLastKana}
+                                onChange={(e) => setLeaderLastKana(e.target.value)}
+                                className="border border-gray-300 rounded px-3 py-2 w-full"
+                                placeholder="ヤマダ"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-sm font-medium text-gray-700">室長 名（フリガナ）</label>
+                            <input
+                                type="text"
+                                value={leaderFirstKana}
+                                onChange={(e) => setLeaderFirstKana(e.target.value)}
+                                className="border border-gray-300 rounded px-3 py-2 w-full"
+                                placeholder="タロウ"
+                            />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col flex-1">
                     <label className="mb-1 text-sm font-medium text-gray-700">メールアドレス</label>
@@ -151,8 +225,20 @@ const SchoolAccountForm = ({ onAdd }) => {
             </div>
 
             <div className="flex flex-row gap-4 mt-6">
+                {/* ▼ 電話番号欄 */}
+                <div className="flex flex-col w-1/3">
+                    <label className="mb-1 text-sm font-medium text-gray-700">電話番号</label>
+                    <input
+                        type="text"
+                        className="border border-gray-300 rounded px-3 py-2 bg-white"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        placeholder="例: 03-0000-0000"
+                    />
+                </div>
+
                 {/* ▼ FAX欄 */}
-                <div className="flex flex-col w-1/2">
+                <div className="flex flex-col w-1/3">
                     <label className="mb-1 text-sm font-medium text-gray-700">FAX番号</label>
                     <input
                         type="text"
@@ -164,7 +250,7 @@ const SchoolAccountForm = ({ onAdd }) => {
                 </div>
 
                 {/* ▼ 最低賃金欄 */}
-                <div className="flex flex-col w-1/2">
+                <div className="flex flex-col w-1/3">
                     <label className="mb-1 text-sm font-medium text-gray-700">最低賃金（円）</label>
                     <input
                         type="number"
@@ -177,6 +263,7 @@ const SchoolAccountForm = ({ onAdd }) => {
                     />
                 </div>
             </div>
+
 
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
                 {/* ▼ 授業料 */}
