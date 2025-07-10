@@ -69,6 +69,8 @@ export const registerCustomerAndStudent = async ({
                 ...restStudentData,
                 grade,               // 学年はschoolの外にセット
                 customerUid,
+                guardianName: `${studentData.guardianLastName} ${studentData.guardianFirstName}`,
+                status: '在籍中',
             });
             // コースデータ保存
             // サブコレクション courses にコースデータを追加

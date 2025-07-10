@@ -3,6 +3,7 @@ import { FaExclamationTriangle } from 'react-icons/fa';
 import { formatDate } from '../utils/dateFormatter';
 
 const StudentRow = ({ student, isSelected, onSelect, onShowDetail }) => {
+    console.log('student:', student);
     return (
         <tr className="hover:bg-gray-50 text-sm">
             <td className="border px-4 py-2">
@@ -16,7 +17,7 @@ const StudentRow = ({ student, isSelected, onSelect, onShowDetail }) => {
             <td className="border px-4 py-2">{student.lastName} {student.firstName}</td>
             <td className="border px-4 py-2">{student.lastNameKana} {student.firstNameKana}</td>
             <td className="border px-4 py-2">{student.grade}</td>
-            <td className="border px-4 py-2">{formatDate(student.enrollmentDate)}</td>
+            <td className="border px-4 py-2">{formatDate(student.entryDate)}</td>
             <td className="border px-4 py-2 text-center">
                 {student.billingStatus === '未請求' && (
                     <FaExclamationTriangle className="text-red-500 inline-block" />

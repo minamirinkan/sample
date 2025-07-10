@@ -9,8 +9,10 @@ const GuardianInfoSection = ({ formData, isEditing, onChange }) => (
             <h2 className="text-lg font-semibold mb-3 text-blue-600">
                 保護者情報
             </h2>
-            <InfoRow label="保護者氏名" value={formData.guardianName} name="guardianName" isEditing={isEditing} onChange={onChange} />
-            <InfoRow label="保護者氏名カナ" value={formData.guardianNameKana} name="guardianNameKana" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="保護者氏名（姓）" value={formData.guardianLastName} name="guardianLastName" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="保護者氏名（名）" value={formData.guardianFirstName} name="guardianFirstName" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="氏名カナ（姓）" value={formData.guardianKanaLastName} name="guardianKanaLastNameKana" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="氏名カナ（名）" value={formData.guardianKanaFirstName} name="guardianKanaFirstNameKana" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="続柄" value={formData.relationship} name="relationship" isEditing={isEditing} onChange={onChange} />
         </div>
 
@@ -20,9 +22,61 @@ const GuardianInfoSection = ({ formData, isEditing, onChange }) => (
                 連絡先
             </h2>
             <InfoRow label="電話番号" value={formData.guardianPhone} name="guardianPhone" isEditing={isEditing} onChange={onChange} />
-            <InfoRow label="メールアドレス" value={formData.guardianEmail} name="guardianEmail" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="緊急連絡先" value={formData.emergencyContact} name="emergencyContact" isEditing={isEditing} onChange={onChange} />
-            <InfoRow label="住所" value={formData.address} name="address" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="メールアドレス" value={formData.guardianEmail} name="guardianEmail" isEditing={isEditing} onChange={onChange} />
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">住所</label>
+                {!isEditing ? (
+                    <p className="text-gray-800 border rounded p-2 bg-white">
+                        〒{formData.postalCode || '－'}<br />
+                        {formData.prefecture || ''}{formData.city || ''}{formData.street || ''}<br />
+                        {formData.building || ''}
+                    </p>
+                ) : (
+                    <div className="space-y-2">
+                        <input
+                            type="text"
+                            name="postalCode"
+                            value={formData.postalCode || ''}
+                            onChange={onChange}
+                            placeholder="郵便番号（例: 123-4567）"
+                            className="w-full border rounded p-2"
+                        />
+                        <input
+                            type="text"
+                            name="prefecture"
+                            value={formData.prefecture || ''}
+                            onChange={onChange}
+                            placeholder="都道府県"
+                            className="w-full border rounded p-2"
+                        />
+                        <input
+                            type="text"
+                            name="city"
+                            value={formData.city || ''}
+                            onChange={onChange}
+                            placeholder="市区町村"
+                            className="w-full border rounded p-2"
+                        />
+                        <input
+                            type="text"
+                            name="street"
+                            value={formData.street || ''}
+                            onChange={onChange}
+                            placeholder="番地"
+                            className="w-full border rounded p-2"
+                        />
+                        <input
+                            type="text"
+                            name="building"
+                            value={formData.building || ''}
+                            onChange={onChange}
+                            placeholder="建物名・部屋番号（任意）"
+                            className="w-full border rounded p-2"
+                        />
+                    </div>
+                )}
+            </div>
         </div>
 
         {/* 備考欄 */}

@@ -34,9 +34,6 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
                     return {
                         id: doc.id,
                         ...data,
-                        entryDate: data.entryDate?.seconds
-                            ? new Date(data.entryDate.seconds * 1000).toLocaleDateString()
-                            : '－',
                     };
                 });
                 setStudents(studentData);
@@ -76,12 +73,13 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
         setSelectedStudentDetail(null);
         setView('list');
     };
-    
+
     const handleSearch = (term) => {
         setSearchTerm(term);
     };
 
     return (
+        console.log('superstudents:', filteredStudents),
         <>
             {view === 'list' && (
                 <div className="space-y-4">
