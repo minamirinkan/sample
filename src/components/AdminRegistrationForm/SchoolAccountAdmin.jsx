@@ -30,7 +30,8 @@ const SchoolAccountAdmin = () => {
         setSchools(fetched);
     };
 
-    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword, tuitionName, teacherFeeName, periodTimeName,addressInfo,minimumWage,faxNumber }) => {
+    const handleAddSchool = async ({ newName, newCode, newEmail, newPassword, tuitionName, teacherFeeName, periodTimeName, addressInfo, minimumWage, faxNumber, phoneNumber, leaderLastName, leaderFirstName, leaderLastKana,
+        leaderFirstKana, }) => {
         setError('');
         setSuccess('');
 
@@ -69,8 +70,13 @@ const SchoolAccountAdmin = () => {
                 faxNumber,
                 minimumWage: minimumWage ?? null,
                 tuitionName: tuitionName || '',
+                phoneNumber: phoneNumber || '',
                 teacherFeeName: teacherFeeName || '',
-                periodTimeName: periodTimeName || ''
+                periodTimeName: periodTimeName || '',
+                leaderLastName,
+                leaderFirstName,
+                leaderLastKana,
+                leaderFirstKana
             });
 
             setSuccess('教室アカウントを登録しました。');
