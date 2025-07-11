@@ -66,6 +66,8 @@ export async function saveMakeupLesson(studentId, docId, lessonData) {
         existingLessons = data.lessons || [];
     }
 
+    console.log('🧪 lessonData:', lessonData);
+
     // `student` フィールドがネストされたままなら、lessonData.student を展開
     const lesson = {
         grade: lessonData.student.grade || '',
@@ -75,6 +77,8 @@ export async function saveMakeupLesson(studentId, docId, lessonData) {
         status: lessonData.status || '',
         studentId: lessonData.student.studentId || '',
         subject: lessonData.student.subject || '',
+        classType: lessonData.student.classType || '',   // ← 追加
+        duration: lessonData.student.duration || '',
     };
 
     // 配列に追加
