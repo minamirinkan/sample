@@ -10,8 +10,8 @@ type Props = {
     holidays: Holiday[];
     selected: string[];
     toggle: (date: string) => void;
-    onDeleteSingle: (date: string) => void;
     onOpenAddModal: (month: string) => void;
+    onRemoveSelectedInMonth: (month: string) => void;
 };
 
 const HolidayMonthCard: React.FC<Props> = ({
@@ -19,8 +19,8 @@ const HolidayMonthCard: React.FC<Props> = ({
     holidays,
     selected,
     toggle,
-    onDeleteSingle,
     onOpenAddModal,
+    onRemoveSelectedInMonth,
 }) => {
     const displayMonth = month.slice(-2) + "月";
 
@@ -33,6 +33,12 @@ const HolidayMonthCard: React.FC<Props> = ({
                     onClick={() => onOpenAddModal(month)}
                 >
                     追加
+                </button>
+                <button
+                    onClick={() => onRemoveSelectedInMonth(month)}
+                    className="px-3 py-1 bg-red-500 text-white rounded text-sm"
+                >
+                    チェック済み削除
                 </button>
             </div>
 
@@ -52,12 +58,6 @@ const HolidayMonthCard: React.FC<Props> = ({
                                         {h.date.slice(-5)}：{h.name}
                                     </span>
                                 </label>
-                                <button
-                                    className="text-red-600 hover:text-red-800 text-sm"
-                                    onClick={() => onDeleteSingle(h.date)}
-                                >
-                                    削除
-                                </button>
                             </li>
                         ))}
                 </ul>

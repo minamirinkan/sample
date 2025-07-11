@@ -97,7 +97,7 @@ const AdminSidebar = ({ onSelectMenu }) => {
                     title="スケジュール"
                     subItems={[
                         { label: 'カレンダー', key: 'schedule-calendar' },
-                        { label: '祝日リスト', key: 'holiday-page' }
+                        { label: '休講日リスト', key: 'holiday-page' }
                     ]}
                     onSelectMenu={onSelectMenu}
                 />

@@ -19,8 +19,8 @@ const HolidayPage = () => {
     }, [year]);
 
     const handleSelection = useCallback((selectedHolidays: Holiday[]) => {
-    setSelected(selectedHolidays);
-}, []);
+        setSelected(selectedHolidays);
+    }, []);
 
     const handleYearChange = (delta: number) => {
         setYear((prev) => prev + delta);
@@ -46,8 +46,11 @@ const HolidayPage = () => {
                 </button>
             </div>
 
-            <HolidaySelector holidays={holidays} onChange={handleSelection} />
-
+            <HolidaySelector
+                holidays={holidays}
+                onChange={handleSelection}
+                year={year}
+            />
             <button
                 onClick={() => console.log("保存対象:", selected)}
                 className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"

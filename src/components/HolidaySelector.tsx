@@ -11,14 +11,34 @@ type Holiday = {
 type Props = {
     holidays: Holiday[];
     onChange: (selectedHolidays: Holiday[]) => void;
+    year: number;
 };
 
-const HolidaySelector: React.FC<Props> = ({ holidays, onChange }) => {
+const HolidaySelector: React.FC<Props> = ({ holidays, onChange, year }) => {
     const [selected, setSelected] = useState<string[]>([]);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [currentMonthForAdd, setCurrentMonthForAdd] = useState<string | null>(null);
     const [newHoliday, setNewHoliday] = useState<{ name: string; date: string }>({ name: "", date: "" });
+    const [localHolidays, setLocalHolidays] = useState<Holiday[]>(holidays);
+    const [deletedHolidays, setDeletedHolidays] = useState<Holiday[]>([]);
+    const [restoreSelected, setRestoreSelected] = useState<string[]>([]);
+
+    const toggleRestore = (date: string) => {
+        setRestoreSelected(prev =>
+            prev.includes(date) ? prev.filter(d => d !== date) : [...prev, date]
+        );
+    };
+    const handleRestore = () => {
+        const toRestore = deletedHolidays.filter(h => restoreSelected.includes(h.date));
+        setLocalHolidays(prev => [...prev, ...toRestore]); // 祝日リストに復元
+        setDeletedHolidays(prev => prev.filter(h => !restoreSelected.includes(h.date))); // 削除リストから除去
+        setRestoreSelected([]); // チェックをリセット
+    };
+
+    useEffect(() => {
+        setLocalHolidays(holidays);
+    }, [holidays]);
 
     // selected変更で親通知
     useEffect(() => {
@@ -40,19 +60,43 @@ const HolidaySelector: React.FC<Props> = ({ holidays, onChange }) => {
 
     const handleAddHoliday = () => {
         if (!newHoliday.name || !newHoliday.date) return;
-        // 追加は親にonChangeにより反映してもらう想定。ここはローカルでselected操作しない
-        // もし追加データ保持がこのコンポーネントにあるなら状態管理を変える必要あり
-        // ここでは簡略化してalertのみ
-        alert(`祝日追加: ${newHoliday.date} ${newHoliday.name}\n※実装に合わせて処理を変更してください`);
+
+        const newItem = { ...newHoliday };
+
+        // localHolidaysに追加
+        setLocalHolidays(prev => [...prev, newItem]);
+
         setShowAddModal(false);
     };
 
-    const handleDeleteSingle = (date: string) => {
-        setSelected(prev => prev.filter(d => d !== date));
+    const handleAddRangeHoliday = (name: string, start: string, end: string) => {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const holidaysToAdd: Holiday[] = [];
+
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split("T")[0];
+            holidaysToAdd.push({ name, date: dateStr });
+        }
+
+        setLocalHolidays(prev => [...prev, ...holidaysToAdd]);
+        setShowAddModal(false);
     };
 
-    const handleDeleteSelected = () => {
-        setShowDeleteConfirm(true);
+    const handleRemoveSelectedInMonth = (month: string) => {
+        const prefix = `${month}-`;
+        const selectedInMonth = selected.filter(date => date.startsWith(prefix));
+
+        const toDelete = localHolidays.filter(h => selectedInMonth.includes(h.date));
+
+        // selectedから削除
+        setSelected(prev => prev.filter(date => !selectedInMonth.includes(date)));
+
+        // 表示中holidayから削除
+        setLocalHolidays(prev => prev.filter(h => !selectedInMonth.includes(h.date)));
+
+        // 削除済みリストに追加
+        setDeletedHolidays(prev => [...prev, ...toDelete]);
     };
 
     const confirmDeleteSelected = () => {
@@ -68,18 +112,10 @@ const HolidaySelector: React.FC<Props> = ({ holidays, onChange }) => {
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">祝日を選択（非表示にしたい日を外す）</h2>
 
-            <button
-                className="mb-4 px-4 py-2 bg-red-600 text-white rounded"
-                onClick={handleDeleteSelected}
-                disabled={selected.length === 0}
-            >
-                選択した祝日を削除
-            </button>
-
             <div className="grid grid-cols-2 gap-4">
                 {Array.from({ length: 12 }, (_, i) => {
-                    const month = `2025-${(i + 1).toString().padStart(2, "0")}`;
-                    const monthlyHolidays = holidays.filter(h => h.date.startsWith(month));
+                    const month = `${year}-${(i + 1).toString().padStart(2, "0")}`;
+                    const monthlyHolidays = localHolidays.filter(h => h.date.startsWith(month));
 
                     return (
                         <HolidayMonthCard
@@ -88,19 +124,41 @@ const HolidaySelector: React.FC<Props> = ({ holidays, onChange }) => {
                             holidays={monthlyHolidays}
                             selected={selected}
                             toggle={toggle}
-                            onDeleteSingle={handleDeleteSingle}
                             onOpenAddModal={handleOpenAddModal}
+                            onRemoveSelectedInMonth={handleRemoveSelectedInMonth}
                         />
                     );
                 })}
             </div>
+            {deletedHolidays.length > 0 && (
+                <div className="mt-8 bg-white shadow rounded-xl p-4">
+                    <h3 className="text-lg font-semibold mb-2">削除された祝日</h3>
+                    <ul className="space-y-2 max-h-48 overflow-auto">
+                        {deletedHolidays.map(h => (
+                            <li key={h.date} className="flex items-center space-x-2">
+                                <input
+                                    type="checkbox"
+                                    checked={restoreSelected.includes(h.date)}
+                                    onChange={() => toggleRestore(h.date)}
+                                />
+                                <span>{h.date}：{h.name}</span>
+                            </li>
+                        ))}
+                    </ul>
+                    <button
+                        onClick={handleRestore}
+                        className="mt-3 px-4 py-1 bg-green-600 text-white rounded text-sm disabled:opacity-50"
+                        disabled={restoreSelected.length === 0}
+                    >
+                        選択した祝日を復元
+                    </button>
+                </div>
+            )}
 
             {showAddModal && currentMonthForAdd && (
                 <HolidayModal
                     month={currentMonthForAdd}
-                    newHoliday={newHoliday}
-                    setNewHoliday={setNewHoliday}
-                    onAdd={handleAddHoliday}
+                    onAddRange={handleAddRangeHoliday}
                     onCancel={() => setShowAddModal(false)}
                 />
             )}
