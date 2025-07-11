@@ -20,13 +20,13 @@ const useMakeupLessons = (studentId) => {
 
             snapshot.forEach(doc => {
                 const rawId = doc.id;
-                const parts = rawId.split('_');
-                const date = parts.length === 2 ? parts[1] : parts[0];
+                const parts = rawId.split('_'); // ex: ["024", "2025-07-22", "2"]
+                const date = parts.length >= 3 ? parts[1] : null; // ✅ 正しい日付を取り出す
                 const data = doc.data();
 
                 if (Array.isArray(data.lessons)) {
                     data.lessons.forEach((lesson) => {
-                        allLessons.push({ ...lesson, date });
+                        allLessons.push({ ...lesson, date }); // ✅ 正しい date を追加
                     });
                 }
             });

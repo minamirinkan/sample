@@ -34,9 +34,16 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
                 }
 
                 for (let d = new Date(monthStart); d <= monthEnd; d.setDate(d.getDate() + 1)) {
-                    const yyyyMMdd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                    const yyyy = d.getFullYear();
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
                     const weekdayIndex = d.getDay();
-                    const dailyDocRef = doc(db, 'dailySchedules', `${classroomCode}_${yyyyMMdd}`);
+                    const yyyyMMdd = `${yyyy}-${mm}-${dd}`;
+
+                    // ✅ 修正：曜日インデックスを含めた ID を構築
+                    const dailyDocId = `${classroomCode}_${yyyy}-${mm}-${dd}_${weekdayIndex}`;
+                    const dailyDocRef = doc(db, 'dailySchedules', dailyDocId);
+
 
                     const unsubscribe = onSnapshot(
                         dailyDocRef,

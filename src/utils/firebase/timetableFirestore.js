@@ -47,7 +47,13 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
 
   let rows = [];
   if (selectedDate.type === 'date') {
-    const dailySnap = await getDoc(doc(db, 'dailySchedules', `${classroomCode}_${dateKey}`));
+    const dateStr = getDateKey(selectedDate); // 例: "2025-07-16"
+    const day = selectedDate.day ?? selectedDate.date;
+    const dateObj = new Date(selectedDate.year, selectedDate.month - 1, day);
+    const weekdayIndex = dateObj.getDay(); // 0=日, ..., 6=土
+    const dailyDocId = `${classroomCode}_${dateStr}_${weekdayIndex}`;
+    const dailySnap = await getDoc(doc(db, 'dailySchedules', dailyDocId));
+
     if (dailySnap.exists()) {
       rows = parseData(dailySnap).rows;
     } else {
@@ -137,8 +143,15 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
   const isDate = selectedDate.type === 'date';
   let docRef;
   if (isDate) {
-    docRef = doc(db, 'dailySchedules', `${classroomCode}_${getDateKey(selectedDate)}`);
-  } else {
+    const dateStr = getDateKey(selectedDate); // "2025-07-16"
+    const day = selectedDate.day ?? selectedDate.date;
+    const dateObj = new Date(selectedDate.year, selectedDate.month - 1, day);
+    const weekdayIndex = dateObj.getDay(); // 0〜6
+
+    const docId = `${classroomCode}_${dateStr}_${weekdayIndex}`;
+    docRef = doc(db, 'dailySchedules', docId);
+  }
+  else {
     const weeklyDocId = getWeeklyDocId(selectedDate, classroomCode);
     docRef = doc(db, 'weeklySchedules', weeklyDocId);
   }

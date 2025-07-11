@@ -9,11 +9,12 @@ import {
     saveScheduleDoc,
     saveMakeupLesson,
 } from '../utils/firebase/attendanceFirestore';
+import { buildDailyDocId } from '../utils/firebase/attendanceFirestore';
 import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 
 // 🔽 振替レッスン削除ユーティリティ
 async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
-    const docId = `${classroomCode}_${date}`;
+    const docId = buildDailyDocId(classroomCode, date);
     console.log(`🪵 removeFromMakeupLessons → docId: ${docId}`);
     const docRef = doc(db, 'students', studentId, 'makeupLessons', docId);
     const snap = await getDoc(docRef);
@@ -48,7 +49,7 @@ async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
 // ✅ 振替レッスンをアーカイブに移動（形式を makeupLessons と同じに）
 async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomCode) {
     try {
-        const docId = `${classroomCode}_${date}`;
+        const docId = buildDailyDocId(classroomCode, date);
         const archiveDocRef = doc(db, 'students', studentId, 'makeupLessonsArchive', docId);
 
         await setDoc(archiveDocRef, {
@@ -127,8 +128,8 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
             const targetStudentId = String(editValues.studentId).trim();
 
             if (editValues.date) {
-                const oldDocId = `${classroomCode}_${originalEntry.date}`;
-                const newDocId = `${classroomCode}_${editValues.date}`;
+                const oldDocId = buildDailyDocId(classroomCode, originalEntry.date);
+                const newDocId = buildDailyDocId(classroomCode, editValues.date);
 
                 // 🔽 振替 → 通常への変更だった場合、元の振替データを削除
                 const oldPeriod = originalEntry.period;
@@ -145,7 +146,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         const weeklyData = await fetchScheduleDoc('weeklySchedules', weeklyRefId);
                         oldData = weeklyData || { rows: [] };
                     }
-                
+
                     const updatedOldRows = (oldData.rows || []).map(row => ({
                         ...row,
                         periods: {
@@ -155,10 +156,10 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                             ),
                         },
                     }));
-                
+
                     await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
                 }
-                
+
                 const noChange =
                     editValues.date === originalEntry.date &&
                     editValues.periodLabel === originalEntry.periodLabel &&
@@ -203,7 +204,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 console.log('targetStudentId:', targetStudentId);
                 console.log('🟢 final oldData used:', oldData);
                 const isSameDate = oldDocId === newDocId;
-                
+
                 if (isSameDate) {
                     // 🔁 同じ日付の場合 → newData.rows を直接編集（削除 + 追加）
                     const updatedRows = (newData.rows || []).map(row => {
