@@ -95,7 +95,10 @@ const AdminSidebar = ({ onSelectMenu }) => {
                 <SidebarSection
                     icon={FaBook} // 他のアイコンでもOK
                     title="スケジュール"
-                    subItems={[{ label: 'カレンダー', key: 'schedule-calendar' }]}
+                    subItems={[
+                        { label: 'カレンダー', key: 'schedule-calendar' },
+                        { label: '祝日リスト', key: 'holiday-page' }
+                    ]}
                     onSelectMenu={onSelectMenu}
                 />
                 <SidebarSection
