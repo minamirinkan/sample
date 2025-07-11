@@ -112,6 +112,8 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
               name: lesson.name ?? '',
               seat: lesson.seat ?? '',
               subject: lesson.subject ?? '',
+              classType: lesson.classType ?? '',
+              duration: lesson.duration ?? '',
               status: '振替'
             });
           }
@@ -182,6 +184,8 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
         name: student?.name ?? '',
         seat: student?.seat ?? '',
         subject: student?.subject ?? '',
+        classType: student?.classType ?? '',
+        duration: student?.duration ?? '',
         status: rowStatus
       }));
     });
@@ -216,6 +220,8 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
           name: student.name,
           grade: student.grade,
           studentId: student.studentId,
+          classType: student.classType ?? '',
+          duration: student.duration ?? '',
           status: '振替'
         });
         await setDoc(makeupDocRef, { lessons: existingLessons });
@@ -242,7 +248,9 @@ function parseData(snap) {
           grade: s.grade ?? '',
           name: s.name ?? '',
           seat: s.seat ?? '',
-          subject: s.subject ?? ''
+          subject: s.subject ?? '',
+          classType: s.classType ?? '',
+          duration: s.duration ?? ''
         })));
       }
       return {

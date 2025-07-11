@@ -45,31 +45,38 @@ export default function StudentList() {
             </select>
 
             <div className="overflow-y-auto max-h-[500px] pr-1">
-                {filteredStudents.map((s) => (
-                    <div
-                        key={s.id}
-                        draggable
-                        onDragStart={(e) =>
-                            e.dataTransfer.setData(
-                                'application/json',
-                                JSON.stringify({
-                                    student: {
-                                        name: `${s.lastName} ${s.firstName}`,
-                                        grade: shortGrade(s.grade),
-                                        studentId: s.studentId || s.id,
-                                        seat: '',
-                                        subject: '',
-                                    },
-                                    fromPeriod: null,
-                                })
-                            )
-                        }
-                        className="p-1 mb-1 border rounded bg-blue-100 hover:bg-blue-200 cursor-move"
-                    >
-                        {`(${shortGrade(s.grade)}) ${s.lastName} ${s.firstName}`}
-                    </div>
-                ))}
+                {filteredStudents.map((s) => {
+                    console.log("🧾 生徒データ:", s); // ← ここでログ出力！
+
+                    return (
+                        <div
+                            key={s.id}
+                            draggable
+                            onDragStart={(e) =>
+                                e.dataTransfer.setData(
+                                    'application/json',
+                                    JSON.stringify({
+                                        student: {
+                                            name: `${s.lastName} ${s.firstName}`,
+                                            grade: shortGrade(s.grade),
+                                            studentId: s.studentId || s.id,
+                                            seat: '',
+                                            subject: '',
+                                            classType: s.classType || '',
+                                            duration: s.duration || '',
+                                        },
+                                        fromPeriod: null,
+                                    })
+                                )
+                            }
+                            className="p-1 mb-1 border rounded bg-blue-100 hover:bg-blue-200 cursor-move"
+                        >
+                            {`(${shortGrade(s.grade)}) ${s.lastName} ${s.firstName}`}
+                        </div>
+                    );
+                })}
             </div>
+
         </div>
     );
 }

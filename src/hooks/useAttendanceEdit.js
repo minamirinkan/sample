@@ -108,6 +108,8 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 status: editValues.status || '',
                 seat: editValues.seat || '',
                 grade: editValues.grade || '',
+                classType: editValues.classType || originalEntry.classType || '',
+                duration: editValues.duration || originalEntry.duration || '',
                 teacher: editValues.status === '予定'
                     ? {
                         code: editValues.teacherCode || '',
@@ -122,6 +124,9 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
             console.log("🟡 periodLabels:", periodLabels);
             const periodIndex = periodLabels.findIndex(p => p.label === editValues.periodLabel);
             const newPeriodKey = `period${periodIndex + 1}`;
+            console.log('🐞 originalEntry.student:', originalEntry.student);
+            console.log('🐞 editValues:', editValues);
+
 
             console.log('✅ oldPeriodKey:', oldPeriodKey);
             console.log('✅ newPeriodKey:', newPeriodKey);
@@ -159,6 +164,27 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
 
                     await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
                 }
+                if (originalEntry.status === '未定' && editValues.status === '振替') {
+                    let oldData = await fetchScheduleDoc('dailySchedules', oldDocId);
+                    if (!oldData) {
+                        const weeklyRefId = buildWeeklyDocId(classroomCode, originalEntry.date);
+                        const weeklyData = await fetchScheduleDoc('weeklySchedules', weeklyRefId);
+                        oldData = weeklyData || { rows: [] };
+                    }
+
+                    const updatedOldRows = (oldData.rows || []).map(row => ({
+                        ...row,
+                        periods: {
+                            ...row.periods,
+                            [oldPeriodKey]: (row.periods?.[oldPeriodKey] || []).filter(
+                                s => String(s.studentId).trim() !== targetStudentId
+                            ),
+                        },
+                    }));
+
+                    await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
+                }
+
 
                 const noChange =
                     editValues.date === originalEntry.date &&
@@ -248,6 +274,8 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                             period: periodIndex,
                             date: editValues.date,
                             status: editValues.status,
+                            classType: editValues.classType || originalEntry.classType || '',
+                            duration: editValues.duration || originalEntry.duration || '',
                         }
                     );
 

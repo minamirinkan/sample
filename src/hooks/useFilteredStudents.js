@@ -1,4 +1,4 @@
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, getDocs, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import shortGrade from '../utils/shortGrade';
@@ -20,11 +20,27 @@ export default function useFilteredStudents(searchKeyword, gradeFilter, classroo
             where('classroomCode', '==', classroomCode)
         );
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const fetched = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
+        const unsubscribe = onSnapshot(q, async (snapshot) => {
+            const fetched = await Promise.all(snapshot.docs.map(async (docSnap) => {
+                const student = { id: docSnap.id, ...docSnap.data() };
+
+                // 🔽 coursesサブコレクションを取得
+                const courseSnap = await getDocs(collection(db, 'students', docSnap.id, 'courses'));
+
+                // kind === '通常' のコースを1つだけ取得（なければ null）
+                const courseData = courseSnap.docs
+                    .map(doc => doc.data())
+                    .find(course => course.kind === '通常');
+
+                if (courseData) {
+                    student.classType = courseData.classType || '';
+                    student.duration = courseData.duration || '';
+                    student.subject = courseData.subject || '';
+                }
+
+                return student;
             }));
+
             setStudents(fetched);
         });
 

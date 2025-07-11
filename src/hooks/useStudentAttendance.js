@@ -85,6 +85,8 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
                                                 seat: student.seat || '',
                                                 teacher: row.teacher || '',
                                                 status: student.status || '－',
+                                                classType: student.classType || '',
+                                                duration: student.duration || '',
                                                 classroomCode,
                                                 studentId: student.studentId,
                                             });
