@@ -29,11 +29,12 @@ class CalendarPopup extends Component {
     if (this.unsubscribe) this.unsubscribe();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.year !== this.state.year || prevState.month !== this.state.month) {
-      this.fetchSavedDates();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevState.year !== this.state.year || prevState.month !== this.state.month) {
+  //     if (this.unsubscribe) this.unsubscribe(); // 前の監視を止める
+  //     this.setupSavedDatesListener(); // 新たにリッスン開始
+  //   }
+  // }
 
   handleClickOutside = (event) => {
     if (
