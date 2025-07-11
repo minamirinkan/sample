@@ -9,6 +9,14 @@ export const buildWeeklyDocId = (classroomCode, date) => {
     return `${classroomCode}_${year}-${month}_${weekday}`;
 };
 
+export const buildDailyDocId = (classroomCode, dateStr) => {
+    const d = new Date(dateStr); // 例: "2025-07-16"
+    const weekday = d.getDay();  // 0 = 日曜
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${classroomCode}_${yyyy}-${mm}-${dd}_${weekday}`;
+};
 export const getPeriodKey = (periodLabels, label) => {
     console.log('label:', label);
     console.warn('⚠️ 無効な periodLabel:', label);
