@@ -265,6 +265,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 }
 
                 if (editValues.status === '振替') {
+                    console.log("✅ saveMakeupLesson に渡す student:", student);
                     await saveMakeupLesson(
                         String(editValues.studentId).trim(),
                         newDocId,
@@ -274,8 +275,6 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                             period: periodIndex,
                             date: editValues.date,
                             status: editValues.status,
-                            classType: editValues.classType || originalEntry.classType || '',
-                            duration: editValues.duration || originalEntry.duration || '',
                         }
                     );
 
