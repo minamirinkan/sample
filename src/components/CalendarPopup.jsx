@@ -15,6 +15,7 @@ class CalendarPopup extends Component {
       today: today.getDate(),
       selectedWeekday: null,
       savedDates: new Set(),
+      holidayDates: new Set(),
     };
     this.popupRef = createRef();
   }
@@ -22,6 +23,7 @@ class CalendarPopup extends Component {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
     this.setupSavedDatesListener();
+    this.fetchHolidays();
   }
 
   componentWillUnmount() {
@@ -145,6 +147,31 @@ class CalendarPopup extends Component {
       console.error('Failed to listen saved dates:', error);
     });
   };
+  fetchHolidays = async () => {
+    const API_KEY = 'AIzaSyBoS5pAbHsjaDGfniVqfk7eJSwwDcnEphY'; // ← ここに取得したAPIキーを貼り付けてね
+    const calendarId = 'japanese__ja@holiday.calendar.google.com';
+    const timeMin = new Date(this.state.year, this.state.month, 1).toISOString();
+    const timeMax = new Date(this.state.year, this.state.month + 1, 0).toISOString();
+
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}&orderBy=startTime&singleEvents=true`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.log("Fetched holiday events:", data);
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.items) {
+        const holidayDates = new Set(
+          data.items.map(event => event.start.date) // "2025-07-15" の形式
+        );
+        this.setState({ holidayDates });
+      }
+    } catch (err) {
+      console.error('祝日の取得に失敗しました:', err);
+    }
+  };
 
   render() {
     const { year, month, showCalendar, selectedDate, today, selectedWeekday, savedDates } = this.state;
@@ -204,14 +231,22 @@ class CalendarPopup extends Component {
               {calendarCells.map((date, idx) => {
                 if (date === null) return <div key={idx} className="h-6" />;
 
-                const weekday = idx % 7;
-                const colorClass =
-                  weekday === 0 ? 'text-red-500' : weekday === 6 ? 'text-blue-500' : 'text-black';
+                const fullDate = new Date(year, month, date);
+                const weekday = fullDate.getDay();
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                const isHoliday = this.state.holidayDates.has(dateStr);
+                console.log("dateStr:", dateStr, "isHoliday:", isHoliday);
+                const colorClass = isHoliday
+                  ? 'text-red-600 font-bold'
+                  : weekday === 0
+                    ? 'text-red-500'
+                    : weekday === 6
+                      ? 'text-blue-500'
+                      : 'text-black';
 
                 const isSelected = date === selectedDate ? 'bg-gray-300' : '';
                 const isToday = date === today ? 'bg-yellow-300' : '';
 
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
                 const isConfirmed = savedDates.has(dateStr);
 
                 return (

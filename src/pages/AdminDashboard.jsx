@@ -8,6 +8,7 @@ import StudentRegistrationForm from '../components/StudentRegistrationForm/Stude
 import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
 import ScheduleCalendarPage from './ScheduleCalendarPage';
 import AdminStudentCalendar from './AdminStudentCalendar';
+import HolidayPage from './HolidayPage.tsx';
 
 const AdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -71,6 +72,8 @@ const AdminDashboard = () => {
                 return <TimetablePage />;
             case 'schedule-calendar':   // ここを追加
                 return <ScheduleCalendarPage />;
+            case 'holiday-page':   // ここを追加
+                return <HolidayPage />;
             case 'student-timetable':
                 return <AdminStudentCalendar />;
             default:
