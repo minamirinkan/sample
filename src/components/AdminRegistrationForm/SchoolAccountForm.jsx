@@ -30,10 +30,10 @@ const SchoolAccountForm = ({ onAdd }) => {
     const [formData, setFormData] = useState({
         postalCode: '',
         prefecture: '',
-        address2: '',
-        address3: '',
-        address2Kana: '',
-        address3Kana: ''
+        city: '',
+        streetAddress: '',
+        cityKana: '',
+        streetAddressKana: ''
     });
 
 
