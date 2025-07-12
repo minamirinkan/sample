@@ -10,6 +10,7 @@ import StudentRegistrationForm from '../components/StudentRegistrationForm/Stude
 import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
 import TuitionRegistrationForm from '../components/TuitionRegistrationTabs';
 import TeacherFeeRegistration from '../components/AdminRegistrationForm/TeacherFeeRegistration';
+import HolidayPage from './HolidayPage.tsx';
 
 const SuperAdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -17,6 +18,8 @@ const SuperAdminDashboard = () => {
 
     const renderContent = () => {
         switch (selectedContent) {
+            case 'holiday-page':   // ここを追加
+                return <HolidayPage />;
             case 'students':
                 return <SuperAdminStudents onAddNewStudent={() => setSelectedContent('studentRegistration')} />;
             case 'teachers':
