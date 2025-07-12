@@ -105,6 +105,14 @@ const SuperAdminSidebar = ({ onSelectMenu }) => {
                     }
                 }} */
                 />
+                <SidebarSection
+                    icon={FaBook} // 他のアイコンでもOK
+                    title="スケジュール"
+                    subItems={[
+                        { label: '休講日リスト', key: 'holiday-page' }
+                    ]}
+                    onSelectMenu={onSelectMenu}
+                />
                 <SidebarSection icon={FaFileAlt} title="レポート" subItems={[
                     { label: '問合せ経路別入会率', key: 'report-entry-rate' },
                     { label: '問合せ昨対比', key: 'report-compare' },

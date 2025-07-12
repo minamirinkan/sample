@@ -1,23 +1,47 @@
 import React, { useState } from "react";
 
+type Holiday = { name: string; date: string; type: "holiday" | "customClose"; };
+
 type Props = {
-    month: string; // 例: "2025-01"
-    onAddRange: (name: string, start: string, end: string) => void;
+    month: string;
+    onAddRange: (name: string, start: string, end: string, type: "holiday" | "customClose") => void;
     onCancel: () => void;
+    existingHolidays: Holiday[];
 };
 
-const HolidayModal: React.FC<Props> = ({ month, onAddRange, onCancel }) => {
+const HolidayModal: React.FC<Props> = ({ month, onAddRange, onCancel, existingHolidays }) => {
     const [name, setName] = useState("");
     const [start, setStart] = useState(`${month}-01`);
     const [end, setEnd] = useState(`${month}-01`);
+    const [error, setError] = useState<string | null>(null);
+    const [type, setType] = useState<"holiday" | "customClose">("customClose");
 
     const handleSubmit = () => {
-        if (!name || !start || !end) return;
-        if (new Date(start) > new Date(end)) {
-            alert("開始日は終了日より前にしてください");
+        setError(null);
+
+        if (!name || !start || !end) {
+            setError("全ての項目を入力してください");
             return;
         }
-        onAddRange(name, start, end);
+
+        if (new Date(start) > new Date(end)) {
+            setError("開始日は終了日より前にしてください");
+            return;
+        }
+
+        // 重複チェック
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split("T")[0];
+            if (existingHolidays.some(h => h.date === dateStr)) {
+                setError(`${dateStr} は既に祝日として登録されています。`);
+                return;
+            }
+        }
+
+        onAddRange(name, start, end, type);
     };
 
     return (
@@ -25,14 +49,32 @@ const HolidayModal: React.FC<Props> = ({ month, onAddRange, onCancel }) => {
             <div className="bg-white rounded-lg shadow-lg p-6 w-96">
                 <h3 className="text-lg font-semibold mb-4">祝日を範囲で追加 ({month})</h3>
 
+                {error && (
+                    <div className="mb-4 text-red-600 font-semibold">
+                        {error}
+                    </div>
+                )}
+
                 <div className="mb-4">
-                    <label className="block mb-1 font-medium">祝日名</label>
+                    <label className="block mb-1 font-medium">名称</label>
                     <input
                         type="text"
                         value={name}
-                        onChange={e => setName(e.target.value)}
+                        onChange={(e) => setName(e.target.value)}
                         className="w-full border border-gray-300 rounded px-2 py-1"
+                        placeholder="例: 夏期休講"
                     />
+                </div>
+                <div className="mb-4">
+                    <label className="block mb-1 font-medium">種類</label>
+                    <select
+                        value={type}
+                        onChange={(e) => setType(e.target.value as "holiday" | "customClose")}
+                        className="w-full border border-gray-300 rounded px-2 py-1"
+                    >
+                        <option value="holiday">祝日</option>
+                        <option value="customClose">指定休講日</option>
+                    </select>
                 </div>
 
                 <div className="mb-4">
