@@ -6,6 +6,7 @@ import DeleteConfirmModal from "../data/DeleteConfirmModal.tsx";
 import { fetchJapanHolidays } from "../api/fetchHolidays.ts";
 import { saveSchoolClosures, Closure } from "../api/saveClosures.ts";
 import { fetchSchoolClosures } from "../api/fetchSchoolClosures.ts";
+import FullYearCalendar from "../components/FullYearCalendar.tsx"; // パスは適宜調整
 
 type Holiday = { name: string; date: string; type: "holiday" | "customClose" };
 
@@ -14,24 +15,31 @@ const HolidayPage = () => {
     const [holidays, setHolidays] = useState<Holiday[]>([]);
     const [selected, setSelected] = useState<string[]>([]); // チェック済みの日付の配列
     const [deletedHolidays, setDeletedHolidays] = useState<Holiday[]>([]);
+    const [showFullYearCalendar, setShowFullYearCalendar] = useState<boolean>(false);
 
     // モーダルの開閉状態
     const [addModalMonth, setAddModalMonth] = useState<string | null>(null);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const { role, classroomCode } = useAuth();
+    const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
     // 祝日読み込み
     useEffect(() => {
         const load = async () => {
-            if (!role) return; // roleがまだ未取得なら処理しない（適宜調整）
+            if (!role) return; // roleがまだ未取得なら処理しない
 
             const { closures, deleted } = await fetchSchoolClosures(year, role, classroomCode);
             const normalizeDate = (d: string) => d.slice(0, 10);
-            const deletedDates = deleted.map(d => normalizeDate(d.date));
 
             if (closures.length > 0 || deleted.length > 0) {
+                // typeまで考慮して削除処理
                 const filteredClosures = closures.filter(
-                    c => !deletedDates.includes(normalizeDate(c.date))
+                    c =>
+                        !deleted.some(
+                            d =>
+                                normalizeDate(d.date) === normalizeDate(c.date) &&
+                                d.type === c.type
+                        )
                 );
                 setHolidays(filteredClosures);
                 setDeletedHolidays(deleted);
@@ -43,6 +51,7 @@ const HolidayPage = () => {
                 }));
                 setHolidays(result);
             }
+
             setSelected([]);
         };
 
@@ -65,7 +74,9 @@ const HolidayPage = () => {
     const closeAddModal = () => {
         setAddModalMonth(null);
     };
-
+    const toggleShowFullYearCalendar = () => {
+        setShowFullYearCalendar(prev => !prev);
+    };
     // 祝日範囲追加処理
     const handleAddRange = (name: string, start: string, end: string, type: "holiday" | "customClose") => {
         // 追加処理（祝日配列を更新）
@@ -173,14 +184,39 @@ const HolidayPage = () => {
         setHolidays(prev => [...prev, ...toRestore]);
         setSelectedDeleted([]);
     };
+    const handleShowCalendar = () => {
+        setShowCalendar(true); // モーダル表示など
+    };
 
     return (
         <div className="p-4">
-            <div className="flex justify-center space-x-6 mb-6">
-                <button onClick={() => changeYear(-1)}>&lt;</button>
-                <span className="text-3xl font-bold">{year}年</span>
-                <button onClick={() => changeYear(1)}>&gt;</button>
+            <div className="flex justify-between items-center mb-6">
+                {/* 年度変更ボタン */}
+                <div className="flex items-center space-x-6">
+                    <button onClick={() => changeYear(-1)} className="text-xl px-2">&lt;</button>
+                    <span className="text-3xl font-bold">{year}年</span>
+                    <button onClick={() => changeYear(1)} className="text-xl px-2">&gt;</button>
+                </div>
+
+                {/* カレンダー表示ボタン */}
+                <button
+                    onClick={toggleShowFullYearCalendar}
+                    className={`px-4 py-2 rounded text-white ${showFullYearCalendar ? "bg-gray-500 hover:bg-gray-600" : "bg-blue-500 hover:bg-blue-600"}`}
+                >
+                    {showFullYearCalendar ? "カレンダーを閉じる" : "カレンダー表示"}
+                </button>
             </div>
+
+            {/* ✅ カレンダー表示セクション（条件付き） */}
+            {showFullYearCalendar && (
+                <div className="mb-6">
+                    <FullYearCalendar
+                        year={year}
+                        holidays={holidays}
+                        deletedHolidays={deletedHolidays}
+                    />
+                </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
                 {allMonths.map((month) => (
