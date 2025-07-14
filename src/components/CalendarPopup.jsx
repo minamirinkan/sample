@@ -1,7 +1,6 @@
-//components/CalendarPopup.jsx
 import React, { Component, createRef } from 'react';
 import { RiCalendarLine } from 'react-icons/ri';
-import { getFirestore, collection, onSnapshot, query, where } from 'firebase/firestore';
+import { getFirestore, collection, onSnapshot, query, where, doc, getDoc } from 'firebase/firestore';
 
 class CalendarPopup extends Component {
   constructor(props) {
@@ -23,20 +22,13 @@ class CalendarPopup extends Component {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
     this.setupSavedDatesListener();
-    this.fetchHolidays();
+    this.fetchClosuresFromFirestore();
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside);
     if (this.unsubscribe) this.unsubscribe();
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.year !== this.state.year || prevState.month !== this.state.month) {
-  //     if (this.unsubscribe) this.unsubscribe(); // 前の監視を止める
-  //     this.setupSavedDatesListener(); // 新たにリッスン開始
-  //   }
-  // }
 
   handleClickOutside = (event) => {
     if (
@@ -57,7 +49,7 @@ class CalendarPopup extends Component {
       const newMonth = prevState.month === 0 ? 11 : prevState.month - 1;
       const newYear = prevState.month === 0 ? prevState.year - 1 : prevState.year;
       return { year: newYear, month: newMonth };
-    });
+    }, this.fetchClosuresFromFirestore);
   };
 
   handleNextMonth = () => {
@@ -65,7 +57,7 @@ class CalendarPopup extends Component {
       const newMonth = prevState.month === 11 ? 0 : prevState.month + 1;
       const newYear = prevState.month === 11 ? prevState.year + 1 : prevState.year;
       return { year: newYear, month: newMonth };
-    });
+    }, this.fetchClosuresFromFirestore);
   };
 
   handleDateClick = (date) => {
@@ -127,10 +119,8 @@ class CalendarPopup extends Component {
       where("isSaved", "==", true)
     );
 
-    // onSnapshotでリアルタイム監視スタート
     this.unsubscribe = onSnapshot(q, (snapshot) => {
       const datesSet = new Set();
-
       snapshot.forEach((doc) => {
         const docId = doc.id;
         if (docId.startsWith(prefix)) {
@@ -141,41 +131,52 @@ class CalendarPopup extends Component {
           }
         }
       });
-
       this.setState({ savedDates: datesSet });
     }, (error) => {
       console.error('Failed to listen saved dates:', error);
     });
   };
-  fetchHolidays = async () => {
-    const API_KEY = 'AIzaSyBoS5pAbHsjaDGfniVqfk7eJSwwDcnEphY'; // ← ここに取得したAPIキーを貼り付けてね
-    const calendarId = 'japanese__ja@holiday.calendar.google.com';
-    const timeMin = new Date(this.state.year, this.state.month, 1).toISOString();
-    const timeMax = new Date(this.state.year, this.state.month + 1, 0).toISOString();
 
-    const url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}&orderBy=startTime&singleEvents=true`;
-    const response = await fetch(url);
-    const data = await response.json();
+  fetchClosuresFromFirestore = async () => {
+  console.log('fetchClosuresFromFirestore called');
+  const { classroomCode } = this.props;
+  if (!classroomCode) {
+    console.warn('classroomCode prop is required');
+    return;
+  }
 
-    console.log("Fetched holiday events:", data);
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
+  const db = getFirestore();
+  const closuresSet = new Set();
 
-      if (data.items) {
-        const holidayDates = new Set(
-          data.items.map(event => event.start.date) // "2025-07-15" の形式
-        );
-        this.setState({ holidayDates });
-      }
-    } catch (err) {
-      console.error('祝日の取得に失敗しました:', err);
+  const yearStr = this.state.year.toString();
+
+  try {
+    // classrooms/{classroomCode}/closures/{year} ドキュメントを取得
+    const closuresYearDocRef = doc(db, `classrooms/${classroomCode}/closures/${yearStr}`);
+    const closuresYearDocSnap = await getDoc(closuresYearDocRef);
+
+    if (closuresYearDocSnap.exists()) {
+      const data = closuresYearDocSnap.data();
+      const closuresArray = data.closures || [];
+
+      closuresArray.forEach((closure) => {
+        if (closure.date) {
+          closuresSet.add(closure.date);
+        }
+      });
+
+      this.setState({ holidayDates: closuresSet });
+    } else {
+      console.warn(`closures doc for year ${yearStr} not found`);
+      this.setState({ holidayDates: new Set() });
     }
-  };
+  } catch (err) {
+    console.error('Firestore 休校日の取得に失敗:', err);
+  }
+};
 
   render() {
     const { year, month, showCalendar, selectedDate, today, selectedWeekday, savedDates } = this.state;
-
     const days = ['日', '月', '火', '水', '木', '金', '土'];
     const firstDay = new Date(year, month, 1).getDay();
     const lastDate = new Date(year, month + 1, 0).getDate();
@@ -208,7 +209,6 @@ class CalendarPopup extends Component {
               </button>
             </div>
 
-            {/* 曜日ヘッダー */}
             <div className="grid grid-cols-7 text-center font-semibold mb-1">
               {days.map((d, i) => (
                 <div
@@ -226,7 +226,6 @@ class CalendarPopup extends Component {
               ))}
             </div>
 
-            {/* 日付セル */}
             <div className="grid grid-cols-7 text-center gap-y-1">
               {calendarCells.map((date, idx) => {
                 if (date === null) return <div key={idx} className="h-6" />;
@@ -235,7 +234,7 @@ class CalendarPopup extends Component {
                 const weekday = fullDate.getDay();
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
                 const isHoliday = this.state.holidayDates.has(dateStr);
-                console.log("dateStr:", dateStr, "isHoliday:", isHoliday);
+
                 const colorClass = isHoliday
                   ? 'text-red-600 font-bold'
                   : weekday === 0
@@ -246,7 +245,6 @@ class CalendarPopup extends Component {
 
                 const isSelected = date === selectedDate ? 'bg-gray-300' : '';
                 const isToday = date === today ? 'bg-yellow-300' : '';
-
                 const isConfirmed = savedDates.has(dateStr);
 
                 return (
