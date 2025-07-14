@@ -16,12 +16,12 @@ const HolidayPage = () => {
     const [selected, setSelected] = useState<string[]>([]); // チェック済みの日付の配列
     const [deletedHolidays, setDeletedHolidays] = useState<Holiday[]>([]);
     const [showFullYearCalendar, setShowFullYearCalendar] = useState<boolean>(false);
+    const [activeTab, setActiveTab] = useState<'holidayList' | 'calendar'>('holidayList');
 
     // モーダルの開閉状態
     const [addModalMonth, setAddModalMonth] = useState<string | null>(null);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
     const { role, classroomCode } = useAuth();
-    const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
     // 祝日読み込み
     useEffect(() => {
@@ -184,31 +184,91 @@ const HolidayPage = () => {
         setHolidays(prev => [...prev, ...toRestore]);
         setSelectedDeleted([]);
     };
-    const handleShowCalendar = () => {
-        setShowCalendar(true); // モーダル表示など
-    };
 
     return (
         <div className="p-4">
             <div className="flex justify-between items-center mb-6">
-                {/* 年度変更ボタン */}
                 <div className="flex items-center space-x-6">
                     <button onClick={() => changeYear(-1)} className="text-xl px-2">&lt;</button>
                     <span className="text-3xl font-bold">{year}年</span>
                     <button onClick={() => changeYear(1)} className="text-xl px-2">&gt;</button>
                 </div>
+            </div>
 
-                {/* カレンダー表示ボタン */}
+            {/* タブ */}
+            <div className="flex space-x-4 mb-6">
                 <button
-                    onClick={toggleShowFullYearCalendar}
-                    className={`px-4 py-2 rounded text-white ${showFullYearCalendar ? "bg-gray-500 hover:bg-gray-600" : "bg-blue-500 hover:bg-blue-600"}`}
+                    onClick={() => setActiveTab("holidayList")}
+                    className={`px-4 py-2 rounded ${activeTab === "holidayList" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
                 >
-                    {showFullYearCalendar ? "カレンダーを閉じる" : "カレンダー表示"}
+                    祝日一覧
+                </button>
+                <button
+                    onClick={() => setActiveTab("calendar")}
+                    className={`px-4 py-2 rounded ${activeTab === "calendar" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800"}`}
+                >
+                    休講日カレンダー
                 </button>
             </div>
 
-            {/* ✅ カレンダー表示セクション（条件付き） */}
-            {showFullYearCalendar && (
+            {/* タブ表示 */}
+            {activeTab === "holidayList" && (
+                <>
+                    <div className="grid grid-cols-2 gap-4">
+                        {allMonths.map((month) => (
+                            <HolidayMonthCard
+                                key={month}
+                                month={month}
+                                holidays={holidaysByMonth[month] ?? []}
+                                selected={selected}
+                                toggle={toggleSelected}
+                                onOpenAddModal={openAddModal}
+                                onRemoveSelectedInMonth={(month) => {
+                                    const selectedInMonth = selected.filter((d) => d.startsWith(month));
+                                    if (selectedInMonth.length > 0) {
+                                        setSelected(selectedInMonth);
+                                        openDeleteConfirm();
+                                    }
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="mt-8 p-4 bg-white rounded shadow max-h-80 overflow-auto">
+                        <h2 className="text-lg font-bold mb-2">削除済み祝日（復元可能）</h2>
+                        {deletedHolidays.length === 0 && <p className="text-gray-500">削除された祝日はありません。</p>}
+                        <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+                            {deletedHolidays.map((h) => (
+                                <li key={h.date} className="flex items-center space-x-2">
+                                    <label className="flex items-center space-x-2 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedDeleted.includes(h.date)}
+                                            onChange={() => toggleDeleted(h.date)}
+                                        />
+                                        <span>{h.date}：{h.name}</span>
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+
+                        {selectedDeleted.length > 0 && (
+                            <button
+                                onClick={handleRestoreSelected}
+                                className="mt-4 px-4 py-2 bg-green-600 text-white rounded"
+                            >
+                                選択した祝日を復元
+                            </button>
+                        )}
+                    </div>
+
+                    <button onClick={handleSave} className="mt-4 ml-4 px-4 py-2 bg-blue-600 text-white rounded">
+                        Firestoreに保存
+                    </button>
+                </>
+            )}
+
+            {activeTab === "calendar" && (
                 <div className="mb-6">
                     <FullYearCalendar
                         year={year}
@@ -217,58 +277,6 @@ const HolidayPage = () => {
                     />
                 </div>
             )}
-
-            <div className="grid grid-cols-2 gap-4">
-                {allMonths.map((month) => (
-                    <HolidayMonthCard
-                        key={month}
-                        month={month}
-                        holidays={holidaysByMonth[month] ?? []} // データなければ空配列
-                        selected={selected}
-                        toggle={toggleSelected}
-                        onOpenAddModal={openAddModal}
-                        onRemoveSelectedInMonth={(month) => {
-                            const selectedInMonth = selected.filter(d => d.startsWith(month));
-                            if (selectedInMonth.length > 0) {
-                                setSelected(selectedInMonth);
-                                openDeleteConfirm();
-                            }
-                        }}
-                    />
-                ))}
-            </div>
-            <div className="mt-8 p-4 bg-white rounded shadow max-h-80 overflow-auto">
-                <h2 className="text-lg font-bold mb-2">削除済み祝日（復元可能）</h2>
-                {deletedHolidays.length === 0 && <p className="text-gray-500">削除された祝日はありません。</p>}
-
-                <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
-                    {deletedHolidays.map(h => (
-                        <li key={h.date} className="flex items-center space-x-2">
-                            <label className="flex items-center space-x-2 cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    checked={selectedDeleted.includes(h.date)}
-                                    onChange={() => toggleDeleted(h.date)}
-                                />
-                                <span>{h.date}：{h.name}</span>
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-
-                {selectedDeleted.length > 0 && (
-                    <button
-                        onClick={handleRestoreSelected}
-                        className="mt-4 px-4 py-2 bg-green-600 text-white rounded"
-                    >
-                        選択した祝日を復元
-                    </button>
-                )}
-            </div>
-
-            <button onClick={handleSave} className="mt-4 ml-4 px-4 py-2 bg-blue-600 text-white rounded">
-                Firestoreに保存
-            </button>
 
             {/* 祝日追加モーダル */}
             {addModalMonth && (
@@ -283,7 +291,7 @@ const HolidayPage = () => {
             {/* 削除確認モーダル */}
             {deleteConfirmOpen && (
                 <DeleteConfirmModal
-                    holidaysToDelete={holidays.filter(h => selected.includes(h.date))}
+                    holidaysToDelete={holidays.filter((h) => selected.includes(h.date))}
                     onConfirm={confirmDelete}
                     onCancel={cancelDelete}
                 />
