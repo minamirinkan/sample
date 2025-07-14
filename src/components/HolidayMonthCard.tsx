@@ -26,20 +26,22 @@ const HolidayMonthCard: React.FC<Props> = ({
 
     return (
         <div className="bg-white rounded-xl shadow p-4 flex flex-col">
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex items-center justify-between mb-2">
                 <h3 className="text-lg font-semibold">{displayMonth}</h3>
-                <button
-                    className="px-2 py-1 bg-blue-600 text-white rounded text-sm"
-                    onClick={() => onOpenAddModal(month)}
-                >
-                    追加
-                </button>
-                <button
-                    onClick={() => onRemoveSelectedInMonth(month)}
-                    className="px-3 py-1 bg-red-500 text-white rounded text-sm"
-                >
-                    チェック済み削除
-                </button>
+                <div className="flex space-x-2">
+                    <button
+                        className="px-3 py-1 bg-blue-600 text-white rounded text-sm"
+                        onClick={() => onOpenAddModal(month)}
+                    >
+                        追加
+                    </button>
+                    <button
+                        onClick={() => onRemoveSelectedInMonth(month)}
+                        className="px-3 py-1 bg-red-500 text-white rounded text-sm"
+                    >
+                        削除
+                    </button>
+                </div>
             </div>
 
             {holidays.length > 0 ? (

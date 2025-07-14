@@ -10,11 +10,10 @@ type Props = {
 };
 
 const HolidayModal: React.FC<Props> = ({ month, onAddRange, onCancel, existingHolidays }) => {
-    const [name, setName] = useState("");
+    const [name, setName] = useState("指定休講日");
     const [start, setStart] = useState(`${month}-01`);
     const [end, setEnd] = useState(`${month}-01`);
     const [error, setError] = useState<string | null>(null);
-    const [type, setType] = useState<"holiday" | "customClose">("customClose");
 
     const handleSubmit = () => {
         setError(null);
@@ -41,7 +40,7 @@ const HolidayModal: React.FC<Props> = ({ month, onAddRange, onCancel, existingHo
             }
         }
 
-        onAddRange(name, start, end, type);
+        onAddRange(name, start, end, "customClose");
     };
 
     return (
@@ -62,19 +61,7 @@ const HolidayModal: React.FC<Props> = ({ month, onAddRange, onCancel, existingHo
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="w-full border border-gray-300 rounded px-2 py-1"
-                        placeholder="例: 夏期休講"
                     />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1 font-medium">種類</label>
-                    <select
-                        value={type}
-                        onChange={(e) => setType(e.target.value as "holiday" | "customClose")}
-                        className="w-full border border-gray-300 rounded px-2 py-1"
-                    >
-                        <option value="holiday">祝日</option>
-                        <option value="customClose">指定休講日</option>
-                    </select>
                 </div>
 
                 <div className="mb-4">
@@ -84,7 +71,11 @@ const HolidayModal: React.FC<Props> = ({ month, onAddRange, onCancel, existingHo
                         value={start}
                         min={`${month}-01`}
                         max={`${month}-31`}
-                        onChange={e => setStart(e.target.value)}
+                        onChange={e => {
+                            const value = e.target.value;
+                            setStart(value);
+                            setEnd(value);  // 開始日を変えたら終了日も同じにする
+                        }}
                         className="w-full border border-gray-300 rounded px-2 py-1"
                     />
                 </div>

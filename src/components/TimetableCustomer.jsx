@@ -5,7 +5,7 @@ import TimetableRowCustomer from './TimetableRowCustomer';
 import periods from '../constants/periods';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.tsx';
 
 export default function TimetableCustomer({ rows }) {
   const { adminData } = useAuth();

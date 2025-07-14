@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useAuth } from '../contexts/AuthContext'; // ← これを使う
+import { useAuth } from '../contexts/AuthContext.tsx'; // ← これを使う
 import TeacherSearchForm from './TeacherSearchForm';
 import Breadcrumb from './Breadcrumb';
 import TeacherTable from './TeacherTable';
