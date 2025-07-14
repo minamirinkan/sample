@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';  // dbをimportしている場合
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.tsx';
 
 export function useTeachers() {
     const { adminData } = useAuth();

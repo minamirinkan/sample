@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import useFilteredStudents from '../hooks/useFilteredStudents';
 import shortGrade from '../utils/shortGrade';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.tsx';
 
 export default function SelectableStudentList({ onStudentSelect }) {
   const [searchKeyword, setSearchKeyword] = useState('');

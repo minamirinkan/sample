@@ -1,6 +1,6 @@
 // src/components/SuperAdminStudents.js
 import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext'; // ✅ 追加
+import { useAuth } from '../contexts/AuthContext.tsx'; // ✅ 追加
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import StudentSearchForm from './StudentSearchForm';

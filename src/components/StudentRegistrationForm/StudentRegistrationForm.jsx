@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { serverTimestamp } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../../utils/firebase/saveCustomerAndStudent';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext.tsx';
 import BasicInfoSection from './BasicInfoSection';
 import GuardianInfoSection from './GuardianInfoSection';
 import InternalInfoSection from './InternalInfoSection';

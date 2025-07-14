@@ -1,7 +1,7 @@
 //pages/TimetablePage.jsx
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.tsx';
 import TimetableTable from '../components/TimetableTable';
 import CalendarPopup from '../components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from '../utils/firebase/timetableFirestore';
