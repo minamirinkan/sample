@@ -65,7 +65,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     if (adminSnap.exists()) {
                         userRole = "admin";
                         const adminData = adminSnap.data();
-                        data = { role: "admin", ...adminData } as AdminData;
+                        let classroomName: string | undefined = undefined;
+                        //data = { role: "admin", ...adminData } as AdminData;
 
                         // classroomCode を取得
                         if (adminData.classroomCode) {
@@ -73,9 +74,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             const q2 = query(classroomsRef, where("code", "==", adminData.classroomCode));
                             const classroomSnapshot = await getDocs(q2);
                             if (!classroomSnapshot.empty) {
-                                setclassroomCode(classroomSnapshot.docs[0].id);
+                                const classroomDoc = classroomSnapshot.docs[0];
+                                setclassroomCode(classroomDoc.id);                  // 既存の処理
+                                classroomName = classroomDoc.data().name ?? "";
                             }
                         }
+                        data = {
+                            role: "admin",
+                            ...adminData,
+                            classroomName,  // ← ここが抜けていた！
+                        } as AdminData;
                     } else {
                         const teacherRef = doc(db, "teachers", user.uid);
                         const teacherSnap = await getDoc(teacherRef);
