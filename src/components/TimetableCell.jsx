@@ -89,45 +89,76 @@ export default function TimetableCell({
       }}
       onDrop={(e) => {
         if (isFixedRow && !isUndecidedRow) return;
-
+      
         const json = e.dataTransfer.getData('application/json');
         if (!json) return;
-
+      
         try {
           const { student, fromRow, fromPeriod } = JSON.parse(json);
-
           const newAllRows = JSON.parse(JSON.stringify(allRows));
-          // 先に元から削除
+          const currentStudents = newAllRows[rowIndex].periods[periodIdx];
+      
+          // ✅ 元から削除
           if (
             fromRow !== null &&
             fromRow !== undefined &&
             fromPeriod !== null &&
             fromPeriod !== undefined
           ) {
-            newAllRows[fromRow].periods[fromPeriod] = newAllRows[fromRow].periods[fromPeriod].filter(
-              (s) => s.studentId !== student.studentId
-            );
+            newAllRows[fromRow].periods[fromPeriod] =
+              newAllRows[fromRow].periods[fromPeriod].filter(
+                (s) => s.studentId !== student.studentId
+              );
           }
-
-          // その後で他講師の同じ時限を確認
+          
+          // ✅ 他の講師の同じ時限にいるかチェック
           const existsInOtherRows = newAllRows.some((r, i) => {
             if (i === rowIndex) return false;
             return r.periods[periodIdx].some((s) => s.studentId === student.studentId);
           });
-
           if (existsInOtherRows) {
             alert('他の講師の同じ時限にすでにいます');
             return;
           }
-
+      
+          // ✅ classType に応じた制限チェック
+          const droppedType = student.classType || '';
+          const currentTypes = currentStudents.map(s => s.classType);
+          const allTypes = [...currentTypes, droppedType];
+          const uniqueTypes = Array.from(new Set(allTypes));
+          const totalCount = currentStudents.length + 1;
+      
+          const isOnly = (type) => uniqueTypes.length === 1 && uniqueTypes[0] === type;
+      
+          const isValidDrop =
+            // 1名クラス → 単独 & 1名まで
+            (droppedType === '1名クラス' && currentStudents.length === 0 && isOnly('1名クラス')) ||
+      
+            // 2名クラス or 演習クラス → 合計2名まで、混在OK（ただしこの2種のみ）
+            ((droppedType === '2名クラス' || droppedType === '演習クラス') &&
+              uniqueTypes.every(t => t === '2名クラス' || t === '演習クラス') &&
+              totalCount <= 2) ||
+      
+            // 演習クラスだけ → 最大6名までOK
+            (droppedType === '演習クラス' &&
+              isOnly('演習クラス') &&
+              totalCount <= 6);
+      
+          if (!isValidDrop) {
+            alert('このクラス構成では定員オーバーか、混在できません');
+            return;
+          }
+      
+      
+          // ✅ ドロップ先に追加
           newAllRows[rowIndex].periods[periodIdx].push(student);
-
           window.dispatchEvent(new CustomEvent('updateAllRows', { detail: newAllRows }));
-
         } catch (err) {
           console.error('Drop error:', err);
         }
       }}
+      
+      
     >
       <div className="flex flex-wrap gap-1">
         {students.map((student, studentIdx) => (
