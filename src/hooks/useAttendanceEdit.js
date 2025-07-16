@@ -138,12 +138,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
 
                 // 🔽 振替 → 通常への変更だった場合、元の振替データを削除
                 const oldPeriod = originalEntry.period;
-                if (originalEntry.status === '振替' && editValues.status !== '振替') {
-                    await removeFromMakeupLessons(targetStudentId, originalEntry.date, oldPeriod, classroomCode);
-
-                    // ✅ アーカイブ用に移動させる
-                    await moveMakeupLessonToArchive(targetStudentId, originalEntry.date, originalEntry, classroomCode);
-                }
+                
                 if (originalEntry.status === '予定' && editValues.status === '振替') {
                     let oldData = await fetchScheduleDoc('dailySchedules', oldDocId);
                     if (!oldData) {
@@ -304,6 +299,39 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         }
                     }
 
+                    if (editValues.status === '予定') {
+                        // 🔍 classTypeによる定員チェック
+                        const targetClassType = student.classType;
+                        const currentRow = (newData.rows || []).find(row =>
+                            row.teacher?.code === editValues.teacherCode
+                        );
+
+                        const existing = currentRow?.periods?.[newPeriodKey] || [];
+
+                        const allClassTypes = [...existing.map(s => s.classType), targetClassType];
+                        const uniqueTypes = Array.from(new Set(allClassTypes));
+                        const count = existing.length + 1;
+
+                        const isOnly = (type) => uniqueTypes.length === 1 && uniqueTypes[0] === type;
+
+                        const isMixedAllowed =
+                            (uniqueTypes.every(t => t === '2名クラス' || t === '演習クラス') && count <= 2) ||
+                            (isOnly('演習クラス') && count <= 6) ||
+                            (isOnly('1名クラス') && count <= 1);
+
+
+                        if (!isMixedAllowed) {
+                            showErrorToast('classTypeによる定員制限または混在制限により追加できません');
+                            return;
+                        }
+                    }
+
+                    if (originalEntry.status === '振替' && editValues.status !== '振替') {
+                        await removeFromMakeupLessons(targetStudentId, originalEntry.date, oldPeriod, classroomCode);
+    
+                        // ✅ アーカイブ用に移動させる
+                        await moveMakeupLessonToArchive(targetStudentId, originalEntry.date, originalEntry, classroomCode);
+                    }
                     if (!inserted) {
                         grouped.push({
                             periods: { [newPeriodKey]: [student] },
