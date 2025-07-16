@@ -6,17 +6,23 @@ export default function StudentChip({
     handleChange,
     handleRemove,
 }) {
+    const classType = student.classType || '';
+    let bgColor = 'bg-gray-100';
+
+    if (classType === '1名クラス') bgColor = 'bg-red-300';
+    else if (classType === '2名クラス') bgColor = 'bg-blue-300';
+    else if (classType === '演習クラス') bgColor = 'bg-green-300';
     return (
         <div
-            className="mb-1 border rounded bg-blue-100 p-2 flex items-center gap-0.5 hover:bg-green-200"
+            className={`mb-1 border rounded ${bgColor} p-2 flex items-center gap-0.5 hover:opacity-90`}
             draggable
             onDragStart={(e) => {
                 e.dataTransfer.setData(
                     'application/json',
                     JSON.stringify({
                         student,
-                        fromRow: rowIndex,   // 👈 必須！
-                        fromPeriod: periodIdx
+                        fromRow: rowIndex,
+                        fromPeriod: periodIdx,
                     })
                 );
             }}
