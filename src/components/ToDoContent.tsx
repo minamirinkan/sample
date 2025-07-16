@@ -51,11 +51,11 @@ const ToDoContent: React.FC<ToDoContentProps> = ({ logs }) => {
                     </thead>
                     <tbody>
                         {logs.map((log) => (
-                            <tr key={log.id} className="bg-blue-50">
-                                <td className="py-1 px-2">{log.timestamp?.toDate().toLocaleString()}</td>
-                                <td className="py-1 px-2">{log.action}</td>
-                                <td className="py-1 px-2">{log.target}</td>
-                                <td className="py-1 px-2">{log.detail}</td>
+                            <tr key={log.id}>
+                                <td className="border text-left py-2 px-2">{log.timestamp?.toDate().toLocaleString()}</td>
+                                <td className="border text-left py-2 px-2">{log.action}</td>
+                                <td className="border text-left py-2 px-2">{log.target}</td>
+                                <td className="border text-left py-2 px-2">{log.detail}</td>
                             </tr>
                         ))}
                     </tbody>
