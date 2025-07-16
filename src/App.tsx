@@ -1,23 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
-import SuperAdminLogin from './pages/SuperAdminLogin';
+import SuperAdminLogin from './pages/SuperAdminLogin.js';
 import SuperAdminDashboard from "./pages/SuperAdminDashboard.tsx";
-import AdminDashboard from "./pages/AdminDashboard";
-import CustomerDashboard from "./pages/CustomerDashboard";
-import TeacherDashboard from "./pages/TeacherDashboard";
-import AdminLogin from './pages/AdminLogin';
-import TeacherLogin from './pages/TeacherLogin';
-import CustomerLogin from './pages/CustomerLogin';
-import StudentLogin from './pages/StudentLogin';
-import TimetablePage from './pages/TimetablePage';
-import CalendarPopup from './components/CalendarPopup';
-import DevLoginSelector from './pages/DevLoginSelector';
-import ProtectedRoute from './components/ProtectedRoute';
-import ChangePassword from './pages/ChangePassword';
-import TeacherChangePassword from './pages/TeacherChangePassword';
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import CustomerDashboard from "./pages/CustomerDashboard.jsx";
+import TeacherDashboard from "./pages/TeacherDashboard.jsx";
+import AdminLogin from './pages/AdminLogin.js';
+import TeacherLogin from './pages/TeacherLogin.js';
+import CustomerLogin from './pages/CustomerLogin.js';
+import StudentLogin from './pages/StudentLogin.js';
+import TimetablePage from './pages/TimetablePage.jsx';
+import CalendarPopup from './components/CalendarPopup.jsx';
+import DevLoginSelector from './pages/DevLoginSelector.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import ChangePassword from './pages/ChangePassword.jsx';
+import TeacherChangePassword from './pages/TeacherChangePassword.jsx';
 import ScheduleCalendarPage from './pages/ScheduleCalendarPage.jsx'
 import { ToastContainer } from 'react-toastify';
 
-function App() {
+const App: React.FC = () => {
   return (
     <>
       <Routes>
