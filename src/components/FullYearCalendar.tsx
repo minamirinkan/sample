@@ -26,13 +26,15 @@ const FullYearCalendar: React.FC<Props> = ({
     const daysInMonth = getDaysInMonth(year, month);
     const firstDay = new Date(year, month, 1).getDay();
 
-    const dayBoxes: React.ReactElement[] = [];
+    const dayBoxes: React.ReactElement<any, any>[] = [];
 
+    // 先頭の空白セル（白背景の空ボックス）
     for (let i = 0; i < firstDay; i++) {
       dayBoxes.push(
-        <div key={`empty-${i}`} className="text-gray-300">
-          .
-        </div>
+        <div
+          key={`empty-start-${i}`}
+          className="border border-gray-300 min-h-[2rem] bg-white"
+        />
       );
     }
 
@@ -51,9 +53,8 @@ const FullYearCalendar: React.FC<Props> = ({
       let bgColor = "";
       let decoration = "";
 
-      const dayOfWeek = new Date(dateStr).getDay(); // 0: 日, 6: 土
+      const dayOfWeek = new Date(dateStr).getDay();
 
-      // 削除優先
       if (deleted) {
         textColor = "text-gray-400";
         decoration = "line-through";
@@ -61,11 +62,11 @@ const FullYearCalendar: React.FC<Props> = ({
         textColor = "text-red-600";
         bgColor = "bg-red-100";
       } else {
-        // 曜日ベースの色
         if (dayOfWeek === 0) {
-          textColor = "text-red-600"; // 日曜
+          textColor = "text-red-600";
+          bgColor = "bg-red-100"; // 日曜背景も赤
         } else if (dayOfWeek === 6) {
-          textColor = "text-blue-600"; // 土曜
+          textColor = "text-blue-600";
         }
       }
 
@@ -80,6 +81,19 @@ const FullYearCalendar: React.FC<Props> = ({
       );
     }
 
+    // 月の終わりに空セルを埋める（白背景の空ボックス）
+    const totalCells = firstDay + daysInMonth;
+    const remainder = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+
+    for (let i = 0; i < remainder; i++) {
+      dayBoxes.push(
+        <div
+          key={`empty-end-${i}`}
+          className="border border-gray-300 min-h-[2rem] bg-white"
+        />
+      );
+    }
+
     return (
       <div key={month} className="p-2 border rounded">
         <h3 className="text-lg font-bold mb-1">{month + 1}月</h3>
@@ -90,7 +104,32 @@ const FullYearCalendar: React.FC<Props> = ({
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-7 gap-1">{dayBoxes}</div>
+        <div className="grid grid-cols-7 gap-px bg-gray-300">
+          {dayBoxes.map((box, index) => {
+            if (React.isValidElement(box)) {
+              const el = box as React.ReactElement<any>;
+              const isHoliday = el.props.className?.includes("bg-red-100");
+
+              return (
+                <div
+                  key={index}
+                  className={`border border-gray-300 min-h-[2rem] flex items-center justify-center ${isHoliday ? "bg-red-100" : "bg-white"
+                    }`}
+                >
+                  {box}
+                </div>
+              );
+            }
+            return (
+              <div
+                key={index}
+                className="border border-gray-300 min-h-[2rem] flex items-center justify-center bg-white"
+              >
+                {box}
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   };

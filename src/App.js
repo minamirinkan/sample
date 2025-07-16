@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import SuperAdminLogin from './pages/SuperAdminLogin';
-import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import SuperAdminDashboard from "./pages/SuperAdminDashboard.tsx";
 import AdminDashboard from "./pages/AdminDashboard";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";

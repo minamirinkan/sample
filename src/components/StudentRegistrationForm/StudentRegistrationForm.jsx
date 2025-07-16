@@ -1,6 +1,6 @@
 // src/components/StudentRegistrationForm/StudentRegistrationForm.jsx
 import { useEffect, useState } from 'react';
-import { serverTimestamp } from 'firebase/firestore';
+import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../../utils/firebase/saveCustomerAndStudent';
 import { useAuth } from '../../contexts/AuthContext.tsx';
 import BasicInfoSection from './BasicInfoSection';
@@ -105,6 +105,9 @@ const StudentRegistrationForm = ({ onCancel }) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
+    const { user } = useAuth();
+    const currentAdminUid = user?.uid;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.lastName || !formData.firstName) {
@@ -135,6 +138,14 @@ const StudentRegistrationForm = ({ onCancel }) => {
         });
 
         if (success) {
+            const db = getFirestore();
+            await addDoc(collection(db, 'logs'), {
+                adminUid: currentAdminUid, // ログイン中のadmin UID
+                action: '生徒新規登録',
+                target: `${formData.lastName} ${formData.firstName}`,
+                detail: `教室: ${classroomName} / 氏名: ${formData.lastName} ${formData.firstName}`,
+                timestamp: serverTimestamp(),
+            });
             alert('登録が完了しました');
 
             setLessonType("");
