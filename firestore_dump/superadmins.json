@@ -1,0 +1,18 @@
+{
+  "gJWq03P4oDTI4JoFRiN02V8YnEw2": {
+    "__doc__": {
+      "role": "superadmin",
+      "email": "superadmin@admin.com",
+      "name": "全体管理者",
+      "createdAt": {
+        "_seconds": 1749625904,
+        "_nanoseconds": 110000000
+      },
+      "uid": "gJWq03P4oDTI4JoFRiN02V8YnEw2",
+      "lastLogin": {
+        "_seconds": 1749625998,
+        "_nanoseconds": 123000000
+      }
+    }
+  }
+}

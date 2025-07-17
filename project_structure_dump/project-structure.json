@@ -1,0 +1,226 @@
+{
+  ".DS_Store": "file",
+  ".gitignore": "file",
+  "README.md": "file",
+  "dump-project-structure.js": "file",
+  "dumpFirestoreStructure.js": "file",
+  "package-lock.json": "file",
+  "package.json": "file",
+  "postcss.config.js": "file",
+  "public": {
+    "favicon.ico": "file",
+    "index.html": "file",
+    "logo192.png": "file",
+    "logo512.png": "file",
+    "manifest.json": "file",
+    "robots.txt": "file"
+  },
+  "serviceAccountKey.json": "file",
+  "src": {
+    ".DS_Store": "file",
+    "App.css": "file",
+    "App.test.js": "file",
+    "App.tsx": "file",
+    "api": {
+      "fetchHolidays.ts": "file",
+      "fetchSchoolClosures.ts": "file",
+      "saveClosures.ts": "file"
+    },
+    "assets": {
+      "fonts": {
+        "NotoSansJP-Regular.ttf": "file"
+      }
+    },
+    "components": {
+      "ActionButtons.js": "file",
+      "AdminRegistrationForm": {
+        "ExistingLocationsList.jsx": "file",
+        "ExistingPeriodTimeList.jsx": "file",
+        "ExistingTeacherFeeLocationsList.jsx": "file",
+        "PeriodTimeForm.jsx": "file",
+        "SchoolAccountAdmin.jsx": "file",
+        "SchoolAccountForm.jsx": "file",
+        "SchoolAccountFormFee.jsx": "file",
+        "TeacherFeeRegistration.jsx": "file",
+        "TuitionDetails.jsx": "file"
+      },
+      "AdminSidebar.jsx": "file",
+      "Breadcrumb.js": "file",
+      "CalendarPopup.jsx": "file",
+      "ConfirmAttendanceModal.jsx": "file",
+      "ConfirmOverwriteModal.js": "file",
+      "ContentArea.js": "file",
+      "CustomerCalendar.jsx": "file",
+      "CustomerSidebar.jsx": "file",
+      "EventModal.jsx": "file",
+      "FullYearCalendar.tsx": "file",
+      "GuardianInfoSection.js": "file",
+      "HolidayMonthCard.tsx": "file",
+      "InfoRow.js": "file",
+      "PDFButton.jsx": "file",
+      "PaginationControls.jsx": "file",
+      "ProtectedRoute.jsx": "file",
+      "SchoolAccountList.jsx": "file",
+      "SelectableStudentList.jsx": "file",
+      "StudentChip.jsx": "file",
+      "StudentCourseTable.jsx": "file",
+      "StudentDetail.js": "file",
+      "StudentInfoSection.js": "file",
+      "StudentList.jsx": "file",
+      "StudentRegistrationForm": {
+        "AddressInfoSection.jsx": "file",
+        "BasicInfoSection.jsx": "file",
+        "CourseInfoSection.jsx": "file",
+        "GuardianInfoSection.jsx": "file",
+        "InternalInfoSection.jsx": "file",
+        "SchoolInfoSection.jsx": "file",
+        "StudentRegistrationForm.jsx": "file",
+        "SubjectSelect.jsx": "file",
+        "studentCodeGenerator.js": "file",
+        "subjectOptions.js": "file"
+      },
+      "StudentRow.jsx": "file",
+      "StudentSearchForm.js": "file",
+      "StudentTable.js": "file",
+      "StudentTableHeader.js": "file",
+      "SuperAdminHeader.js": "file",
+      "SuperAdminSidebar.js": "file",
+      "SuperAdminStudents.js": "file",
+      "SuperAdminTeachers.js": "file",
+      "TeacherCalendar.jsx": "file",
+      "TeacherDetail.js": "file",
+      "TeacherInfoSection.js": "file",
+      "TeacherList.jsx": "file",
+      "TeacherRegistrationForm": {
+        "BasicInfoSection.jsx": "file",
+        "ContactInfoSection.jsx": "file",
+        "EmploymentInfoSection.jsx": "file",
+        "TeacherRegistrationForm.jsx": "file",
+        "teacherCodeGenerator.js": "file"
+      },
+      "TeacherRow.js": "file",
+      "TeacherSearchForm.js": "file",
+      "TeacherSidebar.jsx": "file",
+      "TeacherTable.js": "file",
+      "TeacherTableHeader.js": "file",
+      "TimetableCell.jsx": "file",
+      "TimetableControls.jsx": "file",
+      "TimetableCustomer.jsx": "file",
+      "TimetableRow.jsx": "file",
+      "TimetableRowCustomer.jsx": "file",
+      "TimetableTable.jsx": "file",
+      "ToDoContent.tsx": "file",
+      "ToastProvider.jsx": "file",
+      "TuitionFormContent.jsx": "file",
+      "TuitionRegistrationTabs.jsx": "file",
+      "TuitionViewModal.jsx": "file",
+      "attendance": {
+        "AttendanceSubTable.jsx": "file",
+        "AttendanceTabs.jsx": "file",
+        "MakeupAttendanceTable.jsx": "file",
+        "MonthlyAttendanceTable.jsx": "file",
+        "RegularLessonTable.jsx": "file",
+        "SeasonalLessonTable.jsx": "file",
+        "StudentAttendanceTab.jsx": "file"
+      },
+      "toastStyles.css": "file",
+      "ui": {}
+    },
+    "constants": {
+      "periods.js": "file"
+    },
+    "contexts": {
+      "AuthContext.tsx": "file"
+    },
+    "data": {
+      "DeleteConfirmModal.tsx": "file",
+      "HolidayModal.tsx": "file",
+      "LessonModal.js": "file",
+      "TeacherModal.js": "file",
+      "mockStudents.js": "file",
+      "mockTeachers.js": "file"
+    },
+    "firebase.js": "file",
+    "hooks": {
+      "useAttendanceEdit.js": "file",
+      "useAuth.js": "file",
+      "useFilteredStudents.js": "file",
+      "useLatestWeeklySchedule.js": "file",
+      "useMakeupLessons.js": "file",
+      "usePeriodLabels.js": "file",
+      "usePeriodLabelsByStudentId.js": "file",
+      "useStudentAttendance.js": "file",
+      "useStudents.js": "file",
+      "useTeachers.js": "file",
+      "useWeeklySchedules.js": "file"
+    },
+    "index.css": "file",
+    "index.tsx": "file",
+    "logo.svg": "file",
+    "pages": {
+      "AdminDashboard.jsx": "file",
+      "AdminLogin.js": "file",
+      "AdminStudentCalendar.jsx": "file",
+      "ChangePassword.jsx": "file",
+      "CustomerDashboard.jsx": "file",
+      "CustomerLogin.js": "file",
+      "CustomerSignup.js": "file",
+      "DevLoginSelector.jsx": "file",
+      "HolidayPage.tsx": "file",
+      "ScheduleCalendarPage.jsx": "file",
+      "Signup.js": "file",
+      "StudentLogin.js": "file",
+      "SuperAdminDashboard.tsx": "file",
+      "SuperAdminLogin.js": "file",
+      "TeacherChangePassword.jsx": "file",
+      "TeacherDashboard.jsx": "file",
+      "TeacherLogin.js": "file",
+      "TimetableCustomerPage.jsx": "file",
+      "TimetablePage.jsx": "file",
+      "TimetableTeacherPage.jsx": "file"
+    },
+    "pdf": {
+      "TimetablePDF.jsx": "file"
+    },
+    "reportWebVitals.js": "file",
+    "services": {
+      "apiService.js": "file",
+      "authService.js": "file"
+    },
+    "setupTests.js": "file",
+    "styles": {
+      "fullcalendar-overrides.css": "file"
+    },
+    "utils": {
+      "attendanceConverter.js": "file",
+      "dateFormatter.js": "file",
+      "dateUtils.js": "file",
+      "filterStudents.js": "file",
+      "filterTeachers.js": "file",
+      "firebase": {
+        "AdminStudentFeth.js": "file",
+        "EventFetcher.js": "file",
+        "Teacherfether.js": "file",
+        "attendanceFirestore.js": "file",
+        "saveCustomerAndStudent.js": "file",
+        "saveTeacher.js": "file",
+        "saveTeacherFees.js": "file",
+        "saveToWeeklySchedules.js": "file",
+        "saveTuitionSettings.js": "file",
+        "timetableFirestore.js": "file",
+        "updateTuitionSettings.js": "file"
+      },
+      "firestoreAttendanceUtils.js": "file",
+      "generateInitialTimetable.js": "file",
+      "shortGrade.js": "file",
+      "timetable": {
+        "fetchTimetableData.js": "file",
+        "flattenRows.js": "file",
+        "index.js": "file",
+        "parseTimetableSnapshot.js": "file",
+        "saveTimetableData.js": "file"
+      }
+    }
+  },
+  "tailwind.config.js": "file"
+}

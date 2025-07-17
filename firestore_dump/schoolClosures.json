@@ -1,0 +1,279 @@
+{
+  "2025": {
+    "__doc__": {
+      "closures": [
+        {
+          "date": "2025-01-01",
+          "name": "元日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-01-13",
+          "name": "成人の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-02-11",
+          "name": "建国記念の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-02-23",
+          "name": "天皇誕生日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-02-24",
+          "name": "天皇誕生日 振替休日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-03-20",
+          "name": "春分の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-04-29",
+          "name": "昭和の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-05-03",
+          "name": "憲法記念日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-05-04",
+          "name": "みどりの日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-05-05",
+          "name": "こどもの日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-05-06",
+          "name": "みどりの日 振替休日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-07-21",
+          "name": "海の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-08-11",
+          "name": "山の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-09-15",
+          "name": "敬老の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-09-23",
+          "name": "秋分の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-10-13",
+          "name": "スポーツの日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-11-03",
+          "name": "文化の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-11-23",
+          "name": "勤労感謝の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-11-24",
+          "name": "勤労感謝の日 振替休日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-12-31",
+          "name": "大晦日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-06-30",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-01-02",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-01-03",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-01-07",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-01-31",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-03-31",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-04-30",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-05-01",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-05-02",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-07-19",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-07-26",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-08-12",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-08-13",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-08-14",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-08-15",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-08-16",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-09-29",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-09-30",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-10-29",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-10-30",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-10-31",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-11-29",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-12-20",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-12-29",
+          "name": "指定休講日",
+          "type": "customClose"
+        },
+        {
+          "date": "2025-12-30",
+          "name": "指定休講日",
+          "type": "customClose"
+        }
+      ],
+      "deletedClosures": [
+        {
+          "date": "2025-01-02",
+          "name": "銀行休業日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-01-03",
+          "name": "銀行休業日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-02-02",
+          "name": "節分",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-03-03",
+          "name": "雛祭り",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-05-11",
+          "name": "母の日",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-07-07",
+          "name": "七夕",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-11-15",
+          "name": "七五三",
+          "type": "holiday"
+        },
+        {
+          "date": "2025-12-25",
+          "name": "クリスマス",
+          "type": "holiday"
+        }
+      ],
+      "updatedAt": {
+        "_seconds": 1752478533,
+        "_nanoseconds": 743000000
+      }
+    }
+  }
+}

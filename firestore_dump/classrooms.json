@@ -1,0 +1,5455 @@
+{
+  "189": {
+    "__doc__": {
+      "code": "189",
+      "name": "青学",
+      "adminUid": "xZd5V0ltfRMxKFkOqOZyZ1wXPH42",
+      "email": "bhu@icloud.com",
+      "addressInfo": {
+        "postalCode": "2490001",
+        "prefecture": "神奈川県",
+        "address2": "逗子市",
+        "address3": "久木6-10-11",
+        "address2Kana": "ズシ",
+        "address3Kana": "クギ"
+      },
+      "faxNumber": "000-0000-0000",
+      "minimumWage": 1000,
+      "tuitionName": "名古屋",
+      "phoneNumber": "000-0000-0000",
+      "teacherFeeName": "新宿",
+      "periodTimeName": "渋谷",
+      "leaderLastName": "五十嵐",
+      "leaderFirstName": "雄飛",
+      "leaderLastKana": "イガラシ",
+      "leaderFirstKana": "ユウト",
+      "createdAt": {
+        "_seconds": 1752132978,
+        "_nanoseconds": 730000000
+      }
+    }
+  },
+  "238": {
+    "__doc__": {
+      "code": "238",
+      "name": "humiya",
+      "adminUid": "1oOfsMbpDWa0VrR1AlDJHW91r6o1",
+      "email": "takahashi.humiya@admin.com",
+      "addressInfo": {
+        "postalCode": "2420005",
+        "prefecture": "神奈川県",
+        "city": "大和市",
+        "streetAddress": "西鶴間",
+        "cityKana": "",
+        "streetAddressKana": ""
+      },
+      "faxNumber": "",
+      "minimumWage": 1162,
+      "tuitionName": "東京",
+      "phoneNumber": "312-2009-2025",
+      "teacherFeeName": "新宿",
+      "periodTimeName": "新宿",
+      "leaderLastName": "高橋",
+      "leaderFirstName": "文哉",
+      "leaderLastKana": "",
+      "leaderFirstKana": "",
+      "createdAt": {
+        "_seconds": 1752319131,
+        "_nanoseconds": 153000000
+      },
+      "lastLogin": {
+        "_seconds": 1752482899,
+        "_nanoseconds": 322000000
+      }
+    },
+    "closures": {
+      "2025": {
+        "__doc__": {
+          "closures": [
+            {
+              "date": "2025-01-01",
+              "name": "元日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-13",
+              "name": "成人の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-11",
+              "name": "建国記念の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-23",
+              "name": "天皇誕生日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-24",
+              "name": "天皇誕生日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-20",
+              "name": "春分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-04-29",
+              "name": "昭和の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-03",
+              "name": "憲法記念日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-04",
+              "name": "みどりの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-05",
+              "name": "こどもの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-06",
+              "name": "みどりの日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-21",
+              "name": "海の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-08-11",
+              "name": "山の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-15",
+              "name": "敬老の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-23",
+              "name": "秋分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-10-13",
+              "name": "スポーツの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-03",
+              "name": "文化の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-23",
+              "name": "勤労感謝の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-24",
+              "name": "勤労感謝の日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-31",
+              "name": "大晦日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-06-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-07",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-03-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-04-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-01",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-19",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-26",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-12",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-13",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-14",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-15",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-16",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-11-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-20",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "指定休講日",
+              "type": "customClose"
+            }
+          ],
+          "deletedClosures": [
+            {
+              "date": "2025-01-02",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-02",
+              "name": "節分",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-03",
+              "name": "雛祭り",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-11",
+              "name": "母の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-07",
+              "name": "七夕",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-15",
+              "name": "七五三",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-25",
+              "name": "クリスマス",
+              "type": "holiday"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1752482924,
+            "_nanoseconds": 443000000
+          }
+        }
+      }
+    }
+  },
+  "246": {
+    "__doc__": {
+      "code": "246",
+      "name": "大和",
+      "adminUid": "WBdKPpKmWafjLQOZFM3ROfuaBRv1",
+      "email": "kaito0726kk@gmail.com",
+      "addressInfo": {
+        "postalCode": "1234",
+        "prefecture": "神奈川県",
+        "city": "大和市",
+        "streetAddress": "１",
+        "cityKana": "ヤマトシ",
+        "streetAddressKana": "1",
+        "buildingName": "大和ビルディング"
+      },
+      "faxNumber": "000-1234-5678",
+      "minimumWage": 10000,
+      "tuitionName": "東京",
+      "phoneNumber": "000-1234-5678",
+      "teacherFeeName": "新宿",
+      "periodTimeName": "新宿",
+      "leaderLastName": "河野",
+      "leaderFirstName": "快都",
+      "leaderLastKana": "コウノ",
+      "leaderFirstKana": "カイト",
+      "createdAt": {
+        "_seconds": 1752648335,
+        "_nanoseconds": 694000000
+      },
+      "lastLogin": {
+        "_seconds": 1752648663,
+        "_nanoseconds": 361000000
+      }
+    }
+  },
+  "002": {
+    "__doc__": {
+      "email": "musashinodai@admin.com",
+      "name": "武蔵野台",
+      "code": "002",
+      "adminUid": "W7hFJlKUfth5MBSEC8hB31KfHua2",
+      "createdAt": {
+        "_seconds": 1749643476,
+        "_nanoseconds": 817000000
+      },
+      "lastLogin": {
+        "_seconds": 1749891242,
+        "_nanoseconds": 511000000
+      }
+    }
+  },
+  "023": {
+    "__doc__": {
+      "email": "a@icloud.com",
+      "name": "青学",
+      "code": "023",
+      "adminUid": "ezXyIhNOI1OuXLJBWah4yxpsQdR2",
+      "createdAt": {
+        "_seconds": 1749707224,
+        "_nanoseconds": 991000000
+      },
+      "lastLogin": {
+        "_seconds": 1750387690,
+        "_nanoseconds": 525000000
+      }
+    },
+    "configs": {
+      "default": {
+        "__doc__": {
+          "lastUpdatedMonth": "2025-08"
+        }
+      }
+    },
+    "timetables": {
+      "2025-06-03": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "rows": [
+            {
+              "periods": {
+                "period5": [],
+                "period4": [],
+                "period8": [],
+                "period6": [],
+                "period7": [],
+                "period1": [
+                  {
+                    "subject": "国語",
+                    "code": "s0470001",
+                    "seat": "1",
+                    "name": "山田 さくら",
+                    "grade": "中1"
+                  }
+                ],
+                "period2": [
+                  {
+                    "seat": "2",
+                    "subject": "国語",
+                    "code": "s0470001",
+                    "name": "山田 さくら",
+                    "grade": "中1"
+                  }
+                ],
+                "period3": []
+              },
+              "teacher": "t0471023"
+            }
+          ]
+        }
+      },
+      "2025-06-09": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": "t0473921",
+              "periods": {
+                "period1": [
+                  {
+                    "grade": "中3",
+                    "seat": "2",
+                    "name": "佐藤 陽翔",
+                    "code": "s0040002",
+                    "subject": "数学"
+                  },
+                  {
+                    "grade": "高2",
+                    "code": "10040004",
+                    "name": "伊藤 優真",
+                    "seat": "3",
+                    "subject": "国語"
+                  }
+                ],
+                "period5": [
+                  {
+                    "grade": "中2",
+                    "name": "渡辺 心結",
+                    "subject": "国語",
+                    "seat": "3",
+                    "code": "10470005"
+                  },
+                  {
+                    "grade": "高2",
+                    "code": "10040004",
+                    "seat": "4",
+                    "name": "伊藤 優真",
+                    "subject": "社会"
+                  }
+                ],
+                "period8": [],
+                "period7": [],
+                "period4": [],
+                "period2": [],
+                "period6": [],
+                "period3": [
+                  {
+                    "grade": "高1",
+                    "subject": "理科",
+                    "seat": "3",
+                    "code": "10470003",
+                    "name": "高橋 葵"
+                  }
+                ]
+              }
+            },
+            {
+              "periods": {
+                "period7": [],
+                "period5": [],
+                "period6": [],
+                "period4": [],
+                "period1": [],
+                "period8": [],
+                "period3": [],
+                "period2": []
+              },
+              "teacher": "t0477654"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ]
+        }
+      },
+      "2025-06-12": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "rows": [
+            {
+              "periods": {
+                "period3": [],
+                "period2": [
+                  {
+                    "grade": "高1",
+                    "seat": "3",
+                    "name": "高橋 葵",
+                    "code": "10470003",
+                    "subject": "英語"
+                  }
+                ],
+                "period6": [],
+                "period1": [
+                  {
+                    "subject": "数学",
+                    "grade": "中1",
+                    "code": "s0470001",
+                    "name": "山田 さくら",
+                    "seat": "1"
+                  }
+                ],
+                "period7": [],
+                "period4": [],
+                "period8": [],
+                "period5": []
+              },
+              "teacher": "t0471023"
+            }
+          ]
+        }
+      },
+      "2025-06-25": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": "t0471023",
+              "periods": {
+                "period4": [],
+                "period6": [],
+                "period7": [],
+                "period2": [
+                  {
+                    "subject": "英語",
+                    "seat": "2",
+                    "code": "10470003",
+                    "name": "高橋 葵",
+                    "grade": "高1"
+                  }
+                ],
+                "period1": [],
+                "period5": [],
+                "period3": [],
+                "period8": []
+              }
+            },
+            {
+              "periods": {
+                "period1": [
+                  {
+                    "name": "中村 大翔",
+                    "code": "10040006",
+                    "seat": "3",
+                    "grade": "既卒",
+                    "subject": "社会"
+                  }
+                ],
+                "period4": [],
+                "period7": [],
+                "period3": [],
+                "period5": [],
+                "period8": [],
+                "period6": [],
+                "period2": []
+              },
+              "teacher": "t0045632"
+            },
+            {
+              "periods": {
+                "period3": [],
+                "period1": [],
+                "period7": [],
+                "period4": [],
+                "period8": [],
+                "period6": [],
+                "period2": [],
+                "period5": []
+              },
+              "teacher": "t0043489"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ]
+        }
+      },
+      "2025-07-04": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": "",
+              "periods": {
+                "period6": [],
+                "period8": [],
+                "period5": [],
+                "period4": [
+                  {
+                    "grade": "中3",
+                    "code": "s0230001",
+                    "seat": "",
+                    "name": "五十嵐 雄飛",
+                    "subject": ""
+                  }
+                ],
+                "period1": [],
+                "period7": [],
+                "period3": [],
+                "period2": []
+              }
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ]
+        }
+      }
+    },
+    "weekdayTemplates": {
+      "1": null,
+      "2": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": "t0471023",
+              "periods": {
+                "period5": [],
+                "period2": [],
+                "period6": [],
+                "period3": [],
+                "period7": [],
+                "period4": [],
+                "period8": [],
+                "period1": [
+                  {
+                    "grade": "中3",
+                    "subject": "数学",
+                    "seat": "1",
+                    "code": "s0230001",
+                    "name": "五十嵐 雄飛"
+                  }
+                ]
+              }
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ]
+        },
+        "history": {
+          "2025-03": {
+            "__doc__": {
+              "rows": [
+                {
+                  "periods": {
+                    "period4": [],
+                    "period8": [],
+                    "period5": [],
+                    "period3": [],
+                    "period1": [
+                      {
+                        "code": "s0230001",
+                        "name": "五十嵐 雄飛",
+                        "seat": "1",
+                        "grade": "中3",
+                        "subject": "国語"
+                      }
+                    ],
+                    "period6": [],
+                    "period2": [],
+                    "period7": []
+                  },
+                  "teacher": ""
+                }
+              ],
+              "periodLabels": [
+                {
+                  "label": "1限",
+                  "time": "09:50〜11:10"
+                },
+                {
+                  "label": "2限",
+                  "time": "11:20〜12:40"
+                },
+                {
+                  "label": "3限",
+                  "time": "12:50〜14:10"
+                },
+                {
+                  "time": "14:20〜15:40",
+                  "label": "4限"
+                },
+                {
+                  "label": "5限",
+                  "time": "15:50〜17:10"
+                },
+                {
+                  "time": "17:20〜18:40",
+                  "label": "6限"
+                },
+                {
+                  "time": "18:50〜20:10",
+                  "label": "7限"
+                },
+                {
+                  "time": "20:20〜21:40",
+                  "label": "8限"
+                }
+              ]
+            }
+          },
+          "2025-05": {
+            "__doc__": {
+              "rows": [
+                {
+                  "teacher": "",
+                  "periods": {
+                    "period6": [],
+                    "period2": [
+                      {
+                        "grade": "中3",
+                        "seat": "1",
+                        "code": "s0230001",
+                        "name": "五十嵐 雄飛",
+                        "subject": "国語"
+                      }
+                    ],
+                    "period8": [],
+                    "period5": [],
+                    "period4": [],
+                    "period3": [],
+                    "period1": [],
+                    "period7": []
+                  }
+                }
+              ],
+              "periodLabels": [
+                {
+                  "time": "09:50〜11:10",
+                  "label": "1限"
+                },
+                {
+                  "label": "2限",
+                  "time": "11:20〜12:40"
+                },
+                {
+                  "label": "3限",
+                  "time": "12:50〜14:10"
+                },
+                {
+                  "time": "14:20〜15:40",
+                  "label": "4限"
+                },
+                {
+                  "label": "5限",
+                  "time": "15:50〜17:10"
+                },
+                {
+                  "time": "17:20〜18:40",
+                  "label": "6限"
+                },
+                {
+                  "time": "18:50〜20:10",
+                  "label": "7限"
+                },
+                {
+                  "time": "20:20〜21:40",
+                  "label": "8限"
+                }
+              ]
+            }
+          },
+          "2025-06": {
+            "__doc__": {
+              "rows": [
+                {
+                  "teacher": "",
+                  "periods": {
+                    "period3": [
+                      {
+                        "grade": "中3",
+                        "code": "s0230001",
+                        "name": "五十嵐 雄飛",
+                        "seat": "1",
+                        "subject": "国語"
+                      }
+                    ],
+                    "period6": [],
+                    "period7": [],
+                    "period2": [],
+                    "period8": [],
+                    "period5": [],
+                    "period4": [],
+                    "period1": []
+                  }
+                }
+              ],
+              "periodLabels": [
+                {
+                  "label": "1限",
+                  "time": "09:50〜11:10"
+                },
+                {
+                  "label": "2限",
+                  "time": "11:20〜12:40"
+                },
+                {
+                  "label": "3限",
+                  "time": "12:50〜14:10"
+                },
+                {
+                  "time": "14:20〜15:40",
+                  "label": "4限"
+                },
+                {
+                  "label": "5限",
+                  "time": "15:50〜17:10"
+                },
+                {
+                  "label": "6限",
+                  "time": "17:20〜18:40"
+                },
+                {
+                  "time": "18:50〜20:10",
+                  "label": "7限"
+                },
+                {
+                  "label": "8限",
+                  "time": "20:20〜21:40"
+                }
+              ]
+            }
+          },
+          "2025-07": {
+            "__doc__": {
+              "periodLabels": [
+                {
+                  "time": "09:50〜11:10",
+                  "label": "1限"
+                },
+                {
+                  "label": "2限",
+                  "time": "11:20〜12:40"
+                },
+                {
+                  "label": "3限",
+                  "time": "12:50〜14:10"
+                },
+                {
+                  "time": "14:20〜15:40",
+                  "label": "4限"
+                },
+                {
+                  "time": "15:50〜17:10",
+                  "label": "5限"
+                },
+                {
+                  "time": "17:20〜18:40",
+                  "label": "6限"
+                },
+                {
+                  "time": "18:50〜20:10",
+                  "label": "7限"
+                },
+                {
+                  "label": "8限",
+                  "time": "20:20〜21:40"
+                }
+              ],
+              "rows": [
+                {
+                  "teacher": "",
+                  "periods": {
+                    "period8": [],
+                    "period5": [],
+                    "period6": [],
+                    "period4": [],
+                    "period1": [],
+                    "period7": [],
+                    "period3": [
+                      {
+                        "subject": "国語",
+                        "code": "s0230001",
+                        "name": "五十嵐 雄飛",
+                        "grade": "中3",
+                        "seat": "1"
+                      }
+                    ],
+                    "period2": []
+                  }
+                }
+              ]
+            }
+          },
+          "2025-08": {
+            "__doc__": {
+              "periodLabels": [
+                {
+                  "time": "09:50〜11:10",
+                  "label": "1限"
+                },
+                {
+                  "time": "11:20〜12:40",
+                  "label": "2限"
+                },
+                {
+                  "label": "3限",
+                  "time": "12:50〜14:10"
+                },
+                {
+                  "time": "14:20〜15:40",
+                  "label": "4限"
+                },
+                {
+                  "time": "15:50〜17:10",
+                  "label": "5限"
+                },
+                {
+                  "time": "17:20〜18:40",
+                  "label": "6限"
+                },
+                {
+                  "time": "18:50〜20:10",
+                  "label": "7限"
+                },
+                {
+                  "label": "8限",
+                  "time": "20:20〜21:40"
+                }
+              ],
+              "rows": [
+                {
+                  "periods": {
+                    "period1": [],
+                    "period4": [],
+                    "period5": [],
+                    "period3": [],
+                    "period7": [],
+                    "period2": [
+                      {
+                        "code": "s0230001",
+                        "seat": "1",
+                        "subject": "国語",
+                        "grade": "中3",
+                        "name": "五十嵐 雄飛"
+                      }
+                    ],
+                    "period6": [],
+                    "period8": []
+                  },
+                  "teacher": ""
+                }
+              ]
+            }
+          },
+          "2025-10": {
+            "__doc__": {
+              "rows": [
+                {
+                  "teacher": "",
+                  "periods": {
+                    "period2": [
+                      {
+                        "code": "s0230001",
+                        "grade": "中3",
+                        "seat": "1",
+                        "subject": "国語",
+                        "name": "五十嵐 雄飛"
+                      }
+                    ],
+                    "period4": [],
+                    "period6": [],
+                    "period7": [],
+                    "period3": [
+                      {
+                        "seat": "",
+                        "code": "s0230001",
+                        "name": "五十嵐 雄飛",
+                        "subject": "",
+                        "grade": "中3"
+                      }
+                    ],
+                    "period1": [],
+                    "period5": [],
+                    "period8": []
+                  }
+                }
+              ],
+              "periodLabels": [
+                {
+                  "time": "09:50〜11:10",
+                  "label": "1限"
+                },
+                {
+                  "label": "2限",
+                  "time": "11:20〜12:40"
+                },
+                {
+                  "time": "12:50〜14:10",
+                  "label": "3限"
+                },
+                {
+                  "time": "14:20〜15:40",
+                  "label": "4限"
+                },
+                {
+                  "time": "15:50〜17:10",
+                  "label": "5限"
+                },
+                {
+                  "label": "6限",
+                  "time": "17:20〜18:40"
+                },
+                {
+                  "time": "18:50〜20:10",
+                  "label": "7限"
+                },
+                {
+                  "label": "8限",
+                  "time": "20:20〜21:40"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "3": {
+        "__doc__": {
+          "rows": [
+            {
+              "periods": {
+                "period3": [],
+                "period4": [],
+                "period6": [],
+                "period2": [
+                  {
+                    "grade": "高1",
+                    "code": "10470003",
+                    "subject": "英語",
+                    "seat": "2",
+                    "name": "高橋 葵"
+                  }
+                ],
+                "period1": [],
+                "period8": [],
+                "period5": [],
+                "period7": []
+              },
+              "teacher": "t0471023"
+            },
+            {
+              "teacher": "t0045632",
+              "periods": {
+                "period6": [],
+                "period5": [],
+                "period1": [
+                  {
+                    "name": "中村 大翔",
+                    "subject": "社会",
+                    "code": "10040006",
+                    "grade": "既卒",
+                    "seat": "3"
+                  }
+                ],
+                "period4": [],
+                "period8": [],
+                "period7": [],
+                "period2": [],
+                "period3": []
+              }
+            },
+            {
+              "periods": {
+                "period2": [],
+                "period7": [],
+                "period1": [],
+                "period8": [],
+                "period5": [],
+                "period4": [
+                  {
+                    "subject": "国語",
+                    "name": "吉田 美咲",
+                    "seat": "4",
+                    "grade": "高1",
+                    "code": "10470009"
+                  }
+                ],
+                "period3": [],
+                "period6": []
+              },
+              "teacher": "t0043489"
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ]
+        }
+      },
+      "5": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ],
+          "rows": [
+            {
+              "teacher": "",
+              "periods": {
+                "period8": [],
+                "period6": [],
+                "period3": [
+                  {
+                    "grade": "中3",
+                    "code": "s0230001",
+                    "name": "五十嵐 雄飛",
+                    "seat": "",
+                    "subject": ""
+                  }
+                ],
+                "period5": [
+                  {
+                    "grade": "中3",
+                    "name": "五十嵐 雄飛",
+                    "code": "s0230001",
+                    "seat": "",
+                    "subject": ""
+                  }
+                ],
+                "period4": [],
+                "period7": [],
+                "period1": [],
+                "period2": []
+              }
+            }
+          ]
+        },
+        "history": {
+          "2025-03": {
+            "__doc__": {
+              "periodLabels": [],
+              "rows": [
+                {
+                  "periods": {
+                    "period2": [],
+                    "period5": [],
+                    "period6": [],
+                    "period7": [],
+                    "period4": [],
+                    "period1": [
+                      {
+                        "name": "五十嵐 雄飛",
+                        "grade": "中3",
+                        "code": "s0230001",
+                        "subject": "",
+                        "seat": ""
+                      }
+                    ],
+                    "period3": [],
+                    "period8": []
+                  },
+                  "teacher": ""
+                }
+              ]
+            }
+          },
+          "2025-04": {
+            "__doc__": {
+              "rows": [
+                {
+                  "teacher": "",
+                  "periods": {
+                    "period8": [],
+                    "period2": [],
+                    "period1": [
+                      {
+                        "seat": "1",
+                        "grade": "中3",
+                        "subject": "数学",
+                        "name": "五十嵐 雄飛",
+                        "code": "s0230001"
+                      }
+                    ],
+                    "period3": [],
+                    "period6": [],
+                    "period4": [],
+                    "period5": [],
+                    "period7": []
+                  }
+                }
+              ],
+              "periodLabels": []
+            }
+          },
+          "2025-05": {
+            "__doc__": {
+              "rows": [
+                {
+                  "periods": {
+                    "period7": [],
+                    "period3": [],
+                    "period5": [],
+                    "period8": [],
+                    "period2": [
+                      {
+                        "subject": "",
+                        "name": "五十嵐 雄飛",
+                        "code": "s0230001",
+                        "seat": "",
+                        "grade": "中3"
+                      }
+                    ],
+                    "period1": [],
+                    "period4": [],
+                    "period6": []
+                  },
+                  "teacher": ""
+                }
+              ],
+              "periodLabels": []
+            }
+          },
+          "2025-06": {
+            "__doc__": {
+              "rows": [
+                {
+                  "periods": {
+                    "period1": [],
+                    "period3": [],
+                    "period2": [
+                      {
+                        "grade": "中3",
+                        "code": "s0230001",
+                        "name": "五十嵐 雄飛",
+                        "subject": "",
+                        "seat": ""
+                      }
+                    ],
+                    "period8": [],
+                    "period5": [],
+                    "period7": [],
+                    "period4": [],
+                    "period6": []
+                  },
+                  "teacher": ""
+                }
+              ],
+              "periodLabels": []
+            }
+          },
+          "2025-07": {
+            "__doc__": {
+              "rows": [
+                {
+                  "teacher": "",
+                  "periods": {
+                    "period3": [],
+                    "period6": [],
+                    "period2": [
+                      {
+                        "code": "s0230001",
+                        "name": "五十嵐 雄飛",
+                        "subject": "数学",
+                        "seat": "1",
+                        "grade": "中3"
+                      }
+                    ],
+                    "period1": [],
+                    "period7": [],
+                    "period8": [],
+                    "period5": [],
+                    "period4": []
+                  }
+                }
+              ],
+              "periodLabels": []
+            }
+          }
+        }
+      },
+      "2025-04-1": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "rows": [
+            {
+              "periods": {
+                "period3": [],
+                "period5": [],
+                "period4": [],
+                "period6": [],
+                "period7": [],
+                "period8": [],
+                "period2": [
+                  {
+                    "subject": "数学",
+                    "code": "s0230001",
+                    "name": "五十嵐 雄飛",
+                    "seat": "2",
+                    "grade": "中3"
+                  }
+                ],
+                "period1": []
+              },
+              "teacher": ""
+            }
+          ]
+        }
+      },
+      "2025-06-2": {
+        "__doc__": {
+          "rows": [
+            {
+              "periods": {
+                "period7": [],
+                "period1": [],
+                "period3": [
+                  {
+                    "grade": "中3",
+                    "subject": "数学",
+                    "name": "五十嵐 雄飛",
+                    "code": "s0230001",
+                    "seat": "4"
+                  }
+                ],
+                "period2": [],
+                "period8": [],
+                "period6": [],
+                "period4": [],
+                "period5": []
+              },
+              "teacher": ""
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ]
+        }
+      },
+      "2025-07-1": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ],
+          "rows": [
+            {
+              "periods": {
+                "period6": [],
+                "period7": [],
+                "period1": [],
+                "period3": [
+                  {
+                    "name": "五十嵐 雄飛",
+                    "code": "s0230001",
+                    "subject": "数学",
+                    "grade": "中3",
+                    "seat": "3"
+                  }
+                ],
+                "period4": [],
+                "period5": [],
+                "period8": [],
+                "period2": []
+              },
+              "teacher": ""
+            }
+          ]
+        }
+      }
+    }
+  },
+  "024": {
+    "__doc__": {
+      "email": "b@icloud.com",
+      "name": "座間",
+      "code": "024",
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "createdAt": {
+        "_seconds": 1749791038,
+        "_nanoseconds": 720000000
+      },
+      "lastLogin": {
+        "_seconds": 1752735430,
+        "_nanoseconds": 224000000
+      }
+    },
+    "closures": {
+      "2025": {
+        "__doc__": {
+          "closures": [
+            {
+              "date": "2025-01-01",
+              "name": "元日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-13",
+              "name": "成人の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-11",
+              "name": "建国記念の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-23",
+              "name": "天皇誕生日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-24",
+              "name": "天皇誕生日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-20",
+              "name": "春分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-04-29",
+              "name": "昭和の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-03",
+              "name": "憲法記念日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-04",
+              "name": "みどりの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-05",
+              "name": "こどもの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-06",
+              "name": "みどりの日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-21",
+              "name": "海の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-08-11",
+              "name": "山の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-15",
+              "name": "敬老の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-23",
+              "name": "秋分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-10-13",
+              "name": "スポーツの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-03",
+              "name": "文化の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-23",
+              "name": "勤労感謝の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-24",
+              "name": "勤労感謝の日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-31",
+              "name": "大晦日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-06-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-07",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-03-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-04-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-01",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-19",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-26",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-12",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-13",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-14",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-15",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-16",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-11-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-20",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            }
+          ],
+          "deletedClosures": [
+            {
+              "date": "2025-01-02",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-02",
+              "name": "節分",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-03",
+              "name": "雛祭り",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-11",
+              "name": "母の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-07",
+              "name": "七夕",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-15",
+              "name": "七五三",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-25",
+              "name": "クリスマス",
+              "type": "holiday"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1752551381,
+            "_nanoseconds": 174000000
+          }
+        }
+      }
+    },
+    "timetables": {
+      "2025-05-19": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750605144,
+            "_nanoseconds": 558000000
+          }
+        }
+      },
+      "2025-06-10": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ],
+          "rows": [
+            {
+              "teacher": "",
+              "periods": {
+                "period8": [],
+                "period6": [],
+                "period1": [],
+                "period7": [],
+                "period5": [],
+                "period2": [
+                  {
+                    "code": "s0240001",
+                    "subject": "数学",
+                    "name": "五十嵐 雄飛",
+                    "seat": "1",
+                    "grade": "高1"
+                  }
+                ],
+                "period4": [],
+                "period3": [
+                  {
+                    "grade": "高1",
+                    "name": "五十嵐 雄飛",
+                    "seat": "2",
+                    "code": "s0240001",
+                    "subject": "英語"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "2025-06-19": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "email": "xy@icloud.com",
+                "transportation": "1000",
+                "status": "在職中",
+                "classroomName": "座間",
+                "kanafirstName": "イサム",
+                "role": "teacher",
+                "code": "t0240001",
+                "id": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "classroomCode": "024",
+                "name": "近藤 勇",
+                "gender": "男性",
+                "phone": "000-0000-0000",
+                "kanalastName": "コンドウ",
+                "registrationDate": {
+                  "nanoseconds": 243000000,
+                  "seconds": 1750306164
+                },
+                "universityGrade": "大4",
+                "university": "青山学院大学",
+                "hireDate": "2025-06-02",
+                "lastName": "近藤",
+                "firstName": "勇",
+                "uid": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "isFirstLogin": true
+              },
+              "periods": {
+                "period1": [
+                  {
+                    "name": "五十嵐 雄飛",
+                    "grade": "高1",
+                    "code": "s0240001",
+                    "seat": "",
+                    "subject": ""
+                  }
+                ],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            },
+            {
+              "teacher": {
+                "firstName": "広",
+                "kanafirstName": "ヒロ",
+                "kanalastName": "イトウ",
+                "role": "teacher",
+                "registrationDate": {
+                  "nanoseconds": 21000000,
+                  "seconds": 1750318817
+                },
+                "name": "伊藤 広",
+                "lastName": "伊藤",
+                "phone": "000-0000-0000",
+                "status": "在職中",
+                "hireDate": "2025-06-04",
+                "university": "神奈川大学",
+                "transportation": "100",
+                "universityGrade": "院1",
+                "classroomCode": "024",
+                "classroomName": "座間",
+                "code": "t0240002",
+                "email": "yy@icloud.com",
+                "isFirstLogin": true,
+                "uid": "tL6CwfC1iReFemRT27EP6Bljr2r1",
+                "gender": "男性",
+                "id": "tL6CwfC1iReFemRT27EP6Bljr2r1"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [
+                  {
+                    "code": "s0240001",
+                    "name": "五十嵐 雄飛",
+                    "seat": "2",
+                    "subject": "数学",
+                    "grade": "高1"
+                  }
+                ],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            },
+            {
+              "teacher": "振り替え",
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "name": "田中 角栄",
+                    "seat": "2",
+                    "originRow": 1,
+                    "originPeriod": 1,
+                    "code": "s0240002",
+                    "subject": "国語",
+                    "grade": "中2"
+                  },
+                  {
+                    "seat": "1",
+                    "originRow": 1,
+                    "subject": "数学",
+                    "grade": "高1",
+                    "originPeriod": 1,
+                    "name": "五十嵐 雄飛",
+                    "code": "s0240001"
+                  }
+                ],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            },
+            {
+              "teacher": "欠席",
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [
+                  {
+                    "originRow": 1,
+                    "seat": "2",
+                    "code": "s0240001",
+                    "originPeriod": 3,
+                    "subject": "数学",
+                    "name": "五十嵐 雄飛",
+                    "grade": "高1"
+                  }
+                ],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ]
+        }
+      },
+      "2025-06-20": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750581864,
+            "_nanoseconds": 970000000
+          }
+        }
+      },
+      "2025-06-21": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750573746,
+            "_nanoseconds": 277000000
+          }
+        }
+      },
+      "2025-06-22": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750573736,
+            "_nanoseconds": 618000000
+          }
+        }
+      },
+      "2025-06-23": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0240001",
+                "name": "近藤 勇"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "studentId": "",
+                    "grade": "高1",
+                    "name": "五十嵐 雄飛",
+                    "seat": "1",
+                    "subject": "数学",
+                    "status": "予定"
+                  }
+                ],
+                "period3": [],
+                "period4": [
+                  {
+                    "studentId": "s0240003",
+                    "grade": "中2",
+                    "name": "佐藤 恵美",
+                    "seat": "1",
+                    "subject": "国語",
+                    "status": "予定"
+                  }
+                ],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750656126,
+            "_nanoseconds": 214000000
+          }
+        }
+      },
+      "2025-06-25": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0240002",
+                "name": "伊藤 広"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "studentId": "",
+                    "grade": "高1",
+                    "name": "五十嵐 雄飛",
+                    "seat": "1",
+                    "subject": "数学",
+                    "status": "予定"
+                  }
+                ],
+                "period3": [],
+                "period4": [
+                  {
+                    "studentId": "s0240003",
+                    "grade": "中2",
+                    "name": "佐藤 恵美",
+                    "seat": "2",
+                    "subject": "数学",
+                    "status": "予定"
+                  }
+                ],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [
+                  {
+                    "studentId": "s0240003",
+                    "grade": "中2",
+                    "name": "佐藤 恵美",
+                    "seat": "2",
+                    "subject": "国語",
+                    "status": "未定"
+                  }
+                ],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750658135,
+            "_nanoseconds": 882000000
+          }
+        }
+      }
+    },
+    "weekdayTemplates": {
+      "1": null,
+      "2025-06-1": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "id": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "email": "xy@icloud.com",
+                "name": "近藤 勇",
+                "hireDate": "2025-06-02",
+                "role": "teacher",
+                "classroomName": "座間",
+                "firstName": "勇",
+                "code": "t0240001",
+                "universityGrade": "大4",
+                "gender": "男性",
+                "classroomCode": "024",
+                "phone": "000-0000-0000",
+                "status": "在職中",
+                "university": "青山学院大学",
+                "kanafirstName": "イサム",
+                "registrationDate": {
+                  "_seconds": 1750306164,
+                  "_nanoseconds": 243000000
+                },
+                "transportation": "1000",
+                "uid": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "isFirstLogin": true,
+                "kanalastName": "コンドウ",
+                "lastName": "近藤"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "name": "五十嵐 雄飛",
+                    "grade": "高1",
+                    "code": "s0240001",
+                    "seat": "1",
+                    "subject": "数学"
+                  }
+                ],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ]
+        }
+      },
+      "2025-06-2": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "rows": [
+            {
+              "periods": {
+                "period1": [],
+                "period7": [],
+                "period5": [],
+                "period4": [],
+                "period2": [
+                  {
+                    "seat": "1",
+                    "name": "五十嵐 雄飛",
+                    "code": "s0240001",
+                    "grade": "高1",
+                    "subject": "数学"
+                  }
+                ],
+                "period6": [],
+                "period3": [],
+                "period8": []
+              },
+              "teacher": ""
+            }
+          ]
+        }
+      },
+      "2025-06-3": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "rows": [
+            {
+              "periods": {
+                "period6": [],
+                "period2": [
+                  {
+                    "seat": "1",
+                    "subject": "数学",
+                    "name": "五十嵐 雄飛",
+                    "grade": "高1",
+                    "code": "s0240001"
+                  }
+                ],
+                "period8": [],
+                "period1": [],
+                "period5": [],
+                "period7": [],
+                "period3": [],
+                "period4": []
+              },
+              "teacher": ""
+            }
+          ]
+        }
+      },
+      "2025-06-4": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "rows": [
+            {
+              "periods": {
+                "period4": [],
+                "period1": [],
+                "period7": [],
+                "period5": [],
+                "period2": [],
+                "period3": [
+                  {
+                    "code": "s0240001",
+                    "seat": "2",
+                    "subject": "数学",
+                    "grade": "高1",
+                    "name": "五十嵐 雄飛"
+                  }
+                ],
+                "period6": [],
+                "period8": []
+              },
+              "teacher": ""
+            }
+          ]
+        }
+      },
+      "2025-07-1": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "hireDate": "2025-06-02",
+                "classroomName": "座間",
+                "role": "teacher",
+                "phone": "000-0000-0000",
+                "name": "近藤 勇",
+                "id": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "email": "xy@icloud.com",
+                "classroomCode": "024",
+                "kanafirstName": "イサム",
+                "uid": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "kanalastName": "コンドウ",
+                "code": "t0240001",
+                "gender": "男性",
+                "lastName": "近藤",
+                "isFirstLogin": true,
+                "registrationDate": {
+                  "seconds": 1750306164,
+                  "nanoseconds": 243000000
+                },
+                "universityGrade": "大4",
+                "transportation": "1000",
+                "status": "在職中",
+                "university": "青山学院大学",
+                "firstName": "勇"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "grade": "高1",
+                    "subject": "数学",
+                    "name": "五十嵐 雄飛",
+                    "seat": "1",
+                    "code": "s0240001"
+                  }
+                ],
+                "period3": [
+                  {
+                    "name": "田中 角栄",
+                    "grade": "中2",
+                    "code": "s0240002",
+                    "seat": "1",
+                    "subject": "数学"
+                  }
+                ],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ]
+        }
+      },
+      "2025-07-2": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "time": "11:20〜12:40",
+              "label": "2限"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ],
+          "rows": [
+            {
+              "teacher": "",
+              "periods": {
+                "period6": [],
+                "period8": [],
+                "period4": [],
+                "period7": [],
+                "period5": [],
+                "period1": [],
+                "period2": [],
+                "period3": [
+                  {
+                    "name": "五十嵐 雄飛",
+                    "grade": "高1",
+                    "seat": "1",
+                    "subject": "数学",
+                    "code": "s0240001"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "2025-07-4": {
+        "__doc__": {
+          "rows": [
+            {
+              "periods": {
+                "period7": [],
+                "period8": [],
+                "period4": [],
+                "period2": [
+                  {
+                    "grade": "高1",
+                    "seat": "",
+                    "code": "s0240001",
+                    "subject": "",
+                    "name": "五十嵐 雄飛"
+                  }
+                ],
+                "period6": [],
+                "period5": [],
+                "period1": [],
+                "period3": [
+                  {
+                    "grade": "高1",
+                    "code": "s0240001",
+                    "name": "五十嵐 雄飛",
+                    "seat": "2",
+                    "subject": "数学"
+                  }
+                ]
+              },
+              "teacher": ""
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ]
+        }
+      },
+      "2025-10-2": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": "",
+              "periods": {
+                "period4": [],
+                "period1": [],
+                "period8": [],
+                "period6": [],
+                "period7": [],
+                "period5": [],
+                "period3": [
+                  {
+                    "code": "s0240001",
+                    "name": "五十嵐 雄飛",
+                    "grade": "高1",
+                    "seat": "1",
+                    "subject": "数学"
+                  }
+                ],
+                "period2": [
+                  {
+                    "code": "s0240001",
+                    "seat": "2",
+                    "subject": "数学",
+                    "grade": "高1",
+                    "name": "五十嵐 雄飛"
+                  }
+                ]
+              }
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ]
+        }
+      },
+      "2025-11-2": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "id": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "isFirstLogin": true,
+                "gender": "男性",
+                "code": "t0240001",
+                "university": "青山学院大学",
+                "uid": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+                "kanalastName": "コンドウ",
+                "registrationDate": {
+                  "_seconds": 1750306164,
+                  "_nanoseconds": 243000000
+                },
+                "classroomCode": "024",
+                "lastName": "近藤",
+                "universityGrade": "大4",
+                "email": "xy@icloud.com",
+                "hireDate": "2025-06-02",
+                "role": "teacher",
+                "firstName": "勇",
+                "transportation": "1000",
+                "phone": "000-0000-0000",
+                "status": "在職中",
+                "kanafirstName": "イサム",
+                "name": "近藤 勇",
+                "classroomName": "座間"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "name": "五十嵐 雄飛",
+                    "grade": "高1",
+                    "subject": "数学",
+                    "code": "s0240001",
+                    "seat": "2"
+                  }
+                ],
+                "period3": [
+                  {
+                    "name": "五十嵐 雄飛",
+                    "code": "s0240001",
+                    "grade": "高1",
+                    "subject": "数学",
+                    "seat": "1"
+                  }
+                ],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            },
+            {
+              "teacher": "振り替え",
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            },
+            {
+              "teacher": "欠席",
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              }
+            }
+          ],
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "047": {
+    "__doc__": {
+      "code": "047",
+      "email": "minamirinkan@admin.com",
+      "adminUid": "apJL9SD9X4YvYyWPOyTTcI7vWZp2",
+      "name": "南林間",
+      "createdAt": {
+        "_seconds": 1749643088,
+        "_nanoseconds": 690000000
+      },
+      "lastLogin": {
+        "_seconds": 1752648020,
+        "_nanoseconds": 860000000
+      }
+    },
+    "closures": {
+      "2025": {
+        "__doc__": {
+          "closures": [
+            {
+              "date": "2025-01-01",
+              "name": "元日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-13",
+              "name": "成人の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-11",
+              "name": "建国記念の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-23",
+              "name": "天皇誕生日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-24",
+              "name": "天皇誕生日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-20",
+              "name": "春分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-04-29",
+              "name": "昭和の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-03",
+              "name": "憲法記念日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-04",
+              "name": "みどりの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-05",
+              "name": "こどもの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-06",
+              "name": "みどりの日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-21",
+              "name": "海の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-08-11",
+              "name": "山の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-15",
+              "name": "敬老の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-23",
+              "name": "秋分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-10-13",
+              "name": "スポーツの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-03",
+              "name": "文化の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-23",
+              "name": "勤労感謝の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-24",
+              "name": "勤労感謝の日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-31",
+              "name": "大晦日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-06-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-07",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-03-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-04-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-01",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-19",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-26",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-11-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-20",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-12",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-13",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-14",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-15",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-16",
+              "name": "指定休講日",
+              "type": "customClose"
+            }
+          ],
+          "deletedClosures": [
+            {
+              "date": "2025-01-02",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-02",
+              "name": "節分",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-03",
+              "name": "雛祭り",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-11",
+              "name": "母の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-07",
+              "name": "七夕",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-15",
+              "name": "七五三",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-25",
+              "name": "クリスマス",
+              "type": "holiday"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1752506501,
+            "_nanoseconds": 703000000
+          }
+        }
+      }
+    },
+    "timetables": {
+      "2025-06-03": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750607449,
+            "_nanoseconds": 564000000
+          }
+        }
+      },
+      "2025-06-16": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0470002",
+                "name": "星野 瑞稀"
+              },
+              "periods": {
+                "period1": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "",
+                    "subject": "",
+                    "status": "予定"
+                  }
+                ],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750437623,
+            "_nanoseconds": 778000000
+          }
+        }
+      },
+      "2025-06-20": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750476725,
+            "_nanoseconds": 870000000
+          }
+        }
+      },
+      "2025-06-21": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0470002",
+                "name": "星野 瑞稀"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [
+                  {
+                    "studentId": "s0470002",
+                    "grade": "中3",
+                    "name": "吉田 拓実",
+                    "seat": "",
+                    "subject": "",
+                    "status": "予定"
+                  }
+                ],
+                "period4": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "",
+                    "subject": "",
+                    "status": "予定"
+                  }
+                ],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": {
+                "code": "t0470001",
+                "name": "田中 流星"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "7",
+                    "subject": "社会",
+                    "status": "未定"
+                  }
+                ],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "2",
+                    "subject": "数学",
+                    "status": "振替"
+                  }
+                ],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "",
+                    "subject": "",
+                    "status": "欠席"
+                  }
+                ],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "time": "12:50〜14:10",
+              "label": "3限"
+            },
+            {
+              "time": "14:20〜15:40",
+              "label": "4限"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750665597,
+            "_nanoseconds": 860000000
+          }
+        }
+      },
+      "2025-06-22": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750476719,
+            "_nanoseconds": 427000000
+          }
+        }
+      },
+      "2025-06-23": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "time": "09:50〜11:10",
+              "label": "1限"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "time": "15:50〜17:10",
+              "label": "5限"
+            },
+            {
+              "time": "17:20〜18:40",
+              "label": "6限"
+            },
+            {
+              "time": "18:50〜20:10",
+              "label": "7限"
+            },
+            {
+              "time": "20:20〜21:40",
+              "label": "8限"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750664400,
+            "_nanoseconds": 191000000
+          },
+          "rows": [
+            {
+              "teacher": null,
+              "status": "予定",
+              "periods": {
+                "period1": [],
+                "period6": [],
+                "period4": [],
+                "period5": [],
+                "period2": [],
+                "period8": [],
+                "period3": [],
+                "period7": []
+              }
+            },
+            {
+              "teacher": null,
+              "status": "未定",
+              "periods": {
+                "period4": [],
+                "period3": [],
+                "period5": [],
+                "period6": [],
+                "period8": [],
+                "period2": [],
+                "period1": [],
+                "period7": []
+              }
+            },
+            {
+              "status": "振替",
+              "teacher": null,
+              "periods": {
+                "period2": [],
+                "period7": [],
+                "period3": [],
+                "period4": [],
+                "period8": [],
+                "period5": [],
+                "period1": [],
+                "period6": []
+              }
+            },
+            {
+              "periods": {
+                "period3": [],
+                "period2": [],
+                "period8": [],
+                "period5": [],
+                "period7": [],
+                "period6": [],
+                "period1": [],
+                "period4": []
+              },
+              "status": "欠席",
+              "teacher": null
+            },
+            {
+              "studentId": "s0470001",
+              "name": "井上 由佳",
+              "grade": "中2",
+              "seat": "",
+              "status": "未定",
+              "date": "2025-06-23",
+              "periodLabel": "1限",
+              "subject": "－",
+              "teacher": {
+                "code": "",
+                "name": ""
+              }
+            }
+          ]
+        }
+      },
+      "2025-06-24": {
+        "__doc__": {
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750476722,
+            "_nanoseconds": 327000000
+          },
+          "rows": [
+            {
+              "status": "予定",
+              "periods": {
+                "period5": [],
+                "period8": [],
+                "period7": [],
+                "period6": [],
+                "period3": [],
+                "period1": [],
+                "period2": [],
+                "period4": []
+              },
+              "teacher": null
+            },
+            {
+              "periods": {
+                "period2": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period3": [],
+                "period8": [],
+                "period1": [],
+                "period7": []
+              },
+              "status": "未定",
+              "teacher": null
+            },
+            {
+              "teacher": null,
+              "status": "振替",
+              "periods": {
+                "period4": [],
+                "period2": [],
+                "period6": [],
+                "period1": [],
+                "period3": [],
+                "period8": [],
+                "period7": [],
+                "period5": []
+              }
+            },
+            {
+              "teacher": null,
+              "status": "欠席",
+              "periods": {
+                "period5": [],
+                "period2": [],
+                "period6": [],
+                "period4": [],
+                "period7": [],
+                "period3": [],
+                "period8": [],
+                "period1": []
+              }
+            },
+            {
+              "studentId": "s0470001",
+              "name": "井上 由佳",
+              "grade": "中2",
+              "seat": "",
+              "status": "未定",
+              "date": "2025-06-24",
+              "periodLabel": "4限",
+              "subject": "－",
+              "teacher": {
+                "code": "",
+                "name": ""
+              }
+            }
+          ]
+        }
+      },
+      "2025-06-27": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750607442,
+            "_nanoseconds": 11000000
+          }
+        }
+      },
+      "2025-06-29": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750607442,
+            "_nanoseconds": 517000000
+          }
+        }
+      }
+    },
+    "weekdayTemplates": {
+      "2025-06-1": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0470001",
+                "name": "田中 流星"
+              },
+              "periods": {
+                "period1": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "",
+                    "subject": "",
+                    "status": "予定"
+                  }
+                ],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750826435,
+            "_nanoseconds": 880000000
+          }
+        }
+      },
+      "2025-06-3": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0470002",
+                "name": "星野 瑞稀"
+              },
+              "periods": {
+                "period1": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "5",
+                    "subject": "理科",
+                    "status": "予定"
+                  }
+                ],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750437460,
+            "_nanoseconds": 352000000
+          }
+        }
+      },
+      "2025-06-4": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750438634,
+            "_nanoseconds": 425000000
+          }
+        }
+      },
+      "2025-06-5": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0470001",
+                "name": "田中 流星"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "4",
+                    "subject": "数学",
+                    "status": "予定"
+                  }
+                ],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750826463,
+            "_nanoseconds": 372000000
+          }
+        }
+      },
+      "2025-06-6": {
+        "__doc__": {
+          "rows": [
+            {
+              "teacher": {
+                "code": "t0470002",
+                "name": "星野 瑞稀"
+              },
+              "periods": {
+                "period1": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "1",
+                    "subject": "英語",
+                    "status": "予定"
+                  }
+                ],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": {
+                "code": "t0470001",
+                "name": "田中 流星"
+              },
+              "periods": {
+                "period1": [],
+                "period2": [
+                  {
+                    "studentId": "s0470001",
+                    "grade": "中2",
+                    "name": "井上 由佳",
+                    "seat": "2",
+                    "subject": "数学",
+                    "status": "予定"
+                  }
+                ],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "予定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "未定"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "振替"
+            },
+            {
+              "teacher": null,
+              "periods": {
+                "period1": [],
+                "period2": [],
+                "period3": [],
+                "period4": [],
+                "period5": [],
+                "period6": [],
+                "period7": [],
+                "period8": []
+              },
+              "status": "欠席"
+            }
+          ],
+          "periodLabels": [
+            {
+              "label": "1限",
+              "time": "09:50〜11:10"
+            },
+            {
+              "label": "2限",
+              "time": "11:20〜12:40"
+            },
+            {
+              "label": "3限",
+              "time": "12:50〜14:10"
+            },
+            {
+              "label": "4限",
+              "time": "14:20〜15:40"
+            },
+            {
+              "label": "5限",
+              "time": "15:50〜17:10"
+            },
+            {
+              "label": "6限",
+              "time": "17:20〜18:40"
+            },
+            {
+              "label": "7限",
+              "time": "18:50〜20:10"
+            },
+            {
+              "label": "8限",
+              "time": "20:20〜21:40"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1750437429,
+            "_nanoseconds": 415000000
+          }
+        }
+      }
+    }
+  }
+}

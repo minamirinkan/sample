@@ -1,0 +1,117 @@
+{
+  "1oOfsMbpDWa0VrR1AlDJHW91r6o1": {
+    "__doc__": {
+      "uid": "1oOfsMbpDWa0VrR1AlDJHW91r6o1",
+      "name": "humiya",
+      "classroomCode": "238",
+      "email": "takahashi.humiya@admin.com",
+      "role": "admin",
+      "createdAt": {
+        "_seconds": 1752319131,
+        "_nanoseconds": 90000000
+      },
+      "lastLogin": {
+        "_seconds": 1752482899,
+        "_nanoseconds": 263000000
+      }
+    }
+  },
+  "W7hFJlKUfth5MBSEC8hB31KfHua2": {
+    "__doc__": {
+      "email": "musashinodai@admin.com",
+      "name": "武蔵野台",
+      "uid": "W7hFJlKUfth5MBSEC8hB31KfHua2",
+      "role": "admin",
+      "classroomCode": "002",
+      "createdAt": {
+        "_seconds": 1749643476,
+        "_nanoseconds": 738000000
+      },
+      "lastLogin": {
+        "_seconds": 1749891242,
+        "_nanoseconds": 450000000
+      }
+    }
+  },
+  "WBdKPpKmWafjLQOZFM3ROfuaBRv1": {
+    "__doc__": {
+      "uid": "WBdKPpKmWafjLQOZFM3ROfuaBRv1",
+      "name": "大和",
+      "classroomCode": "246",
+      "email": "kaito0726kk@gmail.com",
+      "role": "admin",
+      "createdAt": {
+        "_seconds": 1752648335,
+        "_nanoseconds": 621000000
+      },
+      "lastLogin": {
+        "_seconds": 1752648663,
+        "_nanoseconds": 293000000
+      }
+    }
+  },
+  "apJL9SD9X4YvYyWPOyTTcI7vWZp2": {
+    "__doc__": {
+      "uid": "apJL9SD9X4YvYyWPOyTTcI7vWZp2",
+      "classroomCode": "047",
+      "name": "南林間",
+      "email": "minamirinkan@admin.com",
+      "role": "admin",
+      "createdAt": {
+        "_seconds": 1749643088,
+        "_nanoseconds": 608000000
+      },
+      "lastLogin": {
+        "_seconds": 1752648020,
+        "_nanoseconds": 794000000
+      }
+    }
+  },
+  "dzZtlDBKXid1C1f6zDir4IAZZ9l2": {
+    "__doc__": {
+      "role": "admin",
+      "uid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "name": "座間",
+      "email": "b@icloud.com",
+      "classroomCode": "024",
+      "createdAt": {
+        "_seconds": 1749791038,
+        "_nanoseconds": 673000000
+      },
+      "lastLogin": {
+        "_seconds": 1752735430,
+        "_nanoseconds": 169000000
+      }
+    }
+  },
+  "ezXyIhNOI1OuXLJBWah4yxpsQdR2": {
+    "__doc__": {
+      "role": "admin",
+      "uid": "ezXyIhNOI1OuXLJBWah4yxpsQdR2",
+      "name": "青学",
+      "classroomCode": "023",
+      "email": "a@icloud.com",
+      "createdAt": {
+        "_seconds": 1749707224,
+        "_nanoseconds": 944000000
+      },
+      "lastLogin": {
+        "_seconds": 1750387690,
+        "_nanoseconds": 425000000
+      }
+    }
+  },
+  "xZd5V0ltfRMxKFkOqOZyZ1wXPH42": {
+    "__doc__": {
+      "uid": "xZd5V0ltfRMxKFkOqOZyZ1wXPH42",
+      "name": "青学",
+      "classroomCode": "189",
+      "email": "bhu@icloud.com",
+      "role": "admin",
+      "createdAt": {
+        "_seconds": 1752132978,
+        "_nanoseconds": 657000000
+      }
+    }
+  }
+}
