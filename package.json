@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "firebase": "^11.7.1",
+    "firebase-admin": "^13.4.0",
     "framer-motion": "^12.23.0",
     "html2canvas": "^1.4.1",
     "icons": "^1.0.0",

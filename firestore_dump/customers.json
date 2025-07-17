@@ -1,0 +1,423 @@
+{
+  "2x8vkOfDluXZxN1bHgYzgxrKSGQ2": {
+    "__doc__": {
+      "uid": "2x8vkOfDluXZxN1bHgYzgxrKSGQ2",
+      "guardianLastName": "長谷部",
+      "guardianFirstName": "舞",
+      "guardianName": "長谷部 舞",
+      "email": "so@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240005"
+      ],
+      "createdAt": {
+        "_seconds": 1752216275,
+        "_nanoseconds": 399000000
+      }
+    }
+  },
+  "65T0vAJPx1PjEq6HYVS13bGfIX23": {
+    "__doc__": {
+      "uid": "65T0vAJPx1PjEq6HYVS13bGfIX23",
+      "name": "",
+      "email": "j@icloud.com",
+      "phoneNumber": "",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240006"
+      ],
+      "createdAt": {
+        "_seconds": 1751800996,
+        "_nanoseconds": 339000000
+      }
+    }
+  },
+  "BZdQwmGSXVbaX89cOEuoCcXvW2E2": {
+    "__doc__": {
+      "phoneNumber": "000-0000-0000",
+      "uid": "BZdQwmGSXVbaX89cOEuoCcXvW2E2",
+      "role": "customer",
+      "email": "c@icloud.com",
+      "name": "五十嵐 b",
+      "createdAt": {
+        "_seconds": 1750125967,
+        "_nanoseconds": 921000000
+      },
+      "isFirstLogin": false
+    }
+  },
+  "C5JfXcWnhjSokKX818dek689jpw1": {
+    "__doc__": {
+      "uid": "C5JfXcWnhjSokKX818dek689jpw1",
+      "name": "田辺　勝俊",
+      "email": "tanabe@customer.com",
+      "phoneNumber": "444-4444-4444",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0470005"
+      ],
+      "createdAt": {
+        "_seconds": 1750161123,
+        "_nanoseconds": 629000000
+      }
+    }
+  },
+  "EIp9VADBNRdx4ZqXv32M7bRzDjz1": {
+    "__doc__": {
+      "isFirstLogin": true,
+      "uid": "EIp9VADBNRdx4ZqXv32M7bRzDjz1",
+      "name": "五十嵐　A",
+      "role": "customer",
+      "phoneNumber": "000-0000-0000",
+      "email": "a58@aoyama.jp",
+      "createdAt": {
+        "_seconds": 1750082732,
+        "_nanoseconds": 493000000
+      }
+    }
+  },
+  "EbMhOstKtpfeRAWlg78RiZ6CR4C3": {
+    "__doc__": {
+      "uid": "EbMhOstKtpfeRAWlg78RiZ6CR4C3",
+      "name": "田中　会",
+      "email": "tanaka@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "createdAt": {
+        "_seconds": 1750143790,
+        "_nanoseconds": 295000000
+      }
+    }
+  },
+  "NGGMOHZe8HXrWqsoUufcXyFgZug2": {
+    "__doc__": {
+      "uid": "NGGMOHZe8HXrWqsoUufcXyFgZug2",
+      "guardianLastName": "長友",
+      "guardianFirstName": "雄",
+      "guardianName": "長友 雄",
+      "email": "zy@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240006"
+      ],
+      "createdAt": {
+        "_seconds": 1752552653,
+        "_nanoseconds": 508000000
+      }
+    }
+  },
+  "QDYhE94qncPzufRJrvSvtRDjBu83": {
+    "__doc__": {
+      "uid": "QDYhE94qncPzufRJrvSvtRDjBu83",
+      "guardianLastName": "清水",
+      "guardianFirstName": "武史",
+      "guardianName": "清水 武史",
+      "email": "shimizu@customer.com",
+      "phoneNumber": "666-6666-6666",
+      "role": "customer",
+      "studentIds": [
+        "s0470006"
+      ],
+      "createdAt": {
+        "_seconds": 1752142522,
+        "_nanoseconds": 894000000
+      },
+      "isFirstLogin": false
+    }
+  },
+  "T6R63FT2RGUn3ZPIdYXMf00dW3I3": {
+    "__doc__": {
+      "uid": "T6R63FT2RGUn3ZPIdYXMf00dW3I3",
+      "guardianLastName": "村田",
+      "guardianFirstName": "洋子",
+      "guardianName": "村田 洋子",
+      "email": "murata@customer.com",
+      "phoneNumber": "777-7777-7777",
+      "role": "customer",
+      "studentIds": [
+        "s0470007"
+      ],
+      "createdAt": {
+        "_seconds": 1752208383,
+        "_nanoseconds": 931000000
+      },
+      "isFirstLogin": false
+    }
+  },
+  "W0lFmpK4bKaPFCrKVUYIa2zl41i1": {
+    "__doc__": {
+      "uid": "W0lFmpK4bKaPFCrKVUYIa2zl41i1",
+      "name": "久保",
+      "email": "g@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240005"
+      ],
+      "createdAt": {
+        "_seconds": 1751796589,
+        "_nanoseconds": 727000000
+      }
+    }
+  },
+  "XsktTgV94lWrDJhCDNE6TqaG2x83": {
+    "__doc__": {
+      "uid": "XsktTgV94lWrDJhCDNE6TqaG2x83",
+      "guardianLastName": "",
+      "guardianFirstName": "",
+      "guardianName": " ",
+      "email": "takahashi.humiya@student.com",
+      "phoneNumber": "",
+      "role": "customer",
+      "studentIds": [
+        "s2380001"
+      ],
+      "createdAt": {
+        "_seconds": 1752319446,
+        "_nanoseconds": 292000000
+      },
+      "isFirstLogin": false
+    }
+  },
+  "XyejHemsYDWgFUsfbUDYbHk3FiL2": {
+    "__doc__": {
+      "uid": "XyejHemsYDWgFUsfbUDYbHk3FiL2",
+      "guardianLastName": "吉田",
+      "guardianFirstName": "沙也加",
+      "guardianName": "吉田 沙也加",
+      "email": "ew@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240008"
+      ],
+      "createdAt": {
+        "_seconds": 1752632910,
+        "_nanoseconds": 749000000
+      }
+    }
+  },
+  "fw3DJp7iy5T4Ax8uFmcwUSCXRd22": {
+    "__doc__": {
+      "uid": "fw3DJp7iy5T4Ax8uFmcwUSCXRd22",
+      "name": "",
+      "email": "k@icloud.com",
+      "phoneNumber": "",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240007"
+      ],
+      "createdAt": {
+        "_seconds": 1751801217,
+        "_nanoseconds": 560000000
+      }
+    }
+  },
+  "hq3u0rHra0gAcoKzvjIt0h26s2B3": {
+    "__doc__": {
+      "uid": "hq3u0rHra0gAcoKzvjIt0h26s2B3",
+      "guardianLastName": "山田",
+      "guardianFirstName": "一",
+      "guardianName": "山田 一",
+      "email": "dd@gmail.coom",
+      "phoneNumber": "111-111-1111",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s2460001"
+      ],
+      "createdAt": {
+        "_seconds": 1752649541,
+        "_nanoseconds": 610000000
+      }
+    }
+  },
+  "k4liONYohLT5GAkmnEiLUQAYmor1": {
+    "__doc__": {
+      "uid": "k4liONYohLT5GAkmnEiLUQAYmor1",
+      "name": "佐藤　信",
+      "email": "x@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "studentIds": [
+        "s0240003"
+      ],
+      "createdAt": {
+        "_seconds": 1750655848,
+        "_nanoseconds": 732000000
+      },
+      "isFirstLogin": false
+    }
+  },
+  "kPWBFKbdSThTz3EGxiNTF1isEI92": {
+    "__doc__": {
+      "uid": "kPWBFKbdSThTz3EGxiNTF1isEI92",
+      "name": "吉田　紗理奈",
+      "email": "yoshida@customer.com",
+      "phoneNumber": "111-1111-1111",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0470002"
+      ],
+      "createdAt": {
+        "_seconds": 1750155888,
+        "_nanoseconds": 421000000
+      }
+    }
+  },
+  "kxkNcGkGoRcdJlqDO2zLQjuxQCm1": {
+    "__doc__": {
+      "uid": "kxkNcGkGoRcdJlqDO2zLQjuxQCm1",
+      "guardianLastName": "長友",
+      "guardianFirstName": "雄",
+      "guardianName": "長友 雄",
+      "email": "yuz@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240006"
+      ],
+      "createdAt": {
+        "_seconds": 1752555860,
+        "_nanoseconds": 197000000
+      }
+    }
+  },
+  "suiwirIZ6wh07wsBulRTVAP9Xc72": {
+    "__doc__": {
+      "uid": "suiwirIZ6wh07wsBulRTVAP9Xc72",
+      "name": "三苫 香",
+      "email": "y@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "studentIds": [
+        "s0240004"
+      ],
+      "createdAt": {
+        "_seconds": 1750923889,
+        "_nanoseconds": 905000000
+      },
+      "isFirstLogin": false
+    }
+  },
+  "tEjHPd1Ru7UAFZYSkU6tfUhAfZ02": {
+    "__doc__": {
+      "uid": "tEjHPd1Ru7UAFZYSkU6tfUhAfZ02",
+      "name": "浅川　詩織",
+      "email": "asakawa@customer.com",
+      "phoneNumber": "333-3333-3333",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0470004"
+      ],
+      "createdAt": {
+        "_seconds": 1750156556,
+        "_nanoseconds": 394000000
+      }
+    }
+  },
+  "uMgoSTcZZHgp2xSNeuP6mBGp4Nw1": {
+    "__doc__": {
+      "uid": "uMgoSTcZZHgp2xSNeuP6mBGp4Nw1",
+      "name": "井上　佳奈",
+      "email": "inouekana@customer.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "studentIds": [
+        "s0470001"
+      ],
+      "createdAt": {
+        "_seconds": 1750155250,
+        "_nanoseconds": 107000000
+      },
+      "isFirstLogin": false
+    }
+  },
+  "vfKBNdMFAddwlClhMzawvSUgHX03": {
+    "__doc__": {
+      "uid": "vfKBNdMFAddwlClhMzawvSUgHX03",
+      "guardianLastName": "進藤",
+      "guardianFirstName": "明",
+      "guardianName": "進藤 明",
+      "email": "shindo@customer.com",
+      "phoneNumber": "888-8888-8888",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0470008"
+      ],
+      "createdAt": {
+        "_seconds": 1752648395,
+        "_nanoseconds": 839000000
+      }
+    }
+  },
+  "w2zHpHr9jJQtzeLAx4COv9CYJhg1": {
+    "__doc__": {
+      "uid": "w2zHpHr9jJQtzeLAx4COv9CYJhg1",
+      "guardianLastName": "内田",
+      "guardianFirstName": "敦",
+      "guardianName": "内田 敦",
+      "email": "re@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240009"
+      ],
+      "createdAt": {
+        "_seconds": 1752633745,
+        "_nanoseconds": 272000000
+      }
+    }
+  },
+  "wB7tQF71cHUaGlliomg1JBPmg8X2": {
+    "__doc__": {
+      "uid": "wB7tQF71cHUaGlliomg1JBPmg8X2",
+      "name": "鈴木　隆史",
+      "email": "suzuki@customer.com",
+      "phoneNumber": "222-2222-2222",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0470003"
+      ],
+      "createdAt": {
+        "_seconds": 1750156222,
+        "_nanoseconds": 491000000
+      }
+    }
+  },
+  "wWT8ECcDkfMizEWqPgFMSTahVBP2": {
+    "__doc__": {
+      "uid": "wWT8ECcDkfMizEWqPgFMSTahVBP2",
+      "guardianLastName": "香川",
+      "guardianFirstName": "真",
+      "guardianName": "香川 真",
+      "email": "rt@icloud.com",
+      "phoneNumber": "000-0000-0000",
+      "role": "customer",
+      "isFirstLogin": true,
+      "studentIds": [
+        "s0240007"
+      ],
+      "createdAt": {
+        "_seconds": 1752632502,
+        "_nanoseconds": 506000000
+      }
+    }
+  }
+}

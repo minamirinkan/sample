@@ -1,0 +1,137 @@
+{
+  "Y3HYryx5evaZfP5rykcdfe05QR82": {
+    "__doc__": {
+      "uid": "Y3HYryx5evaZfP5rykcdfe05QR82",
+      "name": "星野 瑞稀",
+      "email": "hoshino@teacher.com",
+      "phone": "111-1111-1111",
+      "role": "teacher",
+      "code": "t0470002",
+      "lastName": "星野",
+      "firstName": "瑞稀",
+      "kanalastName": "ホシノ",
+      "kanafirstName": "ミズキ",
+      "gender": "女性",
+      "university": "講師大学",
+      "universityGrade": "大1",
+      "hireDate": "2025-06-17",
+      "status": "在職中",
+      "transportation": "1000",
+      "classroomCode": "047",
+      "registrationDate": {
+        "_seconds": 1750157048,
+        "_nanoseconds": 757000000
+      },
+      "classroomName": "南林間",
+      "isFirstLogin": false
+    }
+  },
+  "lpW4VGLryzcyn6mERB5Ghb3gcuG2": {
+    "__doc__": {
+      "uid": "lpW4VGLryzcyn6mERB5Ghb3gcuG2",
+      "name": "近藤 勇",
+      "email": "xy@icloud.com",
+      "phone": "000-0000-0000",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "code": "t0240001",
+      "lastName": "近藤",
+      "firstName": "勇",
+      "kanalastName": "コンドウ",
+      "kanafirstName": "イサム",
+      "gender": "男性",
+      "university": "青山学院大学",
+      "universityGrade": "大4",
+      "hireDate": "2025-06-02",
+      "status": "在職中",
+      "transportation": "1000",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "registrationDate": {
+        "_seconds": 1750306164,
+        "_nanoseconds": 243000000
+      }
+    }
+  },
+  "tL6CwfC1iReFemRT27EP6Bljr2r1": {
+    "__doc__": {
+      "uid": "tL6CwfC1iReFemRT27EP6Bljr2r1",
+      "name": "伊藤 広",
+      "email": "yy@icloud.com",
+      "phone": "000-0000-0000",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "code": "t0240002",
+      "lastName": "伊藤",
+      "firstName": "広",
+      "kanalastName": "イトウ",
+      "kanafirstName": "ヒロ",
+      "gender": "男性",
+      "university": "神奈川大学",
+      "universityGrade": "院1",
+      "hireDate": "2025-06-04",
+      "status": "在職中",
+      "transportation": "100",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "registrationDate": {
+        "_seconds": 1750318817,
+        "_nanoseconds": 21000000
+      }
+    }
+  },
+  "yCQbcK5cneOMJJABTjRsJtdbZ423": {
+    "__doc__": {
+      "lastName": "田中",
+      "email": "ryusei@teacher.com",
+      "status": "在職中",
+      "code": "t0470001",
+      "registrationDate": {
+        "_seconds": 1750142093,
+        "_nanoseconds": 566000000
+      },
+      "phone": "000-0000-0000",
+      "gender": "男性",
+      "kanalastName": "タナカ",
+      "role": "teacher",
+      "firstName": "流星",
+      "transportation": "800",
+      "universityGrade": "大2",
+      "name": "田中 流星",
+      "kanafirstName": "リュウセイ",
+      "uid": "yCQbcK5cneOMJJABTjRsJtdbZ423",
+      "classroomCode": "047",
+      "hireDate": "2025-06-17",
+      "university": "講師大学",
+      "classroomName": "南林間",
+      "isFirstLogin": false
+    }
+  },
+  "zOHadYUXc2SCQ0c3acLEZg62oMn1": {
+    "__doc__": {
+      "uid": "zOHadYUXc2SCQ0c3acLEZg62oMn1",
+      "name": "五十嵐 雄飛",
+      "email": "yu@icloud.com",
+      "phone": "000-0000-0000",
+      "role": "teacher",
+      "code": "t0240003",
+      "lastName": "五十嵐",
+      "firstName": "雄飛",
+      "kanalastName": "イガラシ",
+      "kanafirstName": "ユウト",
+      "gender": "男性",
+      "university": "青山学院大学",
+      "universityGrade": "大4",
+      "hireDate": "2023-12-26",
+      "status": "在職中",
+      "transportation": "0",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "registrationDate": {
+        "_seconds": 1751523465,
+        "_nanoseconds": 856000000
+      },
+      "isFirstLogin": false
+    }
+  }
+}

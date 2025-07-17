@@ -1,0 +1,1787 @@
+{
+  "s0230001": {
+    "__doc__": {
+      "classroomCode": "023",
+      "relationship": "父",
+      "guardianPhone": "000-0000-0000",
+      "customerUid": "EIp9VADBNRdx4ZqXv32M7bRzDjz1",
+      "lastName": "五十嵐",
+      "enrollmentDate": "2025-06-01",
+      "lastNameKana": "イガラシ",
+      "firstNameKana": "ユウト",
+      "address": "神奈川県大和市南林間6-12-16",
+      "guardianNameKana": "イガラシ　A",
+      "firstName": "雄飛",
+      "birthDate": "2003-12-26",
+      "courseClass": "Aコース",
+      "grade": "中3",
+      "guardianEmail": "a58@aoyama.jp",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0230001",
+      "status": "在籍中",
+      "gender": "男性",
+      "entryDate": "2025-06-01",
+      "guardianName": "五十嵐　A",
+      "schoolName": "南林間中学校",
+      "registrationDate": {
+        "_seconds": 1750082732,
+        "_nanoseconds": 593000000
+      }
+    }
+  },
+  "s0240001": {
+    "__doc__": {
+      "guardianEmail": "c@icloud.com",
+      "courseClass": "Bコース",
+      "customerUid": "BZdQwmGSXVbaX89cOEuoCcXvW2E2",
+      "entryDate": "2025-06-02",
+      "firstName": "雄飛",
+      "studentId": "s0240001",
+      "classroomCode": "024",
+      "relationship": "母",
+      "birthDate": "2019-12-19",
+      "lastName": "五十嵐",
+      "emergencyContact": "000-0000-0000",
+      "grade": "高1",
+      "gender": "男性",
+      "status": "在籍中",
+      "address": "南林間",
+      "schoolName": "座間高校",
+      "guardianName": "五十嵐 b",
+      "enrollmentDate": "2025-06-02",
+      "firstNameKana": "ユウト",
+      "guardianPhone": "000-0000-0000",
+      "lastNameKana": "イガラシ",
+      "guardianNameKana": "いがらし b",
+      "registrationDate": {
+        "_seconds": 1750125967,
+        "_nanoseconds": 979000000
+      }
+    }
+  },
+  "s0240002": {
+    "__doc__": {
+      "lastName": "田中",
+      "firstName": "角栄",
+      "lastNameKana": "タナカ",
+      "firstNameKana": "カクエイ",
+      "birthDate": "2019-06-17",
+      "gender": "男性",
+      "grade": "中2",
+      "schoolName": "〇中学校",
+      "address": "△市",
+      "guardianName": "田中　会",
+      "guardianNameKana": "たなか　かい",
+      "relationship": "父",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "tanaka@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240002",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-03",
+      "courseClass": "Aコース",
+      "entryDate": "2025-06-03",
+      "classroomCode": "024",
+      "customerUid": "EbMhOstKtpfeRAWlg78RiZ6CR4C3",
+      "registrationDate": {
+        "_seconds": 1750143790,
+        "_nanoseconds": 355000000
+      }
+    },
+    "makeupLessons": {
+      "2025-06-25": {
+        "__doc__": {
+          "lessons": [
+            {
+              "period": 2,
+              "subject": "",
+              "seat": "",
+              "name": "田中 角栄",
+              "grade": "中2",
+              "studentId": "s0240002",
+              "status": "振替"
+            }
+          ]
+        }
+      },
+      "2025-06-28": {
+        "__doc__": {
+          "lessons": [
+            {
+              "period": 2,
+              "name": "田中 角栄",
+              "status": "振替",
+              "studentId": "s0240002",
+              "seat": "3",
+              "subject": "国語",
+              "grade": "中2"
+            },
+            {
+              "period": 3,
+              "subject": "英語",
+              "seat": "3",
+              "name": "田中 角栄",
+              "grade": "中2",
+              "studentId": "s0240002",
+              "status": "振替"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "s0240003": {
+    "__doc__": {
+      "lastName": "佐藤",
+      "firstName": "恵美",
+      "lastNameKana": "サトウ",
+      "firstNameKana": "エミ",
+      "birthDate": "2003-12-26",
+      "gender": "女性",
+      "grade": "中2",
+      "schoolName": "南林間中学校",
+      "address": "神奈川県大和市",
+      "guardianName": "佐藤　信",
+      "guardianNameKana": "さとう　のぶ",
+      "relationship": "父",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "x@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240003",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-01",
+      "courseClass": "Bコース",
+      "entryDate": "2025-06-01",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "customerUid": "k4liONYohLT5GAkmnEiLUQAYmor1",
+      "registrationDate": {
+        "_seconds": 1750655848,
+        "_nanoseconds": 844000000
+      }
+    },
+    "makeupLessons": {
+      "024_2025-06-17": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中2",
+              "name": "佐藤 恵美",
+              "period": 3,
+              "seat": "3",
+              "status": "振替",
+              "studentId": "s0240003",
+              "subject": "社会"
+            }
+          ]
+        }
+      },
+      "024_2025-06-29": {
+        "__doc__": {
+          "lessons": []
+        }
+      },
+      "2025-06-28": {
+        "__doc__": {
+          "lessons": [
+            {
+              "period": 3,
+              "subject": "数学",
+              "seat": "3",
+              "name": "佐藤 恵美",
+              "grade": "中2",
+              "studentId": "s0240003",
+              "status": "振替"
+            }
+          ]
+        }
+      },
+      "2025-08-28": {
+        "__doc__": {
+          "lessons": [
+            {
+              "period": 4,
+              "subject": "英語",
+              "seat": "2",
+              "name": "佐藤 恵美",
+              "grade": "中2",
+              "studentId": "s0240003",
+              "status": "振替"
+            }
+          ]
+        }
+      }
+    },
+    "makeupLessonsArchive": {
+      "024_2025-06-24": {
+        "__doc__": {
+          "grade": "中2",
+          "name": "佐藤 恵美",
+          "period": 3,
+          "seat": "3",
+          "status": "振替",
+          "studentId": "s0240003",
+          "subject": "社会",
+          "date": "2025-06-24",
+          "movedAt": "2025-06-29T16:48:19.684Z"
+        }
+      },
+      "024_2025-06-28": {
+        "__doc__": {
+          "period": 3,
+          "status": "振替",
+          "subject": "数学",
+          "studentId": "s0240003",
+          "name": "佐藤 恵美",
+          "grade": "中2",
+          "seat": "3",
+          "date": "2025-06-28",
+          "movedAt": "2025-06-29T16:42:38.821Z"
+        }
+      },
+      "024_2025-06-29": {
+        "__doc__": {
+          "period": 3,
+          "grade": "中2",
+          "name": "佐藤 恵美",
+          "studentId": "s0240003",
+          "status": "振替",
+          "subject": "国語",
+          "seat": "2",
+          "date": "2025-06-29",
+          "movedAt": "2025-06-29T16:44:45.199Z"
+        }
+      }
+    }
+  },
+  "s0240004": {
+    "__doc__": {
+      "lastName": "三苫",
+      "firstName": "薫",
+      "lastNameKana": "ミトマ",
+      "firstNameKana": "カオル",
+      "birthDate": "2025-04-07",
+      "gender": "男性",
+      "grade": "高3",
+      "schoolName": "鎌倉高校",
+      "address": "鎌倉",
+      "guardianName": "三苫 香",
+      "guardianNameKana": "みとま かおり",
+      "relationship": "母",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "y@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240004",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-23",
+      "courseClass": "Cコース",
+      "entryDate": "2025-06-23",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "customerUid": "suiwirIZ6wh07wsBulRTVAP9Xc72",
+      "registrationDate": {
+        "_seconds": 1750923889,
+        "_nanoseconds": 958000000
+      }
+    },
+    "makeupLessons": {
+      "024_2025-07-01": {
+        "__doc__": {
+          "lessons": [
+            {
+              "seat": "3",
+              "name": "三苫 薫",
+              "subject": "数学",
+              "period": 6,
+              "grade": "高3",
+              "studentId": "s0240004",
+              "status": "振替"
+            },
+            {
+              "grade": "高3",
+              "name": "三苫 薫",
+              "period": 3,
+              "seat": "3",
+              "status": "振替",
+              "studentId": "s0240004",
+              "subject": "数学"
+            }
+          ]
+        }
+      },
+      "024_2025-07-02": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "高3",
+              "name": "三苫 薫",
+              "period": 3,
+              "seat": "2",
+              "status": "振替",
+              "studentId": "s0240004",
+              "subject": "国語"
+            }
+          ]
+        }
+      },
+      "024_2025-07-09": {
+        "__doc__": {
+          "lessons": [
+            {
+              "seat": "3",
+              "grade": "高3",
+              "status": "振替",
+              "studentId": "s0240004",
+              "name": "三苫 薫",
+              "subject": "数学",
+              "period": 3
+            }
+          ]
+        }
+      },
+      "024_2025-07-24": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "高3",
+              "name": "三苫 薫",
+              "period": 3,
+              "seat": "3",
+              "status": "振替",
+              "studentId": "s0240004",
+              "subject": "数学"
+            }
+          ]
+        }
+      }
+    },
+    "makeupLessonsArchive": {
+      "024_2025-06-04": {
+        "__doc__": {
+          "lessons": [
+            {
+              "seat": "3",
+              "name": "三苫 薫",
+              "status": "振替",
+              "subject": "英語",
+              "grade": "高3",
+              "period": 0,
+              "studentId": "s0240004",
+              "date": "2025-06-04"
+            }
+          ]
+        }
+      },
+      "024_2025-06-12": {
+        "__doc__": {
+          "lessons": [
+            {
+              "period": 3,
+              "subject": "数学",
+              "seat": "3",
+              "studentId": "s0240004",
+              "grade": "高3",
+              "status": "振替",
+              "name": "三苫 薫",
+              "date": "2025-06-12"
+            }
+          ]
+        }
+      },
+      "024_2025-06-26": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "高3",
+              "name": "三苫 薫",
+              "period": 3,
+              "seat": "3",
+              "status": "振替",
+              "studentId": "s0240004",
+              "subject": "数学",
+              "date": "2025-06-26"
+            }
+          ]
+        }
+      },
+      "024_2025-07-04": {
+        "__doc__": {
+          "lessons": [
+            {
+              "seat": "3",
+              "period": 3,
+              "subject": "数学",
+              "status": "振替",
+              "grade": "高3",
+              "name": "三苫 薫",
+              "studentId": "s0240004",
+              "date": "2025-07-04"
+            }
+          ]
+        }
+      },
+      "024_2025-07-07": {
+        "__doc__": {
+          "lessons": [
+            {
+              "subject": "数学",
+              "name": "三苫 薫",
+              "status": "振替",
+              "grade": "高3",
+              "period": 3,
+              "studentId": "s0240004",
+              "seat": "3",
+              "date": "2025-07-07"
+            }
+          ]
+        }
+      },
+      "024_2025-07-09": {
+        "__doc__": {
+          "lessons": [
+            {
+              "subject": "数学",
+              "status": "振替",
+              "grade": "高3",
+              "studentId": "s0240004",
+              "period": 5,
+              "seat": "3",
+              "name": "三苫 薫",
+              "date": "2025-07-09"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "s0240005": {
+    "__doc__": {
+      "entryDate": "2025-07-02",
+      "lastName": "長谷部",
+      "firstName": "誠",
+      "lastNameKana": "ハセベ",
+      "firstNameKana": "マコト",
+      "name": "長谷部 誠",
+      "birthDate": "2012-07-11",
+      "gender": "男性",
+      "guardianLastName": "長谷部",
+      "guardianFirstName": "舞",
+      "guardianKanaLastName": "ハセベ",
+      "guardianKanaFirstName": "マイ",
+      "guardianName": "長谷部 舞",
+      "relationship": "母",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "so@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240005",
+      "remarks": "",
+      "postalCode": "2630001",
+      "prefecture": "千葉県",
+      "city": "千葉市稲毛区",
+      "streetAddress": "長沼原町",
+      "buildingName": "ビル",
+      "cityKana": "イナバ",
+      "streetAddressKana": "ナガヌマ",
+      "schoolingStatus": "在学生",
+      "schoolType": "公立",
+      "schoolLevel": "中学校",
+      "schoolName": "千葉中学校",
+      "schoolKana": "ちばちゅうがっこう",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "grade": "中3",
+      "customerUid": "2x8vkOfDluXZxN1bHgYzgxrKSGQ2",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752216275,
+        "_nanoseconds": 464000000
+      }
+    },
+    "courses": {
+      "通常-数学-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "subject": "数学",
+          "classType": "2名クラス",
+          "times": "",
+          "duration": "80分",
+          "startMonth": "7",
+          "endMonth": "6",
+          "startYear": "2025",
+          "endYear": "2027",
+          "note": "",
+          "weekday": "水",
+          "period": "5限"
+        }
+      },
+      "通常-英語-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "1名クラス",
+          "times": "",
+          "subject": "英語",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "2027",
+          "endMonth": "6",
+          "note": "",
+          "weekday": "火",
+          "period": "5限"
+        }
+      }
+    },
+    "makeupLessons": {
+      "024_2025-07-15_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-07-22_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-08-05_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-08-12_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-08-19_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-08-26_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-09-09_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-09-16_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語"
+            }
+          ]
+        }
+      },
+      "024_2025-09-30_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語",
+              "classType": "1名クラス",
+              "duration": "80分"
+            }
+          ]
+        }
+      }
+    },
+    "makeupLessonsArchive": {
+      "024_2025-07-01_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語",
+              "date": "2025-07-01"
+            }
+          ]
+        }
+      },
+      "024_2025-07-02_3": {
+        "__doc__": {
+          "lessons": [
+            {
+              "subject": "数学",
+              "period": 5,
+              "studentId": "s0240005",
+              "name": "長谷部 誠",
+              "grade": "中3",
+              "seat": "",
+              "status": "振替",
+              "date": "2025-07-02"
+            }
+          ]
+        }
+      },
+      "024_2025-07-15_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "status": "振替",
+              "grade": "中3",
+              "studentId": "s0240005",
+              "seat": "",
+              "subject": "英語",
+              "name": "長谷部 誠",
+              "period": 5,
+              "date": "2025-07-15"
+            }
+          ]
+        }
+      },
+      "024_2025-07-16_3": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 6,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "数学",
+              "date": "2025-07-16"
+            }
+          ]
+        }
+      },
+      "024_2025-07-26_6": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "英語",
+              "date": "2025-07-26"
+            }
+          ]
+        }
+      },
+      "024_2025-07-30_3": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "長谷部 誠",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240005",
+              "subject": "数学",
+              "classType": "2名クラス",
+              "duration": "80分",
+              "date": "2025-07-30"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "s0240006": {
+    "__doc__": {
+      "entryDate": "2024-06-15",
+      "lastName": "長友",
+      "firstName": "佑都",
+      "lastNameKana": "ナガトモ",
+      "firstNameKana": "ユウト",
+      "name": "長友 佑都",
+      "birthDate": "2020-02-03",
+      "gender": "男性",
+      "guardianLastName": "長友",
+      "guardianFirstName": "雄",
+      "guardianKanaLastName": "ナガトモ",
+      "guardianKanaFirstName": "ユウ",
+      "guardianName": "長友 雄",
+      "relationship": "父",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "yuz@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240006",
+      "remarks": "",
+      "postalCode": "2420022",
+      "prefecture": "神奈川県",
+      "city": "大和市",
+      "streetAddress": "柳橋",
+      "buildingName": "",
+      "cityKana": "ヤマト",
+      "streetAddressKana": "ヤナギバシ",
+      "schoolName": "深見中学校",
+      "schoolKana": "ふかみ",
+      "schoolLevel": "中学校",
+      "schoolType": "公立",
+      "schoolingStatus": "在学生",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "grade": "中2",
+      "customerUid": "kxkNcGkGoRcdJlqDO2zLQjuxQCm1",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752555860,
+        "_nanoseconds": 258000000
+      }
+    },
+    "courses": {
+      "通常-数学-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "subject": "数学",
+          "classType": "1名クラス",
+          "times": "",
+          "duration": "80分",
+          "startMonth": "7",
+          "endMonth": "12",
+          "startYear": "2025",
+          "endYear": "2026",
+          "note": "",
+          "weekday": "水",
+          "period": "5限"
+        }
+      },
+      "通常-英語-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "英語",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "2027",
+          "endMonth": "11",
+          "note": "",
+          "weekday": "木",
+          "period": "7限"
+        }
+      }
+    },
+    "makeupLessonsArchive": {
+      "024_2025-07-30_3": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中2",
+              "name": "長友 佑都",
+              "period": 5,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240006",
+              "subject": "数学",
+              "classType": "1名クラス",
+              "duration": "80分",
+              "date": "2025-07-30"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "s0240007": {
+    "__doc__": {
+      "entryDate": "2025-07-01",
+      "lastName": "香川",
+      "firstName": "真司",
+      "lastNameKana": "カガワ",
+      "firstNameKana": "シンジ",
+      "name": "香川 真司",
+      "birthDate": "2012-06-22",
+      "gender": "男性",
+      "guardianLastName": "香川",
+      "guardianFirstName": "真",
+      "guardianKanaLastName": "カガワ",
+      "guardianKanaFirstName": "シン",
+      "guardianName": "香川 真",
+      "relationship": "父",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "rt@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240007",
+      "remarks": "",
+      "postalCode": "3440001",
+      "prefecture": "埼玉県",
+      "city": "春日部市",
+      "streetAddress": "不動院野",
+      "buildingName": "ビル",
+      "cityKana": "ヨコハマ",
+      "streetAddressKana": "カスカベ",
+      "schoolingStatus": "在学生",
+      "schoolType": "公立",
+      "schoolLevel": "中学校",
+      "schoolName": "春日部中学校",
+      "schoolKana": "カスカベ",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "grade": "中3",
+      "customerUid": "wWT8ECcDkfMizEWqPgFMSTahVBP2",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752632502,
+        "_nanoseconds": 622000000
+      }
+    },
+    "courses": {
+      "通常-数学-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "演習クラス",
+          "times": "",
+          "subject": "数学",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "2027",
+          "endMonth": "6",
+          "note": "",
+          "weekday": "木",
+          "period": "6限"
+        }
+      },
+      "通常-英語-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "subject": "英語",
+          "classType": "演習クラス",
+          "times": "",
+          "duration": "80分",
+          "startMonth": "7",
+          "endMonth": "7",
+          "startYear": "2025",
+          "endYear": "2027",
+          "note": "",
+          "weekday": "水",
+          "period": "6限"
+        }
+      }
+    }
+  },
+  "s0240008": {
+    "__doc__": {
+      "entryDate": "2025-07-16",
+      "lastName": "吉田",
+      "firstName": "麻也",
+      "lastNameKana": "ヨシダ",
+      "firstNameKana": "マヤ",
+      "name": "吉田 麻也",
+      "birthDate": "2016-05-16",
+      "gender": "男性",
+      "guardianLastName": "吉田",
+      "guardianFirstName": "沙也加",
+      "guardianKanaLastName": "ヨシダ",
+      "guardianKanaFirstName": "サヤカ",
+      "guardianName": "吉田 沙也加",
+      "relationship": "母",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "ew@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240008",
+      "remarks": "",
+      "postalCode": "3450001",
+      "prefecture": "埼玉県",
+      "city": "北葛飾郡杉戸町",
+      "streetAddress": "木津内",
+      "buildingName": "",
+      "cityKana": "ヨコハマ",
+      "streetAddressKana": "コード",
+      "schoolingStatus": "在学生",
+      "schoolType": "公立",
+      "schoolLevel": "高等学校",
+      "schoolName": "埼玉高校",
+      "schoolKana": "サイタマ",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "grade": "高2",
+      "customerUid": "XyejHemsYDWgFUsfbUDYbHk3FiL2",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752632910,
+        "_nanoseconds": 870000000
+      }
+    },
+    "courses": {
+      "通常-数学B-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "数学B",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "2027",
+          "endMonth": "7",
+          "note": "",
+          "weekday": "木",
+          "period": "5限"
+        }
+      },
+      "通常-数学II-2025-6": {
+        "__doc__": {
+          "kind": "通常",
+          "subject": "数学II",
+          "classType": "演習クラス",
+          "times": "",
+          "duration": "80分",
+          "startMonth": "6",
+          "endMonth": "8",
+          "startYear": "2025",
+          "endYear": "2027",
+          "note": "",
+          "weekday": "水",
+          "period": "6限"
+        }
+      }
+    }
+  },
+  "s0240009": {
+    "__doc__": {
+      "entryDate": "2025-07-16",
+      "lastName": "内田",
+      "firstName": "篤人",
+      "lastNameKana": "ウチダ",
+      "firstNameKana": "アツト",
+      "name": "内田 篤人",
+      "birthDate": "2012-06-16",
+      "gender": "男性",
+      "guardianLastName": "内田",
+      "guardianFirstName": "敦",
+      "guardianKanaLastName": "ウチダ",
+      "guardianKanaFirstName": "アツシ",
+      "guardianName": "内田 敦",
+      "relationship": "父",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "re@icloud.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0240009",
+      "remarks": "",
+      "postalCode": "5220001",
+      "prefecture": "滋賀県",
+      "city": "彦根市",
+      "streetAddress": "尾末町",
+      "buildingName": "",
+      "cityKana": "ヨコハマ",
+      "streetAddressKana": "コード",
+      "schoolingStatus": "在学生",
+      "schoolType": "公立",
+      "schoolLevel": "中学校",
+      "schoolName": "滋賀中学校",
+      "schoolKana": "シガ",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "grade": "中3",
+      "customerUid": "w2zHpHr9jJQtzeLAx4COv9CYJhg1",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752633745,
+        "_nanoseconds": 396000000
+      }
+    },
+    "courses": {
+      "通常-数学-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "数学",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "2027",
+          "endMonth": "6",
+          "note": "",
+          "weekday": "水",
+          "period": "6限"
+        }
+      }
+    },
+    "makeupLessonsArchive": {
+      "024_2025-07-30_3": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "内田 篤人",
+              "period": 6,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0240009",
+              "subject": "数学",
+              "classType": "2名クラス",
+              "duration": "80分",
+              "date": "2025-07-30"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "s0470001": {
+    "__doc__": {
+      "lastName": "井上",
+      "firstName": "由佳",
+      "lastNameKana": "イノウエ",
+      "firstNameKana": "ユカ",
+      "birthDate": "2011-06-22",
+      "gender": "女性",
+      "grade": "中2",
+      "schoolName": "生徒中学校",
+      "address": "神奈川県",
+      "guardianName": "井上　佳奈",
+      "guardianNameKana": "イノウエ　カナ",
+      "relationship": "母",
+      "guardianPhone": "000-0000-0000",
+      "guardianEmail": "inouekana@customer.com",
+      "emergencyContact": "000-0000-0000",
+      "studentId": "s0470001",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-17",
+      "courseClass": "Aコース",
+      "entryDate": "2025-06-17",
+      "classroomCode": "047",
+      "customerUid": "uMgoSTcZZHgp2xSNeuP6mBGp4Nw1",
+      "registrationDate": {
+        "_seconds": 1750155250,
+        "_nanoseconds": 174000000
+      },
+      "classroomName": "南林間"
+    },
+    "makeupLessons": {
+      "047_2025-07-04": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中2",
+              "name": "井上 由佳",
+              "period": 5,
+              "seat": "2",
+              "status": "振替",
+              "studentId": "s0470001",
+              "subject": "理科"
+            }
+          ]
+        }
+      }
+    },
+    "makeupLessonsArchive": {
+      "047_2025-07-03": {
+        "__doc__": {
+          "lessons": [
+            {
+              "period": 3,
+              "grade": "中2",
+              "status": "振替",
+              "subject": "英語",
+              "seat": "1",
+              "name": "井上 由佳",
+              "studentId": "s0470001",
+              "date": "2025-07-03"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "s0470002": {
+    "__doc__": {
+      "lastName": "吉田",
+      "firstName": "拓実",
+      "lastNameKana": "ヨシダ",
+      "firstNameKana": "タクミ",
+      "birthDate": "2010-07-09",
+      "gender": "男性",
+      "grade": "中3",
+      "schoolName": "生徒中学校",
+      "address": "神奈川県",
+      "guardianName": "吉田　紗理奈",
+      "guardianNameKana": "ヨシダ　サリナ",
+      "relationship": "母",
+      "guardianPhone": "111-1111-1111",
+      "guardianEmail": "yoshida@customer.com",
+      "emergencyContact": "111-1111-1111",
+      "studentId": "s0470002",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-17",
+      "courseClass": "Aコース",
+      "entryDate": "2025-06-17",
+      "classroomCode": "047",
+      "customerUid": "kPWBFKbdSThTz3EGxiNTF1isEI92",
+      "registrationDate": {
+        "_seconds": 1750155888,
+        "_nanoseconds": 476000000
+      },
+      "classroomName": "南林間"
+    }
+  },
+  "s0470003": {
+    "__doc__": {
+      "lastName": "鈴木",
+      "firstName": "大輝",
+      "lastNameKana": "スズキ",
+      "firstNameKana": "ダイキ",
+      "birthDate": "2014-07-17",
+      "gender": "男性",
+      "grade": "小5",
+      "schoolName": "生徒小学校",
+      "address": "神奈川県",
+      "guardianName": "鈴木　隆史",
+      "guardianNameKana": "スズキ　タカシ",
+      "relationship": "父",
+      "guardianPhone": "222-2222-2222",
+      "guardianEmail": "suzuki@customer.com",
+      "emergencyContact": "222-2222-2222",
+      "studentId": "s0470003",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-17",
+      "courseClass": "Bコース",
+      "entryDate": "2025-06-17",
+      "classroomCode": "047",
+      "customerUid": "wB7tQF71cHUaGlliomg1JBPmg8X2",
+      "registrationDate": {
+        "_seconds": 1750156222,
+        "_nanoseconds": 547000000
+      },
+      "classroomName": "南林間"
+    }
+  },
+  "s0470004": {
+    "__doc__": {
+      "lastName": "浅川",
+      "firstName": "莉央",
+      "lastNameKana": "アサカワ",
+      "firstNameKana": "リオ",
+      "birthDate": "2009-08-28",
+      "gender": "女性",
+      "grade": "高1",
+      "schoolName": "生徒高校",
+      "address": "神奈川県",
+      "guardianName": "浅川　詩織",
+      "guardianNameKana": "アサカワ　シオリ",
+      "relationship": "母",
+      "guardianPhone": "333-3333-3333",
+      "guardianEmail": "asakawa@customer.com",
+      "emergencyContact": "333-3333-3333",
+      "studentId": "s0470004",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-17",
+      "courseClass": "Cコース",
+      "entryDate": "2025-06-17",
+      "classroomCode": "047",
+      "customerUid": "tEjHPd1Ru7UAFZYSkU6tfUhAfZ02",
+      "registrationDate": {
+        "_seconds": 1750156556,
+        "_nanoseconds": 457000000
+      },
+      "classroomName": "南林間"
+    }
+  },
+  "s0470005": {
+    "__doc__": {
+      "lastName": "田辺",
+      "firstName": "俊樹",
+      "lastNameKana": "タナベ",
+      "firstNameKana": "トシキ",
+      "birthDate": "2011-03-17",
+      "gender": "男性",
+      "grade": "中2",
+      "schoolName": "生徒中学校",
+      "address": "神奈川県",
+      "guardianName": "田辺　勝俊",
+      "guardianNameKana": "タナベ　カツトシ",
+      "relationship": "父",
+      "guardianPhone": "444-4444-4444",
+      "guardianEmail": "tanabe@customer.com",
+      "emergencyContact": "444-4444-4444",
+      "studentId": "s0470005",
+      "status": "在籍中",
+      "enrollmentDate": "2025-06-17",
+      "courseClass": "Aコース",
+      "entryDate": "2025-06-17",
+      "classroomCode": "047",
+      "customerUid": "C5JfXcWnhjSokKX818dek689jpw1",
+      "registrationDate": {
+        "_seconds": 1750161123,
+        "_nanoseconds": 691000000
+      },
+      "classroomName": "南林間"
+    }
+  },
+  "s0470006": {
+    "__doc__": {
+      "entryDate": "2025-07-10",
+      "lastName": "清水",
+      "firstName": "美香",
+      "lastNameKana": "シミズ",
+      "firstNameKana": "ミカ",
+      "name": "清水 美香",
+      "birthDate": "2011-07-29",
+      "gender": "女性",
+      "guardianLastName": "清水",
+      "guardianFirstName": "武史",
+      "guardianKanaLastName": "シミズ",
+      "guardianKanaFirstName": "タケシ",
+      "guardianName": "",
+      "relationship": "父",
+      "guardianPhone": "666-6666-6666",
+      "guardianEmail": "shimizu@customer.com",
+      "emergencyContact": "666-6666-6667",
+      "studentId": "s0470006",
+      "remarks": "",
+      "postalCode": "2420006",
+      "prefecture": "神奈川県",
+      "address2": "大和市",
+      "address3": "南林間6",
+      "address2Kana": "ヤマトシ",
+      "address3Kana": "ミナミリンカン6",
+      "schoolingStatus": "在学生",
+      "schoolType": "公立",
+      "schoolLevel": "中学校",
+      "schoolName": "生徒中学校",
+      "schoolKana": "セイトチュウガッコウ",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "grade": "中2",
+      "customerUid": "QDYhE94qncPzufRJrvSvtRDjBu83",
+      "registrationDate": {
+        "_seconds": 1752142522,
+        "_nanoseconds": 951000000
+      }
+    },
+    "courses": {
+      "通常-国語-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "国語",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "水",
+          "period": "2限"
+        }
+      },
+      "通常-数-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "数",
+          "duration": "40分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "木",
+          "period": "2限"
+        }
+      },
+      "通常-数学-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "1名クラス",
+          "times": "",
+          "subject": "数学",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "火",
+          "period": "2限"
+        }
+      },
+      "通常-理科-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "演習クラス",
+          "times": "",
+          "subject": "理科",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "金",
+          "period": "2限"
+        }
+      },
+      "通常-社会-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "演習クラス",
+          "times": "",
+          "subject": "社会",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "土",
+          "period": "2限"
+        }
+      },
+      "通常-英-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "英",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "水",
+          "period": "3限"
+        }
+      },
+      "通常-英語-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "subject": "英語",
+          "classType": "1名クラス",
+          "times": "",
+          "duration": "70分",
+          "startMonth": "7",
+          "endMonth": "",
+          "startYear": "2025",
+          "endYear": "",
+          "note": "",
+          "weekday": "月",
+          "period": "2限"
+        }
+      }
+    }
+  },
+  "s0470007": {
+    "__doc__": {
+      "entryDate": "2025-07-11",
+      "lastName": "村田",
+      "firstName": "慎二",
+      "lastNameKana": "ムラタ",
+      "firstNameKana": "シンジ",
+      "name": "村田 慎二",
+      "birthDate": "2010-10-11",
+      "gender": "男性",
+      "guardianLastName": "村田",
+      "guardianFirstName": "洋子",
+      "guardianKanaLastName": "ムラタ",
+      "guardianKanaFirstName": "ヨウコ",
+      "guardianName": "村田 洋子",
+      "relationship": "母",
+      "guardianPhone": "777-7777-7777",
+      "guardianEmail": "murata@customer.com",
+      "emergencyContact": "777-7777-7778",
+      "studentId": "s0470007",
+      "remarks": "",
+      "postalCode": "2420006",
+      "prefecture": "神奈川県",
+      "city": "大和市",
+      "streetAddress": "南林間7",
+      "buildingName": "ハイツ203",
+      "cityKana": "ヤマトシ",
+      "streetAddressKana": "ミナミリンカン7",
+      "schoolingStatus": "在学生",
+      "schoolType": "私立",
+      "schoolLevel": "中学校",
+      "schoolName": "生徒中学校",
+      "schoolKana": "セイトチュウガッコウ",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "grade": "中3",
+      "customerUid": "T6R63FT2RGUn3ZPIdYXMf00dW3I3",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752208383,
+        "_nanoseconds": 984000000
+      }
+    },
+    "courses": {
+      "通常-国語-2025-8": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "国語",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "8",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "木",
+          "period": "4限"
+        }
+      },
+      "通常-数学-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "subject": "数学",
+          "classType": "2名クラス",
+          "times": "",
+          "duration": "80分",
+          "startMonth": "7",
+          "endMonth": "",
+          "startYear": "2025",
+          "endYear": "",
+          "note": "",
+          "weekday": "火",
+          "period": "3限"
+        }
+      }
+    },
+    "makeupLessons": {
+      "047_2025-07-01": {
+        "__doc__": {
+          "lessons": [
+            {
+              "seat": "",
+              "grade": "中3",
+              "studentId": "s0470007",
+              "period": 3,
+              "subject": "数学",
+              "status": "振替",
+              "name": "村田 慎二"
+            },
+            {
+              "grade": "中3",
+              "name": "村田 慎二",
+              "period": 3,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0470007",
+              "subject": "数学"
+            }
+          ]
+        }
+      },
+      "047_2025-07-01_2": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "村田 慎二",
+              "period": 3,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0470007",
+              "subject": "数学"
+            }
+          ]
+        }
+      }
+    },
+    "makeupLessonsArchive": {
+      "047_2025-07-02_3": {
+        "__doc__": {
+          "lessons": [
+            {
+              "grade": "中3",
+              "name": "村田 慎二",
+              "period": 2,
+              "seat": "",
+              "status": "振替",
+              "studentId": "s0470007",
+              "subject": "数学",
+              "classType": "1名クラス",
+              "date": "2025-07-02"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "s0470008": {
+    "__doc__": {
+      "entryDate": "2025-07-16",
+      "lastName": "進藤",
+      "firstName": "光",
+      "lastNameKana": "シンドウ",
+      "firstNameKana": "ヒカル",
+      "name": "進藤 光",
+      "birthDate": "2009-10-16",
+      "gender": "男性",
+      "guardianLastName": "進藤",
+      "guardianFirstName": "明",
+      "guardianKanaLastName": "シンドウ",
+      "guardianKanaFirstName": "アキラ",
+      "guardianName": "進藤 明",
+      "relationship": "父",
+      "guardianPhone": "888-8888-8888",
+      "guardianEmail": "shindo@customer.com",
+      "emergencyContact": "888-8888-8889",
+      "studentId": "s0470008",
+      "remarks": "",
+      "postalCode": "2420005",
+      "prefecture": "神奈川県",
+      "city": "大和市",
+      "streetAddress": "西鶴間8",
+      "buildingName": "パレス203",
+      "cityKana": "ヤマトシ",
+      "streetAddressKana": "ニシツルマ8",
+      "schoolingStatus": "在学生",
+      "schoolType": "私立",
+      "schoolLevel": "高等学校",
+      "schoolName": "生徒高校",
+      "schoolKana": "セイトコウコウ",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "grade": "高1",
+      "customerUid": "vfKBNdMFAddwlClhMzawvSUgHX03",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752648395,
+        "_nanoseconds": 879000000
+      }
+    },
+    "courses": {
+      "夏期講習-英語-2025": {
+        "__doc__": {
+          "kind": "夏期講習",
+          "classType": "2名クラス",
+          "times": "8回",
+          "subject": "英語",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "2025",
+          "endMonth": "8",
+          "note": ""
+        }
+      },
+      "春期講習-数学I-2025": {
+        "__doc__": {
+          "kind": "春期講習",
+          "classType": "1名クラス",
+          "times": "8回",
+          "subject": "数学I",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "2025",
+          "endMonth": "8",
+          "note": ""
+        }
+      }
+    }
+  },
+  "s2380001": {
+    "__doc__": {
+      "entryDate": "2025-07-12",
+      "lastName": "高橋",
+      "firstName": "文哉",
+      "lastNameKana": "",
+      "firstNameKana": "",
+      "name": "高橋 文哉",
+      "birthDate": "",
+      "gender": "",
+      "guardianLastName": "",
+      "guardianFirstName": "",
+      "guardianKanaLastName": "",
+      "guardianKanaFirstName": "",
+      "guardianName": " ",
+      "relationship": "",
+      "guardianPhone": "",
+      "guardianEmail": "takahashi.humiya@student.com",
+      "emergencyContact": "",
+      "studentId": "s2380001",
+      "remarks": "",
+      "postalCode": "",
+      "prefecture": "",
+      "city": "",
+      "streetAddress": "",
+      "buildingName": "",
+      "cityKana": "",
+      "streetAddressKana": "",
+      "schoolingStatus": "在学生",
+      "schoolLevel": "高等学校",
+      "classroomCode": "238",
+      "classroomName": "humiya",
+      "grade": "高1",
+      "customerUid": "XsktTgV94lWrDJhCDNE6TqaG2x83",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752319446,
+        "_nanoseconds": 359000000
+      }
+    },
+    "courses": {
+      "通常-数学I-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "subject": "数学I",
+          "classType": "1名クラス",
+          "times": "",
+          "duration": "80分",
+          "startMonth": "7",
+          "endMonth": "",
+          "startYear": "2025",
+          "endYear": "",
+          "note": "",
+          "weekday": "月",
+          "period": "7限"
+        }
+      },
+      "通常-英語-2025-7": {
+        "__doc__": {
+          "kind": "通常",
+          "classType": "2名クラス",
+          "times": "",
+          "subject": "英語",
+          "duration": "80分",
+          "startYear": "2025",
+          "startMonth": "7",
+          "endYear": "",
+          "endMonth": "",
+          "note": "",
+          "weekday": "水",
+          "period": "7限"
+        }
+      }
+    }
+  },
+  "s2460001": {
+    "__doc__": {
+      "entryDate": "",
+      "lastName": "田中",
+      "firstName": "太郎",
+      "lastNameKana": "タナカ",
+      "firstNameKana": "タロウ",
+      "name": "田中 太郎",
+      "birthDate": "2004-01-01",
+      "gender": "男性",
+      "guardianLastName": "山田",
+      "guardianFirstName": "一",
+      "guardianKanaLastName": "ヤマダ",
+      "guardianKanaFirstName": "ハジメ",
+      "guardianName": "山田 一",
+      "relationship": "父親",
+      "guardianPhone": "111-111-1111",
+      "guardianEmail": "dd@gmail.coom",
+      "emergencyContact": "111-111-1121",
+      "studentId": "s2460001",
+      "remarks": "",
+      "postalCode": "1234567",
+      "prefecture": "神奈川県",
+      "city": "大和市下鶴間",
+      "streetAddress": "1-1-1",
+      "buildingName": "大和ビルディング",
+      "cityKana": "ヤマトシシモツルマ",
+      "streetAddressKana": "1-1-1",
+      "schoolingStatus": "在学生",
+      "schoolType": "公立",
+      "schoolLevel": "小学校",
+      "schoolName": "大和小学校",
+      "schoolKana": "ヤマトショウガッコウ",
+      "classroomCode": "246",
+      "classroomName": "大和",
+      "grade": "小1",
+      "customerUid": "hq3u0rHra0gAcoKzvjIt0h26s2B3",
+      "status": "在籍中",
+      "registrationDate": {
+        "_seconds": 1752649541,
+        "_nanoseconds": 669000000
+      }
+    }
+  }
+}
