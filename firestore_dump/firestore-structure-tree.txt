@@ -643,11 +643,16 @@
 │        ├─ role
 │        └─ createdAt
 ├─ ceoMessages/
-│  └─ 6j3kmLFpeVNCGtKcI2JV/
+│  ├─ ErLhEgxJmafoREqVOJNl/
+│  │  └─ __doc__/
+│  │     ├─ subject
+│  │     ├─ content
+│  │     ├─ createdAt
+│  │     └─ readStatus
+│  └─ ixRTbMUQiILAJHyf1X1Z/
 │     └─ __doc__/
 │        ├─ subject
 │        ├─ content
-│        ├─ createdBy
 │        ├─ createdAt
 │        └─ readStatus
 ├─ classrooms/
