@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SimpleCard from './SimpleCard.tsx';
 import UnreadMessages from './UnreadMessages.tsx';
 import LogsTable from './LogsTable.tsx';
@@ -16,29 +16,27 @@ type Props = {
 };
 
 const ToDoContent: React.FC<Props> = ({ logs }) => {
-    const { user, role } = useAuth();
+    const { user, classroomCode, role } = useAuth();
     const [modalOpen, setModalOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
-    const [adminUids, setAdminUids] = useState<string[]>([]);
+    const [classroomCodes, setClassroomCodes] = useState<string[]>([]);
+
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
+    // classroomCodes取得
     useEffect(() => {
-        if (!user) return;
-        fetchMessages();
+        const fetchClassroomCodes = async () => {
+            const snapshot = await getDocs(collection(db, "admins"));
+            const codes = snapshot.docs.map(doc => doc.data().classroomCode).filter(Boolean);
+            setClassroomCodes(codes);
+        };
+        fetchClassroomCodes();
     }, [user]);
 
-    useEffect(() => {
-        const fetchAdminUids = async () => {
-            const snapshot = await getDocs(collection(db, "admins"));
-            const uids = snapshot.docs.map(doc => doc.data().uid).filter(Boolean);
-            setAdminUids(uids);
-        };
-        fetchAdminUids();
-    }, []);
-
-    const fetchMessages = async () => {
-        if (!user) return;
+    // fetchMessagesをuseCallbackでメモ化し再利用可能に
+    const fetchMessages = useCallback(async () => {
+        if (!user || !classroomCode) return;
         const snapshot = await getDocs(collection(db, "ceoMessages"));
         const fetchedMessages = snapshot.docs.map((doc) => {
             const data = doc.data();
@@ -48,11 +46,16 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
                 subject: data.subject,
                 content: data.content ?? "",
                 createdAt: data.createdAt ? data.createdAt.toDate() : null,
-                read: readStatus[user.uid] ?? false,
+                read: readStatus[classroomCode] ?? false,
             };
         });
         setMessages(fetchedMessages);
-    };
+    }, [user, classroomCode]);
+
+    // 初回取得＋user,classroomCode変化時にfetchMessages呼ぶ
+    useEffect(() => {
+        fetchMessages();
+    }, [fetchMessages]);
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
@@ -63,27 +66,27 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
     };
 
     const handleMarkAsRead = async () => {
-        if (!selectedMessage || !user) return;
+        if (!selectedMessage || !classroomCode || role === "superadmin") return;
         const docRef = doc(db, "ceoMessages", selectedMessage.id);
         await updateDoc(docRef, {
-            [`readStatus.${user.uid}`]: true,
+            [`readStatus.${classroomCode}`]: true,
         });
         setDetailModalOpen(false);
+        // 更新後に最新取得
         fetchMessages();
     };
 
     const handleSubmit = async (subject: string, content: string) => {
         try {
             const readStatus: Record<string, boolean> = {};
-            adminUids.forEach(uid => {
-                readStatus[uid] = false;
+            classroomCodes.forEach(code => {
+                readStatus[code] = false;
             });
 
             await addDoc(collection(db, "ceoMessages"), {
                 subject,
                 content,
                 createdAt: serverTimestamp(),
-                createdBy: user.uid, // superadminのuidだけ記録
                 readStatus,
             });
 
@@ -97,6 +100,7 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
             });
 
             closeModal();
+            // 新規送信後に再取得して最新反映
             fetchMessages();
         } catch {
             showErrorToast("送信に失敗しました");
@@ -113,21 +117,26 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
 
     return (
         <div className="space-y-4 w-full pr-6">
-            <SimpleCard title={
-                <div className="flex justify-between items-center">
-                    <span>未読 社長連絡</span>
-                    {role === "superadmin" && (
-                        <button
-                            className="bg-blue-500 text-white text-sm px-3 py-1 rounded hover:bg-blue-600"
-                            onClick={openModal}
-                            type="button"
-                        >
-                            新規
-                        </button>
-                    )}
-                </div>
-            }>
-                <UnreadMessages messages={messages} onOpenDetail={handleOpenDetail} />
+            <SimpleCard
+                title={
+                    <div className="flex justify-between items-center">
+                        <span>未読 社長連絡</span>
+                        {role === "superadmin" && (
+                            <button
+                                className="bg-blue-500 text-white text-sm px-3 py-1 rounded hover:bg-blue-600"
+                                onClick={openModal}
+                                type="button"
+                            >
+                                新規
+                            </button>
+                        )}
+                    </div>
+                }
+            >
+                <UnreadMessages
+                    messages={messages}
+                    onOpenDetail={handleOpenDetail}
+                />
             </SimpleCard>
 
             <SimpleCard title="編集内容">

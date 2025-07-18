@@ -12,6 +12,7 @@ import HolidayPage from './HolidayPage.tsx';
 import ToDoContent from '../components/ToDoContent/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
+import CeoMessagesAll from '../components/CeoMessagesAll.tsx';
 
 const AdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('welcome');
@@ -108,6 +109,8 @@ const AdminDashboard = () => {
         return <AdminStudentCalendar />;
       case 'todo':
         return <ToDoContent logs={logs} />;
+      case 'notification':
+                      return <CeoMessagesAll />;
       default:
         return <ToDoContent logs={logs} />;
     }

@@ -14,6 +14,8 @@ import TuitionRegistrationForm from '../components/TuitionRegistrationTabs.jsx';
 import TeacherFeeRegistration from '../components/AdminRegistrationForm/TeacherFeeRegistration.jsx';
 import HolidayPage from './HolidayPage.tsx';
 import ToDoContent from '../components/ToDoContent/ToDoContent.tsx';
+import CeoMessagesAll from '../components/CeoMessagesAll.tsx';
+
 
 const SuperAdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -57,6 +59,8 @@ const SuperAdminDashboard = () => {
                 return <TeacherRegistrationForm onCancel={() => setSelectedContent('teachers')} />;
             case 'todo':
                 return <ToDoContent logs={logs} />;
+            case 'notification':
+                return <CeoMessagesAll />;
             default:
                 return <ToDoContent logs={logs} />;
         }
