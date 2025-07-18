@@ -16,28 +16,31 @@ type Props = {
 };
 
 const ToDoContent: React.FC<Props> = ({ logs }) => {
-    const { user, classroomCode, role  } = useAuth();
-    const [modalOpen, setModalOpen] = React.useState(false);
+    const { user, role } = useAuth();
+    const [modalOpen, setModalOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
-    const [classroomCodes, setClassroomCodes] = useState<string[]>([]);
-
-    const openModal = () => setModalOpen(true);
-    const closeModal = () => setModalOpen(false);
+    const [adminUids, setAdminUids] = useState<string[]>([]);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
     useEffect(() => {
-        const fetchClassroomCodes = async () => {
+        if (!user) return;
+        fetchMessages();
+    }, [user]);
+
+    useEffect(() => {
+        const fetchAdminUids = async () => {
             const snapshot = await getDocs(collection(db, "admins"));
-            const codes = snapshot.docs.map(doc => doc.data().classroomCode).filter(Boolean);
-            setClassroomCodes(codes);
+            const uids = snapshot.docs.map(doc => doc.data().uid).filter(Boolean);
+            setAdminUids(uids);
         };
-        fetchClassroomCodes();
+        fetchAdminUids();
     }, []);
 
     const fetchMessages = async () => {
+        if (!user) return;
         const snapshot = await getDocs(collection(db, "ceoMessages"));
-        const fetchedMessages: Message[] = snapshot.docs.map((doc) => {
+        const fetchedMessages = snapshot.docs.map((doc) => {
             const data = doc.data();
             const readStatus = data.readStatus || {};
             return {
@@ -51,9 +54,8 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
         setMessages(fetchedMessages);
     };
 
-    useEffect(() => {
-        fetchMessages();
-    }, [user.uid]);
+    const openModal = () => setModalOpen(true);
+    const closeModal = () => setModalOpen(false);
 
     const handleOpenDetail = (message: Message) => {
         setSelectedMessage(message);
@@ -61,7 +63,7 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
     };
 
     const handleMarkAsRead = async () => {
-        if (!selectedMessage) return;
+        if (!selectedMessage || !user) return;
         const docRef = doc(db, "ceoMessages", selectedMessage.id);
         await updateDoc(docRef, {
             [`readStatus.${user.uid}`]: true,
@@ -73,18 +75,15 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
     const handleSubmit = async (subject: string, content: string) => {
         try {
             const readStatus: Record<string, boolean> = {};
-            classroomCodes.forEach(code => {
-                readStatus[code] = false;
+            adminUids.forEach(uid => {
+                readStatus[uid] = false;
             });
-            if (classroomCode) {
-                readStatus[classroomCode] = false;
-            }
-            readStatus[user.uid] = false;
 
             await addDoc(collection(db, "ceoMessages"), {
                 subject,
                 content,
                 createdAt: serverTimestamp(),
+                createdBy: user.uid, // superadminのuidだけ記録
                 readStatus,
             });
 
@@ -98,6 +97,7 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
             });
 
             closeModal();
+            fetchMessages();
         } catch {
             showErrorToast("送信に失敗しました");
         }
@@ -116,7 +116,6 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
             <SimpleCard title={
                 <div className="flex justify-between items-center">
                     <span>未読 社長連絡</span>
-                    {/* roleがsuperadminならボタンを表示 */}
                     {role === "superadmin" && (
                         <button
                             className="bg-blue-500 text-white text-sm px-3 py-1 rounded hover:bg-blue-600"
@@ -128,7 +127,7 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
                     )}
                 </div>
             }>
-                <UnreadMessages messages={messages} onOpenDetail={handleOpenDetail} onNewClick={openModal} />
+                <UnreadMessages messages={messages} onOpenDetail={handleOpenDetail} />
             </SimpleCard>
 
             <SimpleCard title="編集内容">

@@ -642,6 +642,14 @@
 │        ├─ email
 │        ├─ role
 │        └─ createdAt
+├─ ceoMessages/
+│  └─ 6j3kmLFpeVNCGtKcI2JV/
+│     └─ __doc__/
+│        ├─ subject
+│        ├─ content
+│        ├─ createdBy
+│        ├─ createdAt
+│        └─ readStatus
 ├─ classrooms/
 │  ├─ 189/
 │  │  └─ __doc__/

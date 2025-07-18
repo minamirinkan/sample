@@ -109,7 +109,13 @@
       "TimetableRow.jsx": "file",
       "TimetableRowCustomer.jsx": "file",
       "TimetableTable.jsx": "file",
-      "ToDoContent.tsx": "file",
+      "ToDoContent": {
+        "LogsTable.tsx": "file",
+        "SimpleCard.tsx": "file",
+        "ToDoContent.tsx": "file",
+        "UnreadMessages.tsx": "file",
+        "types.ts": "file"
+      },
       "ToastProvider.jsx": "file",
       "TuitionFormContent.jsx": "file",
       "TuitionRegistrationTabs.jsx": "file",
@@ -136,6 +142,9 @@
       "DeleteConfirmModal.tsx": "file",
       "HolidayModal.tsx": "file",
       "LessonModal.js": "file",
+      "MessageDetailModal.tsx": "file",
+      "Modal.tsx": "file",
+      "NewContactModal.tsx": "file",
       "TeacherModal.js": "file",
       "mockStudents.js": "file",
       "mockTeachers.js": "file"

@@ -101,7 +101,12 @@
 │  │  ├─ TimetableRow.jsx
 │  │  ├─ TimetableRowCustomer.jsx
 │  │  ├─ TimetableTable.jsx
-│  │  ├─ ToDoContent.tsx
+│  │  ├─ ToDoContent/
+│  │  │  ├─ LogsTable.tsx
+│  │  │  ├─ SimpleCard.tsx
+│  │  │  ├─ ToDoContent.tsx
+│  │  │  ├─ UnreadMessages.tsx
+│  │  │  └─ types.ts
 │  │  ├─ ToastProvider.jsx
 │  │  ├─ TuitionFormContent.jsx
 │  │  ├─ TuitionRegistrationTabs.jsx
@@ -124,6 +129,9 @@
 │  │  ├─ DeleteConfirmModal.tsx
 │  │  ├─ HolidayModal.tsx
 │  │  ├─ LessonModal.js
+│  │  ├─ MessageDetailModal.tsx
+│  │  ├─ Modal.tsx
+│  │  ├─ NewContactModal.tsx
 │  │  ├─ TeacherModal.js
 │  │  ├─ mockStudents.js
 │  │  └─ mockTeachers.js
