@@ -4,23 +4,10 @@ import { Message } from './types.ts';
 type Props = {
     messages: Message[];
     onOpenDetail: (message: Message) => void;
-    isSuperAdmin?: boolean;
 };
 
-const UnreadMessages: React.FC<Props> = ({ messages, onOpenDetail, isSuperAdmin = false }) => (
+const UnreadMessages: React.FC<Props> = ({ messages, onOpenDetail }) => (
     <div>
-        {isSuperAdmin && (
-            <div className="flex justify-end mb-2">
-                <button
-                    className="bg-blue-500 text-white text-sm px-3 py-1 rounded hover:bg-blue-600"
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    type="button"
-                >
-                    ＋ 新規作成
-                </button>
-            </div>
-        )}
-
         <table className="w-full table-fixed text-sm border border-gray-300 border-collapse">
             <colgroup>
                 <col style={{ width: '50%' }} />
