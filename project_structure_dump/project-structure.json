@@ -47,6 +47,7 @@
       "AdminSidebar.jsx": "file",
       "Breadcrumb.js": "file",
       "CalendarPopup.jsx": "file",
+      "CeoMessagesAll.tsx": "file",
       "ConfirmAttendanceModal.jsx": "file",
       "ConfirmOverwriteModal.js": "file",
       "ContentArea.js": "file",
@@ -145,9 +146,7 @@
       "MessageDetailModal.tsx": "file",
       "Modal.tsx": "file",
       "NewContactModal.tsx": "file",
-      "TeacherModal.js": "file",
-      "mockStudents.js": "file",
-      "mockTeachers.js": "file"
+      "TeacherModal.js": "file"
     },
     "firebase.js": "file",
     "hooks": {

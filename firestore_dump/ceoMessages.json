@@ -1,22 +1,39 @@
 {
-  "6j3kmLFpeVNCGtKcI2JV": {
+  "ErLhEgxJmafoREqVOJNl": {
     "__doc__": {
-      "subject": "7/19(土)プログラミング会議",
-      "content": "当日午前9時〜10時に教室集合。\n鍵を閉めているので、来る際はLineで連絡してください。\nファイル整理をメインで行います。",
-      "createdBy": "gJWq03P4oDTI4JoFRiN02V8YnEw2",
+      "subject": "7/19(土)プログラミグ会議",
+      "content": "当日午前9時〜10時くらいに教室に来てください。鍵を閉めているので、来るときにLineで連絡必須。\nファイル整理をメインで行います。",
       "createdAt": {
-        "_seconds": 1752819460,
-        "_nanoseconds": 665000000
+        "_seconds": 1752830480,
+        "_nanoseconds": 556000000
       },
       "readStatus": {
-        "1oOfsMbpDWa0VrR1AlDJHW91r6o1": false,
-        "W7hFJlKUfth5MBSEC8hB31KfHua2": false,
-        "WBdKPpKmWafjLQOZFM3ROfuaBRv1": false,
-        "dzZtlDBKXid1C1f6zDir4IAZZ9l2": false,
-        "ezXyIhNOI1OuXLJBWah4yxpsQdR2": false,
-        "xZd5V0ltfRMxKFkOqOZyZ1wXPH42": false,
-        "gJWq03P4oDTI4JoFRiN02V8YnEw2": true,
-        "apJL9SD9X4YvYyWPOyTTcI7vWZp2": true
+        "189": false,
+        "238": false,
+        "246": false,
+        "002": false,
+        "024": false,
+        "023": false,
+        "047": true
+      }
+    }
+  },
+  "ixRTbMUQiILAJHyf1X1Z": {
+    "__doc__": {
+      "subject": "sample",
+      "content": "sample",
+      "createdAt": {
+        "_seconds": 1752852845,
+        "_nanoseconds": 338000000
+      },
+      "readStatus": {
+        "189": false,
+        "238": false,
+        "246": false,
+        "002": false,
+        "024": false,
+        "023": false,
+        "047": true
       }
     }
   }
