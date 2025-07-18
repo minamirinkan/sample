@@ -13,7 +13,7 @@ import TeacherRegistrationForm from '../components/TeacherRegistrationForm/Teach
 import TuitionRegistrationForm from '../components/TuitionRegistrationTabs.jsx';
 import TeacherFeeRegistration from '../components/AdminRegistrationForm/TeacherFeeRegistration.jsx';
 import HolidayPage from './HolidayPage.tsx';
-import ToDoContent from '../components/ToDoContent.tsx';
+import ToDoContent from '../components/ToDoContent/ToDoContent.tsx';
 
 const SuperAdminDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('welcome');
@@ -58,12 +58,7 @@ const SuperAdminDashboard = () => {
             case 'todo':
                 return <ToDoContent logs={logs} />;
             default:
-                return (
-                    <>
-                        <h5>ようこそ、管理者様</h5>
-                        <p>左側のメニューから操作を選択してください。</p>
-                    </>
-                );
+                return <ToDoContent logs={logs} />;
         }
     };
 
