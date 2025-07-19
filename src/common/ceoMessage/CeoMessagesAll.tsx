@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../../firebase.js";
-import { useAuth } from '../../../contexts/AuthContext.tsx';
-import { Message } from '../ToDo/components/types.ts';
-import SimpleCard from '../../ToDoContent/SimpleCard.tsx';
-import MessageDetailModal from '../data/MessageDetailModal.tsx';
+import { db } from '../../firebase';
+import { useAuth } from '../../contexts/AuthContext';
+import { Message } from '../ToDo/components/types';
+import SimpleCard from '../ToDo/ToDoContent/SimpleCard';
+import MessageDetailModal from '../ToDo/components/MessageDetailModal';
 
 const CeoMessagesAll: React.FC = () => {
     const { user, classroomCode, role } = useAuth();

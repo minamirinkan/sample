@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from './Modal.tsx';
+import Modal from './Modal';
 
 type NewContactModalProps = {
     isOpen: boolean;

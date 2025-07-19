@@ -1,5 +1,7 @@
 ├─ .DS_Store
 ├─ .gitignore
+├─ .vscode/
+│  └─ settings.json
 ├─ README.md
 ├─ dump-project-structure.js
 ├─ dumpFirestoreStructure.js
@@ -19,192 +21,230 @@
 │  ├─ App.css
 │  ├─ App.test.js
 │  ├─ App.tsx
-│  ├─ api/
-│  │  ├─ fetchHolidays.ts
-│  │  ├─ fetchSchoolClosures.ts
-│  │  └─ saveClosures.ts
-│  ├─ assets/
-│  │  └─ fonts/
-│  │     └─ NotoSansJP-Regular.ttf
-│  ├─ components/
-│  │  ├─ ActionButtons.js
+│  ├─ Superadmin/
 │  │  ├─ AdminRegistrationForm/
-│  │  │  ├─ ExistingLocationsList.jsx
-│  │  │  ├─ ExistingPeriodTimeList.jsx
-│  │  │  ├─ ExistingTeacherFeeLocationsList.jsx
-│  │  │  ├─ PeriodTimeForm.jsx
-│  │  │  ├─ SchoolAccountAdmin.jsx
-│  │  │  ├─ SchoolAccountForm.jsx
-│  │  │  ├─ SchoolAccountFormFee.jsx
-│  │  │  ├─ TeacherFeeRegistration.jsx
-│  │  │  └─ TuitionDetails.jsx
-│  │  ├─ AdminSidebar.jsx
-│  │  ├─ Breadcrumb.js
-│  │  ├─ CalendarPopup.jsx
-│  │  ├─ CeoMessagesAll.tsx
-│  │  ├─ ConfirmAttendanceModal.jsx
-│  │  ├─ ConfirmOverwriteModal.js
-│  │  ├─ ContentArea.js
-│  │  ├─ CustomerCalendar.jsx
-│  │  ├─ CustomerSidebar.jsx
-│  │  ├─ EventModal.jsx
-│  │  ├─ FullYearCalendar.tsx
-│  │  ├─ GuardianInfoSection.js
-│  │  ├─ HolidayMonthCard.tsx
-│  │  ├─ InfoRow.js
-│  │  ├─ PDFButton.jsx
-│  │  ├─ PaginationControls.jsx
-│  │  ├─ ProtectedRoute.jsx
-│  │  ├─ SchoolAccountList.jsx
-│  │  ├─ SelectableStudentList.jsx
-│  │  ├─ StudentChip.jsx
-│  │  ├─ StudentCourseTable.jsx
-│  │  ├─ StudentDetail.js
-│  │  ├─ StudentInfoSection.js
-│  │  ├─ StudentList.jsx
-│  │  ├─ StudentRegistrationForm/
-│  │  │  ├─ AddressInfoSection.jsx
-│  │  │  ├─ BasicInfoSection.jsx
-│  │  │  ├─ CourseInfoSection.jsx
-│  │  │  ├─ GuardianInfoSection.jsx
-│  │  │  ├─ InternalInfoSection.jsx
-│  │  │  ├─ SchoolInfoSection.jsx
-│  │  │  ├─ StudentRegistrationForm.jsx
-│  │  │  ├─ SubjectSelect.jsx
-│  │  │  ├─ studentCodeGenerator.js
-│  │  │  └─ subjectOptions.js
-│  │  ├─ StudentRow.jsx
-│  │  ├─ StudentSearchForm.js
-│  │  ├─ StudentTable.js
-│  │  ├─ StudentTableHeader.js
-│  │  ├─ SuperAdminHeader.js
-│  │  ├─ SuperAdminSidebar.js
-│  │  ├─ SuperAdminStudents.js
-│  │  ├─ SuperAdminTeachers.js
-│  │  ├─ TeacherCalendar.jsx
-│  │  ├─ TeacherDetail.js
-│  │  ├─ TeacherInfoSection.js
-│  │  ├─ TeacherList.jsx
-│  │  ├─ TeacherRegistrationForm/
-│  │  │  ├─ BasicInfoSection.jsx
-│  │  │  ├─ ContactInfoSection.jsx
-│  │  │  ├─ EmploymentInfoSection.jsx
-│  │  │  ├─ TeacherRegistrationForm.jsx
-│  │  │  └─ teacherCodeGenerator.js
-│  │  ├─ TeacherRow.js
-│  │  ├─ TeacherSearchForm.js
-│  │  ├─ TeacherSidebar.jsx
-│  │  ├─ TeacherTable.js
-│  │  ├─ TeacherTableHeader.js
-│  │  ├─ TimetableCell.jsx
-│  │  ├─ TimetableControls.jsx
-│  │  ├─ TimetableCustomer.jsx
-│  │  ├─ TimetableRow.jsx
-│  │  ├─ TimetableRowCustomer.jsx
-│  │  ├─ TimetableTable.jsx
-│  │  ├─ ToDoContent/
-│  │  │  ├─ LogsTable.tsx
-│  │  │  ├─ SimpleCard.tsx
-│  │  │  ├─ ToDoContent.tsx
-│  │  │  ├─ UnreadMessages.tsx
-│  │  │  └─ types.ts
-│  │  ├─ ToastProvider.jsx
+│  │  ├─ Dashboard/
+│  │  │  ├─ SuperAdminDashboard.tsx
+│  │  │  └─ components/
+│  │  │     ├─ SuperAdminHeader.js
+│  │  │     └─ SuperAdminSidebar.js
+│  │  ├─ ExistingLocationsList.jsx
+│  │  ├─ ExistingPeriodTimeList.jsx
+│  │  ├─ ExistingTeacherFeeLocationsList.jsx
+│  │  ├─ PeriodTimeForm.jsx
+│  │  ├─ SchoolAccountAdmin.jsx
+│  │  ├─ SchoolAccountForm.jsx
+│  │  ├─ SchoolAccountFormFee.jsx
+│  │  ├─ TeacherFeeRegistration.jsx
+│  │  ├─ TuitionDetails.jsx
 │  │  ├─ TuitionFormContent.jsx
 │  │  ├─ TuitionRegistrationTabs.jsx
 │  │  ├─ TuitionViewModal.jsx
-│  │  ├─ attendance/
-│  │  │  ├─ AttendanceSubTable.jsx
-│  │  │  ├─ AttendanceTabs.jsx
-│  │  │  ├─ MakeupAttendanceTable.jsx
-│  │  │  ├─ MonthlyAttendanceTable.jsx
-│  │  │  ├─ RegularLessonTable.jsx
-│  │  │  ├─ SeasonalLessonTable.jsx
-│  │  │  └─ StudentAttendanceTab.jsx
-│  │  ├─ toastStyles.css
-│  │  └─ ui/
-│  ├─ constants/
-│  │  └─ periods.js
+│  │  ├─ saveTeacherFees.js
+│  │  ├─ saveTuitionSettings.js
+│  │  └─ updateTuitionSettings.js
+│  ├─ admin/
+│  │  ├─ AdminDashboard.jsx
+│  │  └─ Dashboard/
+│  │     └─ components/
+│  │        └─ AdminSidebar.jsx
+│  ├─ common/
+│  │  ├─ PaginationControls.jsx
+│  │  ├─ ProtectedRoute.jsx
+│  │  ├─ Schedule/
+│  │  │  ├─ HolidayPage.tsx
+│  │  │  ├─ components/
+│  │  │  ├─ data/
+│  │  │  │  ├─ DeleteConfirmModal.tsx
+│  │  │  │  ├─ HolidayModal.tsx
+│  │  │  │  └─ TeacherModal.js
+│  │  │  ├─ fetchHolidays.ts
+│  │  │  ├─ fetchSchoolClosures.ts
+│  │  │  └─ saveClosures.ts
+│  │  ├─ Students/
+│  │  │  ├─ Detail/
+│  │  │  │  ├─ StudentDetail.js
+│  │  │  │  └─ Tabs/
+│  │  │  │     ├─ MakeupAttendanceTable.jsx
+│  │  │  │     ├─ StudentAttendanceTab.jsx
+│  │  │  │     ├─ StudentCourseTable.jsx
+│  │  │  │     └─ SubTabs/
+│  │  │  │        ├─ AttendanceSubTable.jsx
+│  │  │  │        ├─ AttendanceTabs.jsx
+│  │  │  │        ├─ MonthlyAttendanceTable.jsx
+│  │  │  │        ├─ RegularLessonTable.jsx
+│  │  │  │        └─ SeasonalLessonTable.jsx
+│  │  │  ├─ StudentRegistrationForm/
+│  │  │  │  ├─ StudentRegistrationForm.jsx
+│  │  │  │  ├─ components/
+│  │  │  │  │  ├─ AddressInfoSection.jsx
+│  │  │  │  │  ├─ BasicInfoSection.jsx
+│  │  │  │  │  ├─ CourseInfoSection.jsx
+│  │  │  │  │  ├─ GuardianInfoSection.js
+│  │  │  │  │  ├─ GuardianInfoSection.jsx
+│  │  │  │  │  ├─ InternalInfoSection.jsx
+│  │  │  │  │  ├─ SchoolInfoSection.jsx
+│  │  │  │  │  ├─ StudentInfoSection.js
+│  │  │  │  │  └─ SubjectSelect.jsx
+│  │  │  │  ├─ firebase/
+│  │  │  │  │  └─ studentCodeGenerator.js
+│  │  │  │  └─ subjectOptions.js
+│  │  │  ├─ SuperAdminStudents.js
+│  │  │  ├─ components/
+│  │  │  │  ├─ Breadcrumb.js
+│  │  │  │  ├─ InfoRow.js
+│  │  │  │  ├─ StudentRow.jsx
+│  │  │  │  ├─ StudentSearchForm.js
+│  │  │  │  ├─ StudentTable.js
+│  │  │  │  ├─ StudentTableHeader.js
+│  │  │  │  ├─ attendanceConverter.js
+│  │  │  │  └─ filterStudents.js
+│  │  │  └─ firebase/
+│  │  │     ├─ attendanceFirestore.js
+│  │  │     ├─ saveCustomerAndStudent.js
+│  │  │     └─ saveToWeeklySchedules.js
+│  │  ├─ StudentsSchedule/
+│  │  │  ├─ AdminStudentCalendar.jsx
+│  │  │  ├─ AdminStudentFeth.js
+│  │  │  ├─ ScheduleCalendarPage.jsx
+│  │  │  └─ components/
+│  │  ├─ Teachers/
+│  │  │  ├─ Detail/
+│  │  │  │  ├─ TeacherDetail.js
+│  │  │  │  └─ tabs/
+│  │  │  │     └─ TeacherInfoSection.js
+│  │  │  ├─ RegistrationForm/
+│  │  │  │  ├─ TeacherRegistrationForm.jsx
+│  │  │  │  ├─ components/
+│  │  │  │  │  ├─ BasicInfoSection.jsx
+│  │  │  │  │  ├─ ContactInfoSection.jsx
+│  │  │  │  │  ├─ EmploymentInfoSection.jsx
+│  │  │  │  │  └─ teacherCodeGenerator.js
+│  │  │  │  └─ firebase/
+│  │  │  │     └─ saveTeacher.js
+│  │  │  ├─ SuperAdminTeachers.js
+│  │  │  ├─ TeacherList.jsx
+│  │  │  ├─ components/
+│  │  │  │  ├─ TeacherRow.js
+│  │  │  │  ├─ TeacherSearchForm.js
+│  │  │  │  ├─ TeacherTable.js
+│  │  │  │  └─ TeacherTableHeader.js
+│  │  │  └─ utils/
+│  │  │     └─ filterTeachers.js
+│  │  ├─ Timetable/
+│  │  │  ├─ TimetableControls.jsx
+│  │  │  ├─ TimetablePage.jsx
+│  │  │  ├─ components/
+│  │  │  │  ├─ CalendarPopup.jsx
+│  │  │  │  ├─ StudentChip.jsx
+│  │  │  │  ├─ StudentList.jsx
+│  │  │  │  ├─ TimetableCell.jsx
+│  │  │  │  ├─ TimetableRow.jsx
+│  │  │  │  └─ TimetableTable.jsx
+│  │  │  ├─ firebase/
+│  │  │  │  ├─ fetchTimetableData.js
+│  │  │  │  ├─ firestoreAttendanceUtils.js
+│  │  │  │  ├─ saveTimetableData.js
+│  │  │  │  └─ timetableFirestore.js
+│  │  │  ├─ fonts/
+│  │  │  │  └─ NotoSansJP-Regular.ttf
+│  │  │  ├─ pdf/
+│  │  │  │  ├─ TimetablePDF.jsx
+│  │  │  │  └─ components/
+│  │  │  │     └─ PDFButton.jsx
+│  │  │  └─ utils/
+│  │  │     ├─ flattenRows.js
+│  │  │     ├─ generateInitialTimetable.js
+│  │  │     ├─ index.js
+│  │  │     ├─ parseTimetableSnapshot.js
+│  │  │     └─ shortGrade.js
+│  │  ├─ ToDo/
+│  │  │  ├─ ToDoContent/
+│  │  │  │  └─ SimpleCard.tsx
+│  │  │  ├─ ToDoContent.tsx
+│  │  │  └─ components/
+│  │  │     ├─ LogsTable.tsx
+│  │  │     ├─ MessageDetailModal.tsx
+│  │  │     ├─ UnreadMessages.tsx
+│  │  │     └─ types.ts
+│  │  ├─ ToastProvider.jsx
+│  │  ├─ assets/
+│  │  ├─ ceoMessage/
+│  │  │  ├─ CeoMessagesAll.tsx
+│  │  │  └─ components/
+│  │  ├─ dateFormatter.js
+│  │  ├─ dateUtils.js
+│  │  ├─ modal/
+│  │  │  ├─ ConfirmAttendanceModal.jsx
+│  │  │  ├─ ConfirmOverwriteModal.js
+│  │  │  ├─ LessonModal.js
+│  │  │  ├─ Modal.tsx
+│  │  │  └─ NewContactModal.tsx
+│  │  ├─ periods.js
+│  │  ├─ styles/
+│  │  │  └─ fullcalendar-overrides.css
+│  │  └─ toastStyles.css
+│  ├─ components/
+│  │  ├─ ActionButtons.js
+│  │  ├─ EventModal.jsx
+│  │  ├─ FullYearCalendar.tsx
+│  │  ├─ HolidayMonthCard.tsx
+│  │  ├─ SchoolAccountList.jsx
+│  │  ├─ SelectableStudentList.jsx
+│  │  ├─ TimetableCustomer.jsx
+│  │  └─ TimetableRowCustomer.jsx
 │  ├─ contexts/
-│  │  └─ AuthContext.tsx
-│  ├─ data/
-│  │  ├─ DeleteConfirmModal.tsx
-│  │  ├─ HolidayModal.tsx
-│  │  ├─ LessonModal.js
-│  │  ├─ MessageDetailModal.tsx
-│  │  ├─ Modal.tsx
-│  │  ├─ NewContactModal.tsx
-│  │  └─ TeacherModal.js
+│  │  ├─ AuthContext.tsx
+│  │  └─ hooks/
+│  │     ├─ useAttendanceEdit.js
+│  │     ├─ useAuth.js
+│  │     ├─ useFilteredStudents.js
+│  │     ├─ useLatestWeeklySchedule.js
+│  │     ├─ useMakeupLessons.js
+│  │     ├─ usePeriodLabels.js
+│  │     ├─ usePeriodLabelsByStudentId.js
+│  │     ├─ useStudentAttendance.js
+│  │     ├─ useStudents.js
+│  │     ├─ useTeachers.js
+│  │     └─ useWeeklySchedules.js
 │  ├─ firebase.js
-│  ├─ hooks/
-│  │  ├─ useAttendanceEdit.js
-│  │  ├─ useAuth.js
-│  │  ├─ useFilteredStudents.js
-│  │  ├─ useLatestWeeklySchedule.js
-│  │  ├─ useMakeupLessons.js
-│  │  ├─ usePeriodLabels.js
-│  │  ├─ usePeriodLabelsByStudentId.js
-│  │  ├─ useStudentAttendance.js
-│  │  ├─ useStudents.js
-│  │  ├─ useTeachers.js
-│  │  └─ useWeeklySchedules.js
+│  ├─ guardian/
+│  │  ├─ Dashboard/
+│  │  │  ├─ CustomerDashboard.jsx
+│  │  │  └─ components/
+│  │  │     └─ CustomerSidebar.jsx
+│  │  └─ timetable/
+│  │     ├─ CustomerCalendar.jsx
+│  │     ├─ TimetableCustomerPage.jsx
+│  │     └─ firebase/
+│  │        └─ EventFetcher.js
 │  ├─ index.css
 │  ├─ index.tsx
 │  ├─ logo.svg
 │  ├─ pages/
-│  │  ├─ AdminDashboard.jsx
 │  │  ├─ AdminLogin.js
-│  │  ├─ AdminStudentCalendar.jsx
 │  │  ├─ ChangePassword.jsx
 │  │  ├─ CustomerDashboard.jsx
 │  │  ├─ CustomerLogin.js
 │  │  ├─ CustomerSignup.js
 │  │  ├─ DevLoginSelector.jsx
-│  │  ├─ HolidayPage.tsx
-│  │  ├─ ScheduleCalendarPage.jsx
 │  │  ├─ Signup.js
 │  │  ├─ StudentLogin.js
-│  │  ├─ SuperAdminDashboard.tsx
-│  │  ├─ SuperAdminLogin.js
-│  │  ├─ TeacherChangePassword.jsx
-│  │  ├─ TeacherDashboard.jsx
-│  │  ├─ TeacherLogin.js
-│  │  ├─ TimetableCustomerPage.jsx
-│  │  ├─ TimetablePage.jsx
-│  │  └─ TimetableTeacherPage.jsx
-│  ├─ pdf/
-│  │  └─ TimetablePDF.jsx
+│  │  └─ SuperAdminLogin.js
 │  ├─ reportWebVitals.js
-│  ├─ services/
-│  │  ├─ apiService.js
-│  │  └─ authService.js
 │  ├─ setupTests.js
-│  ├─ styles/
-│  │  └─ fullcalendar-overrides.css
-│  └─ utils/
-│     ├─ attendanceConverter.js
-│     ├─ dateFormatter.js
-│     ├─ dateUtils.js
-│     ├─ filterStudents.js
-│     ├─ filterTeachers.js
-│     ├─ firebase/
-│     │  ├─ AdminStudentFeth.js
-│     │  ├─ EventFetcher.js
-│     │  ├─ Teacherfether.js
-│     │  ├─ attendanceFirestore.js
-│     │  ├─ saveCustomerAndStudent.js
-│     │  ├─ saveTeacher.js
-│     │  ├─ saveTeacherFees.js
-│     │  ├─ saveToWeeklySchedules.js
-│     │  ├─ saveTuitionSettings.js
-│     │  ├─ timetableFirestore.js
-│     │  └─ updateTuitionSettings.js
-│     ├─ firestoreAttendanceUtils.js
-│     ├─ generateInitialTimetable.js
-│     ├─ shortGrade.js
-│     └─ timetable/
-│        ├─ fetchTimetableData.js
-│        ├─ flattenRows.js
-│        ├─ index.js
-│        ├─ parseTimetableSnapshot.js
-│        └─ saveTimetableData.js
-└─ tailwind.config.js
+│  └─ teacher/
+│     ├─ Dashboard/
+│     │  ├─ TeacherDashboard.jsx
+│     │  └─ components/
+│     │     └─ TeacherSidebar.jsx
+│     ├─ TeacherChangePassword.jsx
+│     ├─ TeacherLogin.js
+│     └─ Timetable/
+│        ├─ TimetableTeacherPage.jsx
+│        ├─ components/
+│        │  └─ TeacherCalendar.jsx
+│        └─ firebase/
+│           └─ Teacherfether.js
+├─ tailwind.config.js
+└─ tsconfig.json
