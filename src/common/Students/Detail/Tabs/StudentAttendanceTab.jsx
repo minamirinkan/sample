@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import MakeupAttendanceTable from './MakeupAttendanceTable';
+import MakeupAttendanceTable from '../MakeupAttendanceTable';
 import AttendanceTabs from './AttendanceTabs';
 
 const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
