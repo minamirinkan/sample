@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import SimpleCard from "./ToDoContent/SimpleCard";
-import UnreadMessages from "./components/UnreadMessages.tsx";
-import LogsTable from "./components/LogsTable.tsx";
-import { Message, Log } from "./components/types.ts";
-import NewContactModal from "../modal/NewContactModal.tsx";
-import MessageDetailModal from "./components/MessageDetailModal.tsx";
+import UnreadMessages from "../../common/ToDo/components/UnreadMessages";
+import LogsTable from "../../common/ToDo/components/LogsTable";
+import { Message, Log } from "../../common/ToDo/components/types";
+import NewContactModal from "..//../common/modal/NewContactModal";
+import MessageDetailModal from "./../../common/ToDo/components/MessageDetailModal";
 import {
   collection,
   addDoc,
@@ -16,7 +16,7 @@ import {
 import { db } from "../../firebase.js";
 import { showErrorToast } from "..//ToastProvider";
 import { toast } from "react-toastify";
-import { useAuth } from "../../contexts/AuthContext.tsx";
+import { useAuth } from "../../contexts/AuthContext";
 
 type Props = {
   logs: Log[];

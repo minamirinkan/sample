@@ -5,7 +5,6 @@ import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';
 import {useStudentAttendance} from '../../../../../contexts/hooks/useStudentAttendance';
 import {useAttendanceEdit} from '../../../../../contexts/hooks/useAttendanceEdit';
 
-
 const MonthlyAttendanceTable = ({ classroomCode, studentId, studentName, selectedMonth }) => {
     const { teachers } = useTeachers();
     const { periodLabels } = usePeriodLabels(classroomCode);
