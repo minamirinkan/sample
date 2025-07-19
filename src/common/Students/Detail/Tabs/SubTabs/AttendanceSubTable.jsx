@@ -1,7 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { formatDate } from '../../utils/dateFormatter';
+import { formatDate } from '../../../../dateFormatter';
 
 const statusOptions = ['予定', '未定', '振替', '欠席', '出席'];
 const weekdayOptions = ['日', '月', '火', '水', '木', '金', '土'];

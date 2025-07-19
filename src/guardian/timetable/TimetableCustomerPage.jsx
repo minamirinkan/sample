@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import CustomerCalendar from '../guardian/timetable/CustomerCalendar';
+import CustomerCalendar from './/CustomerCalendar';
 
 export default function TimetableCustomerPage() {
   const today = new Date();

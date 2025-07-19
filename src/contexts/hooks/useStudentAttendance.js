@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
-import { getJapaneseDayOfWeek } from '../utils/dateFormatter';
+import { getJapaneseDayOfWeek } from '../../common/dateFormatter';
 import { fetchPeriodLabels } from './usePeriodLabels';
 import { getLatestExistingWeeklySchedule } from './useWeeklySchedules';
 

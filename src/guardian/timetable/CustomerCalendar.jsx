@@ -4,8 +4,8 @@ import { useAuth } from '../../contexts/AuthContext.tsx';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import LessonModal from '../../data/LessonModal.js';
-import '../../styles/fullcalendar-overrides.css';
+import LessonModal from '../../common/modal/LessonModal.js';
+import '../../common/styles/fullcalendar-overrides.css';
 import { fetchCustomerEvents } from './firebase/EventFetcher.js';
 
 export default function CustomerCalendar() {
