@@ -8,8 +8,8 @@ import StudentRegistrationForm from '../common/Students/StudentRegistrationForm/
 import TeacherRegistrationForm from '../common/Teachers/RegistrationForm/TeacherRegistrationForm';
 import ScheduleCalendarPage from '../common/StudentsSchedule/ScheduleCalendarPage';
 import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalendar';
-import HolidayPage from './HolidayPage.tsx';
-import ToDoContent from '../components/ToDoContent/ToDoContent.tsx';
+import HolidayPage from '../common/Schedule/HolidayPage.tsx';
+import ToDoContent from '../common/ToDo/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';

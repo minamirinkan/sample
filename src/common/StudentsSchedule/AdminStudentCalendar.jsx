@@ -1,12 +1,12 @@
 // src/pages/AdminStudentCalendar.jsx
 import { useEffect, useState, useRef } from 'react';
-import { useAuth } from '../contexts/AuthContext.tsx';
+import { useAuth } from '../../contexts/AuthContext.tsx';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import LessonModal from '../data/LessonModal';
-import { fetchCustomerEvents } from '../utils/firebase/AdminStudentFeth';
-import SelectableStudentList from '../components/SelectableStudentList';
+import LessonModal from '../modal/LessonModal';
+import { fetchCustomerEvents } from './AdminStudentFeth';
+import SelectableStudentList from '../../components/SelectableStudentList';
 
 export default function AdminStudentCalendar() {
   const { user, loading } = useAuth();
