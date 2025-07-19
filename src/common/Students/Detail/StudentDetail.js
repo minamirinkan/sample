@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import StudentInfoSection from './StudentInfoSection';
-import GuardianInfoSection from './GuardianInfoSection';
+import StudentInfoSection from '../StudentRegistrationForm/components/StudentInfoSection';
+import GuardianInfoSection from '../StudentRegistrationForm/components/GuardianInfoSection';
 import ActionButtons from './ActionButtons';
 import StudentAttendanceTab from '../attendance/StudentAttendanceTab.jsx'
-import StudentCourseTable from './StudentCourseTable.jsx';
+import StudentCourseTable from './Tabs/StudentCourseTable.jsx';
 
 const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報'];
 

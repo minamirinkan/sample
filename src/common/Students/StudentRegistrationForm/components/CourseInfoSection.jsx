@@ -1,5 +1,5 @@
 import React from 'react';
-import SUBJECT_OPTIONS from './subjectOptions';
+import SUBJECT_OPTIONS from '../subjectOptions';
 
 const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel }) => {
     const subjects = SUBJECT_OPTIONS[schoolLevel] ? [...SUBJECT_OPTIONS[schoolLevel], 'その他'] : [];
