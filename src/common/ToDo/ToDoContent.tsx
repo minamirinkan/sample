@@ -3,8 +3,8 @@ import SimpleCard from "./ToDoContent/SimpleCard";
 import UnreadMessages from "./components/UnreadMessages.tsx";
 import LogsTable from "./components/LogsTable.tsx";
 import { Message, Log } from "./components/types.ts";
-import NewContactModal from "../../data/NewContactModal.tsx";
-import MessageDetailModal from "../../data/MessageDetailModal.tsx";
+import NewContactModal from "../modal/NewContactModal.tsx";
+import MessageDetailModal from "./components/MessageDetailModal.tsx";
 import {
   collection,
   addDoc,
@@ -14,9 +14,9 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../../firebase.js";
-import { showErrorToast } from "../../components/ToastProvider";
+import { showErrorToast } from "..//ToastProvider";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../contexts/AuthContext.tsx";
+import { useAuth } from "../../contexts/AuthContext.tsx";
 
 type Props = {
   logs: Log[];
