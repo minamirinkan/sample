@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useAuth } from "../contexts/AuthContext.tsx";
-import HolidayMonthCard from "../components/HolidayMonthCard.tsx";
-import HolidayModal from "../data/HolidayModal.tsx";
-import DeleteConfirmModal from "../data/DeleteConfirmModal.tsx";
-import { fetchJapanHolidays } from "../api/fetchHolidays.ts";
-import { saveSchoolClosures, Closure } from "../api/saveClosures.ts";
-import { fetchSchoolClosures } from "../api/fetchSchoolClosures.ts";
-import FullYearCalendar from "../components/FullYearCalendar.tsx"; // パスは適宜調整
+import { useAuth } from "../../contexts/AuthContext.tsx";
+import HolidayMonthCard from "../../components/HolidayMonthCard.tsx";
+import HolidayModal from "../../common/Schedule/data/HolidayModal.tsx";
+import DeleteConfirmModal from "../../common/Schedule/data/DeleteConfirmModal.tsx";
+import { fetchJapanHolidays } from "../../common/Schedule/fetchHolidays.ts";
+import { saveSchoolClosures, Closure } from "../../common/Schedule/saveClosures.ts";
+import { fetchSchoolClosures } from "../../common/Schedule/fetchSchoolClosures.ts";
+import FullYearCalendar from "../../components/FullYearCalendar.tsx"; // パスは適宜調整
 
 type Holiday = { name: string; date: string; type: "holiday" | "customClose" };
 

@@ -1,5 +1,5 @@
 import { getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase"; // 事前に設定された firebase インスタンス
+import { db } from "../../firebase"; // 事前に設定された firebase インスタンス
 
 export type Closure = {
     date: string;
