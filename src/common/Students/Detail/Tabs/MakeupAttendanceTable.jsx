@@ -1,5 +1,5 @@
 import React from 'react';
-import AttendanceSubTable from './AttendanceSubTable';
+import AttendanceSubTable from './SubTabs/AttendanceSubTable';
 import { useTeachers } from '../../hooks/useTeachers';
 import usePeriodLabels from '../../hooks/usePeriodLabels';
 import useMakeupLessons from '../../hooks/useMakeupLessons';
