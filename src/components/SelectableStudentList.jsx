@@ -1,7 +1,7 @@
 // src/components/SelectableStudentList.jsx
 import { useState } from 'react';
-import useFilteredStudents from '../hooks/useFilteredStudents';
-import shortGrade from '../utils/shortGrade';
+import useFilteredStudents from '../contexts/hooks/useFilteredStudents';
+import shortGrade from '../common/timetable/utils/shortGrade';
 import { useAuth } from '../contexts/AuthContext.tsx';
 
 export default function SelectableStudentList({ onStudentSelect }) {
