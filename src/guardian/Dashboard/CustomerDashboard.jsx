@@ -1,5 +1,5 @@
 import SuperAdminHeader from '../components/SuperAdminHeader';
-import CustomerSidebar from '../guardian/Dashboard/components/CustomerSidebar';
+import CustomerSidebar from './components/CustomerSidebar';
 import { useState } from 'react';
 import TimetablePageC from './TimetableCustomerPage';
 

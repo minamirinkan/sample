@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
+import React from 'react';
 import SuperAdminLogin from './pages/SuperAdminLogin.js';
 import SuperAdminDashboard from "./pages/SuperAdminDashboard.tsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import CustomerDashboard from "./pages/CustomerDashboard.jsx";
-import TeacherDashboard from "./pages/TeacherDashboard.jsx";
+import TeacherDashboard from "./teacher/Dashboard/TeacherDashboard.jsx";
 import AdminLogin from './pages/AdminLogin.js';
 import TeacherLogin from './pages/TeacherLogin.js';
 import CustomerLogin from './pages/CustomerLogin.js';
