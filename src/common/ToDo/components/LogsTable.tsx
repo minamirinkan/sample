@@ -1,5 +1,5 @@
 import React from 'react';
-import { Log } from './types.ts';
+import { Log } from '../../../common/ToDo/components/types';
 
 type Props = {
     logs: Log[];
