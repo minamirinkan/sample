@@ -1,85 +1,92 @@
 {
-   "compilerOptions": {
-      // --- 基本的な設定 ---
-      /**
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@admin/": ["src/admin/*"],
+      "@common/*": ["src/common/*"],
+      "@components/*": ["src/components/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@guardian/*": ["src/guardian/*"],
+      "@pages/*": ["src/pages/*"],
+      "@superadmin/*": ["src/Superadmin/*"],
+      "@teacher/*": ["src/teacher/*"]
+    },
+    // --- 基本的な設定 ---
+    /**
      * "target": "ESNext"
      * コンパイル後のJavaScriptのバージョンを指定します。
      * "ESNext"は、常に最新のECMAScript仕様に追従することを意味します。
      * これにより、async/awaitなどの新しい構文をそのまま利用できます。
      * 古いブラウザ対応が必要な場合は "ES2016" などに変更します。
      */
-      "target": "ESNext",
-      /**
+    "target": "ESNext",
+    /**
      * "lib": ["DOM", "DOM.Iterable", "ESNext"]
      * コンパイル時に参照する「型定義ライブラリ」を指定します。
      * "DOM": documentやwindowなど、ブラウザ環境の型を扱えるようにします。
      * "DOM.Iterable": for...ofループなどでDOM要素を扱えるようにします。
      * "ESNext": 最新のJavaScript機能（Promise, Map, Setなど）の型を扱えるようにします。
      */
-      "lib": [
-         "DOM",
-         "DOM.Iterable",
-         "ESNext"
-      ],
-      /**
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    /**
      * "allowJs": true
      * プロジェクト内で.jsファイルを許可するかどうか。
      * trueにすることで、TypeScriptプロジェクトにJavaScriptファイルを混在させることができます。
      * JSからTSへの段階的な移行時に特に重要です。
      */
-      "allowJs": true,
-      // --- モジュール関連の設定 ---
-      /**
+    "allowJs": true,
+    // --- モジュール関連の設定 ---
+    /**
      * "module": "ESNext"
      * 生成するJavaScriptがどのモジュールシステム（import/exportの方式）を使うかを指定します。
      * "ESNext"は、ES Modules形式（最新の標準的な書き方）を利用します。
      * ViteやWebpackなどのモダンなバンドラと相性が良い設定です。
      */
-      "module": "ESNext",
-      /**
+    "module": "ESNext",
+    /**
      * "moduleResolution": "bundler"
      * モジュールのインポートパスをどのように解決（探索）するかを指定します。
      * "bundler"は、ViteやWebpackなどのモダンなツールと同じ解決方法を使う最新の設定です。
      * "node"も一般的ですが、新しいプロジェクトでは"bundler"が推奨されます。
      */
-      "moduleResolution": "bundler",
-      /**
+    "moduleResolution": "bundler",
+    /**
      * "resolveJsonModule": true
      * .jsonファイルをモジュールとして直接importできるようにします。
      * 例: import config from './config.json';
      */
-      "resolveJsonModule": true,
-      /**
+    "resolveJsonModule": true,
+    /**
      * "isolatedModules": true
      * 各ファイルを独立したモジュールとして変換することを保証します。
      * ViteやBabelなどのツールはファイルを1つずつ変換するため、この設定を有効にすると、
      * それらのツールと互換性のない書き方をTypeScriptが事前にエラーとして教えてくれます。
      */
-      "isolatedModules": true,
-      // --- JSX（Reactなど）関連の設定 ---
-      /**
+    "isolatedModules": true,
+    // --- JSX（Reactなど）関連の設定 ---
+    /**
      * "jsx": "react-jsx"
      * .tsxファイル内のJSX構文をどのようにコンパイルするかを指定します。
      * "react-jsx"は、React 17以降で推奨される新しい変換方式です。
      * import React from 'react'; が不要になるなどのメリットがあります。
      * Reactを使わない場合はこの行を削除しても問題ありません。
      */
-      "jsx": "react-jsx",
-      // --- 出力と品質管理に関する設定 ---
-      /**
+    "jsx": "react-jsx",
+    // --- 出力と品質管理に関する設定 ---
+    /**
      * "outDir": "./dist"
      * コンパイル後の.jsファイルなど、生成物をどこに出力するかを指定します。
      * ソースコード（src）と生成物（dist）を分離することで、プロジェクト管理がクリーンになります。
      */
-      "outDir": "./dist",
-      /**
+    "outDir": "./dist",
+    /**
      * "noEmit": true
      * （もしバンドラがコンパイルを行う場合）TypeScriptコンパイラ自身は.jsファイルを出力しないようにします。
      * ViteやNext.jsなど、バンドラがTSのコンパイルも担当する場合にtrueにします。
      * tscコマンドで直接コンパイルする場合は、この行をコメントアウトまたは削除してください。
      */
-      // "noEmit": true,
-      /**
+    "noEmit": true,
+    /**
      * "strict": true
      * TypeScriptの厳格な型チェックをすべて有効にします。
      * nullやundefinedの扱いが厳しくなるなど、コードの品質と堅牢性を高めるために強く推奨されます。
@@ -88,22 +95,20 @@
      * - strictNullChecks: null/undefinedを厳密にチェックする
      * - etc...
      */
-      "strict": true,
-      /**
+    "strict": true,
+    /**
      * "esModuleInterop": true
      * CommonJS（require/exports）とES Modules（import/export）の間の互換性を向上させます。
      * CommonJS形式で書かれた古いライブラリを `import Lib from 'lib'` のように自然にインポートできるようになります。
      * ほぼすべてのプロジェクトで有効にすることが推奨されます。
      */
-      "esModuleInterop": true
-   },
-   /**
+    "esModuleInterop": true
+  },
+  /**
    * "include": ["src"]
    * コンパイルの対象に含めるファイルやフォルダを指定します。
    * ここでは "src" フォルダ配下のすべてのファイル（.ts, .tsx, .js）を対象にしています。
    * テストファイルなど、対象外にしたいものは "exclude" で指定することもできます。
    */
-   "include": [
-      "src"
-   ]
+  "include": ["src"]
 }
