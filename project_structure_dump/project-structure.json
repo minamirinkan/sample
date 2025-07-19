@@ -160,7 +160,38 @@
           "filterTeachers.js": "file"
         }
       },
-      "Timetable": {
+      "ToDo": {
+        "ToDoContent": {
+          "SimpleCard.tsx": "file"
+        },
+        "ToDoContent.tsx": "file",
+        "components": {
+          "LogsTable.tsx": "file",
+          "MessageDetailModal.tsx": "file",
+          "UnreadMessages.tsx": "file",
+          "types.ts": "file"
+        }
+      },
+      "ToastProvider.jsx": "file",
+      "assets": {},
+      "ceoMessage": {
+        "CeoMessagesAll.tsx": "file",
+        "components": {}
+      },
+      "dateFormatter.js": "file",
+      "dateUtils.js": "file",
+      "modal": {
+        "ConfirmAttendanceModal.jsx": "file",
+        "ConfirmOverwriteModal.js": "file",
+        "LessonModal.js": "file",
+        "Modal.tsx": "file",
+        "NewContactModal.tsx": "file"
+      },
+      "periods.js": "file",
+      "styles": {
+        "fullcalendar-overrides.css": "file"
+      },
+      "timetable": {
         "TimetableControls.jsx": "file",
         "TimetablePage.jsx": "file",
         "components": {
@@ -193,37 +224,6 @@
           "parseTimetableSnapshot.js": "file",
           "shortGrade.js": "file"
         }
-      },
-      "ToDo": {
-        "ToDoContent": {
-          "SimpleCard.tsx": "file"
-        },
-        "ToDoContent.tsx": "file",
-        "components": {
-          "LogsTable.tsx": "file",
-          "MessageDetailModal.tsx": "file",
-          "UnreadMessages.tsx": "file",
-          "types.ts": "file"
-        }
-      },
-      "ToastProvider.jsx": "file",
-      "assets": {},
-      "ceoMessage": {
-        "CeoMessagesAll.tsx": "file",
-        "components": {}
-      },
-      "dateFormatter.js": "file",
-      "dateUtils.js": "file",
-      "modal": {
-        "ConfirmAttendanceModal.jsx": "file",
-        "ConfirmOverwriteModal.js": "file",
-        "LessonModal.js": "file",
-        "Modal.tsx": "file",
-        "NewContactModal.tsx": "file"
-      },
-      "periods.js": "file",
-      "styles": {
-        "fullcalendar-overrides.css": "file"
       },
       "toastStyles.css": "file"
     },

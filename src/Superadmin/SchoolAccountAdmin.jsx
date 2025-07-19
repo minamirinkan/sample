@@ -9,9 +9,9 @@ import {
     orderBy
 } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { db, auth } from '../../firebase';
+import { db, auth } from '../firebase';
 import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import SchoolAccountList from '../SchoolAccountList';
+import SchoolAccountList from './SchoolAccountList';
 import SchoolAccountForm from './SchoolAccountForm';
 
 const SchoolAccountAdmin = () => {

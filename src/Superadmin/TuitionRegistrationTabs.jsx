@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TuitionFormContent from './TuitionFormContent';
-import TeacherFeeRegistration from './AdminRegistrationForm/TeacherFeeRegistration';
+import TeacherFeeRegistration from './TeacherFeeRegistration';
 
 const TuitionRegistrationTabs = () => {
   const [activeTab, setActiveTab] = useState('tuition'); // 'tuition' or 'teacher'

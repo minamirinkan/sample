@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../firebase';
 import SchoolAccountFormFee from './SchoolAccountFormFee';
 import TeacherFeeRegistration from './TeacherFeeRegistration';
 import PeriodTimeForm from './PeriodTimeForm';
-import AddressInfoSection from '../StudentRegistrationForm/AddressInfoSection';
+import AddressInfoSection from '../common/Students/StudentRegistrationForm/components/AddressInfoSection';
 
 const SchoolAccountForm = ({ onAdd }) => {
     const [newName, setNewName] = useState('');

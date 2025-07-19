@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import ExistingLocationsList from './ExistingLocationsList';
 import TuitionDetails from './TuitionDetails';
-import { db } from '../../firebase';
+import { db } from '../firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { saveTuitionSettings } from '../../utils/firebase/saveTuitionSettings';
+import { saveTuitionSettings } from './saveTuitionSettings';
 
 const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'];
 
