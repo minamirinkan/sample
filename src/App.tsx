@@ -9,7 +9,7 @@ import AdminLogin from './pages/AdminLogin.js';
 import TeacherLogin from './teacher/TeacherLogin.js';
 import CustomerLogin from './pages/CustomerLogin.js';
 import StudentLogin from './pages/StudentLogin.js';
-import TimetablePage from './common/Timetable/TimetablePage.jsx';
+import TimetablePage from './common/timetable/TimetablePage.jsx';
 import CalendarPopup from './common/Timetable/components/CalendarPopup.jsx';
 import DevLoginSelector from './pages/DevLoginSelector.jsx';
 import ProtectedRoute from './common/ProtectedRoute.jsx';
