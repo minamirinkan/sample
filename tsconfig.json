@@ -2,14 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@admin/": ["admin/*"],
-      "@common/*": ["common/*"],
-      "@components/*": ["components/*"],
-      "@contexts/*": ["contexts/*"],
-      "@guardian/*": ["guardian/*"],
-      "@pages/*": ["pages/*"],
-      "@superadmin/*": ["Superadmin/*"],
-      "@teacher/*": ["teacher/*"]
+      "@admin/": ["src/admin/*"],
+      "@common/*": ["src/common/*"],
+      "@components/*": ["src/components/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@guardian/*": ["src/guardian/*"],
+      "@pages/*": ["src/pages/*"],
+      "@superadmin/*": ["src/Superadmin/*"],
+      "@teacher/*": ["src/teacher/*"]
     },
     // --- 基本的な設定 ---
     /**
