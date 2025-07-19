@@ -1,61 +1,69 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from 'firebase/auth';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth, db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import {
+    signInWithEmailAndPassword,
+    signOut,
+    setPersistence,
+    browserSessionPersistence,
+} from "firebase/auth";
 
 const SuperAdminLogin = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async () => {
         // 入力チェック（空欄チェック）
         if (!email || !password) {
-            alert('メールアドレスとパスワードを入力してください');
+            alert("メールアドレスとパスワードを入力してください");
             return;
         }
         setLoading(true);
         try {
             // 🔽 セッション持続期間を「ブラウザを閉じたらログアウト」に設定
             await setPersistence(auth, browserSessionPersistence);
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
             const user = userCredential.user;
 
             // Firestoreからユーザーのroleを取得
-            const userRef = doc(db, 'superadmins', user.uid);
+            const userRef = doc(db, "superadmins", user.uid);
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) {
-                alert('ユーザー情報が見つかりません');
+                alert("ユーザー情報が見つかりません");
                 await signOut(auth);
                 setLoading(false);
                 return;
             }
 
             const userData = userSnap.data();
-            if (userData.role !== 'superadmin') {
-                alert('このアカウントにはSuperAdminの権限がありません');
+            if (userData.role !== "superadmin") {
+                alert("このアカウントにはSuperAdminの権限がありません");
                 await signOut(auth);
                 setLoading(false);
                 return;
             }
 
-            alert('SuperAdminとしてログイン成功！');
-            navigate('/superadmin/dashboard'); // SuperAdmin専用ページへ遷移
-
+            alert("SuperAdminとしてログイン成功！");
+            navigate("/superadmin/dashboard"); // SuperAdmin専用ページへ遷移
         } catch (error) {
-            if (error.code === 'auth/user-not-found') {
-                alert('ユーザーが見つかりません');
-            } else if (error.code === 'auth/wrong-password') {
-                alert('パスワードが間違っています');
-            } else if (error.code === 'auth/invalid-email') {
-                alert('メールアドレスの形式が正しくありません');
-            } else if (error.code === 'auth/invalid-credential') {
-                alert('認証情報が無効です。再度お試しください。');
+            if (error.code === "auth/user-not-found") {
+                alert("ユーザーが見つかりません");
+            } else if (error.code === "auth/wrong-password") {
+                alert("パスワードが間違っています");
+            } else if (error.code === "auth/invalid-email") {
+                alert("メールアドレスの形式が正しくありません");
+            } else if (error.code === "auth/invalid-credential") {
+                alert("認証情報が無効です。再度お試しください。");
             } else {
-                alert('ログイン失敗: ' + error.message);
+                alert("ログイン失敗: " + error.message);
             }
         } finally {
             setLoading(false);
@@ -87,11 +95,11 @@ const SuperAdminLogin = () => {
                 />
                 <button
                     onClick={handleLogin}
-                    className={`w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-md transition ${loading ? 'opacity-50 cursor-not-allowed' : ''
+                    className={`w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-md transition ${loading ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                     disabled={loading}
                 >
-                    {loading ? 'ログイン中...' : 'ログイン'}
+                    {loading ? "ログイン中..." : "ログイン"}
                 </button>
             </div>
         </div>
