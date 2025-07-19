@@ -1,5 +1,5 @@
-import SuperAdminHeader from '../components/SuperAdminHeader';
-import AdminSidebar from '../components/AdminSidebar';
+import SuperAdminHeader from '../Superadmin/Dashboard/components/SuperAdminHeader';
+import AdminSidebar from './Dashboard/components/AdminSidebar';
 import SuperAdminStudents from '../components/SuperAdminStudents';
 import { useState, useEffect } from 'react';
 import SuperAdminTeachers from '../components/SuperAdminTeachers';
@@ -7,7 +7,7 @@ import TimetablePage from './TimetablePage';
 import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm'
 import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
 import ScheduleCalendarPage from './ScheduleCalendarPage';
-import AdminStudentCalendar from './AdminStudentCalendar';
+import AdminStudentCalendar from '../studentschedule/AdminStudentCalendar';
 import HolidayPage from './HolidayPage.tsx';
 import ToDoContent from '../components/ToDoContent/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";

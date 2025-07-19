@@ -1,5 +1,5 @@
 import React from 'react';
-import { Message } from './types.ts';
+import { Message } from '../../../common/ToDo/components/types';
 
 type Props = {
     messages: Message[];
