@@ -1,13 +1,14 @@
 // src/components/SuperAdminStudents.js
 import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext.tsx'; // ✅ 追加
+import { useAuth } from '../../contexts/AuthContext'; // ✅ 追加
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
-import StudentSearchForm from './StudentSearchForm';
-import Breadcrumb from './Breadcrumb';
-import StudentTable from './StudentTable';
-import { filterStudents } from '../utils/filterStudents';
-import StudentDetail from './StudentDetail';
+import { db } from '../../firebase.js';
+import StudentSearchForm from './components/StudentSearchForm.js';
+import Breadcrumb from './components/Breadcrumb';
+import StudentTable from '../../common/Students/components/StudentTable.js';
+import { filterStudents } from '../../common/Students/components/filterStudents.js';
+import StudentDetail from '../../common/Students/Detail/StudentDetail.js';
+
 
 const SuperAdminStudents = ({ onAddNewStudent }) => {
     const [searchTerm, setSearchTerm] = useState('');
