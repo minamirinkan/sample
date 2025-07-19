@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, addDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../../../../firebase';
 
 const defaultNewCourse = {
     startMonth: '',

@@ -1,7 +1,7 @@
 // src/components/StudentInfoSection.js
 import React from 'react';
 import InfoRow from '../../components/InfoRow';
-import { formatDate } from '../utils/dateFormatter';
+import { formatDate } from '../../../dateFormatter';
 
 const StudentInfoSection = ({ formData, isEditing, onChange }) => (
     <div className="space-y-4 w-1/2 pr-6">

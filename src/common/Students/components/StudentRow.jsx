@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
-import { formatDate } from '../utils/dateFormatter';
+import { formatDate } from '../../dateFormatter';
 
 const StudentRow = ({ student, isSelected, onSelect, onShowDetail }) => {
     console.log('student:', student);
