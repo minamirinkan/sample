@@ -5,7 +5,7 @@ import {
   getWeekdayIndex,
   getYearMonthKey,
   getPreviousYearMonth
-} from '../../../utils/dateUtils';
+} from '../../../common/dateUtils';
 
 function findLatestWeeklyDoc(selectedDate, classroomCode, cachedWeeklyDocs) {
   const weekdayIndex = getWeekdayIndex(selectedDate);

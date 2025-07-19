@@ -1,9 +1,10 @@
 import React from 'react';
 import AttendanceSubTable from './AttendanceSubTable';
-import { useTeachers } from '../../hooks/useTeachers';
-import usePeriodLabels from '../../hooks/usePeriodLabels';
-import { useStudentAttendance } from '../../hooks/useStudentAttendance';
-import { useAttendanceEdit } from '../../hooks/useAttendanceEdit';
+import {useTeachers} from '../../../../../contexts/hooks/useTeachers';
+import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';
+import {useStudentAttendance} from '../../../../../contexts/hooks/useStudentAttendance';
+import {useAttendanceEdit} from '../../../../../contexts/hooks/useAttendanceEdit';
+
 
 const MonthlyAttendanceTable = ({ classroomCode, studentId, studentName, selectedMonth }) => {
     const { teachers } = useTeachers();

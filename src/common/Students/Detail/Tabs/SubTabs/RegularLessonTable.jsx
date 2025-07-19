@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { db } from '../../firebase';
-import { fetchLatestWeeklySchedule } from '../../hooks/useLatestWeeklySchedule';
+import { db } from '../../../../../firebase';
+import { fetchLatestWeeklySchedule } from '../../../../../contexts/hooks/useLatestWeeklySchedule';
+
 
 // 0（＝日）から始まる曜日マップ
 const WEEKDAY_MAP = {

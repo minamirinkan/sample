@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { showErrorToast } from '../components/ToastProvider';
-import { db } from '../firebase';
+import { showErrorToast } from '../../common/ToastProvider';
+import { db } from '../../firebase';
 import {
     buildWeeklyDocId,
     getPeriodKey,
@@ -8,8 +8,8 @@ import {
     createScheduleFromWeeklyTemplate,
     saveScheduleDoc,
     saveMakeupLesson,
-} from '../utils/firebase/attendanceFirestore';
-import { buildDailyDocId } from '../utils/firebase/attendanceFirestore';
+} from '../../common/Students/firebase/attendanceFirestore';
+import { buildDailyDocId } from '../../common/Students/firebase/attendanceFirestore';
 import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 
 // 🔽 振替レッスン削除ユーティリティ
