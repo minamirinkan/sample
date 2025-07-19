@@ -1,19 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import HolidayMonthCard from "../../components/HolidayMonthCard";
-<<<<<<< HEAD
 import HolidayModal from "../Schedule/data/HolidayModal";
 import DeleteConfirmModal from "../Schedule/data/DeleteConfirmModal";
 import { fetchJapanHolidays } from "../Schedule/fetchHolidays";
 import { saveSchoolClosures, Closure } from "../Schedule/saveClosures";
 import { fetchSchoolClosures } from "../Schedule/fetchSchoolClosures";
-=======
-import HolidayModal from "./data/HolidayModal";
-import DeleteConfirmModal from "./data/DeleteConfirmModal";
-import { fetchJapanHolidays } from "./fetchHolidays";
-import { saveSchoolClosures, Closure } from "./saveClosures";
-import { fetchSchoolClosures } from "./fetchSchoolClosures";
->>>>>>> 74293f0b669966e0de7419a2589b41516d1b2763
 import FullYearCalendar from "../../components/FullYearCalendar"; // パスは適宜調整
 
 type Holiday = { name: string; date: string; type: "holiday" | "customClose" };
