@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../../utils/firebase/saveCustomerAndStudent';
 import { useAuth } from '../../contexts/AuthContext.tsx';
-import BasicInfoSection from './BasicInfoSection';
-import GuardianInfoSection from './GuardianInfoSection';
-import InternalInfoSection from './InternalInfoSection';
+import BasicInfoSection from './components/BasicInfoSection';
+import GuardianInfoSection from './components/GuardianInfoSection';
+import InternalInfoSection from './components/InternalInfoSection';
 import { generateStudentCode } from './studentCodeGenerator';
-import CourseInfoSection from './CourseInfoSection';
-import SchoolInfoSection from './SchoolInfoSection';
-import AddressInfoSection from './AddressInfoSection';
+import CourseInfoSection from './components/CourseInfoSection';
+import SchoolInfoSection from './components/SchoolInfoSection';
+import AddressInfoSection from './components/AddressInfoSection';
 
 const StudentRegistrationForm = ({ onCancel }) => {
     const { adminData } = useAuth();

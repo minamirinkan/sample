@@ -1,6 +1,6 @@
 // src/components/StudentInfoSection.js
 import React from 'react';
-import InfoRow from './InfoRow';
+import InfoRow from '../../components/InfoRow';
 import { formatDate } from '../utils/dateFormatter';
 
 const StudentInfoSection = ({ formData, isEditing, onChange }) => (
