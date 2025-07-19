@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
-import { useAuth } from '../contexts/AuthContext.tsx';
-import { Message } from './ToDoContent/types.ts';
-import SimpleCard from './ToDoContent/SimpleCard.tsx';
+import { db } from "../../../firebase.js";
+import { useAuth } from '../../../contexts/AuthContext.tsx';
+import { Message } from '../ToDo/components/types.ts';
+import SimpleCard from '../../ToDoContent/SimpleCard.tsx';
 import MessageDetailModal from '../data/MessageDetailModal.tsx';
 
 const CeoMessagesAll: React.FC = () => {
