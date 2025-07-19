@@ -1,15 +1,15 @@
 //pages/TimetablePage.jsx
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext.tsx';
-import TimetableTable from '../components/TimetableTable';
-import CalendarPopup from '../components/CalendarPopup';
-import { fetchTimetableData, saveTimetableData } from '../utils/firebase/timetableFirestore';
-import { confirmAttendanceStatus, fetchConfirmedAttendanceDatesFromDailySchedules } from '../utils/firestoreAttendanceUtils';
-import ConfirmAttendanceModal from '../components/ConfirmAttendanceModal';
-import { formatDateDisplay } from '../utils/dateUtils';
-import ConfirmOverwriteModal from "../components/ConfirmOverwriteModal";
-import PDFButton from '../components/PDFButton';
+import { useAuth } from '../../contexts/AuthContext.tsx';
+import TimetableTable from './components/TimetableTable';
+import CalendarPopup from './components/CalendarPopup';
+import { fetchTimetableData, saveTimetableData } from './firebase/timetableFirestore';
+import { confirmAttendanceStatus, fetchConfirmedAttendanceDatesFromDailySchedules } from './firebase/firestoreAttendanceUtils';
+import ConfirmAttendanceModal from '../modal/ConfirmAttendanceModal';
+import { formatDateDisplay } from '../dateUtils';
+import ConfirmOverwriteModal from '../modal/ConfirmOverwriteModal';
+import PDFButton from './pdf/components/PDFButton';
 
 export default function TimetablePage() {
   const { adminData } = useAuth();

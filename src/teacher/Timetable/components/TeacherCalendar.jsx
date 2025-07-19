@@ -3,8 +3,8 @@ import { useAuth } from '../../../contexts/AuthContext.tsx';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import LessonModal from '../../../data/TeacherModal.js'; // ※必要に応じて TeacherLessonModal に変更
-import '../../../styles/fullcalendar-overrides.css';
+import LessonModal from '../../../common/Schedule/data/TeacherModal.js'; // ※必要に応じて TeacherLessonModal に変更
+import '../../../common/styles/fullcalendar-overrides.css';
 import { fetchTeacherEvents } from '../firebase/Teacherfether.js'; // 教師用fetch関数
 
 export default function TeacherCalendar() {

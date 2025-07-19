@@ -1,7 +1,7 @@
 // src/components/TeacherDetail
 import React, { useState } from 'react';
 import TeacherInfoSection from './tabs/TeacherInfoSection';
-import ActionButtons from './ActionButtons';
+import ActionButtons from '../../../components/ActionButtons';
 
 const TABS = ['基本情報', '担当情報', 'スケジュール', '支払情報'];
 

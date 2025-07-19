@@ -1,4 +1,4 @@
-import SuperAdminHeader from '../../components/SuperAdminHeader';
+import SuperAdminHeader from '../../Superadmin/Dashboard/components/SuperAdminHeader';
 import TeacherSidebar from './components/TeacherSidebar';
 import { useState } from 'react';
 import TimetablePageC from '../Timetable/TimetableTeacherPage';

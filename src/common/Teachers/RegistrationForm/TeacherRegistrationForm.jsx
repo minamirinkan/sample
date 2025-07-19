@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { registerTeacher } from '../../utils/firebase/saveTeacher';
+import { registerTeacher } from './firebase/saveTeacher';
 import { useAuth } from '../../../contexts/AuthContext.tsx';
 import { getAuth } from 'firebase/auth';
 

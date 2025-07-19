@@ -1,5 +1,5 @@
 import { doc, getDoc, updateDoc, collection, getDocs} from 'firebase/firestore';
-import { db } from '../firebase'; // Firebase初期化ファイルなど
+import { db } from '../../../firebase'; // Firebase初期化ファイルなど
 
 export async function confirmAttendanceStatus(classroomCode, date) {
     console.log('🧪 classroomCode:', classroomCode);

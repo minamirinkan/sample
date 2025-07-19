@@ -1,7 +1,7 @@
 import { collection, query, where, onSnapshot, getDocs, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { db } from '../firebase';
-import shortGrade from '../utils/shortGrade';
+import { db } from '../../firebase';
+import shortGrade from '../../common/timetable/utils/shortGrade';
 
 const gradeOrder = [
     '小1', '小2', '小3', '小4', '小5', '小6',

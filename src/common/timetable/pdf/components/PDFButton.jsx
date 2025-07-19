@@ -9,8 +9,8 @@ import {
   Font,
   View
 } from '@react-pdf/renderer';
-import periods from '../constants/periods';
-import NotoSansJp from '../assets/fonts/NotoSansJP-Regular.ttf';
+import periods from '../../../periods';
+import NotoSansJp from '../../fonts/NotoSansJP-Regular.ttf';
 
 // フォント登録
 Font.register({

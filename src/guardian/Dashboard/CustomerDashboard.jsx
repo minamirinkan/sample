@@ -1,7 +1,7 @@
-import SuperAdminHeader from '../components/SuperAdminHeader';
+import SuperAdminHeader from '../../Superadmin/Dashboard/components/SuperAdminHeader'
 import CustomerSidebar from './components/CustomerSidebar';
 import { useState } from 'react';
-import TimetablePageC from './TimetableCustomerPage';
+import TimetablePageC from '../guardian/timetable/TimetableCustomerPage';
 
 const CustomerDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('timetable');

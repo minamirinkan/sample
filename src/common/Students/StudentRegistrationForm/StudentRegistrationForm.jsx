@@ -1,12 +1,12 @@
 // src/components/StudentRegistrationForm/StudentRegistrationForm.jsx
 import { useEffect, useState } from 'react';
 import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
-import { registerCustomerAndStudent } from '../../utils/firebase/saveCustomerAndStudent';
-import { useAuth } from '../../contexts/AuthContext.tsx';
+import { registerCustomerAndStudent } from '../firebase/saveCustomerAndStudent';
+import { useAuth } from '../../../contexts/AuthContext.tsx';
 import BasicInfoSection from './components/BasicInfoSection';
 import GuardianInfoSection from './components/GuardianInfoSection';
 import InternalInfoSection from './components/InternalInfoSection';
-import { generateStudentCode } from './studentCodeGenerator';
+import { generateStudentCode } from './firebase/studentCodeGenerator';
 import CourseInfoSection from './components/CourseInfoSection';
 import SchoolInfoSection from './components/SchoolInfoSection';
 import AddressInfoSection from './components/AddressInfoSection';
