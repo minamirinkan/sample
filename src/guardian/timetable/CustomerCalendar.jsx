@@ -1,26 +1,33 @@
+// src/components/CustomerCalendar.jsx
 import { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext.tsx';
+import { useAuth } from '../../contexts/AuthContext.tsx';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import LessonModal from '../data/TeacherModal'; // ※必要に応じて TeacherLessonModal に変更
-import '../styles/fullcalendar-overrides.css';
-import { fetchTeacherEvents } from '../utils/firebase/Teacherfether'; // 教師用fetch関数
+import LessonModal from '../../data/LessonModal.js';
+import '../../styles/fullcalendar-overrides.css';
+import { fetchCustomerEvents } from './firebase/EventFetcher.js';
 
-export default function TeacherCalendar() {
+export default function CustomerCalendar() {
   const { user, loading } = useAuth();
-  const [events, setEvents] = useState([]);
+  const [studentIds, setStudentIds] = useState([]);
   const [matchedLessons, setMatchedLessons] = useState([]);
+  const [events, setEvents] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState(null);
+  const [makeupCount, setMakeupCount] = useState(0);
 
   const fetchAndSetEvents = async (startDate, endDate) => {
     if (!user) return;
     try {
-      const { events, matchedLessons } = await fetchTeacherEvents(user, startDate, endDate);
-      setEvents(events);
+      const { studentIds, matchedLessons, events } = await fetchCustomerEvents(user, startDate, endDate);
+      setStudentIds(studentIds);
       setMatchedLessons(matchedLessons);
+      setEvents(events);
+
+      const count = matchedLessons.filter((lesson) => lesson.status === '振替').length;
+      setMakeupCount(count);
     } catch (err) {
-      console.error("❌ データ読み込みエラー:", err.message);
+      console.error("\u274C データ読み込みエラー:", err.message);
     }
   };
 
@@ -49,12 +56,13 @@ export default function TeacherCalendar() {
 
   return (
     <div className="p-6 sm:p-6 relative">
-      <h1 className="text-base sm:text-xl font-bold mb-4">📅 Teacher Calendar</h1>
+      <h1 className="text-base sm:text-xl font-bold mb-4">📅 Customer Calendar</h1>
 
       {loading && <p>AuthContext loading中...</p>}
 
       {!loading && user && (
         <>
+
           <h2 className="mt-4 font-semibold">カレンダー表示:</h2>
 
           <div className="relative w-full overflow-x-auto">
@@ -86,6 +94,10 @@ export default function TeacherCalendar() {
                 };
               }}
             />
+
+            <div className="absolute right-0 bottom-[-3rem] bg-green-100 text-green-700 px-3 py-1 rounded shadow text-sm sm:text-base">
+              振替回数: {makeupCount}
+            </div>
           </div>
 
           <LessonModal

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import TeacherCalendar from '../components/TeacherCalendar';
+import TeacherCalendar from './components/TeacherCalendar';
 
 export default function TimetableTeacherPage() {
   const today = new Date();

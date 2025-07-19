@@ -8,7 +8,7 @@ import {
     FaAngleLeft
 } from 'react-icons/fa';
 import { doc, getDoc } from 'firebase/firestore';
-import { db, auth } from '../firebase'; // authを直接使う
+import { db, auth } from '../../../firebase'; // authを直接使う
 import { onAuthStateChanged } from 'firebase/auth';
 
 const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
