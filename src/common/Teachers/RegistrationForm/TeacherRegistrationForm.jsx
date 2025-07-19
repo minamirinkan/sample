@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { registerTeacher } from '../../utils/firebase/saveTeacher';
-import { useAuth } from '../../contexts/AuthContext.tsx';
+import { useAuth } from '../../../contexts/AuthContext.tsx';
 import { getAuth } from 'firebase/auth';
 
-import { useGenerateTeacherCode } from './teacherCodeGenerator';
-import BasicInfoSection from './BasicInfoSection';
-import ContactInfoSection from './ContactInfoSection';
-import EmploymentInfoSection from './EmploymentInfoSection';
+import { useGenerateTeacherCode } from './components/teacherCodeGenerator.js';
+import BasicInfoSection from './components/BasicInfoSection.jsx';
+import ContactInfoSection from './components/ContactInfoSection.jsx';
+import EmploymentInfoSection from './components/EmploymentInfoSection.jsx';
 
 const TeacherRegistrationForm = ({ onCancel }) => {
     const { adminData } = useAuth();

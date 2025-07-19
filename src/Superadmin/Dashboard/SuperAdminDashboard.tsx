@@ -4,7 +4,7 @@ import SuperAdminSidebar from '../components/SuperAdminSidebar.js';
 import SuperAdminStudents from '../components/SuperAdminStudents.js';
 import { useState, useEffect } from 'react';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
-import { db } from "../../../firebase.js";
+import { db } from "../../firebase.js";
 import SuperAdminTeachers from '../components/SuperAdminTeachers.js';
 import TimetablePage from '../../TimetablePage.jsx';
 import SchoolAccountAdmin from '../components/AdminRegistrationForm/SchoolAccountAdmin.jsx';
