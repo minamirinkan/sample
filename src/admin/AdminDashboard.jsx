@@ -1,13 +1,13 @@
 import SuperAdminHeader from '../Superadmin/Dashboard/components/SuperAdminHeader';
 import AdminSidebar from './Dashboard/components/AdminSidebar';
-import SuperAdminStudents from '../components/SuperAdminStudents';
+import SuperAdminStudents from '../common/Students/SuperAdminStudents';
 import { useState, useEffect } from 'react';
-import SuperAdminTeachers from '../components/SuperAdminTeachers';
-import TimetablePage from './TimetablePage';
-import StudentRegistrationForm from '../components/StudentRegistrationForm/StudentRegistrationForm'
-import TeacherRegistrationForm from '../components/TeacherRegistrationForm/TeacherRegistrationForm';
-import ScheduleCalendarPage from './ScheduleCalendarPage';
-import AdminStudentCalendar from '../studentschedule/AdminStudentCalendar';
+import SuperAdminTeachers from '../common/Teachers/SuperAdminTeachers';
+import TimetablePage from '../common/timetable/TimetablePage';
+import StudentRegistrationForm from '../common/Students/StudentRegistrationForm/StudentRegistrationForm'
+import TeacherRegistrationForm from '../common/Teachers/RegistrationForm/TeacherRegistrationForm';
+import ScheduleCalendarPage from '../common/StudentsSchedule/ScheduleCalendarPage';
+import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalendar';
 import HolidayPage from './HolidayPage.tsx';
 import ToDoContent from '../components/ToDoContent/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
