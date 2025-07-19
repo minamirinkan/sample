@@ -40,6 +40,7 @@
       "SchoolAccountAdmin.jsx": "file",
       "SchoolAccountForm.jsx": "file",
       "SchoolAccountFormFee.jsx": "file",
+      "SchoolAccountList.jsx": "file",
       "TeacherFeeRegistration.jsx": "file",
       "TuitionDetails.jsx": "file",
       "TuitionFormContent.jsx": "file",
@@ -232,7 +233,6 @@
       "EventModal.jsx": "file",
       "FullYearCalendar.tsx": "file",
       "HolidayMonthCard.tsx": "file",
-      "SchoolAccountList.jsx": "file",
       "SelectableStudentList.jsx": "file",
       "TimetableCustomer.jsx": "file",
       "TimetableRowCustomer.jsx": "file"
@@ -275,7 +275,6 @@
     "pages": {
       "AdminLogin.js": "file",
       "ChangePassword.jsx": "file",
-      "CustomerDashboard.jsx": "file",
       "CustomerLogin.js": "file",
       "CustomerSignup.js": "file",
       "DevLoginSelector.jsx": "file",
