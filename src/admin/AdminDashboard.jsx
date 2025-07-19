@@ -12,7 +12,7 @@ import HolidayPage from './HolidayPage.tsx';
 import ToDoContent from '../components/ToDoContent/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
-import CeoMessagesAll from '../components/CeoMessagesAll.tsx';
+import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
 
 const AdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('welcome');

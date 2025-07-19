@@ -131,7 +131,32 @@
 │  │  │  │  └─ TeacherTableHeader.js
 │  │  │  └─ utils/
 │  │  │     └─ filterTeachers.js
-│  │  ├─ Timetable/
+│  │  ├─ ToDo/
+│  │  │  ├─ ToDoContent/
+│  │  │  │  └─ SimpleCard.tsx
+│  │  │  ├─ ToDoContent.tsx
+│  │  │  └─ components/
+│  │  │     ├─ LogsTable.tsx
+│  │  │     ├─ MessageDetailModal.tsx
+│  │  │     ├─ UnreadMessages.tsx
+│  │  │     └─ types.ts
+│  │  ├─ ToastProvider.jsx
+│  │  ├─ assets/
+│  │  ├─ ceoMessage/
+│  │  │  ├─ CeoMessagesAll.tsx
+│  │  │  └─ components/
+│  │  ├─ dateFormatter.js
+│  │  ├─ dateUtils.js
+│  │  ├─ modal/
+│  │  │  ├─ ConfirmAttendanceModal.jsx
+│  │  │  ├─ ConfirmOverwriteModal.js
+│  │  │  ├─ LessonModal.js
+│  │  │  ├─ Modal.tsx
+│  │  │  └─ NewContactModal.tsx
+│  │  ├─ periods.js
+│  │  ├─ styles/
+│  │  │  └─ fullcalendar-overrides.css
+│  │  ├─ timetable/
 │  │  │  ├─ TimetableControls.jsx
 │  │  │  ├─ TimetablePage.jsx
 │  │  │  ├─ components/
@@ -158,31 +183,6 @@
 │  │  │     ├─ index.js
 │  │  │     ├─ parseTimetableSnapshot.js
 │  │  │     └─ shortGrade.js
-│  │  ├─ ToDo/
-│  │  │  ├─ ToDoContent/
-│  │  │  │  └─ SimpleCard.tsx
-│  │  │  ├─ ToDoContent.tsx
-│  │  │  └─ components/
-│  │  │     ├─ LogsTable.tsx
-│  │  │     ├─ MessageDetailModal.tsx
-│  │  │     ├─ UnreadMessages.tsx
-│  │  │     └─ types.ts
-│  │  ├─ ToastProvider.jsx
-│  │  ├─ assets/
-│  │  ├─ ceoMessage/
-│  │  │  ├─ CeoMessagesAll.tsx
-│  │  │  └─ components/
-│  │  ├─ dateFormatter.js
-│  │  ├─ dateUtils.js
-│  │  ├─ modal/
-│  │  │  ├─ ConfirmAttendanceModal.jsx
-│  │  │  ├─ ConfirmOverwriteModal.js
-│  │  │  ├─ LessonModal.js
-│  │  │  ├─ Modal.tsx
-│  │  │  └─ NewContactModal.tsx
-│  │  ├─ periods.js
-│  │  ├─ styles/
-│  │  │  └─ fullcalendar-overrides.css
 │  │  └─ toastStyles.css
 │  ├─ components/
 │  │  ├─ ActionButtons.js

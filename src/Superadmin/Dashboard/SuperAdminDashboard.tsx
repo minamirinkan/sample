@@ -20,7 +20,7 @@ import TuitionRegistrationForm from "../TuitionRegistrationTabs.jsx";
 import TeacherFeeRegistration from "../TeacherFeeRegistration.jsx";
 import HolidayPage from "../../common/Schedule/HolidayPage";
 import ToDoContent from "../../common/ToDo/ToDoContent";
-import CeoMessagesAll from "../../common/ceoMessage/CeoMessagesAll.js";
+import CeoMessagesAll from "../../common/ceoMessage/CeoMessagesAll";
 
 const SuperAdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState("welcome");

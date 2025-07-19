@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { doc, setDoc,getDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../firebase';
 import ExistingPeriodTimeList from './ExistingPeriodTimeList';
 
 const periods = ['1限', '2限', '3限', '4限', '5限', '6限', '7限', '8限'];
