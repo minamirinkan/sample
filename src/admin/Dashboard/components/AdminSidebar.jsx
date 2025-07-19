@@ -12,8 +12,8 @@ import {
     FaAngleLeft
 } from 'react-icons/fa';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase'; // Firebase初期化済みファイル
-import { useAuth } from '../contexts/AuthContext.tsx'; // classroomCodeを取得できるAuthContext想定
+import { db } from '../../../firebase'; // Firebase初期化済みファイル
+import { useAuth } from '../../../contexts/AuthContext.tsx'; // classroomCodeを取得できるAuthContext想定
 
 const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
     const [isOpen, setIsOpen] = useState(false);
