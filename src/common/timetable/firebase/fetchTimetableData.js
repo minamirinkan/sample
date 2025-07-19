@@ -1,9 +1,9 @@
 // utils/timetable/fetchTimetableData.js
 
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { getDateKey, getWeekdayIndex } from '../dateUtils';
-import { parseTimetableSnapshot } from './parseTimetableSnapshot';
+import { db } from '../../../firebase';
+import { getDateKey, getWeekdayIndex } from '../../dateUtils';
+import { parseTimetableSnapshot } from '../utils/parseTimetableSnapshot';
 
 export async function fetchTimetableData(selectedDate, classroomCode) {
     const dateKey = getDateKey(selectedDate);

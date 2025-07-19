@@ -1,9 +1,9 @@
 // utils/timetable/saveTimetableData.js
 
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { getDateKey, getWeekdayIndex } from '../dateUtils';
-import { flattenRows } from './flattenRows';
+import { db } from '../../../firebase';
+import { getDateKey, getWeekdayIndex } from '../../dateUtils';
+import { flattenRows } from '../utils/flattenRows';
 
 export async function saveTimetableData(selectedDate, classroomCode, rows) {
     const isDate = selectedDate.type === 'date';
