@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import MakeupAttendanceTable from '../MakeupAttendanceTable';
-import AttendanceTabs from './AttendanceTabs';
+import MakeupAttendanceTable from './MakeupAttendanceTable';
+import AttendanceTabs from './SubTabs/AttendanceTabs';
 
 const StudentAttendanceTab = ({ classroomCode, studentId, studentName }) => {
     const today = new Date();

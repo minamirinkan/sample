@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext.tsx'; // ← これを使う
-import TeacherSearchForm from './TeacherSearchForm';
+import TeacherSearchForm from './components/TeacherSearchForm.js';
 import Breadcrumb from './Breadcrumb';
-import TeacherTable from './TeacherTable';
+import TeacherTable from './components/TeacherTable.js';
 import { filterTeachers } from '../utils/filterTeachers';
-import TeacherDetail from './TeacherDetail';
+import TeacherDetail from './Detail/TeacherDetail.js';
 
 const SuperAdminTeachers = ({ onAddNewTeacher }) => {
     const [searchTerm, setSearchTerm] = useState('');
