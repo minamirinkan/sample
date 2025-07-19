@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import EventModal from '../components/EventModal';
+import EventModal from '../../components/EventModal';
 
 const ScheduleCalendarPage = () => {
     const [activeTab, setActiveTab] = useState('company');

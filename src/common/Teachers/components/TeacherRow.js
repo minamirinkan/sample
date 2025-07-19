@@ -1,6 +1,6 @@
 // src/components/TeacherRow.js
 import { FaUserSlash } from 'react-icons/fa';
-import { formatDate } from '../utils/dateFormatter';
+import { formatDate } from '../../dateFormatter';
 
 const TeacherRow = ({ teacher, isSelected, onSelect, onShowDetail }) => (
     <tr className="hover:bg-gray-50 text-sm">

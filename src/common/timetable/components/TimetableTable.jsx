@@ -1,8 +1,8 @@
 //components/TimetableTable.jsx
 import TimetableRow from './TimetableRow';
 import StudentList from './StudentList';
-import periods from '../constants/periods';
-import { useTeachers } from '../hooks/useTeachers';
+import periods from '../../periods';
+import { useTeachers } from '../../../contexts/hooks/useTeachers';
 
 export default function TimetableTable({ rows, onChange }) {
   const { teachers } = useTeachers(); // ← フックから取得

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import TeacherTableHeader from './TeacherTableHeader';
 import TeacherRow from './TeacherRow';
-import Pagination from './PaginationControls';
+import Pagination from '../../PaginationControls';
 
 const TeacherTable = ({ teachers, onShowDetail }) => {
     const [currentPage, setCurrentPage] = useState(1);
