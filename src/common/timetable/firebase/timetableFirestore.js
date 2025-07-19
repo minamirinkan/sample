@@ -1,13 +1,13 @@
 // === Firestore の時間割取得・保存ユーティリティ ===
 
 import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../../firebase';
 import {
   getDateKey,
   getWeekdayIndex,
   getYearMonthKey,
   getPreviousYearMonth
-} from '../dateUtils';
+} from '../../dateUtils';
 
 function getWeeklyDocId(selectedDate, classroomCode) {
   const date = new Date(
