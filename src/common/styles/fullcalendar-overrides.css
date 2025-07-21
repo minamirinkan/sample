@@ -1,43 +1,49 @@
 .fc {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  .fc-view-harness,
-  .fc-scrollgrid {
-    width: 100% !important;
-  }
-  
-  .fc .fc-button {
-    font-size: 0.75rem !important;
-    padding: 0.25rem 0.5rem !important;
-  }
-  
-  .fc-event {
-    font-size: 0.7rem !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-  }
-  
-  /* イベントのテキストを1行に切り詰める */
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.fc-view-harness {
+  touch-action: pan-y;
+}
+
+.fc-scrollgrid {
+  width: 100% !important;
+}
+
+.fc .fc-button {
+  font-size: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+.fc-event {
+  font-size: 0.7rem !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+/* イベントのテキストを1行に切り詰める */
 .fc-event-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 0.75rem;
-    padding: 0 2px;
-  }
-  
-  /* 日付数字のスタイルを調整 */
-  .fc-daygrid-day-number {
-    font-size: 0.8rem;
-    font-weight: bold;
-    padding: 2px 4px;
-  }
-  
-  /* 高さ固定で overflow 対応したい場合（必要なら） */
-  .fc-daygrid-day-frame {
-    max-height: 80px;
-    overflow-y: auto;
-  }
-  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  padding: 0 2px;
+}
+
+/* 日付数字のスタイルを調整 */
+.fc-daygrid-day-number {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 2px 4px;
+}
+
+/* 高さ固定で overflow 対応したい場合（必要なら） */
+.fc-daygrid-day-frame {
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+#calendar-wrapper {
+  touch-action: pan-y;
+}
