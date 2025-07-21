@@ -79,8 +79,9 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
         date: d.getDate(),
         type: 'date'
       };
+
       const dateKey = getDateKey(selectedDate);
-      const docId = `${classroomCode}_${dateKey}`;
+      const docId = `${classroomCode}_${dateKey}_${getWeekdayIndex(selectedDate)}`;
       dateList.push(docId);
       dateMap[docId] = { dateKey, selectedDate };
     }
@@ -107,6 +108,7 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
             if (!ids.includes(student.studentId)) continue;
             const status = student.status || '';
             if (status === '未定') continue;
+
 
             const index = parseInt(periodKey.replace('period', '')) - 1;
             const periodLabel = periodLabels[index]?.label || periodKey;
@@ -198,22 +200,22 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
     for (const studentId of ids) {
       const prefix = studentId.slice(1, 4);
       if (prefix !== classroomCode) continue;
-    
+
       const archiveCollection = collection(db, 'students', studentId, 'makeupLessonsArchive');
       const archiveSnaps = await getDocs(archiveCollection);
-    
+
       for (const snap of archiveSnaps.docs) {
         const docId = snap.id;
         const [_, dateKey] = docId.split('_');
         const lessons = snap.data().lessons || [];
-    
+
         for (const lesson of lessons) {
           // 🔍 必須フィールドの抽出
           const index = lesson.period - 1;
           const periodLabel = periodLabels[index]?.label || `period${lesson.period}`;
           const time = periodLabels[index]?.time || '';
           const title = `${periodLabel} 振替済`;
-    
+
           result.matchedLessons.push({
             date: dateKey,
             periodLabel,
@@ -221,8 +223,8 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
             subject: lesson.subject,
             studentName: lesson.name,
             status: '振替済'
-          });
-    
+          });  
+
           result.events.push({
             title: `${periodLabel} 振替済`,
             start: dateKey,
@@ -236,8 +238,7 @@ export async function fetchCustomerEvents(user, startDate, endDate) {
               studentName: lesson.name,
               status: '振替済'
             }
-          });
-          
+          });        
         }
       }
     }
