@@ -1,40 +1,55 @@
-import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { Admin } from '../types/admin';
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebase";
+import { Admin } from "../types/admin";
+import { useAuth } from "../AuthContext"; // classroomCode と role を取得
 
 export function useAdmins() {
-    const [admins, setAdmins] = useState<Admin[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<unknown>(null);
+  const { classroomCode, role, loading: authLoading } = useAuth();
+  const [admins, setAdmins] = useState<Admin[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<unknown>(null);
 
-    useEffect(() => {
-        const fetchAdmins = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const snapshot = await getDocs(collection(db, 'admins'));
-                const list = snapshot.docs.map((doc) => {
-                    const data = doc.data();
-                    return {
-                        uid: data.uid,
-                        name: data.name,
-                        email: data.email,
-                        role: data.role,
-                        classroomCode: data.classroomCode,
-                        createdAt: data.createdAt,
-                        lastLogin: data.lastLogin,
-                    } as Admin;
-                });
-                setAdmins(list);
-            } catch (e) {
-                setError(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchAdmins();
-    }, []);
+  useEffect(() => {
+    const fetchAdmins = async () => {
+      if (authLoading) return;
 
-    return { admins, loading, error };
+      setLoading(true);
+      setError(null);
+
+      try {
+        const ref = collection(db, "admins");
+        const q =
+          role === "superadmin" || !classroomCode
+            ? ref
+            : query(ref, where("classroomCode", "==", classroomCode));
+
+        const snapshot = await getDocs(q);
+        const list = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            uid: data.uid,
+            name: data.name,
+            email: data.email,
+            role: data.role,
+            classroomCode: data.classroomCode,
+            createdAt: data.createdAt,
+            lastLogin: data.lastLogin,
+          } as Admin;
+        });
+
+        setAdmins(list);
+        console.log(`🛠 Admins for role="${role}" classroomCode="${classroomCode}"`, list);
+      } catch (e) {
+        console.error("❌ Failed to fetch admins:", e);
+        setError(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAdmins();
+  }, [role, classroomCode, authLoading]);
+
+  return { admins, loading, error };
 }

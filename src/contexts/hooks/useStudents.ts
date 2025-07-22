@@ -1,39 +1,43 @@
-import { Query, collection, query, where, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, where, Query, DocumentData } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Student } from "../types/student";
-import { useEffect, useState } from "react";
+import { useAuth } from "../AuthContext"; // ← classroomCodeとroleを取得
 
-export const useStudents = (classroomCode?: string, role?: string) => {
-    const [students, setStudents] = useState<Student[]>([]);
-    const [loading, setLoading] = useState(true);
+export const useStudents = () => {
+  const { classroomCode, role, loading: authLoading } = useAuth(); // ← 自動取得
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchStudents = async () => {
-            try {
-                const studentsRef = collection(db, "students");
-                let q: Query = studentsRef;
+  useEffect(() => {
+    const fetchStudents = async () => {
+      if (authLoading) return;
 
-                if (role !== "superadmin" && classroomCode) {
-                    q = query(studentsRef, where("classroomCode", "==", classroomCode));
-                }
-                // superadminは何もフィルターしないので、全件取得。
+      try {
+        const studentsRef = collection(db, "students");
+        let q: Query<DocumentData> = studentsRef;
 
-                const snapshot = await getDocs(q);
-                const data = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                })) as Student[];
+        if (role !== "superadmin" && classroomCode) {
+          q = query(studentsRef, where("classroomCode", "==", classroomCode));
+        }
 
-                setStudents(data);
-            } catch (err) {
-                console.error("Error fetching students:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Student[];
 
-        fetchStudents();
-    }, [classroomCode, role]); // roleが変わったら再取得
+        setStudents(data);
+        console.log(`👨‍🎓 Students for ${role} with classroomCode "${classroomCode}"`, data);
+      } catch (err) {
+        console.error("❌ Error fetching students:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return { students, loading };
+    fetchStudents();
+  }, [classroomCode, role, authLoading]);
+
+  return { students, loading };
 };
