@@ -21,6 +21,7 @@ import TeacherFeeRegistration from "../TeacherFeeRegistration.jsx";
 import HolidayPage from "../../common/Schedule/HolidayPage";
 import ToDoContent from "../../common/ToDo/ToDoContent";
 import CeoMessagesAll from "../../common/ceoMessage/CeoMessagesAll";
+import HookStatusPage from "../../pages/HookStatusPage";
 
 const SuperAdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState("welcome");
@@ -86,6 +87,8 @@ const SuperAdminDashboard = () => {
         return <ToDoContent logs={logs} />;
       case "notification":
         return <CeoMessagesAll />;
+      case "tasks":
+      return <HookStatusPage />;
       default:
         return <ToDoContent logs={logs} />;
     }
