@@ -13,6 +13,7 @@ import ToDoContent from '../common/ToDo/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
+import HookStatusPage from '../pages/HookStatusPage';
 
 const AdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('welcome');
@@ -110,7 +111,9 @@ const AdminDashboard = () => {
       case 'todo':
         return <ToDoContent logs={logs} />;
       case 'notification':
-                      return <CeoMessagesAll />;
+        return <CeoMessagesAll />;
+      case "tasks":
+        return <HookStatusPage />;
       default:
         return <ToDoContent logs={logs} />;
     }
