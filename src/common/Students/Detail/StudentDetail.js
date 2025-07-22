@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import StudentInfoSection from '../StudentRegistrationForm/components/StudentInfoSection';
-import GuardianInfoSection from '../StudentRegistrationForm/components/GuardianInfoSection';
+import StudentInfoSection from './StudentInfoSection';
+import GuardianInfoSection from './GuardianInfoSection';
 import ActionButtons from '../../../components/ActionButtons';
 import StudentAttendanceTab from '../../../common/Students/Detail/Tabs/StudentAttendanceTab'
 import StudentCourseTable from './Tabs/StudentCourseTable.jsx';

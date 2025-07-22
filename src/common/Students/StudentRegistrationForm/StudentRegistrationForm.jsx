@@ -1,10 +1,10 @@
 // src/components/StudentRegistrationForm/StudentRegistrationForm.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../firebase/saveCustomerAndStudent';
 import { useAuth } from '../../../contexts/AuthContext.tsx';
 import BasicInfoSection from './components/BasicInfoSection';
-import GuardianInfoSection from './components/GuardianInfoSection';
+import GuardianInfoSection from './components/GuardianInfoSection.jsx';
 import InternalInfoSection from './components/InternalInfoSection';
 import { generateStudentCode } from './firebase/studentCodeGenerator';
 import CourseInfoSection from './components/CourseInfoSection';
@@ -47,7 +47,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
         streetAddressKana: '',   // 番地等フリガナ
     };
 
-    const initialCourseFormData = {
+    const initialCourseFormData = useMemo(() => ({
         kind: '通常',         // コース種別（講習・通常など）
         subject: '',   // 科目など
         classType: '',  // スタイル（1:1、集団）
@@ -58,7 +58,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
         startYear: '',    // 年（←保存に必要）
         endYear: '',
         note: '',         // 備考
-    };
+    }), []);
 
     const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(true);
@@ -76,7 +76,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 setCourseFormData([]);
             }
         }
-    }, [lessonType]);
+    }, [lessonType, courseFormData.length, initialCourseFormData]);
 
     useEffect(() => {
         if (formData.schoolLevel) {

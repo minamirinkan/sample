@@ -3,7 +3,7 @@ import { db } from "../../firebase";
 import { Student } from "../types/student";
 import { useEffect, useState } from "react";
 
-export const useStudents = (classroomCode?: string) => {
+export const useStudents = (classroomCode?: string, role?: string) => {
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -11,11 +11,12 @@ export const useStudents = (classroomCode?: string) => {
         const fetchStudents = async () => {
             try {
                 const studentsRef = collection(db, "students");
-                let q: Query = studentsRef; // ← CollectionReference も Query のサブ型
+                let q: Query = studentsRef;
 
-                if (classroomCode) {
+                if (role !== "superadmin" && classroomCode) {
                     q = query(studentsRef, where("classroomCode", "==", classroomCode));
                 }
+                // superadminは何もフィルターしないので、全件取得。
 
                 const snapshot = await getDocs(q);
                 const data = snapshot.docs.map((doc) => ({
@@ -32,7 +33,7 @@ export const useStudents = (classroomCode?: string) => {
         };
 
         fetchStudents();
-    }, [classroomCode]);
+    }, [classroomCode, role]); // roleが変わったら再取得
 
     return { students, loading };
 };

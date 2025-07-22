@@ -1,6 +1,6 @@
 // src/components/GuardianInfoSection.js
 import React from 'react';
-import InfoRow from '../../components/InfoRow';
+import InfoRow from '../components/InfoRow';
 
 const GuardianInfoSection = ({ formData, isEditing, onChange }) => (
     <div className="space-y-4 w-1/2 pl-6">
