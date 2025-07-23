@@ -2,6 +2,7 @@ import SuperAdminHeader from '../../Superadmin/Dashboard/components/SuperAdminHe
 import CustomerSidebar from './components/CustomerSidebar';
 import { useState } from 'react';
 import TimetablePageC from '../timetable/TimetableCustomerPage';
+import HookStatusPage from '../../pages/HookStatusPage';
 
 const CustomerDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('timetable');
@@ -11,6 +12,8 @@ const CustomerDashboard = () => {
     switch (selectedContent) {
       case 'timetable':
         return <TimetablePageC />;
+      case 'tasks':
+        return <HookStatusPage />;
       default:
         return (
           <>
@@ -42,9 +45,8 @@ const CustomerDashboard = () => {
       <div className="flex flex-1 relative">
         {/* ✅ 重なるサイドバー */}
         <aside
-          className={`fixed top-0 left-0 z-40 h-full w-64 bg-white border-r border-gray-300 shadow-lg transition-transform duration-300 ease-in-out ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+          className={`fixed top-0 left-0 z-40 h-full w-64 bg-white border-r border-gray-300 shadow-lg transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
         >
           <CustomerSidebar onSelectMenu={(key) => {
             setSelectedContent(key);

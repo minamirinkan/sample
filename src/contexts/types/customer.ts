@@ -1,6 +1,7 @@
 export type Customer = {
   uid: string;
   email: string;
+  classroomCode: string;
   guardianFirstName: string;
   guardianLastName: string;
   guardianName: string;

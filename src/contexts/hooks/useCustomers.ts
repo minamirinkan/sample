@@ -1,65 +1,49 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Customer } from "../types/customer";
-import { useAuth } from "../AuthContext"; // ← classroomCode を取得するために追加
 
-export const useCustomersByClassroom = () => {
-  const { classroomCode, loading: authLoading } = useAuth(); // ← Context から取得
+export const useCustomers = (uid?: string) => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchCustomers = async () => {
-      if (!classroomCode) {
-        setCustomers([]);
-        setLoading(false);
-        return;
-      }
+      setLoading(true);
+      setError(null);
 
       try {
-        const customersRef = collection(db, "customers");
-        const snapshot = await getDocs(customersRef);
-
-        const result: Customer[] = [];
-
-        snapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-          const data = doc.data();
-
-          const studentIds: string[] = data.studentIds ?? [];
-
-          // studentId から "s024xxxx" → "024" を取り出して一致判定
-          const matches = studentIds.some((id) => id.slice(1, 4) === classroomCode);
-
-          if (matches) {
-            result.push({
-              uid: data.uid,
-              email: data.email,
-              guardianFirstName: data.guardianFirstName,
-              guardianLastName: data.guardianLastName,
-              guardianName: data.guardianName,
-              isFirstLogin: data.isFirstLogin,
-              phoneNumber: data.phoneNumber,
-              role: data.role,
-              studentIds: studentIds,
-              createdAt: data.createdAt,
-            });
+        if (uid) {
+          // 顧客自身（1件）
+          const docRef = doc(db, "customers", uid);
+          const snapshot = await getDoc(docRef);
+          if (snapshot.exists()) {
+            const data = snapshot.data();
+            setCustomers([{ uid: snapshot.id, ...(data as Omit<Customer, "uid">) }]);
+          } else {
+            setCustomers([]);
           }
-        });
-
-        setCustomers(result);
-        console.log(`📦 Customers for classroomCode "${classroomCode}"`, result);
-      } catch (err) {
-        console.error("❌ Error fetching customers:", err);
+        } else {
+          // 全件（superadmin, admin）
+          const snapshot = await getDocs(collection(db, "customers"));
+          const data = snapshot.docs.map(doc => {
+            const docData = doc.data();
+            return { uid: doc.id, ...(docData as Omit<Customer, "uid">) };
+          });
+          setCustomers(data);
+        }
+      } catch (e) {
+        console.error("❌ Error fetching customers:", e);
+        setError(e as Error);
+        setCustomers([]);
       } finally {
         setLoading(false);
       }
     };
 
-    if (!authLoading) {
-      fetchCustomers();
-    }
-  }, [classroomCode, authLoading]);
+    fetchCustomers();
+  }, [uid]);
 
-  return { customers, loading };
+  return { customers, loading, error };
 };

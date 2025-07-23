@@ -2,24 +2,25 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where, Query, DocumentData } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Student } from "../types/student";
-import { useAuth } from "../AuthContext"; // ← classroomCodeとroleを取得
 
-export const useStudents = () => {
-  const { classroomCode, role, loading: authLoading } = useAuth(); // ← 自動取得
+export const useStudents = (classroomCode?: string, customerUid?: string) => {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStudents = async () => {
-      if (authLoading) return;
+      setLoading(true);
 
       try {
         const studentsRef = collection(db, "students");
         let q: Query<DocumentData> = studentsRef;
 
-        if (role !== "superadmin" && classroomCode) {
+        if (customerUid) {
+          q = query(studentsRef, where("customerUid", "==", customerUid));
+        } else if (classroomCode) {
           q = query(studentsRef, where("classroomCode", "==", classroomCode));
         }
+        // どちらもない場合は全件取得
 
         const snapshot = await getDocs(q);
         const data = snapshot.docs.map((doc) => ({
@@ -28,16 +29,17 @@ export const useStudents = () => {
         })) as Student[];
 
         setStudents(data);
-        console.log(`👨‍🎓 Students for ${role} with classroomCode "${classroomCode}"`, data);
+        console.log(`👨‍🎓 Students for customerUid "${customerUid ?? "none"}" classroomCode "${classroomCode ?? "all"}"`, data);
       } catch (err) {
         console.error("❌ Error fetching students:", err);
+        setStudents([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchStudents();
-  }, [classroomCode, role, authLoading]);
+  }, [classroomCode, customerUid]);
 
   return { students, loading };
 };

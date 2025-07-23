@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
-import { collection, getDocs, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
+import { useEffect, useState, useMemo } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { DailyScheduleDocument } from "../types/dailySchedule";
 import { useAuth } from "../AuthContext";
 
-export const useDailySchedules = () => {
-  const { classroomCode, loading: authLoading } = useAuth(); // ← classroomCode をContextから取得
+export const useDailySchedules = (classroomCode?: string, studentIds?: string | string[]) => {
+  const { loading: authLoading } = useAuth();
   const [schedules, setSchedules] = useState<DailyScheduleDocument[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // studentIdを文字列化して依存配列に渡す
+  const studentIdKey = useMemo(() => {
+    if (!studentIds) return "";
+    return Array.isArray(studentIds) ? studentIds.join(",") : studentIds;
+  }, [studentIds]);
 
   useEffect(() => {
     const fetchDailySchedules = async () => {
@@ -23,24 +29,32 @@ export const useDailySchedules = () => {
 
         const result: DailyScheduleDocument[] = [];
 
-        snapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-          const id = doc.id; // 例: "024_2025-07-16_3"
-          const codePrefix = id.split("_")[0]; // "024" を抽出
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const id = doc.id;
+          const codePrefix = id.split("_")[0];
 
-          if (codePrefix === classroomCode) {
-            const data = doc.data();
-            result.push({
-              id,
-              rows: data.rows ?? [],
-              updatedAt: data.updatedAt ?? null,
-            });
+          if (codePrefix !== classroomCode) return;
+
+          if (studentIdKey) {
+            // studentIdKeyはカンマ区切りの文字列なので配列に戻す
+            const studentIdArray = studentIdKey.split(",");
+            const hasStudent = data.rows?.some((row: any) =>
+              studentIdArray.includes(row.studentId)
+            );
+            if (!hasStudent) return;
           }
+
+          result.push({
+            id,
+            rows: data.rows ?? [],
+            updatedAt: data.updatedAt ?? null,
+          });
         });
 
         setSchedules(result);
-        console.log(`📘 DailySchedules for classroomCode "${classroomCode}":`, result);
-      } catch (err) {
-        console.error("❌ Error fetching daily schedules:", err);
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -49,7 +63,7 @@ export const useDailySchedules = () => {
     if (!authLoading) {
       fetchDailySchedules();
     }
-  }, [classroomCode, authLoading]);
+  }, [classroomCode, studentIdKey, authLoading]); // studentIdKeyのみ依存配列に入れる
 
   return { schedules, loading };
 };
