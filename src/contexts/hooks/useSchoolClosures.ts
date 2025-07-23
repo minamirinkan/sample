@@ -5,7 +5,7 @@ import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firest
 import { db } from '../../firebase';
 import { SchoolClosuresDocument, SchoolClosure } from '../types/schoolClosures';
 
-export const useSchoolClosures = (year: string) => {
+export const useSchoolClosures = (year: string, classroomCode?: string) => {
     const [closures, setClosures] = useState<SchoolClosure[]>([]);
     const [deletedClosures, setDeletedClosures] = useState<SchoolClosure[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -28,7 +28,7 @@ export const useSchoolClosures = (year: string) => {
         };
 
         fetchClosures();
-    }, [year]);
+    }, [year, classroomCode]);
 
     const saveClosures = async (newClosures: SchoolClosure[], newDeletedClosures: SchoolClosure[]) => {
         const docRef = doc(db, 'schoolClosures', year);

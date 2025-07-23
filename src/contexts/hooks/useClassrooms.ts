@@ -1,35 +1,24 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, QuerySnapshot, DocumentData } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Classroom } from '../types/classroom';
-import { useAuth } from '../AuthContext'; // classroomCode / role を取得
+import { useAuth } from '../AuthContext';
 
 export function useClassrooms() {
-  const { classroomCode, role, loading: authLoading } = useAuth();
+  const { loading: authLoading } = useAuth();
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
-    const fetchClassrooms = async () => {
-      if (authLoading) return;
+    if (authLoading) return;
 
+    const fetchClassrooms = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        let classroomQuery;
-
-        if (role === 'superadmin' || !classroomCode) {
-          classroomQuery = collection(db, 'classrooms'); // 全件取得
-        } else {
-          classroomQuery = query(
-            collection(db, 'classrooms'),
-            where('code', '==', classroomCode)
-          ); // 自教室のみ取得
-        }
-
-        const snapshot = await getDocs(classroomQuery);
+        const snapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, 'classrooms'));
         const list = snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
@@ -61,7 +50,7 @@ export function useClassrooms() {
         });
 
         setClassrooms(list);
-        console.log(`🏫 Classrooms for role="${role}" classroomCode="${classroomCode}"`, list);
+        console.log(`🏫 All classrooms fetched`, list);
       } catch (e) {
         console.error('❌ Error fetching classrooms:', e);
         setError(e);
@@ -71,7 +60,7 @@ export function useClassrooms() {
     };
 
     fetchClassrooms();
-  }, [role, classroomCode, authLoading]);
+  }, [authLoading]);
 
   return { classrooms, loading, error };
 }

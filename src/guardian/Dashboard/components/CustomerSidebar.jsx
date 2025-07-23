@@ -96,7 +96,7 @@ const CustomerSidebar = ({ onSelectMenu }) => {
           icon={FaBell}
           title="通知管理"
           subItems={[
-            { label: '本部連絡', key: 'notification' },
+            { label: '本部連絡', key: 'tasks' },
             { label: '教室連絡', key: 'notification' }
           ]}
           onSelectMenu={onSelectMenu}
