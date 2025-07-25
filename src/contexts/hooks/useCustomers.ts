@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Customer } from "../types/customer";
 
-export const useCustomers = (uid?: string) => {
+export const useCustomers = (uid?: string, classroomCode?: string) => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -15,7 +15,7 @@ export const useCustomers = (uid?: string) => {
 
       try {
         if (uid) {
-          // 顧客自身（1件）
+          // 顧客本人（保護者）
           const docRef = doc(db, "customers", uid);
           const snapshot = await getDoc(docRef);
           if (snapshot.exists()) {
@@ -24,8 +24,17 @@ export const useCustomers = (uid?: string) => {
           } else {
             setCustomers([]);
           }
+        } else if (classroomCode) {
+          // 教室コードで絞る（admin）
+          const q = query(collection(db, "customers"), where("classroomCode", "==", classroomCode));
+          const snapshot = await getDocs(q);
+          const data = snapshot.docs.map(doc => {
+            const docData = doc.data();
+            return { uid: doc.id, ...(docData as Omit<Customer, "uid">) };
+          });
+          setCustomers(data);
         } else {
-          // 全件（superadmin, admin）
+          // 全件（superadmin）
           const snapshot = await getDocs(collection(db, "customers"));
           const data = snapshot.docs.map(doc => {
             const docData = doc.data();
@@ -43,7 +52,7 @@ export const useCustomers = (uid?: string) => {
     };
 
     fetchCustomers();
-  }, [uid]);
+  }, [uid, classroomCode]);
 
   return { customers, loading, error };
 };

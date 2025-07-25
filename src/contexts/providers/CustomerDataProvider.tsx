@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { useAuth } from "../AuthContext";
 import { useStudents } from "../hooks/useStudents";
 import { useDailySchedules } from "../hooks/useDailySchedules";
@@ -9,12 +9,22 @@ const CustomerDataContext = createContext<any>(null);
 export const CustomerDataProvider = ({ children }: { children: React.ReactNode }) => {
     const { user } = useAuth();
     const uid = user?.uid ?? "";
-    const { customers, loading, error } = useCustomers(uid);
+    const { customers, loading, error } = useCustomers(uid, undefined);
     const students = useStudents(undefined, uid ?? undefined);
     const classroomCode = customers.length > 0 ? customers[0].classroomCode : undefined;
-    const studentIds = customers.length > 0 ? customers[0].studentIds ?? [] : [];
-    const dailySchedules = useDailySchedules(classroomCode ?? undefined, studentIds);
-    
+    const { schedules } = useDailySchedules();
+    const studentIds = customers.flatMap(c => c.studentIds || []);
+
+    const filteredSchedules = useMemo(() => {
+        return schedules.filter((schedule) =>
+            schedule.rows?.some((row) =>
+                Object.values(row.periods).some((period) =>
+                    period?.some((p) => studentIds.includes(p.studentId))
+                )
+            )
+        );
+    }, [schedules, studentIds]);
+
     return (
         <CustomerDataContext.Provider
             value={{
@@ -23,7 +33,7 @@ export const CustomerDataProvider = ({ children }: { children: React.ReactNode }
                 error,
                 classroomCode,
                 students,
-                dailySchedules,
+                dailySchedules: filteredSchedules,
             }}
         >
             {children}
