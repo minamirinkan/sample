@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { useAuth } from "../AuthContext";
 import { useStudents } from "../hooks/useStudents";
 import { useCustomers } from "../hooks/useCustomers";
@@ -11,11 +11,15 @@ const AdminDataContext = createContext<any>(null);
 export const AdminDataProvider = ({ children }: { children: React.ReactNode }) => {
     const { classroomCode } = useAuth();
     const students = useStudents(classroomCode ?? undefined);
-    const customers = useCustomers(classroomCode ?? undefined);
+    const customers = useCustomers(undefined, classroomCode ?? undefined);
     const periodLabels = usePeriodLabelsByClassroomCode(classroomCode ?? undefined);
     const currentYear = new Date().getFullYear().toString();
     const { closures } = useSchoolClosures(currentYear, classroomCode ?? undefined);
-    const dailySchedules = useDailySchedules(classroomCode ?? undefined);
+    const { schedules } = useDailySchedules();
+
+    const filteredSchedules = useMemo(() => {
+        return schedules.filter((s) => s.id.startsWith(`${classroomCode}_`));
+    }, [schedules, classroomCode]);
 
     return (
         <AdminDataContext.Provider
@@ -24,7 +28,7 @@ export const AdminDataProvider = ({ children }: { children: React.ReactNode }) =
                 customers,
                 periodLabels,
                 closures,
-                dailySchedules
+                dailySchedules: filteredSchedules,
             }}
         >
             {children}

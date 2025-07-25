@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { useAuth } from "../AuthContext";
 import { useStudents } from "../hooks/useStudents";
 import { useDailySchedules } from "../hooks/useDailySchedules";
@@ -11,7 +11,7 @@ export const TeacherDataProvider = ({ children }: { children: React.ReactNode })
 
     // 講師の教室コードに基づいて生徒データを取得
     const students = useStudents(classroomCode ?? undefined);
-    const dailySchedules = useDailySchedules(classroomCode ?? undefined);
+    const dailySchedules = useDailySchedules();
 
     return (
         <TeacherDataContext.Provider
