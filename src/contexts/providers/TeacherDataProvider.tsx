@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext } from "react";
 import { useAuth } from "../AuthContext";
 import { useStudents } from "../hooks/useStudents";
 import { useDailySchedules } from "../hooks/useDailySchedules";

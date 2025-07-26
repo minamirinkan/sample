@@ -1,5 +1,4 @@
 // types/schoolClosures.ts
-
 export type SchoolClosureType = 'holiday' | 'customClose';
 
 export type SchoolClosure = {

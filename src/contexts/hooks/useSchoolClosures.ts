@@ -1,34 +1,44 @@
-// hooks/useSchoolClosures.ts
-
 import { useEffect, useState } from 'react';
-import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { SchoolClosuresDocument, SchoolClosure } from '../types/schoolClosures';
 
 export const useSchoolClosures = (year: string, classroomCode?: string) => {
     const [closures, setClosures] = useState<SchoolClosure[]>([]);
     const [deletedClosures, setDeletedClosures] = useState<SchoolClosure[]>([]);
+    const [updatedAt, setUpdatedAt] = useState<Timestamp | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<unknown>(null);
 
     useEffect(() => {
         const fetchClosures = async () => {
             setLoading(true);
-            const docRef = doc(db, 'schoolClosures', year);
-            const docSnap = await getDoc(docRef);
+            try {
+                const docRef = doc(db, 'schoolClosures', year);
+                const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                const data = docSnap.data() as SchoolClosuresDocument;
-                setClosures(data.closures || []);
-                setDeletedClosures(data.deletedClosures || []);
-            } else {
-                setClosures([]);
-                setDeletedClosures([]);
+                if (docSnap.exists()) {
+                    const data = docSnap.data() as SchoolClosuresDocument;
+                    setClosures(data.closures || []);
+                    setDeletedClosures(data.deletedClosures || []);
+                    if (data.updatedAt instanceof Timestamp) {
+                        setUpdatedAt(data.updatedAt);
+                    }
+                } else {
+                    setClosures([]);
+                    setDeletedClosures([]);
+                    setUpdatedAt(null);
+                }
+            } catch (err) {
+                console.error('Failed to fetch school closures:', err);
+                setError(err);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
 
         fetchClosures();
-    }, [year, classroomCode]);
+    }, [year]);
 
     const saveClosures = async (newClosures: SchoolClosure[], newDeletedClosures: SchoolClosure[]) => {
         const docRef = doc(db, 'schoolClosures', year);
@@ -67,7 +77,9 @@ export const useSchoolClosures = (year: string, classroomCode?: string) => {
     return {
         closures,
         deletedClosures,
+        updatedAt,
         loading,
+        error,
         saveClosures,
         addClosure,
         removeClosure,
