@@ -151,7 +151,7 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
             phoneNumber: formData.guardianPhone ?? '',
             isFirstLogin: true,
             studentData: {
-                ...formData,
+                ...(formData as Student),
                 classroomCode,
                 classroomName,
                 fullname: `${formData.lastName} ${formData.firstName}`,
@@ -248,7 +248,7 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                                 schoolKana: formData.schoolKana,
                                 grade: formData.grade,
                             }}
-                            onChange={(updatedSchoolData) => {
+                            onChange={(updatedSchoolData: Partial<Student>) => {
                                 setFormData((prev) => ({
                                     ...prev,
                                     ...updatedSchoolData,
@@ -268,7 +268,7 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                         lessonType={lessonType}
                         formData={courseFormData || []}
                         onChange={setCourseFormData}
-                        setLessonType={setLessonType}
+                        //setLessonType={setLessonType}
                         schoolLevel={formData.schoolLevel}
                     />
                 </div>

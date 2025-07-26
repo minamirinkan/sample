@@ -1,9 +1,9 @@
 import { Timestamp } from "firebase/firestore";
 
 export type Student = {
-    id: string; // FirestoreのドキュメントID
-    uid: string;
-    studentId: string;
+    id?: string; // FirestoreのドキュメントID
+    uid?: string;
+    studentId?: string;
     fullname: string;
     fullnameKana: string; 
     lastName: string;

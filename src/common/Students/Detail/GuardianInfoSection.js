@@ -11,8 +11,8 @@ const GuardianInfoSection = ({ formData, isEditing, onChange }) => (
             </h2>
             <InfoRow label="保護者氏名（姓）" value={formData.guardianLastName} name="guardianLastName" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="保護者氏名（名）" value={formData.guardianFirstName} name="guardianFirstName" isEditing={isEditing} onChange={onChange} />
-            <InfoRow label="氏名カナ（姓）" value={formData.guardianKanaLastName} name="guardianKanaLastNameKana" isEditing={isEditing} onChange={onChange} />
-            <InfoRow label="氏名カナ（名）" value={formData.guardianKanaFirstName} name="guardianKanaFirstNameKana" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="氏名カナ（姓）" value={formData.guardianLastNameKana} name="guardianLastNameKana" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="氏名カナ（名）" value={formData.guardianFirstNameKana} name="guardianFirstNameKana" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="続柄" value={formData.relationship} name="relationship" isEditing={isEditing} onChange={onChange} />
         </div>
 

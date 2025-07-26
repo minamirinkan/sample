@@ -18,6 +18,7 @@ import {
   import { saveToWeeklySchedules } from './saveToWeeklySchedules';
   import { Student } from '../../../contexts/types/student';
   import { Customer } from '../../../contexts/types/customer';
+  import { SchoolDataItem } from '../../../contexts/types/schoolData';
   
   export const registerCustomerAndStudent = async ({
     uid,
@@ -29,6 +30,8 @@ import {
     phoneNumber: string;
     studentData: Student;
     isFirstLogin?: boolean;
+    courseFormData?: SchoolDataItem[];
+    customerName?: string;
   }): Promise<boolean> => {
     const { guardianEmail } = studentData;
     const currentAdmin = auth.currentUser;
