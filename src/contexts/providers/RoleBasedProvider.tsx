@@ -4,6 +4,7 @@ import { SuperAdminDataProvider } from "./SuperAdminDataProvider";
 import { AdminDataProvider } from "./AdminDataProvider";
 import { TeacherDataProvider } from "./TeacherDataProvider";
 import { CustomerDataProvider } from "./CustomerDataProvider";
+import { ClassroomSelectionProvider } from "../ClassroomSelectionContext";
 
 const RoleBasedProvider = ({ children }: { children: React.ReactNode }) => {
     const { role, loading } = useAuth();
@@ -14,7 +15,11 @@ const RoleBasedProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     if (role === "superadmin") {
-        return <SuperAdminDataProvider>{children}</SuperAdminDataProvider>;
+        return (
+            <ClassroomSelectionProvider>
+                <SuperAdminDataProvider>{children}</SuperAdminDataProvider>
+            </ClassroomSelectionProvider>
+        );
     }
 
     if (role === "admin") {

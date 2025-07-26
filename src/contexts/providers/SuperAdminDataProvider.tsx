@@ -7,31 +7,62 @@ import { usePeriodLabelsByClassroomCode } from "../hooks/usePeriodLabelsBySchool
 import { useSchoolClosures } from "../hooks/useSchoolClosures";
 import { useStudents } from "../hooks/useStudents";
 import { useSuperadmins } from "../hooks/useSuperadmins";
+import type { SuperAdminDataContextType } from "../types/superAdminContext";
+import type { Timestamp } from "firebase/firestore";
 
-const SuperAdminDataContext = createContext<any>(null);
+const SuperAdminDataContext = createContext<SuperAdminDataContextType | null>(null);
 
 export const SuperAdminDataProvider = ({ children }: { children: React.ReactNode }) => {
-    const admins = useAdmins();
-    const classrooms = useClassrooms();
-    const customers = useCustomers();
-    const dailySchedules = useDailySchedules();
-    const periodLabels = usePeriodLabelsByClassroomCode();
+    const { admins, loading: adminsLoading } = useAdmins();
+    // エラーは使わないなら受け取らない
+    const { classrooms, loading: classroomsLoading } = useClassrooms();
+    const { customers, loading: customersLoading } = useCustomers();
+    const { schedules: dailySchedules, loading: schedulesLoading } = useDailySchedules();
+    const { labels: periodLabels, loading: periodLabelsLoading } = usePeriodLabelsByClassroomCode();
     const currentYear = new Date().getFullYear().toString();
-    const { closures } = useSchoolClosures(currentYear);
-    const students = useStudents();
-    const superadmins = useSuperadmins();
+
+    const {
+        closures,
+        deletedClosures,
+        updatedAt: closuresUpdatedAtNullable,
+        loading: closuresLoading,
+        error: closuresError,
+    } = useSchoolClosures(currentYear);
+
+    // null 許容のまま context で渡すか、必要なら null を排除して渡す
+    const closuresUpdatedAt: Timestamp | null = closuresUpdatedAtNullable ?? null;
+
+    // useStudentsにerrorが無ければ受け取らない
+    const { students, loading: studentsLoading } = useStudents();
+    const { superadmins, loading: superadminsLoading } = useSuperadmins();
+
+    const isLoading =
+        adminsLoading ||
+        classroomsLoading ||
+        customersLoading ||
+        schedulesLoading ||
+        periodLabelsLoading ||
+        closuresLoading ||
+        studentsLoading ||
+        superadminsLoading;
 
     return (
         <SuperAdminDataContext.Provider
             value={{
                 admins,
+                adminsLoading,
                 classrooms,
                 customers,
                 dailySchedules,
                 periodLabels,
                 closures,
+                deletedClosures,
+                closuresUpdatedAt,
                 students,
                 superadmins,
+                superadminsLoading,
+                isLoading,
+                error: closuresError,
             }}
         >
             {children}
@@ -39,4 +70,10 @@ export const SuperAdminDataProvider = ({ children }: { children: React.ReactNode
     );
 };
 
-export const useSuperAdminData = () => useContext(SuperAdminDataContext);
+export const useSuperAdminData = () => {
+    const context = useContext(SuperAdminDataContext);
+    if (!context) {
+        throw new Error("useSuperAdminData must be used within a SuperAdminDataProvider");
+    }
+    return context;
+};
