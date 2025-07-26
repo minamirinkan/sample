@@ -2,7 +2,7 @@
 import TimetableRow from './TimetableRow';
 import StudentList from './StudentList';
 import periods from '../../periods';
-import { useTeachers } from '../../../contexts/hooks/useTeachers';
+import useTeachers from '../../../contexts/hooks/useTeachers';
 
 export default function TimetableTable({ rows, onChange }) {
   const { teachers } = useTeachers(); // ← フックから取得
