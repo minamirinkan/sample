@@ -5,8 +5,11 @@ export type Customer = {
   email: string;
   classroomCode: string;
   guardianFirstName: string;
+  guardianFirstNameKana: string;
   guardianLastName: string;
-  guardianName: string;
+  guardianLastNameKana: string;
+  guardianfullName: string;
+  guardianfullNameKana: string;
   isFirstLogin: boolean;
   phoneNumber: string;
   role: string;
