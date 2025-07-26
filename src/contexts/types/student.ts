@@ -2,8 +2,10 @@ import { Timestamp } from "firebase/firestore";
 
 export type Student = {
     id: string; // FirestoreのドキュメントID
+    uid: string;
     studentId: string;
-    name: string;
+    fullname: string;
+    fullnameKana: string; 
     lastName: string;
     firstName: string;
     lastNameKana: string;
@@ -29,11 +31,12 @@ export type Student = {
     buildingName: string;
     email?: string;
     phone?: string;
-    guardianName: string;
+    guardianfullName: string;
+    guardianfullNameKana: string;
     guardianLastName: string;
     guardianFirstName: string;
-    guardianKanaLastName: string;
-    guardianKanaFirstName: string;
+    guardianLastNameKana: string;
+    guardianFirstNameKana: string;
     guardianPhone: string;
     guardianEmail: string;
     relationship: string;

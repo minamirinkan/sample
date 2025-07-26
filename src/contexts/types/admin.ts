@@ -6,6 +6,7 @@ export type Admin = {
     email: string;
     role: 'admin';
     classroomCode: string;
+    classroomName: string;
     createdAt: Timestamp;
     lastLogin: Timestamp;
 };
