@@ -1,46 +1,66 @@
 import React from 'react';
 import SUBJECT_OPTIONS from '../subjectOptions';
+import { SchoolDataItem } from '../../../../contexts/types/schoolData'; // 実際の型定義のパスに合わせて
+import { SchoolLevel } from '../../../../contexts/types/schoolData';
 
-const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel }) => {
-    const subjects = SUBJECT_OPTIONS[schoolLevel] ? [...SUBJECT_OPTIONS[schoolLevel], 'その他'] : [];
-    const handleChange = (index, updatedFields) => {
-        const newData = [...formData];
-        newData[index] = { ...newData[index], ...updatedFields };
-        onChange(newData);
-    };
+interface CourseInfoSectionProps {
+  formData: SchoolDataItem[];
+  onChange: (newData: SchoolDataItem[]) => void;
+  lessonType: string;
+  schoolLevel: SchoolLevel | undefined;
+  setLessonType: React.Dispatch<React.SetStateAction<string>>; // ← これを追加
+}
 
-    const createEmptyRow = (kind = '') => ({
-        kind,
-        classType: '',
-        times: '',
-        subject: '',
-        subjectOther: '',
-        duration: '',
-        startYear: '',
-        startMonth: '',
-        endYear: '',
-        endMonth: '',
-        note: '',
-    });
+const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
+  formData = [],
+  onChange,
+  lessonType,
+  schoolLevel,
+  setLessonType,
+}) => {
+    const subjects =
+    schoolLevel && SUBJECT_OPTIONS[schoolLevel]
+      ? [...SUBJECT_OPTIONS[schoolLevel], 'その他']
+      : [];
 
-    const handleAddRow = () => {
-        onChange([...formData, createEmptyRow('通常')]);
-    };
+  const handleChange = (index: number, updatedFields: Partial<SchoolDataItem>) => {
+    const newData = [...formData];
+    newData[index] = { ...newData[index], ...updatedFields };
+    onChange(newData);
+  };
 
-    const handleAddRowWithKind = (kind) => {
-        onChange([...formData, createEmptyRow(kind)]);
-    };
+  const createEmptyRow = (kind = ''): SchoolDataItem => ({
+    kind,
+    classType: '',
+    times: '',
+    subject: '',
+    subjectOther: '',
+    duration: '',
+    startYear: '',
+    startMonth: '',
+    endYear: '',
+    endMonth: '',
+    note: '',
+  });
 
-    const handleRemoveRow = (index) => {
-        const newData = formData.filter((_, i) => i !== index);
-        onChange(newData);
-    };
+  const handleAddRow = () => {
+    onChange([...formData, createEmptyRow('通常')]);
+  };
 
-    const classTypes = ['1名クラス', '2名クラス', '演習クラス'];
-    const WEEKDAY_OPTIONS = ['日', '月', '火', '水', '木', '金', '土'];
-    const PERIOD_OPTIONS = ['1限', '2限', '3限', '4限', '5限', '6限', '7限', '8限'];
-    const years = [2025, 2026, 2027];
-    const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  const handleAddRowWithKind = (kind: string) => {
+    onChange([...formData, createEmptyRow(kind)]);
+  };
+
+  const handleRemoveRow = (index: number) => {
+    const newData = formData.filter((_, i) => i !== index);
+    onChange(newData);
+  };
+
+  const classTypes = ['1名クラス', '2名クラス', '演習クラス'];
+  const WEEKDAY_OPTIONS = ['日', '月', '火', '水', '木', '金', '土'];
+  const PERIOD_OPTIONS = ['1限', '2限', '3限', '4限', '5限', '6限', '7限', '8限'];
+  const years = [2025, 2026, 2027];
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
     return (
         <div className="space-y-4">
@@ -111,7 +131,7 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
                                                     value={data.subject || ''}
                                                     onChange={(e) => {
                                                         const newSubject = e.target.value;
-                                                        const updates = { subject: newSubject };
+                                                        const updates: Partial<SchoolDataItem>  = { subject: newSubject };
                                                         if (newSubject !== 'その他') {
                                                             updates.subjectOther = ''; // クリア
                                                         }

@@ -14,3 +14,5 @@ export type SchoolDataItem = {
   weekday?: string;
   period?: string;
 };
+
+export type SchoolLevel = '小学校' | '中学校' | '高等学校' | '通信制';

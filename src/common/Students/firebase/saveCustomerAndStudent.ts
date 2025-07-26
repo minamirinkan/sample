@@ -25,6 +25,7 @@ import {
     phoneNumber,
     studentData,
     isFirstLogin = true,
+    courseFormData,
   }: {
     uid: string;
     phoneNumber: string;
@@ -81,7 +82,7 @@ import {
       await setDoc(studentRef, {
         ...restStudentData,
         customerUid,
-        courses,
+        //courses,
       });
   
       if (Array.isArray(courses)) {
@@ -94,7 +95,10 @@ import {
             : `${kind}-${subject}-${startYear}`;
           await setDoc(doc(coursesCollectionRef, docId), course);
         }
-        await saveToWeeklySchedules(studentData);
+        await saveToWeeklySchedules({
+          ...studentData,
+          courseFormData: courses, // または courseFormData でも可
+        });
       }
   
       await signOut(auth);

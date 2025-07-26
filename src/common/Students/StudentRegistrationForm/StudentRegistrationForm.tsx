@@ -13,6 +13,7 @@ import AddressInfoSection from './components/AddressInfoSection';
 import { Student } from '../../../contexts/types/student';
 import { SchoolDataItem } from '../../../contexts/types/schoolData';
 import { Timestamp, FieldValue } from 'firebase/firestore';
+import { SchoolLevel } from '../../../contexts/types/schoolData';
 
 
 
@@ -88,6 +89,8 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
     }, []);
 
 
+    const isSchoolLevel = (value: any): value is SchoolLevel =>
+        ['小学校', '中学校', '高等学校', '通信制'].includes(value);
 
     const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(true);
@@ -156,6 +159,7 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 classroomName,
                 fullname: `${formData.lastName} ${formData.firstName}`,
                 registrationDate: Timestamp.fromDate(new Date()),
+                courses: courseFormData ?? [],
             },
             courseFormData: courseFormData.map((course) => {
                 const updated = { ...course };
@@ -268,8 +272,8 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                         lessonType={lessonType}
                         formData={courseFormData || []}
                         onChange={setCourseFormData}
-                        //setLessonType={setLessonType}
-                        schoolLevel={formData.schoolLevel}
+                        setLessonType={setLessonType}
+                        schoolLevel={isSchoolLevel(formData.schoolLevel) ? formData.schoolLevel : undefined}
                     />
                 </div>
             </div>
