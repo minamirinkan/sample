@@ -3,9 +3,11 @@ import TimetableRow from './TimetableRow';
 import StudentList from './StudentList';
 import periods from '../../periods';
 import useTeachers from '../../../contexts/hooks/useTeachers';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function TimetableTable({ rows, onChange }) {
-  const { teachers } = useTeachers(); // ← フックから取得
+  const { classroomCode } = useAuth();
+  const { teachers } = useTeachers(classroomCode); // ← フックから取得
 
   return (
     <div className="flex gap-4">
