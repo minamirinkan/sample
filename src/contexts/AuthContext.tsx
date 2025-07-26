@@ -77,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                             email: adminRaw.email,
                             role: "admin",
                             classroomCode: adminRaw.classroomCode,
-                            classroomName: adminRaw.classroomName,
+                            classroomName: adminRaw.name,
                             createdAt: adminRaw.createdAt,
                             lastLogin: adminRaw.lastLogin,
                         };

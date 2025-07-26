@@ -45,4 +45,5 @@ export type Student = {
     status: string;
     registrationDate: Timestamp;
     courses?: any; // courses の詳細わからないので any にしておく。必要なら型定義追加
+    courseFormData?: any;
 };

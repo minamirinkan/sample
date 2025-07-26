@@ -95,6 +95,11 @@ import {
             : `${kind}-${subject}-${startYear}`;
           await setDoc(doc(coursesCollectionRef, docId), course);
         }
+        const scheduleData = {
+          ...studentData,
+          courseFormData: courses,
+        };
+        console.log('🧪 saveToWeeklySchedules に渡すデータ:', scheduleData);
         await saveToWeeklySchedules({
           ...studentData,
           courseFormData: courses, // または courseFormData でも可
