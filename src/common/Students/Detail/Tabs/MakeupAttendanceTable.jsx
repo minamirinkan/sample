@@ -1,6 +1,6 @@
 import React from 'react';
 import AttendanceSubTable from './SubTabs/AttendanceSubTable';
-import {useTeachers} from '../../../../contexts/hooks/useTeachers';
+import useTeachers from '../../../../contexts/hooks/useTeachers';
 import usePeriodLabels from '../../../../contexts/hooks/usePeriodLabels';
 import useMakeupLessons from '../../../../contexts/hooks/useMakeupLessons';
 import {useAttendanceEdit} from '../../../../contexts/hooks/useAttendanceEdit';
