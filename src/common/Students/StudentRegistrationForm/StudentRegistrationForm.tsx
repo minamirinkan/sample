@@ -21,11 +21,8 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
     const { adminData } = useAuth();
     const classroomCode = adminData?.classroomCode ?? '';
     const classroomName = adminData?.classroomName ?? '';
-    const [schoolData, setSchoolData] = useState<SchoolDataItem[]>([]);
 
     const initialFormData: Partial<Student> = {
-        id: '',
-        uid: '',
         studentId: '',
         fullname: '',
         fullnameKana: '',
@@ -52,8 +49,6 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
         streetAddress: '',
         streetAddressKana: '',
         buildingName: '',
-        email: '',
-        phone: '',
         guardianfullName: '',
         guardianfullNameKana: '',
         guardianLastName: '',
@@ -65,29 +60,29 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
         relationship: '',
         emergencyContact: '',
         remarks: '',
-        status: '',
+        status: '在籍中',
         registrationDate: serverTimestamp() as Timestamp, // ← 修正済み
         courses: [], // ← 初期は空配列でOK（any型なので柔軟）
     };
 
-    useEffect(() => {
-        setSchoolData((prev) => [
-            ...prev,
-            {
-                kind: '通常',
-                subject: '',
-                classType: '',
-                times: '',
-                duration: '',
-                startMonth: '',
-                endMonth: '',
-                startYear: '',
-                endYear: '',
-                note: '',
-            },
-        ]);
-    }, []);
-
+    const [schoolData, setSchoolData] = useState<SchoolDataItem[]>([
+        {
+            kind: '通常',
+            subject: '',
+            subjectOther: '',
+            classType: '',
+            times: '',
+            duration: '',
+            startMonth: '',
+            endMonth: '',
+            startYear: '',
+            endYear: '',
+            note: '',
+            weekday: '',
+            period: '',
+        },
+    ]);
+    
 
     const isSchoolLevel = (value: any): value is SchoolLevel =>
         ['小学校', '中学校', '高等学校', '通信制'].includes(value);
@@ -158,6 +153,9 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 classroomCode,
                 classroomName,
                 fullname: `${formData.lastName} ${formData.firstName}`,
+                fullnameKana:`${formData.lastNameKana} ${formData.firstNameKana}`,
+                guardianfullName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
+                guardianfullNameKana:`${formData.guardianLastNameKana} ${formData.guardianFirstNameKana}`,
                 registrationDate: Timestamp.fromDate(new Date()),
                 courses: courseFormData ?? [],
             },
