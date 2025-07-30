@@ -80,6 +80,15 @@ const AdminSidebar = ({ onSelectMenu }) => {
                 {classroomName ? `${classroomName}教室` : '管理者'}
             </h4>
             <ul className="sidebar-menu">
+                <SidebarSection
+                    icon={FaDatabase}
+                    title="テストデータ"
+                    subItems={[
+                        { label: 'authContext', key: 'authTest' },
+                        { label: 'userContext', key: 'userTest' },
+                    ]}
+                    onSelectMenu={onSelectMenu}
+                />
                 <SidebarSection icon={FaTasks} title="ToDo" subItems={[{ label: 'ToDo', key: 'todo' }]} onSelectMenu={onSelectMenu} />
                 <SidebarSection icon={FaBell} title="通知管理" subItems={[{ label: '社長連絡', key: 'notification' }]} onSelectMenu={onSelectMenu} />
                 <SidebarSection icon={FaBook} title="業務日報管理" subItems={[

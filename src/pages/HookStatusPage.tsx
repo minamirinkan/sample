@@ -19,7 +19,7 @@ const superadminTabs = [
     "closures",
 ] as const;
 
-const adminTabs = ["students", "customers", "periodLabels", "closures", "dailySchedules"] as const;
+const adminTabs = ["admins", "classrooms", "students", "customers", "periodLabels", "closures", "dailySchedules"] as const;
 const teacherTabs = ["students", "dailySchedules"] as const;
 const customerTabs = ["customers", "students", "dailySchedules"] as const;
 

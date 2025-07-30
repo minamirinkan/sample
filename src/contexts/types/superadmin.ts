@@ -5,6 +5,7 @@ export type Superadmin = {
     name: string;
     email: string;
     role: 'superadmin';
+    classroomCode: string;
     createdAt: Timestamp
     lastLogin: Timestamp
 };
