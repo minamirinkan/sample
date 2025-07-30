@@ -22,6 +22,8 @@ import HolidayPage from "../../common/Schedule/HolidayPage";
 import ToDoContent from "../../common/ToDo/ToDoContent";
 import CeoMessagesAll from "../../common/ceoMessage/CeoMessagesAll";
 import HookStatusPage from "../../pages/HookStatusPage";
+import TestUserDataFetch from "../../TEST/TestUserDataFetch";
+import TestAdminDataFetch from "../../TEST/testpage";
 
 const SuperAdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState("welcome");
@@ -89,6 +91,10 @@ const SuperAdminDashboard = () => {
         return <CeoMessagesAll />;
       case "tasks":
         return <HookStatusPage />;
+      case 'authTest':
+        return <TestUserDataFetch />;
+      case 'userTest':
+        return <TestAdminDataFetch />;
       default:
         return <ToDoContent logs={logs} />;
     }

@@ -14,6 +14,8 @@ import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestor
 import { db } from "../firebase.js";
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
 import HookStatusPage from '../pages/HookStatusPage';
+import TestUserDataFetch from "../TEST/TestUserDataFetch";
+import TestAdminDataFetch from "../TEST/testpage";
 
 const AdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('welcome');
@@ -114,6 +116,10 @@ const AdminDashboard = () => {
         return <CeoMessagesAll />;
       case "tasks":
         return <HookStatusPage />;
+      case 'authTest':
+        return <TestUserDataFetch />;
+      case 'userTest':
+        return <TestAdminDataFetch />;
       default:
         return <ToDoContent logs={logs} />;
     }
