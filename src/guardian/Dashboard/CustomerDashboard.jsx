@@ -3,6 +3,8 @@ import CustomerSidebar from './components/CustomerSidebar';
 import { useState } from 'react';
 import TimetablePageC from '../timetable/TimetableCustomerPage';
 import HookStatusPage from '../../pages/HookStatusPage';
+import TestUserDataFetch from "../../TEST/TestUserDataFetch";
+import TestAdminDataFetch from "../../TEST/testpage";
 
 const CustomerDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('timetable');
@@ -14,6 +16,10 @@ const CustomerDashboard = () => {
         return <TimetablePageC />;
       case 'tasks':
         return <HookStatusPage />;
+      case 'authTest':
+        return <TestUserDataFetch />;
+      case 'userTest':
+        return <TestAdminDataFetch />;
       default:
         return (
           <>

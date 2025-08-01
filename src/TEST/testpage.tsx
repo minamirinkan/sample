@@ -1,14 +1,14 @@
 import React from "react";
 import { AuthProvider } from "./TestAuthContext"; // あなたのAuthContextのパス
-import { AdminDataProvider } from "./TestAdminDataProvider"; // あなたのAdminDataProviderのパス
-import AdminTestComponent from "./AdminTestComponent"; // 下で作るやつ
+import RoleBasedProvider from "./TestRoleBasedProvider"; // あなたのRoleBasedProviderのパス
+import RoleBasedTestComponent from "./TestComponent"; // 下で作るやつ
 
 const AdminDataTestPage = () => {
     return (
         <AuthProvider>
-            <AdminDataProvider>
-                <AdminTestComponent />
-            </AdminDataProvider>
+            <RoleBasedProvider>
+                <RoleBasedTestComponent />
+            </RoleBasedProvider>
         </AuthProvider>
     );
 };
