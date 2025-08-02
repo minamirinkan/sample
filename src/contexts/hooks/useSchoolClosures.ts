@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+// hooks/useSchoolClosures.ts
+import { useEffect, useState, useCallback } from 'react';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { SchoolClosuresDocument, SchoolClosure } from '../types/schoolClosures';
@@ -10,15 +11,21 @@ export const useSchoolClosures = (year: string, classroomCode?: string) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
 
+    const getDocRef = useCallback(() => {
+        return classroomCode
+            ? doc(db, 'classrooms', classroomCode, 'closures', year)
+            : doc(db, 'schoolClosures', year);
+    }, [classroomCode, year]);
+
     useEffect(() => {
         const fetchClosures = async () => {
             setLoading(true);
             try {
-                const docRef = doc(db, 'schoolClosures', year);
-                const docSnap = await getDoc(docRef);
+                const ref = getDocRef();
+                const snapshot = await getDoc(ref);
 
-                if (docSnap.exists()) {
-                    const data = docSnap.data() as SchoolClosuresDocument;
+                if (snapshot.exists()) {
+                    const data = snapshot.data() as SchoolClosuresDocument;
                     setClosures(data.closures || []);
                     setDeletedClosures(data.deletedClosures || []);
                     if (data.updatedAt instanceof Timestamp) {
@@ -38,11 +45,11 @@ export const useSchoolClosures = (year: string, classroomCode?: string) => {
         };
 
         fetchClosures();
-    }, [year]);
+    }, [getDocRef]);
 
     const saveClosures = async (newClosures: SchoolClosure[], newDeletedClosures: SchoolClosure[]) => {
-        const docRef = doc(db, 'schoolClosures', year);
-        await setDoc(docRef, {
+        const ref = getDocRef();
+        await setDoc(ref, {
             closures: newClosures,
             deletedClosures: newDeletedClosures,
             updatedAt: serverTimestamp(),
@@ -53,7 +60,7 @@ export const useSchoolClosures = (year: string, classroomCode?: string) => {
 
     const addClosure = async (closure: SchoolClosure) => {
         const updated = [...closures, closure];
-        await updateDoc(doc(db, 'schoolClosures', year), {
+        await updateDoc(getDocRef(), {
             closures: updated,
             updatedAt: serverTimestamp(),
         });
@@ -65,7 +72,7 @@ export const useSchoolClosures = (year: string, classroomCode?: string) => {
         if (!target) return;
         const updatedClosures = closures.filter((c) => c.date !== date);
         const updatedDeleted = [...deletedClosures, target];
-        await updateDoc(doc(db, 'schoolClosures', year), {
+        await updateDoc(getDocRef(), {
             closures: updatedClosures,
             deletedClosures: updatedDeleted,
             updatedAt: serverTimestamp(),
