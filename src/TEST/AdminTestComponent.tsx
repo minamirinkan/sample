@@ -9,6 +9,7 @@ const TABS = [
     { key: "customers", label: "保護者情報" },
     { key: "periodLabels", label: "時限ラベル" },
     { key: "closures", label: "休校日" },
+    { key: "deletedClosures", label: "削除された休校日" },
     { key: "dailySchedules", label: "時間割" },
 ];
 
@@ -20,6 +21,7 @@ const AdminTestComponent = () => {
         customers,
         periodLabels,
         closures,
+        deletedClosures,
         dailySchedules,
     } = useAdminData();
 
@@ -30,6 +32,7 @@ const AdminTestComponent = () => {
         customers,
         periodLabels,
         closures,
+        deletedClosures,
         dailySchedules,
     };
 

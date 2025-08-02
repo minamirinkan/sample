@@ -17,7 +17,7 @@ export const AdminDataProvider = ({ children }: { children: React.ReactNode }) =
     const customers = useCustomers(undefined, classroomCode ?? undefined);
     const periodLabels = usePeriodLabelsByClassroomCode(classroomCode ?? undefined);
     const currentYear = new Date().getFullYear().toString();
-    const { closures } = useSchoolClosures(currentYear, classroomCode ?? undefined);
+    const { closures, deletedClosures } = useSchoolClosures(currentYear, classroomCode ?? undefined);
     const { schedules } = useDailySchedules();
 
     const filteredSchedules = useMemo(() => {
@@ -33,6 +33,7 @@ export const AdminDataProvider = ({ children }: { children: React.ReactNode }) =
                 customers,
                 periodLabels,
                 closures,
+                deletedClosures,
                 dailySchedules: filteredSchedules,
             }}
         >
