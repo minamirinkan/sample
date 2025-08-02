@@ -6,8 +6,9 @@ import { useDailySchedules } from "../hooks/useDailySchedules";
 const TeacherDataContext = createContext<any>(null);
 
 export const TeacherDataProvider = ({ children }: { children: React.ReactNode }) => {
-    const { classroomCode, user } = useAuth();
-    const teacherUid = user?.uid;
+    const { userData } = useAuth();
+    const teacherUid = userData?.uid;
+    const classroomCode = userData?.classroomCode;
 
     // 講師の教室コードに基づいて生徒データを取得
     const students = useStudents(classroomCode ?? undefined);
