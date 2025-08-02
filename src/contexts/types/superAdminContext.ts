@@ -7,8 +7,8 @@ import { SchoolClosure } from "./schoolClosures";
 import { Student } from "./student";
 import { DailyScheduleDocument } from "./dailySchedule";
 import { PeriodLabel } from "./periodLabel";
-
 export interface SuperAdminDataContextType {
+    userData: any;
     admins: Admin[];
     adminsLoading: boolean;
     classrooms: Classroom[];

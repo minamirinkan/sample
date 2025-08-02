@@ -3,15 +3,17 @@ import { useAuth } from "../AuthContext";
 import { useStudents } from "../hooks/useStudents";
 import { useDailySchedules } from "../hooks/useDailySchedules";
 import { useCustomers } from "../hooks/useCustomers";
+import { useClassroom } from "../hooks/useClassroom";
 
 const CustomerDataContext = createContext<any>(null);
 
 export const CustomerDataProvider = ({ children }: { children: React.ReactNode }) => {
-    const { user } = useAuth();
-    const uid = user?.uid ?? "";
+    const { userData } = useAuth();
+    const uid = userData?.uid ?? "";
     const { customers, loading, error } = useCustomers(uid, undefined);
     const students = useStudents(undefined, uid ?? undefined);
-    const classroomCode = customers.length > 0 ? customers[0].classroomCode : undefined;
+    const classroomCode = userData?.classroomCode ?? "";
+    const classroom = useClassroom(classroomCode ?? undefined);
     const { schedules } = useDailySchedules();
     const studentIds = customers.flatMap(c => c.studentIds || []);
 
@@ -28,10 +30,12 @@ export const CustomerDataProvider = ({ children }: { children: React.ReactNode }
     return (
         <CustomerDataContext.Provider
             value={{
+                userData,
                 customers,
                 loading,
                 error,
                 classroomCode,
+                classroom,
                 students,
                 dailySchedules: filteredSchedules,
             }}
