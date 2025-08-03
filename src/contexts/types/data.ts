@@ -14,3 +14,19 @@ export type DateInfo = {
     date?: number;  // ❗undefined 許容
     weekday: string;
   };
+  export interface TimetableStudent {
+    studentId: string;
+    grade: string;
+    name: string;
+    seat: string;
+    subject: string;
+    classType: string;
+    duration?: string;
+    status: string; // "予定" または "振替" など
+  }
+  
+  export interface TimetableRow {
+    teacher: string | null;
+    periods: TimetableStudent[][];
+    status: string;
+  }
