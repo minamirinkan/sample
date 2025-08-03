@@ -14,13 +14,14 @@ import { Student } from '../../../contexts/types/student';
 import { SchoolDataItem } from '../../../contexts/types/schoolData';
 import { Timestamp, FieldValue } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
+import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
 
 
 const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
-    const { adminData } = useAuth();
-    const classroomCode = adminData?.classroomCode ?? '';
-    const classroomName = adminData?.classroomName ?? '';
+    const { userData } = useAdminData();
+    const classroomCode = userData?.classroomCode ?? '';
+    const classroomName = userData?.classroomName ?? '';
 
     const initialFormData: Partial<Student> = {
         studentId: '',
@@ -206,7 +207,7 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
         }
     };
 
-    if (!adminData || !classroomCode || loading) {
+    if (!userData || !classroomCode || loading) {
         return <div className="text-center text-gray-500">読み込み中...</div>;
     }
 

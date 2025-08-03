@@ -9,16 +9,18 @@ import AdminLogin from './pages/AdminLogin.js';
 import TeacherLogin from './teacher/TeacherLogin.js';
 import CustomerLogin from './pages/CustomerLogin.js';
 import StudentLogin from './pages/StudentLogin.js';
-import TimetablePage from './common/timetable/TimetablePage.jsx';
-import CalendarPopup from './common/timetable/components/CalendarPopup.jsx';
+import TimetablePage from './common/timetable/TimetablePage';
+import CalendarPopup from './common/timetable/components/CalendarPopup';
 import DevLoginSelector from './pages/DevLoginSelector.jsx';
 import ProtectedRoute from './common/ProtectedRoute.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
 import TeacherChangePassword from './teacher/TeacherChangePassword.jsx';
 import ScheduleCalendarPage from './common/StudentsSchedule/ScheduleCalendarPage.jsx'
 import { ToastContainer } from 'react-toastify';
+import { useAdminData } from './contexts/providers/AdminDataProvider';
 
 const App: React.FC = () => {
+  const { classroomCode } = useAdminData();
   return (
     <>
       <Routes>
@@ -47,7 +49,7 @@ const App: React.FC = () => {
         <Route path="/teacher-login" element={<TeacherLogin />} />
         <Route path="/customer-login" element={<CustomerLogin />} />
         <Route path="/student-login" element={<StudentLogin />} />
-        <Route path="/calendar" element={<CalendarPopup />} />
+        <Route path="/calendar" element={<CalendarPopup classroomCode={classroomCode}/>} />
         <Route path="/customer/change-password" element={<ChangePassword />} />
         <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
         <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />

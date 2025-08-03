@@ -4,9 +4,17 @@ import StudentList from './StudentList';
 import periods from '../../periods';
 import useTeachers from '../../../contexts/hooks/useTeachers';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
+import { RowData } from '@contexts/types/timetable';
 
-export default function TimetableTable({ rows, onChange }) {
-  const { classroomCode } = useAuth();
+type Props = {
+  rows: RowData[];
+  onChange: (rowIdx: number, newRow: RowData) => void;
+  periodLabels: string[];
+};
+
+const TimetableTable: React.FC<Props> = ({ rows, onChange, periodLabels}) => {
+  const { classroomCode } = useAdminData();
   const { teachers } = useTeachers(classroomCode); // ← フックから取得
 
   return (
@@ -44,3 +52,4 @@ export default function TimetableTable({ rows, onChange }) {
     </div>
   );
 }
+export default TimetableTable;

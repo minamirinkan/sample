@@ -1,10 +1,17 @@
 import TimetableCell from './TimetableCell';
+import { TimetableRowProps } from '../../../contexts/types/timetablerow';
 
-export default function TimetableRow({ rowIndex, row, onChange, allTeachers, allRows }) {
+export default function TimetableRow({
+  rowIndex,
+  row,
+  onChange,
+  allTeachers,
+  allRows,
+}: TimetableRowProps) {
   // statusに基づいて振替・欠席・未定などの固定行かどうかを判断
   const isFixedRow = ['未定', '振替', '欠席'].includes(row.status);
 
-  const handleTeacherChange = (e) => {
+  const handleTeacherChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCode = e.target.value;
     const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
     const updatedTeacher = teacherObj
