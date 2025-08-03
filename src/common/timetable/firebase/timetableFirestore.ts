@@ -1,5 +1,4 @@
 // === Firestore の時間割取得・保存ユーティリティ ===
-
 import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import {
@@ -8,8 +7,14 @@ import {
   getYearMonthKey,
   getPreviousYearMonth
 } from '../../dateUtils';
+import { SelectedDate, TimetableRow } from '../../../contexts/types/data';
+import { LessonData, MakeupLessonRow, MakeupLessonStudent, LessonStudent } from '../../../contexts/types/makeuplesson';
+import { DocumentSnapshot, DocumentData } from 'firebase/firestore';
 
-function getWeeklyDocId(selectedDate, classroomCode) {
+export const getWeeklyDocId = async (
+  selectedDate: SelectedDate,
+  classroomCode: string,
+): Promise<string> => {
   const date = new Date(
     selectedDate.year,
     selectedDate.month - 1,
@@ -21,22 +26,40 @@ function getWeeklyDocId(selectedDate, classroomCode) {
   return `${classroomCode}_${yyyy}-${mm}_${weekdayIndex}`;
 }
 
-async function findLatestWeeklyDoc(selectedDate, classroomCode) {
+export const findLatestWeeklyDoc = async (
+  selectedDate: SelectedDate,
+  classroomCode: string,
+): Promise<string | null> => {
   const weekdayIndex = getWeekdayIndex(selectedDate);
-  let ym = getYearMonthKey(selectedDate);
+  let ym: string | null = getYearMonthKey(selectedDate);
   const maxLookback = 12;
   const ids = [];
-  for (let i = 0; i < maxLookback; i++) {
+  for (let i = 0; i < maxLookback && ym !== null; i++) {
     ids.push(`${classroomCode}_${ym}_${weekdayIndex}`);
-    ym = getPreviousYearMonth(ym);
+    const prevYm = getPreviousYearMonth(ym);
+    if (prevYm === null) break;
+    ym = prevYm;
   }
   const snaps = await Promise.all(
     ids.map(id => getDoc(doc(db, 'weeklySchedules', id)))
   );
-  return snaps.find(snap => snap.exists());
+  const latestSnap = snaps.find(snap => snap.exists());
+  if (!latestSnap) {
+    console.warn('No valid weeklySchedules document found');
+    return null;  // ← throw をやめて null を返す
+  }
+  return latestSnap.id;
 }
 
-export async function fetchTimetableData(selectedDate, classroomCode) {
+type FetchedTimetableResult = {
+  rows: any[]; // ← 適切な型に変更可
+  periodLabels: any[]; // ← 適切な型に変更可
+  classroomName: string;
+};
+export const fetchTimetableData = async (
+  selectedDate: SelectedDate,
+  classroomCode: string,
+): Promise<FetchedTimetableResult> => {
   const dateKey = getDateKey(selectedDate);
   const weeklyDocId = getWeeklyDocId(selectedDate, classroomCode);
   let classroomName = '';
@@ -48,7 +71,7 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
   let rows = [];
   if (selectedDate.type === 'date') {
     const dateStr = getDateKey(selectedDate); // 例: "2025-07-16"
-    const day = selectedDate.day ?? selectedDate.date;
+    const day = selectedDate.date;
     const dateObj = new Date(selectedDate.year, selectedDate.month - 1, day);
     const weekdayIndex = dateObj.getDay(); // 0=日, ..., 6=土
     const dailyDocId = `${classroomCode}_${dateStr}_${weekdayIndex}`;
@@ -57,18 +80,28 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
     if (dailySnap.exists()) {
       rows = parseData(dailySnap).rows;
     } else {
-      const fallbackSnap = await findLatestWeeklyDoc(selectedDate, classroomCode);
-      if (fallbackSnap) rows = parseData(fallbackSnap).rows;
+      const fallbackDocId = await findLatestWeeklyDoc(selectedDate, classroomCode);
+      if (fallbackDocId) {
+        const fallbackSnap = await getDoc(doc(db, 'weeklySchedules', fallbackDocId));
+        if (fallbackSnap.exists()) {
+          rows = parseData(fallbackSnap).rows;
+        }
+      }
+    }} else {
+      const weeklyDocId = await getWeeklyDocId(selectedDate, classroomCode);
+      const weeklySnap = await getDoc(doc(db, 'weeklySchedules', weeklyDocId));
+      if (weeklySnap.exists()) {
+        rows = parseData(weeklySnap).rows;
+      } else {
+        const fallbackDocId = await findLatestWeeklyDoc(selectedDate, classroomCode);
+        if (fallbackDocId) {
+          const fallbackSnap = await getDoc(doc(db, 'weeklySchedules', fallbackDocId));
+          if (fallbackSnap.exists()) {
+            rows = parseData(fallbackSnap).rows;
+          }
+        }
+      }
     }
-  } else {
-    const weeklySnap = await getDoc(doc(db, 'weeklySchedules', weeklyDocId));
-    if (weeklySnap.exists()) {
-      rows = parseData(weeklySnap).rows;
-    } else {
-      const fallbackSnap = await findLatestWeeklyDoc(selectedDate, classroomCode);
-      if (fallbackSnap) rows = parseData(fallbackSnap).rows;
-    }
-  }
 
   let periodLabels = [];
   const schoolLabelsSnap = await getDoc(doc(db, 'periodLabelsBySchool', classroomCode));
@@ -99,14 +132,20 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
         if (makeupRows.length === 0) {
           makeupRows.push({
             teacher: null,
-            periods: Array(8).fill().map(() => []),
+            periods: Array(8).fill(null).map(() => [] as MakeupLessonStudent[]),
             status: '振替'
           });
         }
-        for (const lesson of lessons) {
+        for (const lesson of lessons as LessonData[]) {
           const idx = lesson.period - 1;
-          if (!makeupRows[0].periods[idx].some(s => s.studentId === lesson.studentId && s.subject === lesson.subject)) {
-            makeupRows[0].periods[idx].push({
+
+          const alreadyExists = makeupRows[0].periods[idx].some(
+            (s: MakeupLessonStudent) =>
+              s.studentId === lesson.studentId && s.subject === lesson.subject
+          );
+
+          if (!alreadyExists) {
+            const student: MakeupLessonStudent = {
               studentId: lesson.studentId ?? '',
               grade: lesson.grade ?? '',
               name: lesson.name ?? '',
@@ -114,8 +153,9 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
               subject: lesson.subject ?? '',
               classType: lesson.classType ?? '',
               duration: lesson.duration ?? '',
-              status: '振替'
-            });
+              status: '振替',
+            };
+            makeupRows[0].periods[idx].push(student);
           }
         }
       }
@@ -141,12 +181,16 @@ export async function fetchTimetableData(selectedDate, classroomCode) {
   };
 }
 
-export async function saveTimetableData(selectedDate, classroomCode, rows) {
+export async function saveTimetableData(
+  selectedDate: SelectedDate,
+  classroomCode: string,
+  rows: TimetableRow[]
+): Promise<void> {
   const isDate = selectedDate.type === 'date';
   let docRef;
   if (isDate) {
     const dateStr = getDateKey(selectedDate); // "2025-07-16"
-    const day = selectedDate.day ?? selectedDate.date;
+    const day = selectedDate.date;
     const dateObj = new Date(selectedDate.year, selectedDate.month - 1, day);
     const weekdayIndex = dateObj.getDay(); // 0〜6
 
@@ -154,11 +198,11 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
     docRef = doc(db, 'dailySchedules', docId);
   }
   else {
-    const weeklyDocId = getWeeklyDocId(selectedDate, classroomCode);
+    const weeklyDocId = await getWeeklyDocId(selectedDate, classroomCode); // ← ✅ await を追加
     docRef = doc(db, 'weeklySchedules', weeklyDocId);
   }
 
-  const makeupStudents = [];
+  const makeupStudents: MakeupLessonStudent[] = [];
   const flattenedRows = rows.filter(row => {
     if (row.status === '振替') {
       row.periods.forEach((students, idx) => {
@@ -166,7 +210,8 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
           if (student?.studentId) {
             makeupStudents.push({
               ...student,
-              period: idx + 1
+              period: idx + 1,
+              status: '振替'
             });
           }
         });
@@ -176,7 +221,7 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
     return true;
   }).map((row) => {
     const rowStatus = row.status ?? '予定';
-    const flatPeriods = {};
+    const flatPeriods: Record<string, LessonStudent[]> = {};
     row.periods?.forEach((students, idx) => {
       flatPeriods[`period${idx + 1}`] = students.map(student => ({
         studentId: student?.studentId ?? '',
@@ -190,12 +235,17 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
       }));
     });
     return {
-      teacher: row.teacher && (row.teacher.code || row.teacher.name)
-        ? { code: row.teacher.code ?? '', name: row.teacher.name ?? '' }
-        : null,
+      teacher:
+        typeof row.teacher === 'object' && row.teacher !== null &&
+        ('code' in row.teacher || 'name' in row.teacher)
+          ? {
+              code: (row.teacher as any).code ?? '',
+              name: (row.teacher as any).name ?? ''
+            }
+          : null,
       periods: flatPeriods,
       status: rowStatus
-    };
+    };    
   });
 
   try {
@@ -211,7 +261,7 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
     try {
       const snap = await getDoc(makeupDocRef);
       const existingLessons = snap.exists() ? snap.data().lessons || [] : [];
-      const alreadyExists = existingLessons.some(l => l.period === student.period && l.studentId === student.studentId && l.subject === student.subject);
+      const alreadyExists = existingLessons.some((l: MakeupLessonStudent) => l.period === student.period && l.studentId === student.studentId && l.subject === student.subject);
       if (!alreadyExists) {
         existingLessons.push({
           period: student.period,
@@ -235,15 +285,16 @@ export async function saveTimetableData(selectedDate, classroomCode, rows) {
   }
 }
 
-function parseData(snap) {
+function parseData(snap: DocumentSnapshot): { rows: any[] } {
   const data = snap.data();
+  if (!data || !data.rows) return { rows: [] };
   return {
-    rows: data.rows.map((row) => {
+    rows: data.rows.map((row: TimetableRow) => {
       const periodsArray = [];
       for (let i = 1; i <= 8; i++) {
-        const periodKey = `period${i}`;
-        const students = row.periods?.[periodKey] || [];
-        periodsArray.push(students.map((s) => ({
+        const periodKey = `period${i}` as keyof TimetableRow['periods'];
+        const students = (row.periods?.[periodKey] ?? []) as MakeupLessonStudent[];
+        periodsArray.push(students.map((s: MakeupLessonStudent) => ({
           studentId: s.studentId ?? '',
           grade: s.grade ?? '',
           name: s.name ?? '',

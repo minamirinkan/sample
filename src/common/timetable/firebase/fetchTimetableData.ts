@@ -1,11 +1,21 @@
-// utils/timetable/fetchTimetableData.js
-
+// utils/timetable/fetchTimetableData.ts
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { getDateKey, getWeekdayIndex } from '../../dateUtils';
 import { parseTimetableSnapshot } from '../utils/parseTimetableSnapshot';
+import { RowData } from '@contexts/types/timetable';
+import { SelectedDate } from '@contexts/types/data';
 
-export async function fetchTimetableData(selectedDate, classroomCode) {
+
+export type TimetableData = {
+    rows: RowData[];
+    periodLabels: string[];
+    classroomName: string;
+  };
+  export async function fetchTimetableData(
+    selectedDate: SelectedDate,
+    classroomCode: string
+  ): Promise<TimetableData> {
     const dateKey = getDateKey(selectedDate);
 
     // === 教室名取得 ===

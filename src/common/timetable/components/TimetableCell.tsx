@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import StudentChip from './StudentChip';
+import { TimetableCellProps,RowData } from '../../../contexts/types/timetablerow';
+import { Student } from '../../../contexts/types/student';
+import { SchoolDataItem } from '../../../contexts/types/schoolData';
 
 export default function TimetableCell({
   periodIdx,
@@ -8,47 +11,53 @@ export default function TimetableCell({
   row,
   allRows,
   onChange,
-}) {
-  const [menuIndex, setMenuIndex] = useState(null);
+}: TimetableCellProps)  {
+  const [menuIndex, setMenuIndex] = useState<number | null>(null);
 
   const isFixedRow = ['振替', '欠席'].includes(row.status);
   const isUndecidedRow = row.status === '未定';
 
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuIndex(null); // 外をクリックしたら閉じる
       }
     };
-
+  
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  
 
-  const handleChange = (periodIdx, studentIdx, field, value) => {
+  const handleChange = (
+    periodIdx: number,
+    studentIdx: number,
+    field: string,
+    value: string | number | boolean
+  ) => {
     const newRow = JSON.parse(JSON.stringify(row));
     newRow.periods[periodIdx][studentIdx][field] = value;
     onChange(rowIndex, newRow);
   };
 
-  const handleRemoveClick = (studentIdx) => {
+  const handleRemoveClick = (studentIdx: number) => {
     setMenuIndex(studentIdx);
   };
 
-  const handleAction = (studentIdx, action) => {
+  const handleAction = (studentIdx: number, action: string) => {
     const student = row.periods[periodIdx][studentIdx];
     const newAllRows = JSON.parse(JSON.stringify(allRows));
     // 元の行から削除
     newAllRows[rowIndex].periods[periodIdx] = newAllRows[rowIndex].periods[periodIdx].filter(
-      (_, idx) => idx !== studentIdx
+      (_: Student, idx: number) => idx !== studentIdx
     );
 
     if (['振替', '欠席', '未定'].includes(action)) {
-      const targetRow = newAllRows.find(r => r.status === action);
+      const targetRow = newAllRows.find((r: RowData) => r.status === action);
       if (targetRow) {
         if (!Array.isArray(targetRow.periods[periodIdx])) {
           targetRow.periods[periodIdx] = [];
@@ -107,28 +116,29 @@ export default function TimetableCell({
           ) {
             newAllRows[fromRow].periods[fromPeriod] =
               newAllRows[fromRow].periods[fromPeriod].filter(
-                (s) => s.studentId !== student.studentId
+                (s: Student) => s.studentId !== student.studentId
               );
           }
           
           // ✅ 他の講師の同じ時限にいるかチェック
-          const existsInOtherRows = newAllRows.some((r, i) => {
+          const existsInOtherRows = newAllRows.some((r: RowData, i: number) => {
             if (i === rowIndex) return false;
-            return r.periods[periodIdx].some((s) => s.studentId === student.studentId);
+            return r.periods[periodIdx].some((s: Student) => s.studentId === student.studentId);
           });
           if (existsInOtherRows) {
             alert('他の講師の同じ時限にすでにいます');
             return;
           }
+       
       
           // ✅ classType に応じた制限チェック
           const droppedType = student.classType || '';
-          const currentTypes = currentStudents.map(s => s.classType);
+          const currentTypes = currentStudents.map((sd: SchoolDataItem) =>sd.classType || '');          
           const allTypes = [...currentTypes, droppedType];
           const uniqueTypes = Array.from(new Set(allTypes));
           const totalCount = currentStudents.length + 1;
       
-          const isOnly = (type) => uniqueTypes.length === 1 && uniqueTypes[0] === type;
+          const isOnly = (type: string) => uniqueTypes.length === 1 && uniqueTypes[0] === type;
       
           const isValidDrop =
             // 1名クラス → 単独 & 1名まで

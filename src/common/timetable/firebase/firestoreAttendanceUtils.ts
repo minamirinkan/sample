@@ -1,7 +1,9 @@
 import { doc, getDoc, updateDoc, collection, getDocs} from 'firebase/firestore';
 import { db } from '../../../firebase'; // Firebase初期化ファイルなど
+import { AttendanceRowData } from '../../../contexts/types/timetable';
+import { Student } from '../../../contexts/types/student';
 
-export async function confirmAttendanceStatus(classroomCode, date) {
+export async function confirmAttendanceStatus(classroomCode: string, date: string) {
     console.log('🧪 classroomCode:', classroomCode);
     console.log('🧪 date:', date);
     const docId = `${classroomCode}_${date}`;
@@ -19,9 +21,9 @@ export async function confirmAttendanceStatus(classroomCode, date) {
         throw new Error('時間割データの形式が不正です。');
     }
 
-    const updatedRows = data.rows.map(row => {
+    const updatedRows = data.rows.map((row: AttendanceRowData) => {
         // 生徒のステータスを更新
-        const updatedPeriods = {};
+        const updatedPeriods: Record<string, Student[]> = {};
         for (const periodKey of Object.keys(row.periods)) {
             updatedPeriods[periodKey] = row.periods[periodKey].map(student => {
                 if (student.status === '予定') {
@@ -52,9 +54,9 @@ export async function confirmAttendanceStatus(classroomCode, date) {
  * @param {string} classroomCode - 教室コード（例: "047"）
  * @returns {Promise<string[]>} - yyyy-mm-dd の文字列配列
  */
-export const fetchConfirmedAttendanceDatesFromDailySchedules = async (classroomCode) => {
+export const fetchConfirmedAttendanceDatesFromDailySchedules = async (classroomCode: string) => {
     const snapshot = await getDocs(collection(db, "dailySchedules"));
-    const confirmedDates = [];
+    const confirmedDates: string[] = [];
 
     snapshot.forEach(doc => {
         const docId = doc.id; // 例: "047_2025-07-04"
@@ -65,7 +67,7 @@ export const fetchConfirmedAttendanceDatesFromDailySchedules = async (classroomC
         const data = doc.data();
         const rows = data.rows || [];
 
-        const hasConfirmedAttendance = rows.some(row => {
+        const hasConfirmedAttendance = rows.some((row: AttendanceRowData) => {
             return row.periods && Object.values(row.periods).some(periodArray =>
                 Array.isArray(periodArray) &&
                 periodArray.some(p => p.status === "出席")

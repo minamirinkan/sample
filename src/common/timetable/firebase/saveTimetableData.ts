@@ -4,8 +4,14 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { getDateKey, getWeekdayIndex } from '../../dateUtils';
 import { flattenRows } from '../utils/flattenRows';
+import { SelectedDate } from '../../../contexts/types/data';
+import { RowData } from '../../../contexts/types/timetable';
 
-export async function saveTimetableData(selectedDate, classroomCode, rows) {
+export const saveTimetableData = async (
+    selectedDate: SelectedDate,
+    classroomCode: string,
+    rows: RowData[]
+  ): Promise<void> => {
     const isDate = selectedDate.type === 'date';
 
     let docRef;

@@ -5,7 +5,7 @@ export type Student = {
     uid?: string;
     studentId?: string;
     fullname: string;
-    fullnameKana: string; 
+    fullnameKana: string;
     lastName: string;
     firstName: string;
     lastNameKana: string;
@@ -46,4 +46,6 @@ export type Student = {
     registrationDate: Timestamp;
     courses?: any; // courses の詳細わからないので any にしておく。必要なら型定義追加
     courseFormData?: any;
+    originRow?: number;
+    originPeriod?: number;
 };

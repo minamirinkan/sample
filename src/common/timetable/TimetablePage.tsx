@@ -1,7 +1,7 @@
 //pages/TimetablePage.jsx
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext.tsx';
+import { useAuth } from '../../contexts/AuthContext';
 import TimetableTable from './components/TimetableTable';
 import CalendarPopup from './components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from './firebase/timetableFirestore';
@@ -10,21 +10,39 @@ import ConfirmAttendanceModal from '../modal/ConfirmAttendanceModal';
 import { formatDateDisplay } from '../dateUtils';
 import ConfirmOverwriteModal from '../modal/ConfirmOverwriteModal';
 import PDFButton from './pdf/components/PDFButton';
+import { useAdminData } from '../../contexts/providers/AdminDataProvider';
+import { Student } from '@contexts/types/student';
+import { DuplicateInfo,RowData } from '@contexts/types/timetable';
+import { DateInfo } from '@contexts/types/data';
 
 export default function TimetablePage() {
-  const { adminData } = useAuth();
+  const { userData } = useAuth();
+  useEffect(() => {
+    if (userData) {
+      console.log('userData:', userData);
+    } else {
+      console.log('userData is undefined or not loaded yet');
+    }
+  }, [userData]);
+  const {adminData,classroom}=useAdminData();
+  useEffect(() => {
+    console.log('classroom.name:', classroom.classroom.name);
+  }, [classroom]);
+  useEffect(() => {
+    console.log('classroom:', classroom);
+  }, [classroom]);
   const today = new Date();
 
-  const [selectedDate, setSelectedDate] = useState({
+  const [selectedDate, setSelectedDate] = useState<DateInfo>({
     year: today.getFullYear(),
     month: today.getMonth() + 1,
     date: today.getDate(),
     weekday: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'][today.getDay()],
-    type: 'date'
+    type: 'date',
   });
 
-  const [rows, setRows] = useState([
-    { teacher: '', periods: Array(8).fill([]).map(() => []) }
+  const [rows, setRows] = useState<RowData[]>([
+    { teacher: '', status: '予定', periods: Array(8).fill([]).map(() => []) }
   ]);
   const [classroomName, setClassroomName] = useState('');
   const [periodLabels, setPeriodLabels] = useState([]);
@@ -38,23 +56,23 @@ export default function TimetablePage() {
   const [isSaved, setIsSaved] = useState(false);
 
   const loadTimetableData = React.useCallback(async () => {
-    if (!adminData?.classroomCode) return;
+    if (!userData?.classroomCode) return;
 
-    const { rows, periodLabels, classroomName } = await fetchTimetableData(selectedDate, adminData.classroomCode);
+    const { rows, periodLabels, classroomName } = await fetchTimetableData(selectedDate, userData.classroomCode);
     setPeriodLabels(periodLabels ?? []);
     // ここでisSavedを判定
-    const saved = rows?.some(row => row.status === '出勤') ?? false;
+    const saved = rows?.some((row: RowData) => row.status === '出勤') ?? false;
     setIsSaved(saved);
 
     let finalRows;
     if (rows && rows.length > 0) {
-      const hasUndecided = rows.find(r => r.status === '未定');
-      const hasTransfer = rows.find(r => r.status === '振替');
-      const hasAbsent = rows.find(r => r.status === '欠席');
-      const normalRows = rows.filter(r => !['未定', '振替', '欠席'].includes(r.status));
+      const hasUndecided = rows.find((r: RowData) => r.status === '未定');
+      const hasTransfer = rows.find((r: RowData) => r.status === '振替');
+      const hasAbsent = rows.find((r: RowData) => r.status === '欠席');
+      const normalRows = rows.filter((r: RowData) => !['未定', '振替', '欠席'].includes(r.status));
 
       finalRows = [
-        ...normalRows.map(r => ({ ...r, status: '予定' })),
+        ...normalRows.map((r: RowData) => ({ ...r, status: '予定' })),
         hasUndecided || { status: '未定', teacher: null, periods: Array.from({ length: 8 }, () => []) },
         hasTransfer || { status: '振替', teacher: null, periods: Array.from({ length: 8 }, () => []) },
         hasAbsent || { status: '欠席', teacher: null, periods: Array.from({ length: 8 }, () => []) },
@@ -69,33 +87,33 @@ export default function TimetablePage() {
 
     setRows(finalRows);
     setClassroomName(classroomName);
-  }, [selectedDate, adminData?.classroomCode]);
+  }, [selectedDate, userData?.classroomCode]);
 
   useEffect(() => {
     loadTimetableData();
   }, [loadTimetableData]);
 
   useEffect(() => {
-    const handler = (e) => {
+    const handler = (e: CustomEvent<RowData[]>) => {
       setRows(e.detail);
     };
-    window.addEventListener('updateAllRows', handler);
-    return () => window.removeEventListener('updateAllRows', handler);
+    window.addEventListener('updateAllRows', handler as EventListener);
+    return () => window.removeEventListener('updateAllRows', handler as EventListener);
   }, []);
 
-  const [confirmedDates, setConfirmedDates] = useState([]);
+  const [confirmedDates, setConfirmedDates] = useState<string[]>([]);
 
   useEffect(() => {
     const loadConfirmedDates = async () => {
-      if (!adminData?.classroomCode) return;
-      const dates = await fetchConfirmedAttendanceDatesFromDailySchedules(adminData.classroomCode);
+      if (!userData?.classroomCode) return;
+      const dates = await fetchConfirmedAttendanceDatesFromDailySchedules(userData.classroomCode);
       setConfirmedDates(dates);
     };
 
     loadConfirmedDates();
-  }, [adminData?.classroomCode]);
+  }, [userData?.classroomCode]);
 
-  const changeDateBy = (days) => {
+  const changeDateBy = (days: number) => {
     const date = new Date(selectedDate.year, selectedDate.month - 1, selectedDate.date);
     date.setDate(date.getDate() + days);
     setSelectedDate({
@@ -107,13 +125,13 @@ export default function TimetablePage() {
     });
   };
 
-  const checkDuplicateStudentsPerPeriod = (rows) => {
-    const periodStudentMap = Array(8).fill(null).map(() => new Set());
-    const duplicates = [];
-
-    rows.forEach((row, rowIndex) => {
-      row.periods.forEach((students, periodIdx) => {
-        students.forEach((student) => {
+  const checkDuplicateStudentsPerPeriod = (rows: RowData[]): DuplicateInfo[] => {
+    const periodStudentMap: Set<string>[] = Array(8).fill(null).map(() => new Set<string>());
+    const duplicates: DuplicateInfo[] = [];
+  
+    rows.forEach((row: RowData, rowIndex: number) => {
+      row.periods.forEach((students: Student[], periodIdx: number) => {
+        students.forEach((student: Student) => {
           const id = student?.studentId;
           if (id) {
             if (periodStudentMap[periodIdx].has(id)) {
@@ -125,12 +143,12 @@ export default function TimetablePage() {
         });
       });
     });
-
+  
     return duplicates;
   };
 
   // モーダルで「はい」を押した後に実際に保存するための一時的な関数格納
-  const [pendingSave, setPendingSave] = useState(null);
+  const [pendingSave, setPendingSave] = useState<(() => Promise<void>) | null>(null);
 
   const handleClickSaveButton = () => {
     if (isSaved) {
@@ -144,7 +162,7 @@ export default function TimetablePage() {
   };
 
   const saveTimetable = async () => {
-    if (!adminData?.classroomCode) return;
+    if (!userData?.classroomCode) return;
 
     const duplicates = checkDuplicateStudentsPerPeriod(rows);
     if (duplicates.length > 0) {
@@ -157,7 +175,7 @@ export default function TimetablePage() {
       status: row.status || '予定'
     }));
 
-    await saveTimetableData(selectedDate, adminData.classroomCode, cleanedRows);
+    await saveTimetableData(selectedDate, userData.classroomCode, cleanedRows);
 
     alert(`${selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存しました！`);
     setIsSaved(false); // 修正後は再確定が必要
@@ -173,11 +191,11 @@ export default function TimetablePage() {
 
   // モーダルのOK押下 → 出席確定処理
   const onConfirmAttendance = async () => {
-    if (!adminData?.classroomCode) return;
+    if (!userData?.classroomCode) return;
     setIsProcessingConfirm(true);
     try {
       const formattedDate = `${selectedDate.year}-${String(selectedDate.month).padStart(2, '0')}-${String(selectedDate.date).padStart(2, '0')}`;
-      await confirmAttendanceStatus(adminData.classroomCode, formattedDate);
+      await confirmAttendanceStatus(userData.classroomCode, formattedDate);
       alert('出席を確定しました。');
       setIsConfirmModalOpen(false);
       await loadTimetableData(); // 再読み込みして最新状態反映
@@ -195,7 +213,7 @@ export default function TimetablePage() {
     return targetDate <= today;
   };
 
-  const updateRow = (rowIdx, newRow) => {
+  const updateRow = (rowIdx: number, newRow: RowData) => {
     const updated = [...rows];
     updated[rowIdx] = newRow;
     setRows(updated);
@@ -215,7 +233,7 @@ export default function TimetablePage() {
     <div className="p-6">
       <div className="flex items-center justify-center mb-4 space-x-4">
         <h1 className="text-2xl font-bold flex items-center space-x-2">
-          <span>時間割（{classroomName || '教室名取得中...'}）</span>
+          <span>時間割（{classroom.classroom.name || '教室名取得中...'}）</span>
           <span
             className={`text-sm px-2 py-1 rounded-full font-medium ${isSaved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
               }`}
@@ -227,7 +245,7 @@ export default function TimetablePage() {
         <CalendarPopup
           onDateSelect={setSelectedDate}
           confirmedDates={confirmedDates}
-          classroomCode={adminData?.classroomCode}  // ここを追加
+          classroomCode={userData?.classroomCode ?? null}  // ここを追加
         />
         <button
           onClick={() => changeDateBy(-1)}

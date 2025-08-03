@@ -1,9 +1,14 @@
 import React, { Component, createRef } from 'react';
 import { RiCalendarLine } from 'react-icons/ri';
 import { getFirestore, collection, onSnapshot, query, where, doc, getDoc } from 'firebase/firestore';
+import { CalendarPopupProps, CalendarPopupState } from '../../../contexts/types/CalendarPopup';
 
-class CalendarPopup extends Component {
-  constructor(props) {
+
+class CalendarPopup extends Component<CalendarPopupProps, CalendarPopupState> {
+  popupRef: React.RefObject<HTMLDivElement | null>;
+  unsubscribe?: () => void;
+
+  constructor(props: CalendarPopupProps) {
     super(props);
     const today = new Date();
     this.state = {
@@ -16,8 +21,9 @@ class CalendarPopup extends Component {
       savedDates: new Set(),
       holidayDates: new Set(),
     };
-    this.popupRef = createRef();
+    this.popupRef = createRef<HTMLDivElement>();
   }
+
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
@@ -30,11 +36,11 @@ class CalendarPopup extends Component {
     if (this.unsubscribe) this.unsubscribe();
   }
 
-  handleClickOutside = (event) => {
+  handleClickOutside = (event: MouseEvent) => {
     if (
       this.state.showCalendar &&
       this.popupRef.current &&
-      !this.popupRef.current.contains(event.target)
+      !this.popupRef.current.contains(event.target as Node)
     ) {
       this.setState({ showCalendar: false });
     }
@@ -60,7 +66,7 @@ class CalendarPopup extends Component {
     }, this.fetchClosuresFromFirestore);
   };
 
-  handleDateClick = (date) => {
+  handleDateClick = (date: number) => {
     const { year, month } = this.state;
     const selected = new Date(year, month, date);
     const weekdayNames = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
@@ -82,7 +88,7 @@ class CalendarPopup extends Component {
     }
   };
 
-  handleWeekdayClick = (weekdayIndex) => {
+  handleWeekdayClick = (weekdayIndex: number) => {
     const { year, month } = this.state;
     const weekdayNames = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'];
     const weekday = weekdayNames[weekdayIndex];
@@ -120,7 +126,7 @@ class CalendarPopup extends Component {
     );
 
     this.unsubscribe = onSnapshot(q, (snapshot) => {
-      const datesSet = new Set();
+      const datesSet = new Set<string>();
       snapshot.forEach((doc) => {
         const docId = doc.id;
         if (docId.startsWith(prefix)) {
@@ -146,7 +152,7 @@ class CalendarPopup extends Component {
   }
 
   const db = getFirestore();
-  const closuresSet = new Set();
+  const closuresSet = new Set<string>();
 
   const yearStr = this.state.year.toString();
 
@@ -159,7 +165,7 @@ class CalendarPopup extends Component {
       const data = closuresYearDocSnap.data();
       const closuresArray = data.closures || [];
 
-      closuresArray.forEach((closure) => {
+      closuresArray.forEach((closure: { date?: string }) => {
         if (closure.date) {
           closuresSet.add(closure.date);
         }
@@ -228,7 +234,9 @@ class CalendarPopup extends Component {
 
             <div className="grid grid-cols-7 text-center gap-y-1">
               {calendarCells.map((date, idx) => {
-                if (date === null) return <div key={idx} className="h-6" />;
+                if (date === null) {
+                  return <div key={`empty-${idx}`} className="w-8 h-8" />;
+                }
 
                 const fullDate = new Date(year, month, date);
                 const weekday = fullDate.getDay();

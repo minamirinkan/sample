@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase.js";
 import SuperAdminTeachers from "../../common/Teachers/SuperAdminTeachers.js";
-import TimetablePage from "../../common/timetable/TimetablePage.jsx";
+import TimetablePage from "../../common/timetable/TimetablePage";
 import SchoolAccountAdmin from "../../Superadmin/SchoolAccountAdmin.jsx";
 import StudentRegistrationForm from "../../common/Students/StudentRegistrationForm/StudentRegistrationForm";
 import TeacherRegistrationForm from "../../common/Teachers/RegistrationForm/TeacherRegistrationForm.jsx";
