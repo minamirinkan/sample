@@ -2,9 +2,27 @@ import { useEffect, useState } from 'react';
 import { db } from '../../../../../firebase';
 import { fetchLatestWeeklySchedule } from '../../../../../contexts/hooks/useLatestWeeklySchedule';
 
+type Props = {
+    classroomCode: string;
+    studentId: string;
+    studentName: string;
+    selectedMonth: string;
+};
 
-// 0（＝日）から始まる曜日マップ
-const WEEKDAY_MAP = {
+type LessonEntry = {
+    status: string;
+    weekday: string;
+    period: string;
+    subject: string;
+    teacher: string;
+    note: string;
+    date: string;
+    periodLabel: string;
+    teacherCode: string;
+    subjectCode: string;
+};
+
+const WEEKDAY_MAP: Record<number, string> = {
     0: '日',
     1: '月',
     2: '火',
@@ -14,7 +32,7 @@ const WEEKDAY_MAP = {
     6: '土',
 };
 
-const PERIOD_MAP = {
+const PERIOD_MAP: Record<string, string> = {
     period1: '1限',
     period2: '2限',
     period3: '3限',
@@ -25,15 +43,14 @@ const PERIOD_MAP = {
     period8: '8限',
 };
 
-const RegularLessonTable = ({ classroomCode, studentId, selectedMonth }) => {
-    const [lessons, setLessons] = useState([]);
-    const [loading, setLoading] = useState(true); // 追加
+const RegularLessonTable: React.FC<Props> = ({ classroomCode, studentId, selectedMonth }) => {
+    const [lessons, setLessons] = useState<LessonEntry[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchLessons = async () => {
-            setLoading(true);  // 読み込み開始
-
-            const extracted = [];
+            setLoading(true);
+            const extracted: LessonEntry[] = [];
 
             for (let weekday = 0; weekday <= 6; weekday++) {
                 const data = await fetchLatestWeeklySchedule(db, classroomCode, selectedMonth, weekday);
@@ -42,10 +59,10 @@ const RegularLessonTable = ({ classroomCode, studentId, selectedMonth }) => {
                 const weekdayLabel = WEEKDAY_MAP[weekday] || '不明';
                 const { rows } = data;
 
-                rows.forEach((row) => {
+                rows.forEach((row: any) => {
                     const { periods, teacher } = row;
 
-                    Object.entries(periods).forEach(([periodKey, students]) => {
+                    Object.entries(periods as Record<string, any[]>).forEach(([periodKey, students]) => {
                         students.forEach((studentEntry) => {
                             if (studentEntry.studentId === studentId) {
                                 extracted.push({
@@ -55,6 +72,10 @@ const RegularLessonTable = ({ classroomCode, studentId, selectedMonth }) => {
                                     subject: studentEntry.subject,
                                     teacher: teacher?.name || '未定',
                                     note: '',
+                                    date: '',
+                                    periodLabel: '',
+                                    teacherCode: '',
+                                    subjectCode: '',
                                 });
                             }
                         });
@@ -63,7 +84,7 @@ const RegularLessonTable = ({ classroomCode, studentId, selectedMonth }) => {
             }
 
             setLessons(extracted);
-            setLoading(false);  // 読み込み終了
+            setLoading(false);
         };
 
         fetchLessons();

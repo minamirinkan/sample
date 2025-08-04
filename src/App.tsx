@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import React from 'react';
 import SuperAdminLogin from './pages/SuperAdminLogin.js';
 import SuperAdminDashboard from "./Superadmin/Dashboard/SuperAdminDashboard";
@@ -11,7 +11,7 @@ import CustomerLogin from './pages/CustomerLogin.js';
 import StudentLogin from './pages/StudentLogin.js';
 import TimetablePage from './common/timetable/TimetablePage.jsx';
 import CalendarPopup from './common/timetable/components/CalendarPopup.jsx';
-import DevLoginSelector from './pages/DevLoginSelector.jsx';
+import DevLoginSelector from './pages/DevLoginSelector';
 import ProtectedRoute from './common/ProtectedRoute.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
 import TeacherChangePassword from './teacher/TeacherChangePassword.jsx';
@@ -22,7 +22,7 @@ const App: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<DevLoginSelector />} />
+        <Route path="/" element={<Navigate to="/dev-login" />} />
         <Route
           path="/superadmin/dashboard"
           element={
@@ -51,6 +51,7 @@ const App: React.FC = () => {
         <Route path="/customer/change-password" element={<ChangePassword />} />
         <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
         <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
+        <Route path="/dev-login" element={<DevLoginSelector />} />
       </Routes>
       <ToastContainer
         position="top-center"

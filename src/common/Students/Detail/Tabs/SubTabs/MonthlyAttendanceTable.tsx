@@ -1,21 +1,32 @@
 import React from 'react';
+import { useState } from 'react';
 import AttendanceSubTable from './AttendanceSubTable';
 import useTeachers from '../../../../../contexts/hooks/useTeachers';
 import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';
-import {useStudentAttendance} from '../../../../../contexts/hooks/useStudentAttendance';
-import {useAttendanceEdit} from '../../../../../contexts/hooks/useAttendanceEdit';
+import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance';
+import { useAttendanceEdit } from '../../../../../contexts/hooks/useAttendanceEdit';
 
-const MonthlyAttendanceTable = ({ classroomCode, studentId, studentName, selectedMonth }) => {
+type Props = {
+    classroomCode: string;
+    studentId: string;
+    studentName: string;
+    selectedMonth: string;
+};
+
+const MonthlyAttendanceTable: React.FC<Props> = ({
+    classroomCode,
+    studentId,
+    studentName,
+    selectedMonth,
+}) => {
     const { teachers } = useTeachers();
     const { periodLabels } = usePeriodLabels(classroomCode);
 
     // 通常の出席データを取得
     const { loading, attendanceList, setAttendanceList } = useStudentAttendance(classroomCode, studentId, selectedMonth);
-
+    const [editingIndexRegular, setEditingIndexRegular] = useState<number | null>(null);
     // 編集用フック
     const {
-        editingIndexRegular,
-        setEditingIndexRegular,
         editValues,
         setEditValues,
         handleChange,
@@ -23,12 +34,13 @@ const MonthlyAttendanceTable = ({ classroomCode, studentId, studentName, selecte
         regularList,
     } = useAttendanceEdit(attendanceList, setAttendanceList, periodLabels, teachers, classroomCode, studentName);
 
-    const statusStyles = {
+    const statusStyles: Record<string, string> = {
         '未定': 'bg-blue-100 text-blue-800',
         '欠席': 'bg-red-100 text-red-800',
         '出席': 'bg-gray-100 text-gray-800',
     };
-    const getStatusClass = (status) => statusStyles[status] || '';
+
+    const getStatusClass = (status: string) => statusStyles[status] || '';
 
     if (loading) {
         return <p>読み込み中...</p>;
@@ -56,6 +68,11 @@ const MonthlyAttendanceTable = ({ classroomCode, studentId, studentName, selecte
                 handleSaveClick={() => handleSaveClick('regular')}
                 getStatusClass={getStatusClass}
                 periodLabels={periodLabels}
+                classroomCode={classroomCode}
+                studentId={studentId}
+                studentName={studentName}
+                selectedMonth={selectedMonth}
+                mode="regular"
             />
         </div>
     );

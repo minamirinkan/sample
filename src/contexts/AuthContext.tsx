@@ -4,18 +4,13 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { getUserDataByRole } from "./utils/getUserDataByRole";
 import { UserRole, UserData } from "./types/user";
-
-type AuthContextType = {
-    user: any | null;
-    role: UserRole;
-    userData: UserData | null;
-    loading: boolean;
-};
+import { AuthContextType } from "./types/auth";
 
 const AuthContext = createContext<AuthContextType>({
     user: null,
     role: null,
     userData: null,
+    classroomCode: null,
     loading: true,
 });
 
@@ -54,7 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, role, userData, loading }}>
+        <AuthContext.Provider value={{ user, role, userData, classroomCode: userData?.classroomCode ?? null, loading }}>
             {children}
         </AuthContext.Provider>
     );

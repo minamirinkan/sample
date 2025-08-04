@@ -1,19 +1,32 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-const SchoolInfoSection = ({ schoolData, onChange }) => {
-    const handleChange = (field, value) => {
-        onChange({ [field]: value }); // ← 全体ではなく1項目だけ返す
+type SchoolData = {
+    schoolingStatus?: '未就学児' | '在学生' | '既卒生';
+    schoolType?: '国立' | '公立' | '私立' | '通信制';
+    schoolLevel?: '小学校' | '中学校' | '高等学校';
+    schoolName?: string;
+    schoolKana?: string;
+    grade?: string;
+};
+
+type SchoolInfoSectionProps = {
+    schoolData: SchoolData;
+    onChange: (changedField: Partial<SchoolData>) => void;
+};
+
+const SchoolInfoSection: React.FC<SchoolInfoSectionProps> = ({ schoolData, onChange }) => {
+    const handleChange = (field: keyof SchoolData, value: any) => {
+        onChange({ [field]: value });
     };
 
-    const schoolingStatuses = ['未就学児', '在学生', '既卒生'];
-    const schoolTypes = ['国立', '公立', '私立', '通信制'];
-    const schoolLevels = ['小学校', '中学校', '高等学校'];
+    const schoolingStatuses = ['未就学児', '在学生', '既卒生'] as const;
+    const schoolTypes = ['国立', '公立', '私立', '通信制'] as const;
+    const schoolLevels = ['小学校', '中学校', '高等学校'] as const;
     const schoolGrades = [
         '小1', '小2', '小3', '小4', '小5', '小6',
         '中1', '中2', '中3',
         '高1', '高2', '高3'
-    ];
+    ] as const;
 
     const isUnenrolled = schoolData.schoolingStatus === '未就学児';
     const isGraduated = schoolData.schoolingStatus === '既卒生';
@@ -21,7 +34,7 @@ const SchoolInfoSection = ({ schoolData, onChange }) => {
 
     useEffect(() => {
         if (schoolData.schoolingStatus === '既卒生') {
-            onChange({ grade: '既卒' }); // ← ここもトップレベルgrade
+            onChange({ grade: '既卒' });
         }
     }, [schoolData.schoolingStatus, onChange]);
 

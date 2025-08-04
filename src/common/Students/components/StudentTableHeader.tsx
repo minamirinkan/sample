@@ -1,5 +1,6 @@
-// src/components/StudentTableHeader.js
-const StudentTableHeader = () => (
+import React from 'react';
+
+const StudentTableHeader: React.FC = () => (
     <thead>
         <tr className="bg-gray-100 text-sm">
             <th className="border px-4 py-2 text-center">選択</th>
