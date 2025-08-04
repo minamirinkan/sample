@@ -12,9 +12,22 @@ import ConfirmOverwriteModal from '../modal/ConfirmOverwriteModal';
 import PDFButton from './pdf/components/PDFButton';
 import { useAdminData } from '../../contexts/providers/AdminDataProvider';
 import { Student } from '@contexts/types/student';
-import { DuplicateInfo,RowData } from '@contexts/types/timetable';
-import { DateInfo } from '@contexts/types/data';
+import { DuplicateInfo } from '@contexts/types/timetable';
+import { RowData } from '@contexts/types/timetablerow';
+import { DateInfo, TimetableRow,TimetableStudent } from '@contexts/types/data';
 
+function toTimetableStudent(student: any): TimetableStudent {
+  return {
+    studentId: student.studentId ?? '',
+    grade: student.grade ?? '',
+    name: student.name ?? '',
+    seat: student.seat ?? '',
+    subject: student.subject ?? '',
+    classType: student.classType ?? '',
+    duration: student.duration,
+    status: student.status ?? '予定',
+  };
+}
 export default function TimetablePage() {
   const { userData } = useAuth();
   useEffect(() => {
@@ -42,10 +55,11 @@ export default function TimetablePage() {
   });
 
   const [rows, setRows] = useState<RowData[]>([
-    { teacher: '', status: '予定', periods: Array(8).fill([]).map(() => []) }
+    { teacher: null, status: '予定', periods: Array(8).fill([]).map(() => []) }
   ]);
   const [classroomName, setClassroomName] = useState('');
-  const [periodLabels, setPeriodLabels] = useState([]);
+  const [periodLabels, setPeriodLabels] = useState<string[]>([]);
+
 
   // 追加: モーダル開閉と処理中フラグ
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -170,10 +184,15 @@ export default function TimetablePage() {
       return;
     }
 
-    const cleanedRows = rows.map(row => ({
-      ...row,
-      status: row.status || '予定'
+    const cleanedRows: TimetableRow[] = rows.map(row => ({
+      status: row.status || '予定',
+      teacher: row.teacher ?? null,
+      periods: row.periods.map(period =>
+        period.map(toTimetableStudent)
+      ),
     }));
+    
+    
 
     await saveTimetableData(selectedDate, userData.classroomCode, cleanedRows);
 
@@ -229,6 +248,18 @@ export default function TimetablePage() {
     ]);
   };
 
+  const handleDateSelect = (info: {
+    type: 'date' | 'weekday';
+    year: number;
+    month: number;
+    date?: number;
+    weekday: string;
+  }) => {
+    setSelectedDate({
+      ...info,
+      date: info.date ?? 1, // fallback 例
+    });
+  };
   return (
     <div className="p-6">
       <div className="flex items-center justify-center mb-4 space-x-4">
@@ -243,7 +274,7 @@ export default function TimetablePage() {
         </h1>
         <span className="text-gray-700 text-sm">{formatDateDisplay(selectedDate)}</span>
         <CalendarPopup
-          onDateSelect={setSelectedDate}
+          onDateSelect={handleDateSelect}
           confirmedDates={confirmedDates}
           classroomCode={userData?.classroomCode ?? null}  // ここを追加
         />
