@@ -3,7 +3,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import { getDateKey, getWeekdayIndex } from '../../dateUtils';
 import { parseTimetableSnapshot } from '../utils/parseTimetableSnapshot';
-import { RowData } from '@contexts/types/timetable';
+import { RowData } from '@contexts/types/timetablerow';
 import { SelectedDate } from '@contexts/types/data';
 
 

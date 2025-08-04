@@ -5,7 +5,7 @@ import { db } from '../../../firebase';
 import { getDateKey, getWeekdayIndex } from '../../dateUtils';
 import { flattenRows } from '../utils/flattenRows';
 import { SelectedDate } from '../../../contexts/types/data';
-import { RowData } from '../../../contexts/types/timetable';
+import { RowData } from '../../../contexts/types/timetablerow';
 
 export const saveTimetableData = async (
     selectedDate: SelectedDate,
