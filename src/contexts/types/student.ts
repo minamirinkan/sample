@@ -15,9 +15,9 @@ export type Student = {
     grade: string;
     schoolName: string;
     schoolKana: string;
-    schoolLevel: string;
-    schoolType: string;
-    schoolingStatus: string;
+    schoolLevel: '小学校' | '中学校' | '高等学校' | '';
+    schoolType: '国立' | '公立' | '私立' | '通信制' | '';
+    schoolingStatus?: '未就学児' | '在学生' | '既卒生' | '';
     classroomCode: string;
     classroomName: string;
     customerUid: string;
@@ -46,4 +46,5 @@ export type Student = {
     registrationDate: Timestamp;
     courses?: any; // courses の詳細わからないので any にしておく。必要なら型定義追加
     courseFormData?: any;
+    billingStatus?: string;
 };

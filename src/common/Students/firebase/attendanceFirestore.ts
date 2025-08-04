@@ -1,7 +1,7 @@
-//utils/firebase/attendanceFirestore.js
-import { doc, getDoc, setDoc, getFirestore, serverTimestamp } from 'firebase/firestore';
+// src/utils/firebase/attendanceFirestore.ts
+import { doc, getDoc, setDoc, getFirestore, serverTimestamp, DocumentData } from 'firebase/firestore';
 
-export const buildWeeklyDocId = (classroomCode, date) => {
+export const buildWeeklyDocId = (classroomCode: string, date: string | Date): string => {
     const d = new Date(date);
     const weekday = d.getDay();
     const year = d.getFullYear();
@@ -9,29 +9,43 @@ export const buildWeeklyDocId = (classroomCode, date) => {
     return `${classroomCode}_${year}-${month}_${weekday}`;
 };
 
-export const buildDailyDocId = (classroomCode, dateStr) => {
-    const d = new Date(dateStr); // 例: "2025-07-16"
-    const weekday = d.getDay();  // 0 = 日曜
+export const buildDailyDocId = (classroomCode: string, dateStr: string | Date): string => {
+    const d = new Date(dateStr);
+    const weekday = d.getDay();
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const dd = String(d.getDate()).padStart(2, '0');
     return `${classroomCode}_${yyyy}-${mm}-${dd}_${weekday}`;
 };
-export const getPeriodKey = (periodLabels, label) => {
+
+export type PeriodLabel = {
+    label: string;
+    // 他に必要なフィールドがあれば追加
+};
+
+export const getPeriodKey = (periodLabels: PeriodLabel[], label: string): string => {
     console.log('label:', label);
-    console.warn('⚠️ 無効な periodLabel:', label);
     const index = periodLabels.findIndex(p => p.label === label);
+    if (index === -1) {
+        console.warn('⚠️ 無効な periodLabel:', label);
+        return '';
+    }
     return `period${index + 1}`;
 };
 
-export async function fetchScheduleDoc(collection, docId) {
+export async function fetchScheduleDoc(collection: string, docId: string): Promise<DocumentData | null> {
     const db = getFirestore();
     const docRef = doc(db, collection, docId);
     const snap = await getDoc(docRef);
     return snap.exists() ? snap.data() : null;
 }
 
-export async function createScheduleFromWeeklyTemplate(collection, docId, weeklyRefId, initialData) {
+export async function createScheduleFromWeeklyTemplate(
+    collection: string,
+    docId: string,
+    weeklyRefId: string,
+    initialData: Record<string, any>
+): Promise<DocumentData | null> {
     const db = getFirestore();
     const docRef = doc(db, collection, docId);
     await setDoc(docRef, {
@@ -42,10 +56,10 @@ export async function createScheduleFromWeeklyTemplate(collection, docId, weekly
     return await fetchScheduleDoc(collection, docId);
 }
 
-export async function saveScheduleDoc(collection, docId, data) {
+export async function saveScheduleDoc(collection: string, docId: string, data: Record<string, any>): Promise<void> {
     const db = getFirestore();
     const docRef = doc(db, collection, docId);
-    console.log("📝 保存前のデータ:", data); // ←ここでログを出す
+    console.log("📝 保存前のデータ:", data);
     await setDoc(docRef, {
         ...data,
         updatedAt: serverTimestamp(),
@@ -53,13 +67,26 @@ export async function saveScheduleDoc(collection, docId, data) {
     console.log("Saved doc:", docRef.path, data);
 }
 
-export async function saveMakeupLesson(studentId, docId, lessonData) {
+export type LessonData = {
+    student: {
+        grade?: string;
+        name?: string;
+        seat?: string;
+        studentId?: string;
+        subject?: string;
+        classType?: string;
+        duration?: string;
+    };
+    periodKey: string;
+    status?: string;
+};
+
+export async function saveMakeupLesson(studentId: string, docId: string, lessonData: LessonData): Promise<void> {
     const db = getFirestore();
     const docRef = doc(db, 'students', studentId, 'makeupLessons', docId);
 
-    // 既存データの取得
     const docSnap = await getDoc(docRef);
-    let existingLessons = [];
+    let existingLessons: any[] = [];
 
     if (docSnap.exists()) {
         const data = docSnap.data();
@@ -68,29 +95,26 @@ export async function saveMakeupLesson(studentId, docId, lessonData) {
 
     console.log('🧪 lessonData:', lessonData);
 
-    // `student` フィールドがネストされたままなら、lessonData.student を展開
     const lesson = {
         grade: lessonData.student.grade || '',
         name: lessonData.student.name || '',
-        period: parseInt(lessonData.periodKey.replace('period', ''), 10), // 例: period2 → 2
+        period: parseInt(lessonData.periodKey.replace('period', ''), 10),
         seat: lessonData.student.seat || '',
         status: lessonData.status || '',
         studentId: lessonData.student.studentId || '',
         subject: lessonData.student.subject || '',
-        classType: lessonData.student.classType || '',   // ← 追加
+        classType: lessonData.student.classType || '',
         duration: lessonData.student.duration || '',
     };
 
-    // 配列に追加
     const updatedLessons = [...existingLessons, lesson];
 
-    // 保存
     await setDoc(docRef, {
         lessons: updatedLessons,
     }, { merge: true });
 }
 
-export async function fetchMakeupLessonDoc(studentId, docId) {
+export async function fetchMakeupLessonDoc(studentId: string, docId: string): Promise<DocumentData | null> {
     const db = getFirestore();
     const docRef = doc(db, 'students', studentId, 'makeupLessons', docId);
     const snapshot = await getDoc(docRef);

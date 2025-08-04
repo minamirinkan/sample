@@ -1,12 +1,18 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import StudentTableHeader from './StudentTableHeader';
 import StudentRow from './StudentRow';
 import PaginationControls from '../../PaginationControls';
+import { Student } from '../../../contexts/types/student';
 
-const StudentTable = ({ students, onShowDetail }) => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-    const [selectedIds, setSelectedIds] = useState([]);
+type Props = {
+    students: Student[];
+    onShowDetail: (student: Student) => void;
+};
+
+const StudentTable: React.FC<Props> = ({ students, onShowDetail }) => {
+    const [currentPage, setCurrentPage] = useState < number > (1);
+    const [itemsPerPage, setItemsPerPage] = useState < number > (10);
+    const [selectedIds, setSelectedIds] = useState < string[] > ([]);
 
     const totalPages = Math.ceil(students.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -17,18 +23,16 @@ const StudentTable = ({ students, onShowDetail }) => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [currentPage, itemsPerPage]);
 
-    const handleItemsPerPageChange = (e) => {
+    const handleItemsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
         setItemsPerPage(Number(e.target.value));
         setCurrentPage(1);
     };
 
-    const handleCheckboxChange = (id) => {
+    const handleCheckboxChange = (id: string) => {
         setSelectedIds((prev) =>
             prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
         );
     };
-console.log('students:', students);
-console.log('currentStudents:', currentStudents);
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md">
@@ -55,7 +59,7 @@ console.log('currentStudents:', currentStudents);
                         <StudentRow
                             key={student.id}
                             student={student}
-                            isSelected={selectedIds.includes(student.id)}
+                            isSelected={selectedIds.includes(student.id ?? '')}
                             onSelect={handleCheckboxChange}
                             onShowDetail={onShowDetail}
                         />

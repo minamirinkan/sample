@@ -3,22 +3,34 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext'; // ✅ 追加
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
-import StudentSearchForm from './components/StudentSearchForm.js';
+import StudentSearchForm from './components/StudentSearchForm';
 import Breadcrumb from './components/Breadcrumb';
-import StudentTable from '../../common/Students/components/StudentTable.js';
-import { filterStudents } from '../../common/Students/components/filterStudents.js';
-import StudentDetail from '../../common/Students/Detail/StudentDetail.js';
+import StudentTable from './components/StudentTable';
+import { filterStudents } from './components/filterStudents';
+import StudentDetail from './Detail/StudentDetail';
+import { Student } from '../../contexts/types/student';
+import { Customer } from '../../contexts/types/customer';
 
+type SuperAdminStudentsProps = {
+    onAddNewStudent: () => void;
+};
 
-const SuperAdminStudents = ({ onAddNewStudent }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [students, setStudents] = useState([]);
-    const [filteredStudents, setFilteredStudents] = useState([]);
-    const breadcrumbItems = ['生徒マスタ', '一覧'];
-    const { adminData } = useAuth();
-    const classroomCode = adminData?.classroomCode || '';
-    const [view, setView] = useState('list'); // 'list', 'detail', 'form'
-    const [selectedStudentDetail, setSelectedStudentDetail] = useState(null);
+type ViewMode = 'list' | 'detail' | 'form';
+
+const SuperAdminStudents: React.FC<SuperAdminStudentsProps> = ({ onAddNewStudent }) => {
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [students, setStudents] = useState<Student[]>([]);
+    const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+    const [view, setView] = useState<ViewMode>('list');
+    const [selectedStudentDetail, setSelectedStudentDetail] = useState<{
+        student: Student;
+        customer: Customer | null;
+    } | null>(null);
+
+    const breadcrumbItems: string[] = ['生徒マスタ', '一覧'];
+
+    const { userData } = useAuth() as { userData: { classroomCode: string } };
+    const classroomCode = userData?.classroomCode || '';
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +47,7 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
                     return {
                         id: doc.id,
                         ...data,
-                    };
+                    } as Student;
                 });
                 setStudents(studentData);
             } catch (error) {
@@ -48,18 +60,18 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
 
     useEffect(() => {
         setFilteredStudents(filterStudents(students, searchTerm));
-    }, [searchTerm, students]); // ← フィルター専用
+    }, [searchTerm, students]);
 
-    const handleShowDetail = async (student) => {
-        console.log('選択されたstudent:', student); // ← ここで表示！
+    const handleShowDetail = async (student: Student) => {
+        console.log('選択されたstudent:', student);
         try {
-            let customerData = null;
+            let customerData: Customer | null = null;
 
             if (student.customerUid) {
                 const customerRef = doc(db, 'customers', student.customerUid);
                 const customerSnap = await getDoc(customerRef);
                 if (customerSnap.exists()) {
-                    customerData = { id: customerSnap.id, ...customerSnap.data() };
+                    customerData = customerSnap.data() as Customer;
                 }
             }
 
@@ -75,12 +87,11 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
         setView('list');
     };
 
-    const handleSearch = (term) => {
+    const handleSearch = (term: string) => {
         setSearchTerm(term);
     };
 
     return (
-        console.log('superstudents:', filteredStudents),
         <>
             {view === 'list' && (
                 <div className="space-y-4">
@@ -96,7 +107,6 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
 
                     <StudentSearchForm onSearch={handleSearch} />
                     <StudentTable students={filteredStudents} onShowDetail={handleShowDetail} />
-
                 </div>
             )}
 
@@ -104,7 +114,7 @@ const SuperAdminStudents = ({ onAddNewStudent }) => {
                 <StudentDetail
                     student={selectedStudentDetail.student}
                     customer={selectedStudentDetail.customer}
-                    classroomCode={classroomCode} // ← ここで渡す！
+                    classroomCode={classroomCode}
                     onBack={handleBackToList}
                 />
             )}

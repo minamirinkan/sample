@@ -1,16 +1,23 @@
 import React from 'react';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import { formatDate } from '../../dateFormatter';
+import { Student } from '../../../contexts/types/student';
 
-const StudentRow = ({ student, isSelected, onSelect, onShowDetail }) => {
-    console.log('student:', student);
+type Props = {
+    student: Student;
+    isSelected: boolean;
+    onSelect: (id: string) => void;
+    onShowDetail: (student: Student) => void;
+};
+
+const StudentRow: React.FC<Props> = ({ student, isSelected, onSelect, onShowDetail }) => {
     return (
         <tr className="hover:bg-gray-50 text-sm">
             <td className="border px-4 py-2">
                 <input
                     type="checkbox"
                     checked={isSelected}
-                    onChange={() => onSelect(student.id)}
+                    onChange={() => onSelect(student.id ?? '')}
                 />
             </td>
             <td className="border px-4 py-2">{student.studentId}</td>

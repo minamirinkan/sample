@@ -1,5 +1,5 @@
 // src/components/StudentRegistrationForm/StudentRegistrationForm.tsx
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../firebase/saveCustomerAndStudent';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -12,15 +12,14 @@ import SchoolInfoSection from './components/SchoolInfoSection';
 import AddressInfoSection from './components/AddressInfoSection';
 import { Student } from '../../../contexts/types/student';
 import { SchoolDataItem } from '../../../contexts/types/schoolData';
-import { Timestamp, FieldValue } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
-
-
+import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
 const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
-    const { adminData } = useAuth();
-    const classroomCode = adminData?.classroomCode ?? '';
-    const classroomName = adminData?.classroomName ?? '';
+    const { userData } = useAdminData();
+    const classroomCode = userData?.classroomCode ?? '';
+    const classroomName = userData?.classroomName ?? '';
 
     const initialFormData: Partial<Student> = {
         studentId: '',
@@ -206,7 +205,7 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
         }
     };
 
-    if (!adminData || !classroomCode || loading) {
+    if (!userData || !classroomCode || loading) {
         return <div className="text-center text-gray-500">読み込み中...</div>;
     }
 
@@ -220,7 +219,7 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 <div className="w-full md:w-1/2 space-y-4">
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                         <InternalInfoSection
-                            lessonType={lessonType}
+                            lessonType={'regular' as 'regular' | 'nonRegular'}
                             formData={formData}
                             onChange={handleChange}
                             onLessonTypeChange={handleLessonTypeChange}
@@ -243,9 +242,9 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                         <SchoolInfoSection
                             schoolData={{
-                                schoolingStatus: formData.schoolingStatus,
-                                schoolType: formData.schoolType,
-                                schoolLevel: formData.schoolLevel,
+                                schoolingStatus: formData.schoolingStatus || undefined,
+                                schoolType: formData.schoolType || undefined,
+                                schoolLevel: formData.schoolLevel || undefined,
                                 schoolName: formData.schoolName,
                                 schoolKana: formData.schoolKana,
                                 grade: formData.grade,
