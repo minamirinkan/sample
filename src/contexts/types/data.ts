@@ -11,7 +11,7 @@ export type DateInfo = {
     type: "date" | "weekday";
     year: number;
     month: number;
-    date?: number;  // ❗undefined 許容
+    date: number;  // ❗undefined 許容
     weekday: string;
   };
   export interface TimetableStudent {
@@ -26,7 +26,7 @@ export type DateInfo = {
   }
   
   export interface TimetableRow {
-    teacher: string | null;
+    teacher: { code: string; name: string } | null;
     periods: TimetableStudent[][];
     status: string;
   }

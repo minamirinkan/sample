@@ -305,7 +305,7 @@ function parseData(snap: DocumentSnapshot): { rows: any[] } {
         })));
       }
       return {
-        teacher: row.teacher || null,
+        teacher: row.teacher ?? null,
         periods: periodsArray,
         status: row.status || '予定'
       };
