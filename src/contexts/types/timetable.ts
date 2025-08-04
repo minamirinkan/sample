@@ -1,10 +1,6 @@
 import { Student } from './student'; // すでにあるStudent型を再利用
 import { Teacher } from './teacher';
-export type RowData = {
-  teacher: string | null;
-  status: string;
-  periods: Student[][];
-};
+import { RowData } from './timetablerow';
 
 export type AttendanceRowData = {
   teacher: string | null;
@@ -17,6 +13,7 @@ export type DuplicateInfo = {
     period: number;
   };
 
+  
   export type TimetableRowProps = {
     rowIndex: number;
     row: RowData;
