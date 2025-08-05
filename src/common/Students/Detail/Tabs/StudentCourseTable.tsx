@@ -1,8 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { collection, query, where, getDocs, addDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import React, { useEffect, useState, ChangeEvent } from 'react';
+import {
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    doc,
+    deleteDoc
+} from 'firebase/firestore';
 import { db } from '../../../../firebase';
 
-const defaultNewCourse = {
+type StudentCourse = {
+    id?: string;
+    studentId: string;
+    startMonth: string;
+    endMonth: string;
+    courseType: string;
+    classStyle: string;
+    weeklyCount: string;
+    time: string;
+    season: string;
+    notes: string;
+};
+
+type Props = {
+    studentId: string;
+};
+
+const defaultNewCourse: Omit<StudentCourse, 'studentId'> = {
     startMonth: '',
     endMonth: '',
     courseType: '',
@@ -13,33 +38,36 @@ const defaultNewCourse = {
     notes: '',
 };
 
-export default function StudentCourseTable({ studentId }) {
-    const [courses, setCourses] = useState([]);
-    const [newCourse, setNewCourse] = useState(defaultNewCourse);
+const StudentCourseTable: React.FC<Props> = ({ studentId }) => {
+    const [courses, setCourses] = useState<StudentCourse[]>([]);
+    const [newCourse, setNewCourse] = useState<Omit<StudentCourse, 'studentId'>>(defaultNewCourse);
 
     useEffect(() => {
         const fetchCourses = async () => {
             const q = query(collection(db, 'studentCourses'), where('studentId', '==', studentId));
             const snapshot = await getDocs(q);
-            const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const fetched: StudentCourse[] = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            } as StudentCourse));
             setCourses(fetched);
         };
         fetchCourses();
     }, [studentId]);
 
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setNewCourse(prev => ({ ...prev, [name]: value }));
     };
 
     const handleAdd = async () => {
-        const courseToAdd = { ...newCourse, studentId };
+        const courseToAdd: StudentCourse = { ...newCourse, studentId };
         const docRef = await addDoc(collection(db, 'studentCourses'), courseToAdd);
         setCourses(prev => [...prev, { id: docRef.id, ...courseToAdd }]);
         setNewCourse(defaultNewCourse);
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id: string) => {
         await deleteDoc(doc(db, 'studentCourses', id));
         setCourses(prev => prev.filter(c => c.id !== id));
     };
@@ -51,7 +79,6 @@ export default function StudentCourseTable({ studentId }) {
                 <button
                     className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 text-sm"
                     onClick={() => {
-                        // 必要ならここにクリック処理を書く
                         console.log('受講情報の登録クリック');
                     }}
                 >
@@ -84,11 +111,7 @@ export default function StudentCourseTable({ studentId }) {
                             <td className="border p-2">{course.season}</td>
                             <td className="border p-2">{course.notes}</td>
                             <td className="border px-4 py-2">
-                                <button
-                                    className="text-blue-600 hover:underline"
-                                >
-                                    詳細
-                                </button>
+                                <button className="text-blue-600 hover:underline">詳細</button>
                             </td>
                         </tr>
                     ))}
@@ -96,4 +119,6 @@ export default function StudentCourseTable({ studentId }) {
             </table>
         </div>
     );
-}
+};
+
+export default StudentCourseTable;

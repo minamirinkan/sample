@@ -1,18 +1,23 @@
-//src/utils/dateFormatter.js
-export const formatDate = (input) => {
+// src/utils/dateFormatter.ts
+
+import type { Timestamp } from 'firebase/firestore'; // もしFirestoreのTimestamp型を使っていれば
+
+// formatDate の input は、Firestore Timestamp、Date、string、number のどれか
+export const formatDate = (
+    input: Timestamp | Date | string | number | null | undefined
+): string => {
     if (!input) return '－';
 
-    let date;
+    let date: Date;
 
     try {
-        if (typeof input.toDate === 'function') {
+        if (typeof (input as Timestamp)?.toDate === 'function') {
             // Firestore Timestamp
-            date = input.toDate();
+            date = (input as Timestamp).toDate();
         } else if (input instanceof Date) {
             date = input;
         } else if (typeof input === 'string') {
-            // Safari対応のため、ハイフンをスラッシュに置換
-            date = new Date(input.replace(/-/g, '/'));
+            date = new Date(input.replace(/-/g, '/')); // Safari対応
         } else if (typeof input === 'number') {
             date = new Date(input);
         } else {
@@ -31,15 +36,17 @@ export const formatDate = (input) => {
     }
 };
 
-// 新しく追加：曜日を返す関数
-export const getJapaneseDayOfWeek = (input) => {
+// 曜日を返す関数
+export const getJapaneseDayOfWeek = (
+    input: Timestamp | Date | string | number | null | undefined
+): string => {
     if (!input) return '';
 
-    let date;
+    let date: Date;
 
     try {
-        if (typeof input.toDate === 'function') {
-            date = input.toDate();
+        if (typeof (input as Timestamp)?.toDate === 'function') {
+            date = (input as Timestamp).toDate();
         } else if (input instanceof Date) {
             date = input;
         } else if (typeof input === 'string') {
@@ -59,10 +66,9 @@ export const getJapaneseDayOfWeek = (input) => {
     }
 };
 
-// utils/dateFormatter.js
-export const getDayOfWeekFromYyyyMmDd = (dateStr) => {
+// yyyy-MM-dd 形式の文字列から曜日番号を返す関数
+export const getDayOfWeekFromYyyyMmDd = (dateStr: string): number => {
     const [year, month, day] = dateStr.split('-').map(Number);
     const date = new Date(year, month - 1, day);
     return date.getDay(); // 0=日曜, 1=月曜...
 };
-

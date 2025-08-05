@@ -1,7 +1,22 @@
-// src/components/InfoRow.js
 import React from 'react';
 
-const InfoRow = ({ label, value, name, isEditing, readOnly, onChange }) => (
+type InfoRowProps = {
+    label: string;
+    value?: string;
+    name?: string;
+    isEditing: boolean;
+    readOnly?: boolean;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+const InfoRow: React.FC<InfoRowProps> = ({
+    label,
+    value,
+    name,
+    isEditing,
+    readOnly = false,
+    onChange,
+}) => (
     <div className="flex text-sm border-b border-gray-200 py-1">
         <span className="w-32 text-gray-500">{label}</span>
         {isEditing && !readOnly ? (

@@ -1,8 +1,7 @@
-//開発中のみ使う /dev-login に配置
-
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const DevLoginSelector = () => {
+const DevLoginSelector: React.FC = () => {
     const navigate = useNavigate();
 
     return (

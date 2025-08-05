@@ -1,5 +1,6 @@
 // src/components/StudentRegistrationForm/StudentRegistrationForm.tsx
-import { useEffect, useState, useMemo } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../firebase/saveCustomerAndStudent';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -12,7 +13,7 @@ import SchoolInfoSection from './components/SchoolInfoSection';
 import AddressInfoSection from './components/AddressInfoSection';
 import { Student } from '../../../contexts/types/student';
 import { SchoolDataItem } from '../../../contexts/types/schoolData';
-import { Timestamp, FieldValue } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
@@ -83,28 +84,21 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
             period: '',
         },
     ]);
-    
 
     const isSchoolLevel = (value: any): value is SchoolLevel =>
         ['小学校', '中学校', '高等学校', '通信制'].includes(value);
 
     const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(true);
-    const [lessonType, setLessonType] = useState('');
+    const [lessonType, setLessonType] = React.useState<'regular' | 'nonRegular'>('regular');
     const [courseFormData, setCourseFormData] = useState<SchoolDataItem[]>([]);
 
     console.log('保存するデータ:', courseFormData);
     useEffect(() => {
-        if (lessonType === 'regular') {
-            if (courseFormData.length === 0) {
-                setCourseFormData([...schoolData]);
-            }
-        } else {
-            if (courseFormData.length > 0) {
-                setCourseFormData([]);
-            }
+        if (lessonType === 'regular' && courseFormData.length === 0) {
+            setCourseFormData([...schoolData]);
         }
-    }, [lessonType, courseFormData.length, ...schoolData]);
+    }, [lessonType, schoolData]);
 
     useEffect(() => {
         if (formData.schoolLevel) {
@@ -114,9 +108,12 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
         }
     }, [formData.schoolLevel]);
 
-    const handleLessonTypeChange = (value: string) => {
+    const handleLessonTypeChange = (value: 'regular' | 'nonRegular') => {
         setLessonType(value);
-        setCourseFormData([]);
+        // 非レギュラーの時だけリセットする（←これは任意）
+        if (value === 'nonRegular') {
+            setCourseFormData([]);
+        }
     };
 
     useEffect(() => {
@@ -154,9 +151,9 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 classroomCode,
                 classroomName,
                 fullname: `${formData.lastName} ${formData.firstName}`,
-                fullnameKana:`${formData.lastNameKana} ${formData.firstNameKana}`,
+                fullnameKana: `${formData.lastNameKana} ${formData.firstNameKana}`,
                 guardianfullName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
-                guardianfullNameKana:`${formData.guardianLastNameKana} ${formData.guardianFirstNameKana}`,
+                guardianfullNameKana: `${formData.guardianLastNameKana} ${formData.guardianFirstNameKana}`,
                 registrationDate: Timestamp.fromDate(new Date()),
                 courses: courseFormData ?? [],
             },
@@ -181,8 +178,6 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 timestamp: serverTimestamp(),
             });
             alert('登録が完了しました');
-
-            setLessonType("");
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
@@ -244,9 +239,9 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                         <SchoolInfoSection
                             schoolData={{
-                                schoolingStatus: formData.schoolingStatus,
-                                schoolType: formData.schoolType,
-                                schoolLevel: formData.schoolLevel,
+                                schoolingStatus: formData.schoolingStatus || undefined,
+                                schoolType: formData.schoolType || undefined,
+                                schoolLevel: formData.schoolLevel || undefined,
                                 schoolName: formData.schoolName,
                                 schoolKana: formData.schoolKana,
                                 grade: formData.grade,

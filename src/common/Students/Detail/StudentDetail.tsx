@@ -2,19 +2,26 @@ import React, { useState, useEffect } from 'react';
 import StudentInfoSection from './StudentInfoSection';
 import GuardianInfoSection from './GuardianInfoSection';
 import ActionButtons from '../../../components/ActionButtons';
-import StudentAttendanceTab from '../../../common/Students/Detail/Tabs/StudentAttendanceTab'
-import StudentCourseTable from './Tabs/StudentCourseTable.jsx';
+import StudentAttendanceTab from './Tabs/StudentAttendanceTab'
+import StudentCourseTable from './Tabs/StudentCourseTable';
+import { Student } from '../../../contexts/types/student';
+import { Customer } from '../../../contexts/types/customer';
+
+type StudentDetailProps = {
+    student: Student;
+    customer: Customer | null;  // ここを追加する
+    classroomCode: string;
+    onBack: () => void;
+};
 
 const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報'];
 
-const StudentDetail = ({ student, onBack }) => {
+const StudentDetail: React.FC<StudentDetailProps> = ({ student, customer, classroomCode, onBack }) => {
     console.log("✅ StudentDetail 受け取った student:", student);
     const [activeTab, setActiveTab] = useState('基本情報');
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({ ...student });
     const [originalData, setOriginalData] = useState({ ...student });
-    console.log("📌 初期 formData.period:", formData.period); // 数値？ undefined？
-    console.log("📌 初期 formData:", formData); // 数値？ undefined？
 
     const handleEditClick = () => {
         console.log("📝 編集開始前の formData:", formData);
@@ -31,9 +38,14 @@ const StudentDetail = ({ student, onBack }) => {
         setIsEditing(false);
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleDelete = () => {
+        // 削除処理のロジックをここに書く（例: 確認ダイアログ、APIコールなど）
+        console.log('削除ボタンが押されました');
     };
 
     useEffect(() => {
@@ -66,7 +78,7 @@ const StudentDetail = ({ student, onBack }) => {
             case '受講情報':
                 return (
                     <div className="flex flex-col gap-4">
-                        <StudentCourseTable studentId={formData.id} />
+                        <StudentCourseTable studentId={formData.id ?? ""} />
                     </div>
                 );
             case '授業情報':
@@ -125,6 +137,7 @@ const StudentDetail = ({ student, onBack }) => {
                     onEdit={handleEditClick}
                     onCancel={handleCancelClick}
                     onSave={handleSaveClick}
+                    onDelete={handleDelete}
                 />
             )}
 
@@ -140,6 +153,7 @@ const StudentDetail = ({ student, onBack }) => {
                         onEdit={handleEditClick}
                         onCancel={handleCancelClick}
                         onSave={handleSaveClick}
+                        onDelete={handleDelete}
                     />
                 </div>
             )}

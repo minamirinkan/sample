@@ -5,5 +5,6 @@ export type AuthContextType = {
     user: any | null;
     role: UserRole;
     userData: UserData | null;
+    classroomCode: string | null;
     loading: boolean;
 };

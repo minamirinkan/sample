@@ -1,5 +1,10 @@
-// components/Breadcrumb.js
-const Breadcrumb = ({ items = [] }) => {
+import React from 'react';
+
+type BreadcrumbProps = {
+    items: string[];
+};
+
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ items = [] }) => {
     return (
         <ol className="text-sm text-gray-500 flex space-x-1">
             {items.map((item, index) => (
