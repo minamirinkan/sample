@@ -5,10 +5,11 @@ import { Admin } from "../types/admin";
 import { useAuth } from "../AuthContext"; // classroomCode と role を取得
 
 export function useAdmins() {
-  const { classroomCode, role, loading: authLoading } = useAuth();
+  const { user, role, loading: authLoading } = useAuth();
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
+  const classroomCode = user?.classroomCode;
 
   useEffect(() => {
     const fetchAdmins = async () => {
