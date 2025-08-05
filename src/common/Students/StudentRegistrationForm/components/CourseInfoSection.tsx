@@ -2,13 +2,12 @@ import React from 'react';
 import SUBJECT_OPTIONS from '../subjectOptions';
 import { SchoolDataItem } from '../../../../contexts/types/schoolData'; // 実際の型定義のパスに合わせて
 import { SchoolLevel } from '../../../../contexts/types/schoolData';
-
 interface CourseInfoSectionProps {
     formData: SchoolDataItem[];
     onChange: (newData: SchoolDataItem[]) => void;
     lessonType: string;
     schoolLevel: string | undefined;
-    setLessonType: React.Dispatch<React.SetStateAction<string>>; // ← これを追加
+    setLessonType: React.Dispatch<React.SetStateAction<'regular' | 'nonRegular'>>;
 }
 
 const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
@@ -53,7 +52,10 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
     };
 
     const handleAddRowWithKind = (kind: string) => {
-        onChange([...formData, createEmptyRow(kind)]);
+        console.log('追加する kind:', kind);
+        const newRow = createEmptyRow(kind);
+        console.log('追加される新規行:', newRow);
+        onChange([...formData, newRow]);
     };
 
     const handleRemoveRow = (index: number) => {
