@@ -2,13 +2,37 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatDate } from '../../../../dateFormatter';
+import { MakeupLesson } from '@contexts/types/makeupLessons';
+import { Teacher } from '@contexts/types/teacher';
+
+type Props = {
+    classroomCode: string;
+    studentId: string;
+    studentName: string;
+    selectedMonth: string;
+    data: MakeupLesson[];
+    teachers: Teacher[];
+    editingIndex: number | null;
+    editValues: Partial<MakeupLesson> | null;
+    handleEditClick: (idx: number) => void;
+    handleChange: (field: keyof MakeupLesson | string, value: any) => void;
+    handleSaveClick: () => void;
+    setEditingIndex: React.Dispatch<React.SetStateAction<number | null>>
+    getStatusClass: (status: string) => string;
+    periodLabels: { label: string }[];
+    mode: 'regular' | 'seasonal';
+};
 
 const statusOptions = ['予定', '未定', '振替', '欠席', '出席'];
 const weekdayOptions = ['日', '月', '火', '水', '木', '金', '土'];
 const periodOptions = ['1限', '2限', '3限', '4限', '5限', '6限', '7限', '8限'];
 const subjectOptions = ['英語', '数学', '国語', '理科', '社会'];
 
-const AttendanceSubTable = ({
+const AttendanceSubTable: React.FC<Props> = ({
+    classroomCode,
+    studentId,
+    studentName,
+    selectedMonth,
     data = [], // ← デフォルト値で undefined 対策
     teachers,
     editingIndex,
@@ -18,6 +42,7 @@ const AttendanceSubTable = ({
     handleSaveClick,
     setEditingIndex,
     getStatusClass,
+    mode,
 }) => {
 
     return (
@@ -49,18 +74,16 @@ const AttendanceSubTable = ({
                         return (
                             <tr
                                 key={idx}
-                                className={`text-center ${getStatusClass(entry.status)} ${isToday ? 'border-2 border-yellow-500' : ''}`}
+                                className={`text-center ${getStatusClass(entry.status ?? "")} ${isToday ? 'border-2 border-yellow-500' : ''}`}
                             >
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <select
-                                            value={editValues.status || ''}
+                                            value={editValues?.status || ''}
                                             onChange={(e) => handleChange('status', e.target.value)}
                                         >
                                             {statusOptions.map((s) => (
-                                                <option key={s} value={s}>
-                                                    {s}
-                                                </option>
+                                                <option key={s} value={s}>{s}</option>
                                             ))}
                                         </select>
                                     ) : (
@@ -70,9 +93,9 @@ const AttendanceSubTable = ({
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <DatePicker
-                                            selected={editValues.date ? new Date(editValues.date) : null}
+                                            selected={editValues?.date ? new Date(editValues.date) : null}
                                             onChange={(date) =>
-                                                handleChange('date', date.toISOString().split('T')[0])
+                                                handleChange('date', date?.toISOString().split('T')[0])
                                             }
                                             dateFormat="yyyy-MM-dd"
                                             className="border px-2 py-1 rounded"
@@ -83,8 +106,8 @@ const AttendanceSubTable = ({
                                 </td>
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
-                                        editValues.date
-                                            ? weekdayOptions[new Date(editValues.date).getDay()]
+                                        editValues?.date
+                                            ? weekdayOptions[new Date(editValues?.date).getDay()]
                                             : '－'
                                     ) : (
                                         entry.date
@@ -95,7 +118,7 @@ const AttendanceSubTable = ({
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <select
-                                            value={editValues.periodLabel || (periodOptions[entry.period - 1] || '－')}
+                                            value={editValues?.periodLabel || (periodOptions[entry.period ? entry.period - 1 : 0] || '－')}
                                             onChange={(e) => handleChange('periodLabel', e.target.value)}
                                         >
                                             {periodOptions.map((p) => (
@@ -105,13 +128,13 @@ const AttendanceSubTable = ({
                                             ))}
                                         </select>
                                     ) : (
-                                        entry.periodLabel || (periodOptions[entry.period - 1] || '－')
+                                        editValues?.periodLabel || (periodOptions[entry.period ? entry.period - 1 : 0] || '－')
                                     )}
                                 </td>
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <select
-                                            value={editValues.subject || ''}
+                                            value={editValues?.subject || ''}
                                             onChange={(e) => handleChange('subject', e.target.value)}
                                         >
                                             {subjectOptions.map((s) => (
@@ -127,7 +150,7 @@ const AttendanceSubTable = ({
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <select
-                                            value={editValues.teacherCode || ''}
+                                            value={editValues?.teacherCode || ''}
                                             onChange={(e) => handleChange('teacherCode', e.target.value)}
                                         >
                                             <option value="">－</option>

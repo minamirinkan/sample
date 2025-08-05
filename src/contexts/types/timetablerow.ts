@@ -1,9 +1,11 @@
 import { Student } from './student'; // すでにあるStudent型を再利用
 import { Teacher } from './teacher';
+import { RowStudent } from './student';
+
 export type RowData = {
   teacher: { code: string; name: string } | null;
   status: string;
-  periods: Student[][];
+  periods: (Student | RowStudent)[][];
 };
 
 export type TimetableRowProps = {

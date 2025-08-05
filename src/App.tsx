@@ -11,7 +11,7 @@ import CustomerLogin from './pages/CustomerLogin.js';
 import StudentLogin from './pages/StudentLogin.js';
 import TimetablePage from './common/timetable/TimetablePage';
 import CalendarPopup from './common/timetable/components/CalendarPopup';
-import DevLoginSelector from './pages/DevLoginSelector.jsx';
+import DevLoginSelector from './pages/DevLoginSelector';
 import ProtectedRoute from './common/ProtectedRoute.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
 import TeacherChangePassword from './teacher/TeacherChangePassword.jsx';

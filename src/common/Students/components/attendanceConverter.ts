@@ -1,12 +1,45 @@
-// 例: periodLabel から "period1" などを得るヘルパー
-export function convertToPeriodKey(label) {
+// utils/attendanceHelpers.ts
+
+type AttendanceEntry = {
+    date: string;
+    periodLabel: string;
+    status?: string;
+    teacher?: string | null;
+    studentId: string;
+    name?: string;
+    grade?: string;
+    seat?: string;
+    subject?: string;
+};
+
+type PeriodKey =
+    | 'period1' | 'period2' | 'period3' | 'period4'
+    | 'period5' | 'period6' | 'period7' | 'period8';
+
+type Periods = {
+    [key in PeriodKey]: {
+        studentId: string;
+        name: string;
+        grade: string;
+        seat: string;
+        subject: string;
+        status: string;
+    }[];
+};
+
+type Row = {
+    status: string;
+    teacher: string | null;
+    periods: Periods;
+};
+
+export function convertToPeriodKey(label: string): PeriodKey {
     const match = label.match(/(\d)/);
-    return match ? `period${match[1]}` : 'period1';
+    return (match ? (`period${match[1]}`) : 'period1') as PeriodKey;
 }
 
-// attendanceList → rows形式に変換
-export function convertAttendanceListToRows(attendanceList) {
-    const rowMap = {};
+export function convertAttendanceListToRows(attendanceList: AttendanceEntry[]): Row[] {
+    const rowMap: { [key: number]: Row } = {};
 
     attendanceList.forEach(entry => {
         const date = entry.date;
@@ -40,7 +73,7 @@ export function convertAttendanceListToRows(attendanceList) {
         });
     });
 
-    const rows = [];
+    const rows: Row[] = [];
     for (let i = 0; i <= 6; i++) {
         rows[i] = rowMap[i] || {
             status: '未定',

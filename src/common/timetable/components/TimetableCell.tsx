@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import StudentChip from './StudentChip';
-import { TimetableCellProps,RowData } from '../../../contexts/types/timetablerow';
-import { Student } from '../../../contexts/types/student';
+import { TimetableCellProps, RowData } from '../../../contexts/types/timetablerow';
+import { RowStudent } from '../../../contexts/types/student';
 import { SchoolDataItem } from '../../../contexts/types/schoolData';
 
 export default function TimetableCell({
@@ -11,7 +11,7 @@ export default function TimetableCell({
   row,
   allRows,
   onChange,
-}: TimetableCellProps)  {
+}: TimetableCellProps) {
   const [menuIndex, setMenuIndex] = useState<number | null>(null);
 
   const isFixedRow = ['振替', '欠席'].includes(row.status);
@@ -25,13 +25,13 @@ export default function TimetableCell({
         setMenuIndex(null); // 外をクリックしたら閉じる
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  
+
 
   const handleChange = (
     periodIdx: number,
@@ -50,10 +50,11 @@ export default function TimetableCell({
 
   const handleAction = (studentIdx: number, action: string) => {
     const student = row.periods[periodIdx][studentIdx];
+    const timetableStudent = student as RowStudent;
     const newAllRows = JSON.parse(JSON.stringify(allRows));
     // 元の行から削除
     newAllRows[rowIndex].periods[periodIdx] = newAllRows[rowIndex].periods[periodIdx].filter(
-      (_: Student, idx: number) => idx !== studentIdx
+      (_: RowStudent, idx: number) => idx !== studentIdx
     );
 
     if (['振替', '欠席', '未定'].includes(action)) {
@@ -63,7 +64,7 @@ export default function TimetableCell({
           targetRow.periods[periodIdx] = [];
         }
         targetRow.periods[periodIdx].push({
-          ...student,
+          ...timetableStudent,
           originRow: rowIndex,
           originPeriod: periodIdx,
         });
@@ -71,14 +72,14 @@ export default function TimetableCell({
         alert(`${action} 行が見つかりません`);
       }
     } else if (action === '元に戻す') {
-      if (student.originRow !== undefined && student.originPeriod !== undefined) {
-        const originRow = newAllRows[student.originRow];
+      if (timetableStudent.originRow !== undefined && timetableStudent.originPeriod !== undefined) {
+        const originRow = newAllRows[timetableStudent.originRow];
         if (originRow) {
-          if (!Array.isArray(originRow.periods[student.originPeriod])) {
-            originRow.periods[student.originPeriod] = [];
+          if (!Array.isArray(originRow.periods[timetableStudent.originPeriod])) {
+            originRow.periods[timetableStudent.originPeriod] = [];
           }
-          originRow.periods[student.originPeriod].push({
-            ...student,
+          originRow.periods[timetableStudent.originPeriod].push({
+            ...timetableStudent,
             originRow: undefined,
             originPeriod: undefined,
           });
@@ -98,15 +99,15 @@ export default function TimetableCell({
       }}
       onDrop={(e) => {
         if (isFixedRow && !isUndecidedRow) return;
-      
+
         const json = e.dataTransfer.getData('application/json');
         if (!json) return;
-      
+
         try {
           const { student, fromRow, fromPeriod } = JSON.parse(json);
           const newAllRows = JSON.parse(JSON.stringify(allRows));
           const currentStudents = newAllRows[rowIndex].periods[periodIdx];
-      
+
           // ✅ 元から削除
           if (
             fromRow !== null &&
@@ -116,50 +117,52 @@ export default function TimetableCell({
           ) {
             newAllRows[fromRow].periods[fromPeriod] =
               newAllRows[fromRow].periods[fromPeriod].filter(
-                (s: Student) => s.studentId !== student.studentId
+                (s: RowStudent) => s.studentId !== student.studentId
               );
           }
-          
+
           // ✅ 他の講師の同じ時限にいるかチェック
           const existsInOtherRows = newAllRows.some((r: RowData, i: number) => {
             if (i === rowIndex) return false;
-            return r.periods[periodIdx].some((s: Student) => s.studentId === student.studentId);
+
+            return r.periods[periodIdx].some(
+              (s): s is RowStudent => 'originRow' in s && s.originRow !== undefined
+            );
           });
           if (existsInOtherRows) {
             alert('他の講師の同じ時限にすでにいます');
             return;
           }
-       
-      
+
           // ✅ classType に応じた制限チェック
           const droppedType = student.classType || '';
-          const currentTypes = currentStudents.map((sd: SchoolDataItem) =>sd.classType || '');          
+          const currentTypes = currentStudents.map((sd: SchoolDataItem) => sd.classType || '');
           const allTypes = [...currentTypes, droppedType];
           const uniqueTypes = Array.from(new Set(allTypes));
           const totalCount = currentStudents.length + 1;
-      
+
           const isOnly = (type: string) => uniqueTypes.length === 1 && uniqueTypes[0] === type;
-      
+
           const isValidDrop =
             // 1名クラス → 単独 & 1名まで
             (droppedType === '1名クラス' && currentStudents.length === 0 && isOnly('1名クラス')) ||
-      
+
             // 2名クラス or 演習クラス → 合計2名まで、混在OK（ただしこの2種のみ）
             ((droppedType === '2名クラス' || droppedType === '演習クラス') &&
               uniqueTypes.every(t => t === '2名クラス' || t === '演習クラス') &&
               totalCount <= 2) ||
-      
+
             // 演習クラスだけ → 最大6名までOK
             (droppedType === '演習クラス' &&
               isOnly('演習クラス') &&
               totalCount <= 6);
-      
+
           if (!isValidDrop) {
             alert('このクラス構成では定員オーバーか、混在できません');
             return;
           }
-      
-      
+
+
           // ✅ ドロップ先に追加
           newAllRows[rowIndex].periods[periodIdx].push(student);
           window.dispatchEvent(new CustomEvent('updateAllRows', { detail: newAllRows }));
@@ -167,8 +170,8 @@ export default function TimetableCell({
           console.error('Drop error:', err);
         }
       }}
-      
-      
+
+
     >
       <div className="flex flex-wrap gap-1">
         {students.map((student, studentIdx) => (

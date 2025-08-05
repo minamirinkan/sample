@@ -1,7 +1,7 @@
 // 不要になった部分は削除済み
 import SuperAdminHeader from "./components/SuperAdminHeader.js";
 import SuperAdminSidebar from "./components/SuperAdminSidebar.js";
-import SuperAdminStudents from "../../common/Students/SuperAdminStudents.js";
+import SuperAdminStudents from "../../common/Students/SuperAdminStudents";
 import { useState, useEffect } from "react";
 import {
   collection,

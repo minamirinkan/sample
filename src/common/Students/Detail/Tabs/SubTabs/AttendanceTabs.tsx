@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
 import MonthlyAttendanceTable from './MonthlyAttendanceTable';
-import AttendanceSubTable from './AttendanceSubTable'; // ← 旧スタイルを使うならこちら
+import AttendanceSubTable from './AttendanceSubTable';
 import RegularLessonTable from './RegularLessonTable';
 
-const AttendanceTabs = ({
+type Props = {
+    classroomCode: string;
+    studentId: string;
+    studentName: string;
+    selectedMonth: string;
+    mode: 'regular' | 'seasonal';
+};
+
+const AttendanceTabs: React.FC<Props> = ({
     classroomCode,
     studentId,
     studentName,
     selectedMonth,
+    mode,
 }) => {
-    const [activeTab, setActiveTab] = useState('月間出席記録');
-console.log('studentname:', studentName);
-    const tabs = ['レギュラー授業', '月間出席記録', '講習授業'];
+    const [activeTab, setActiveTab] = useState < 'レギュラー授業' | '月間出席記録' | '講習授業' > ('月間出席記録');
+
+    const tabs: Array<'レギュラー授業' | '月間出席記録' | '講習授業'> = ['レギュラー授業', '月間出席記録', '講習授業'];
 
     const renderActiveTable = () => {
         switch (activeTab) {
             case 'レギュラー授業':
                 return (
-                    <RegularLessonTable 
-                        mode="regular"
+                    <RegularLessonTable
                         classroomCode={classroomCode}
                         studentId={studentId}
                         studentName={studentName}
@@ -42,6 +50,16 @@ console.log('studentname:', studentName);
                         studentId={studentId}
                         studentName={studentName}
                         selectedMonth={selectedMonth}
+                        data={[]}
+                        teachers={[]}
+                        editingIndex={null}
+                        editValues={null}
+                        handleEditClick={() => {}}
+                        handleChange={() => {}}
+                        handleSaveClick={() => {}}
+                        setEditingIndex={() => {}}
+                        getStatusClass={() => ''}
+                        periodLabels={[]}
                     />
                 );
             default:
