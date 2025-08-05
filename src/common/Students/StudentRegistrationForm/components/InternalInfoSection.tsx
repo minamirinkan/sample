@@ -33,30 +33,36 @@ const InternalInfoSection: React.FC<InternalInfoSectionProps> = ({
                 onChange={(e) => onChange('entryDate', e.target.value)}
                 className="border rounded p-2"
             />
-
-            {/* 授業形態（レギュラー or 非レギュラー） */}
-            <div className="sm:col-span-2">
-                <label className="block font-medium mb-1">授業形態</label>
-                <div className="flex gap-6">
-                    <label className="flex items-center gap-2">
+        </div>
+        <div className="sm:col-span-2">
+            <label className="block mb-2 mt-4 font-medium">授業形態</label>
+            <div className="flex gap-6">
+                <label className="flex flex-col items-center flex-1 border rounded p-4">
+                    <span className="flex items-center gap-2">
                         <input
                             type="radio"
+                            className="form-radio"
                             value="regular"
                             checked={lessonType === 'regular'}
                             onChange={() => onLessonTypeChange('regular')}
                         />
-                        レギュラー（新規・継続）
-                    </label>
-                    <label className="flex items-center gap-2">
+                        <span className="font-medium">レギュラー</span>
+                    </span>
+                    <span className="text-sm text-gray-500 ml-6">（新規・継続）</span>
+                </label>
+                <label className="flex flex-col items-center flex-1 border rounded p-4">
+                    <span className="flex items-center gap-2">
                         <input
                             type="radio"
+                            className="form-radio"
                             value="nonRegular"
                             checked={lessonType === 'nonRegular'}
                             onChange={() => onLessonTypeChange('nonRegular')}
                         />
-                        非レギュラー（補習・講習のみ）
-                    </label>
-                </div>
+                        <span className="font-medium">非レギュラー</span>
+                    </span>
+                    <span className="text-sm text-gray-500 ml-6">（補習・講習のみ）</span>
+                </label>
             </div>
         </div>
     </fieldset>
