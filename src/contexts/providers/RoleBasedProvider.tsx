@@ -9,7 +9,13 @@ import { ClassroomSelectionProvider } from "../ClassroomSelectionContext";
 const RoleBasedProvider = ({ children }: { children: React.ReactNode }) => {
     const { userData } = useAuth();
 
-    if (!userData) return null;
+    if (!userData) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-gray-500">ユーザー情報を取得中...</p>
+            </div>
+        );
+    }
 
     switch (userData.role) {
         case "superadmin":

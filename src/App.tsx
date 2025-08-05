@@ -17,49 +17,76 @@ import ChangePassword from './pages/ChangePassword.jsx';
 import TeacherChangePassword from './teacher/TeacherChangePassword.jsx';
 import ScheduleCalendarPage from './common/StudentsSchedule/ScheduleCalendarPage.jsx'
 import { ToastContainer } from 'react-toastify';
-import { useAdminData } from './contexts/providers/AdminDataProvider';
+import { ClassroomSelectionProvider } from './contexts/ClassroomSelectionContext';
+import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
+import { useAuth } from './contexts/AuthContext';
 
 const App: React.FC = () => {
-  const { classroomCode } = useAdminData();
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<DevLoginSelector />} />
-        <Route
-          path="/superadmin/dashboard"
-          element={
-            <ProtectedRoute>
-              <SuperAdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/superadmin/timetable"
-          element={
-            <ProtectedRoute>
-              <TimetablePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/mypage/dashboard" element={<CustomerDashboard />} />
-        <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-        <Route path="/superadmin-login" element={<SuperAdminLogin />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/teacher-login" element={<TeacherLogin />} />
-        <Route path="/customer-login" element={<CustomerLogin />} />
-        <Route path="/student-login" element={<StudentLogin />} />
-        <Route path="/calendar" element={<CalendarPopup classroomCode={classroomCode}/>} />
-        <Route path="/customer/change-password" element={<ChangePassword />} />
-        <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
-        <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
-      </Routes>
-      <ToastContainer
-        position="top-center"
-        className="custom-toast-container"
+  const { userData, loading } = useAuth();
+
+  const routes = (
+    <Routes>
+      <Route path="/" element={<DevLoginSelector />} />
+      <Route path="/superadmin-login" element={<SuperAdminLogin />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/teacher-login" element={<TeacherLogin />} />
+      <Route path="/customer-login" element={<CustomerLogin />} />
+      <Route path="/student-login" element={<StudentLogin />} />
+
+      <Route
+        path="/superadmin/dashboard"
+        element={
+          <ProtectedRoute>
+            <SuperAdminDashboard />
+          </ProtectedRoute>
+        }
       />
-    </>
+      <Route
+        path="/superadmin/timetable"
+        element={
+          <ProtectedRoute>
+            <TimetablePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/mypage/dashboard" element={<CustomerDashboard />} />
+      <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+      <Route path="/calendar" element={<CalendarPopup classroomCode={userData?.classroomCode ?? null} />} />
+      <Route path="/customer/change-password" element={<ChangePassword />} />
+      <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
+      <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
+    </Routes>
   );
-}
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-gray-500 animate-pulse">読み込み中...</p>
+      </div>
+    );
+  }
+
+  if (!userData) {
+    // 未ログインでも表示可能なルート
+    return (
+      <>
+        {routes}
+        <ToastContainer position="top-center" className="custom-toast-container" />
+      </>
+    );
+  }
+
+  return (
+    <RoleBasedProvider>
+      <ClassroomSelectionProvider>
+        <>
+          {routes}
+          <ToastContainer position="top-center" className="custom-toast-container" />
+        </>
+      </ClassroomSelectionProvider>
+    </RoleBasedProvider>
+  );
+};
 
 export default App;

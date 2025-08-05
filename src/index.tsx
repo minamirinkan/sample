@@ -4,19 +4,13 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
-import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
-import { ClassroomSelectionProvider } from './contexts/ClassroomSelectionContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider> {/* ← Contextのグローバルラップ */}
-        <RoleBasedProvider>
-          <ClassroomSelectionProvider>
             <App />
-          </ClassroomSelectionProvider>
-        </RoleBasedProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

@@ -23,11 +23,11 @@ type Props = {
 };
 
 const ToDoContent: React.FC<Props> = ({ logs }) => {
-  const { user, classroomCode, role } = useAuth();
+  const { user, role } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [classroomCodes, setClassroomCodes] = useState<string[]>([]);
-
+  const classroomCode = user?.classroomCode;
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 

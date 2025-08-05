@@ -23,7 +23,8 @@ const HolidayPage = () => {
     const [activeTab, setActiveTab] = useState<'holidayList' | 'calendar'>('holidayList');
     const [addModalMonth, setAddModalMonth] = useState<string | null>(null);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-    const { role, classroomCode } = useAuth();
+    const { role, user } = useAuth();
+    const classroomCode = user?.classroomCode;
 
     const load = async () => {
         if (!role) return;
