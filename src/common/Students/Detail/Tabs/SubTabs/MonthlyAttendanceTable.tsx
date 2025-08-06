@@ -3,7 +3,7 @@ import { useState } from 'react';
 import AttendanceSubTable from './AttendanceSubTable';
 import useTeachers from '../../../../../contexts/hooks/useTeachers';
 import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';
-import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance';
+import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance.js';
 import { useAttendanceEdit } from '../../../../../contexts/hooks/useAttendanceEdit';
 
 type Props = {
