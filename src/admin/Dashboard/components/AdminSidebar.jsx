@@ -124,6 +124,15 @@ const AdminSidebar = ({ onSelectMenu }) => {
                     ]}
                     onSelectMenu={onSelectMenu}
                 />
+                <SidebarSection
+                    icon={FaBell}
+                    title="チャット"
+                    subItems={[
+                        { label: '本部', key: 'chat' },
+                        { label: '教室', key: 'chat' }
+                    ]}
+                    onSelectMenu={onSelectMenu}
+                />
                 <SidebarSection icon={FaFileAlt} title="レポート" subItems={[
                     { label: '問合せ経路別入会率', key: 'report-entry-rate' },
                     { label: '問合せ昨対比', key: 'report-compare' },

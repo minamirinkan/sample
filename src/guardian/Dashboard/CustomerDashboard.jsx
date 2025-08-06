@@ -2,6 +2,8 @@ import SuperAdminHeader from '../../Superadmin/Dashboard/components/SuperAdminHe
 import CustomerSidebar from './components/CustomerSidebar';
 import { useState } from 'react';
 import TimetablePageC from '../timetable/TimetableCustomerPage';
+import StudentChatManager from './components/StudentChatManager'; // ← ✅ 必ずこれにする（小文字禁止）
+
 
 const CustomerDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('timetable');
@@ -11,6 +13,8 @@ const CustomerDashboard = () => {
     switch (selectedContent) {
       case 'timetable':
         return <TimetablePageC />;
+      case 'chat':
+        return <StudentChatManager />;
       default:
         return (
           <>

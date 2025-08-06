@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext'; // ✅ 追加
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase.js';
+import { db } from '../../firebase';
 import StudentSearchForm from './components/StudentSearchForm.js';
 import Breadcrumb from './components/Breadcrumb';
 import StudentTable from '../../common/Students/components/StudentTable.js';

@@ -10,7 +10,7 @@ import {
   limit,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "../../firebase.js";
+import { db } from "../../firebase";
 import SuperAdminTeachers from "../../common/Teachers/SuperAdminTeachers.js";
 import TimetablePage from "../../common/timetable/TimetablePage.jsx";
 import SchoolAccountAdmin from "../../Superadmin/SchoolAccountAdmin.jsx";

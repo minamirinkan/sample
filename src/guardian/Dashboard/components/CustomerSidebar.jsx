@@ -109,6 +109,15 @@ const CustomerSidebar = ({ onSelectMenu }) => {
           ]}
           onSelectMenu={onSelectMenu}
         />
+        <SidebarSection
+          icon={FaBell}
+          title="チャット"
+          subItems={[
+            { label: '本部', key: 'chat' },
+            { label: '教室', key: 'chat' }
+          ]}
+          onSelectMenu={onSelectMenu}
+        />
       </ul>
     </aside>
   );

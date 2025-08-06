@@ -11,8 +11,9 @@ import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalenda
 import HolidayPage from '../common/Schedule/HolidayPage.tsx';
 import ToDoContent from '../common/ToDo/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase.js";
+import { db } from "../firebase";
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
+import StudentChatManager from '../guardian/Dashboard/components/StudentChatManager'
 
 const AdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('welcome');
@@ -110,7 +111,9 @@ const AdminDashboard = () => {
       case 'todo':
         return <ToDoContent logs={logs} />;
       case 'notification':
-                      return <CeoMessagesAll />;
+        return <CeoMessagesAll />;
+      case 'chat':
+        return <StudentChatManager />;
       default:
         return <ToDoContent logs={logs} />;
     }
