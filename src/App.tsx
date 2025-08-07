@@ -8,7 +8,6 @@ import TeacherDashboard from "./teacher/Dashboard/TeacherDashboard.jsx";
 import AdminLogin from './pages/AdminLogin.js';
 import TeacherLogin from './teacher/TeacherLogin.js';
 import CustomerLogin from './pages/CustomerLogin.js';
-import StudentLogin from './pages/StudentLogin.js';
 import TimetablePage from './common/timetable/TimetablePage.jsx';
 import CalendarPopup from './common/timetable/components/CalendarPopup.jsx';
 import DevLoginSelector from './pages/DevLoginSelector.jsx';
@@ -46,7 +45,6 @@ const App: React.FC = () => {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/teacher-login" element={<TeacherLogin />} />
         <Route path="/customer-login" element={<CustomerLogin />} />
-        <Route path="/student-login" element={<StudentLogin />} />
         <Route path="/calendar" element={<CalendarPopup />} />
         <Route path="/customer/change-password" element={<ChangePassword />} />
         <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
