@@ -70,7 +70,7 @@ const StudentChatManager = () => {
             <Chat
               chatType="classroom"
               roomId={selectedStudentId}
-              studentId={selectedStudentId}
+              
             />
           ) : (
             <p className="text-gray-500">生徒を選択してください</p>
