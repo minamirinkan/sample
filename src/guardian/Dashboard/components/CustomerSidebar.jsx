@@ -5,6 +5,7 @@ import {
   FaBell,
   FaBook,
   FaYenSign,
+  FaDatabase,
   FaAngleLeft
 } from 'react-icons/fa';
 import { doc, getDoc } from 'firebase/firestore';
@@ -73,6 +74,15 @@ const CustomerSidebar = ({ onSelectMenu }) => {
       <h4 className="text-lg font-bold mb-4 text-center text-gray-800" style={{ fontSize: '20px' }}>
         {customerName}
       </h4>
+      <SidebarSection
+        icon={FaDatabase}
+        title="テストデータ"
+        subItems={[
+          { label: 'authContext', key: 'authTest' },
+          { label: 'userContext', key: 'userTest' },
+        ]}
+        onSelectMenu={onSelectMenu}
+      />
       <ul className="sidebar-menu">
         <SidebarSection
           icon={FaBook}
@@ -96,7 +106,7 @@ const CustomerSidebar = ({ onSelectMenu }) => {
           icon={FaBell}
           title="通知管理"
           subItems={[
-            { label: '本部連絡', key: 'notification' },
+            { label: '本部連絡', key: 'tasks' },
             { label: '教室連絡', key: 'notification' }
           ]}
           onSelectMenu={onSelectMenu}

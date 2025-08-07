@@ -20,15 +20,15 @@ const GuardianInfosection = ({ formData, onChange }) => (
             <input
                 type="text"
                 placeholder="保護者 姓（カナ）"
-                value={formData.guardianKanaLastName}
-                onChange={(e) => onChange('guardianKanaLastName', e.target.value)}
+                value={formData.guardianLastNameKana}
+                onChange={(e) => onChange('guardianLastNameKana', e.target.value)}
                 className="border rounded p-2"
             />
             <input
                 type="text"
                 placeholder="保護者 名（カナ）"
-                value={formData.guardianKanaFirstName}
-                onChange={(e) => onChange('guardianKanaFirstName', e.target.value)}
+                value={formData.guardianFirstNameKana}
+                onChange={(e) => onChange('guardianFirstNameKana', e.target.value)}
                 className="border rounded p-2"
             />
             <input

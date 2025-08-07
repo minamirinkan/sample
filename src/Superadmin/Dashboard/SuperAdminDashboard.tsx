@@ -14,13 +14,16 @@ import { db } from "../../firebase";
 import SuperAdminTeachers from "../../common/Teachers/SuperAdminTeachers.js";
 import TimetablePage from "../../common/timetable/TimetablePage.jsx";
 import SchoolAccountAdmin from "../../Superadmin/SchoolAccountAdmin.jsx";
-import StudentRegistrationForm from "../../common/Students/StudentRegistrationForm/StudentRegistrationForm.jsx";
+import StudentRegistrationForm from "../../common/Students/StudentRegistrationForm/StudentRegistrationForm";
 import TeacherRegistrationForm from "../../common/Teachers/RegistrationForm/TeacherRegistrationForm.jsx";
 import TuitionRegistrationForm from "../TuitionRegistrationTabs.jsx";
 import TeacherFeeRegistration from "../TeacherFeeRegistration.jsx";
 import HolidayPage from "../../common/Schedule/HolidayPage";
 import ToDoContent from "../../common/ToDo/ToDoContent";
 import CeoMessagesAll from "../../common/ceoMessage/CeoMessagesAll";
+import HookStatusPage from "../../pages/HookStatusPage";
+import TestUserDataFetch from "../../TEST/TestUserDataFetch";
+import TestAdminDataFetch from "../../TEST/testpage";
 
 const SuperAdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState("welcome");
@@ -86,6 +89,12 @@ const SuperAdminDashboard = () => {
         return <ToDoContent logs={logs} />;
       case "notification":
         return <CeoMessagesAll />;
+      case "tasks":
+        return <HookStatusPage />;
+      case 'authTest':
+        return <TestUserDataFetch />;
+      case 'userTest':
+        return <TestAdminDataFetch />;
       default:
         return <ToDoContent logs={logs} />;
     }

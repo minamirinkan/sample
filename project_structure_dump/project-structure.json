@@ -46,6 +46,9 @@
       "TuitionFormContent.jsx": "file",
       "TuitionRegistrationTabs.jsx": "file",
       "TuitionViewModal.jsx": "file",
+      "firebase": {
+        "fetchers.ts": "file"
+      },
       "saveTeacherFees.js": "file",
       "saveTuitionSettings.js": "file",
       "updateTuitionSettings.js": "file"
@@ -63,7 +66,10 @@
       "ProtectedRoute.jsx": "file",
       "Schedule": {
         "HolidayPage.tsx": "file",
-        "components": {},
+        "components": {
+          "FullYearCalendar.tsx": "file",
+          "HolidayMonthCard.tsx": "file"
+        },
         "data": {
           "DeleteConfirmModal.tsx": "file",
           "HolidayModal.tsx": "file",
@@ -75,7 +81,9 @@
       },
       "Students": {
         "Detail": {
+          "GuardianInfoSection.js": "file",
           "StudentDetail.js": "file",
+          "StudentInfoSection.js": "file",
           "Tabs": {
             "MakeupAttendanceTable.jsx": "file",
             "StudentAttendanceTab.jsx": "file",
@@ -95,11 +103,9 @@
             "AddressInfoSection.jsx": "file",
             "BasicInfoSection.jsx": "file",
             "CourseInfoSection.jsx": "file",
-            "GuardianInfoSection.js": "file",
             "GuardianInfoSection.jsx": "file",
             "InternalInfoSection.jsx": "file",
             "SchoolInfoSection.jsx": "file",
-            "StudentInfoSection.js": "file",
             "SubjectSelect.jsx": "file"
           },
           "firebase": {
@@ -231,8 +237,6 @@
     "components": {
       "ActionButtons.js": "file",
       "EventModal.jsx": "file",
-      "FullYearCalendar.tsx": "file",
-      "HolidayMonthCard.tsx": "file",
       "SelectableStudentList.jsx": "file",
       "TimetableCustomer.jsx": "file",
       "TimetableRowCustomer.jsx": "file"
@@ -240,17 +244,50 @@
     "contexts": {
       "AuthContext.tsx": "file",
       "hooks": {
+        "useAdmins.ts": "file",
         "useAttendanceEdit.js": "file",
         "useAuth.js": "file",
+        "useClassrooms.ts": "file",
+        "useCommon.ts": "file",
+        "useCustomers.ts": "file",
+        "useDailySchedules.ts": "file",
         "useFilteredStudents.js": "file",
         "useLatestWeeklySchedule.js": "file",
         "useMakeupLessons.js": "file",
         "usePeriodLabels.js": "file",
+        "usePeriodLabelsBySchool.ts": "file",
         "usePeriodLabelsByStudentId.js": "file",
+        "useSchoolClosures.ts": "file",
         "useStudentAttendance.js": "file",
-        "useStudents.js": "file",
+        "useStudents.ts": "file",
+        "useSuperadmins.ts": "file",
         "useTeachers.js": "file",
-        "useWeeklySchedules.js": "file"
+        "useTeachers.ts": "file",
+        "useWeeklySchedules.js": "file",
+        "useWeeklySchedules.ts": "file"
+      },
+      "providers": {
+        "AdminDataProvider.tsx": "file",
+        "CustomerDataProvider.tsx": "file",
+        "RoleBasedProvider.tsx": "file",
+        "SuperAdminDataProvider.tsx": "file",
+        "TeacherDataProvider.tsx": "file"
+      },
+      "types": {
+        "admin.ts": "file",
+        "classroom.ts": "file",
+        "common.ts": "file",
+        "customer.ts": "file",
+        "dailySchedule.ts": "file",
+        "periodLabel.ts": "file",
+        "schoolClosures.ts": "file",
+        "student.ts": "file",
+        "superadmin.ts": "file",
+        "teacher.ts": "file",
+        "weeklySchedule.ts": "file"
+      },
+      "utils": {
+        "filterStudents.ts": "file"
       }
     },
     "firebase.js": "file",
@@ -278,6 +315,7 @@
       "CustomerLogin.js": "file",
       "CustomerSignup.js": "file",
       "DevLoginSelector.jsx": "file",
+      "HookStatusPage.tsx": "file",
       "Signup.js": "file",
       "StudentLogin.js": "file",
       "SuperAdminLogin.js": "file"

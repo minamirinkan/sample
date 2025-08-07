@@ -1,15 +1,40 @@
 import React from 'react';
 import SUBJECT_OPTIONS from '../subjectOptions';
+import { SchoolDataItem } from '../../../../contexts/types/schoolData'; // 実際の型定義のパスに合わせて
+import { SchoolLevel } from '../../../../contexts/types/schoolData';
 
-const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel }) => {
-    const subjects = SUBJECT_OPTIONS[schoolLevel] ? [...SUBJECT_OPTIONS[schoolLevel], 'その他'] : [];
-    const handleChange = (index, updatedFields) => {
+interface CourseInfoSectionProps {
+    formData: SchoolDataItem[];
+    onChange: (newData: SchoolDataItem[]) => void;
+    lessonType: string;
+    schoolLevel: string | undefined;
+    setLessonType: React.Dispatch<React.SetStateAction<string>>; // ← これを追加
+}
+
+const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
+    formData = [],
+    onChange,
+    lessonType,
+    schoolLevel,
+    setLessonType,
+}) => {
+    const subjects =
+        schoolLevel && SUBJECT_OPTIONS[schoolLevel as SchoolLevel]
+            ? [...SUBJECT_OPTIONS[schoolLevel as SchoolLevel], 'その他']
+            : [];
+
+
+    console.log('schoolLevel:', schoolLevel);
+    console.log('subjects:', subjects);
+
+
+    const handleChange = (index: number, updatedFields: Partial<SchoolDataItem>) => {
         const newData = [...formData];
         newData[index] = { ...newData[index], ...updatedFields };
         onChange(newData);
     };
 
-    const createEmptyRow = (kind = '') => ({
+    const createEmptyRow = (kind = ''): SchoolDataItem => ({
         kind,
         classType: '',
         times: '',
@@ -27,11 +52,11 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
         onChange([...formData, createEmptyRow('通常')]);
     };
 
-    const handleAddRowWithKind = (kind) => {
+    const handleAddRowWithKind = (kind: string) => {
         onChange([...formData, createEmptyRow(kind)]);
     };
 
-    const handleRemoveRow = (index) => {
+    const handleRemoveRow = (index: number) => {
         const newData = formData.filter((_, i) => i !== index);
         onChange(newData);
     };
@@ -49,7 +74,7 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
             {lessonType ? (
                 <>
                     <div className="overflow-x-auto">
-                        <table className="min-w-[1100px] table-auto border-collapse">
+                        <table className="min-w-[2000px] table-auto border-collapse">
                             <thead>
                                 <tr className="bg-gray-100 text-sm text-left">
                                     <th className="border px-4 py-2 w-[100px] text-center whitespace-nowrap">授業種別</th>
@@ -70,12 +95,12 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
                                 </tr>
                             </thead>
                             <tbody>
-                                {formData.map((data, index) => (
+                                {(formData || []).map((data, index) => (
                                     <tr key={index} className="text-sm">
                                         <td className="border px-4 py-2 text-center whitespace-nowrap text-ellipsis">
                                             <span>{data.kind}</span>
                                         </td>
-                                        <td className="border px-4 py-2 min-w-[140px] text-center whitespace-nowrap text-ellipsis">
+                                        <td className="border px-1 py-2 min-w-[140px] text-center whitespace-nowrap text-ellipsis">
                                             <select
                                                 value={data.classType || ''}
                                                 onChange={(e) => handleChange(index, { classType: e.target.value })}
@@ -105,19 +130,19 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
                                                 />
                                             )}
                                         </td>
-                                        <td className="border px-4 py-2 min-w-[100px] text-center whitespace-nowrap text-ellipsis">
+                                        <td className="border px-1 py-2 min-w-[200px] text-center whitespace-nowrap text-ellipsis">
                                             <div className="flex flex-col gap-1">
                                                 <select
-                                                    value={data.subject || ''}
+                                                    value={String(data.subject) || ''}
                                                     onChange={(e) => {
                                                         const newSubject = e.target.value;
-                                                        const updates = { subject: newSubject };
+                                                        const updates: Partial<SchoolDataItem> = { subject: newSubject };
                                                         if (newSubject !== 'その他') {
                                                             updates.subjectOther = ''; // クリア
                                                         }
                                                         handleChange(index, updates);
                                                     }}
-                                                    className="w-full border rounded px-2 py-1"
+                                                    className="w-full min-w-[220px] px-100 py-100 border rounded"
                                                 >
                                                     <option value="">選択してください</option>
                                                     {subjects.map((subject) => (
@@ -140,7 +165,7 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
                                         </td>
                                         {lessonType === 'regular' && (
                                             <>
-                                                <td className="border px-4 py-2 min-w-[100px] whitespace-nowrap text-ellipsis">
+                                                <td className="border px-1 py-2 min-w-[100px] text-center whitespace-nowrap text-ellipsis">
                                                     <select
                                                         value={data.weekday || ''}
                                                         onChange={(e) => handleChange(index, { weekday: e.target.value })}
@@ -152,7 +177,7 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
                                                         ))}
                                                     </select>
                                                 </td>
-                                                <td className="border px-4 py-2 min-w-[100px] whitespace-nowrap text-ellipsis">
+                                                <td className="border min-w-[110px] px-100 py-100 whitespace-nowrap text-ellipsis">
                                                     <select
                                                         value={data.period || ''}
                                                         onChange={(e) => handleChange(index, { period: e.target.value })}
@@ -166,7 +191,7 @@ const CourseInfoSection = ({ formData = [], onChange, lessonType, schoolLevel })
                                                 </td>
                                             </>
                                         )}
-                                        <td className="border px-4 py-2 min-w-[110px] whitespace-nowrap text-ellipsis">
+                                        <td className="border px-2 py-2 min-w-[110px] whitespace-nowrap text-ellipsis">
                                             <select
                                                 value={data.duration || ''}
                                                 onChange={(e) => handleChange(index, { duration: e.target.value })}

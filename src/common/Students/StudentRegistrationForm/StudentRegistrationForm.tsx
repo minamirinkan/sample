@@ -1,8 +1,8 @@
-// src/components/StudentRegistrationForm/StudentRegistrationForm.jsx
-import { useEffect, useState } from 'react';
+// src/components/StudentRegistrationForm/StudentRegistrationForm.tsx
+import { useEffect, useState, useMemo } from 'react';
 import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../firebase/saveCustomerAndStudent';
-import { useAuth } from '../../../contexts/AuthContext.tsx';
+import { useAuth } from '../../../contexts/AuthContext';
 import BasicInfoSection from './components/BasicInfoSection';
 import GuardianInfoSection from './components/GuardianInfoSection';
 import InternalInfoSection from './components/InternalInfoSection';
@@ -10,73 +10,100 @@ import { generateStudentCode } from './firebase/studentCodeGenerator';
 import CourseInfoSection from './components/CourseInfoSection';
 import SchoolInfoSection from './components/SchoolInfoSection';
 import AddressInfoSection from './components/AddressInfoSection';
+import { Student } from '../../../contexts/types/student';
+import { SchoolDataItem } from '../../../contexts/types/schoolData';
+import { Timestamp, FieldValue } from 'firebase/firestore';
+import { SchoolLevel } from '../../../contexts/types/schoolData';
 
-const StudentRegistrationForm = ({ onCancel }) => {
+
+
+const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
     const { adminData } = useAuth();
-    const classroomCode = adminData?.classroomCode;
-    const classroomName = adminData?.classroomName;
+    const classroomCode = adminData?.classroomCode ?? '';
+    const classroomName = adminData?.classroomName ?? '';
 
-    const initialFormData = {
-        entryDate: '',
+    const initialFormData: Partial<Student> = {
+        studentId: '',
+        fullname: '',
+        fullnameKana: '',
         lastName: '',
         firstName: '',
         lastNameKana: '',
         firstNameKana: '',
-        name: '',
-        birthDate: '',
         gender: '',
+        birthDate: '',
         grade: '',
-        guardianLastName: '',
-        guardianFirstName: '',
-        guardianKanaLastName: '',
-        guardianKanaFirstName: '',
-        guardianName: '',
-        relationship: '',
-        guardianPhone: '',
-        guardianEmail: '',
-        emergencyContact: '',
-        studentId: '',
-        registrationDate: '',
-        remarks: '',
+        schoolName: '',
+        schoolKana: '',
+        schoolLevel: '',
+        schoolType: '',
+        schoolingStatus: '',
+        classroomCode: '',
+        classroomName: '',
+        customerUid: '',
+        entryDate: '',
         postalCode: '',
         prefecture: '',
-        city: '',       // 市区町村
-        streetAddress: '',       // 番地等
-        buildingName: '',       // 建物名・部屋番号
-        cityKana: '',   // 市区町村フリガナ
-        streetAddressKana: '',   // 番地等フリガナ
+        city: '',
+        cityKana: '',
+        streetAddress: '',
+        streetAddressKana: '',
+        buildingName: '',
+        guardianfullName: '',
+        guardianfullNameKana: '',
+        guardianLastName: '',
+        guardianFirstName: '',
+        guardianLastNameKana: '',
+        guardianFirstNameKana: '',
+        guardianPhone: '',
+        guardianEmail: '',
+        relationship: '',
+        emergencyContact: '',
+        remarks: '',
+        status: '在籍中',
+        registrationDate: serverTimestamp() as Timestamp, // ← 修正済み
+        courses: [], // ← 初期は空配列でOK（any型なので柔軟）
     };
 
-    const initialCourseFormData = {
-        kind: '通常',         // コース種別（講習・通常など）
-        subject: '',   // 科目など
-        classType: '',  // スタイル（1:1、集団）
-        times: '',  // 週回数
-        duration: '',   // 時間帯
-        startMonth: '',   // 開始月
-        endMonth: '',     // 終了月
-        startYear: '',    // 年（←保存に必要）
-        endYear: '',
-        note: '',         // 備考
-    };
+    const [schoolData, setSchoolData] = useState<SchoolDataItem[]>([
+        {
+            kind: '通常',
+            subject: '',
+            subjectOther: '',
+            classType: '',
+            times: '',
+            duration: '',
+            startMonth: '',
+            endMonth: '',
+            startYear: '',
+            endYear: '',
+            note: '',
+            weekday: '',
+            period: '',
+        },
+    ]);
+    
+
+    const isSchoolLevel = (value: any): value is SchoolLevel =>
+        ['小学校', '中学校', '高等学校', '通信制'].includes(value);
 
     const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(true);
     const [lessonType, setLessonType] = useState('');
-    const [courseFormData, setCourseFormData] = useState([]);
+    const [courseFormData, setCourseFormData] = useState<SchoolDataItem[]>([]);
 
     console.log('保存するデータ:', courseFormData);
     useEffect(() => {
         if (lessonType === 'regular') {
             if (courseFormData.length === 0) {
-                setCourseFormData([initialCourseFormData]);
+                setCourseFormData([...schoolData]);
             }
         } else {
             if (courseFormData.length > 0) {
                 setCourseFormData([]);
             }
         }
-    }, [lessonType]);
+    }, [lessonType, courseFormData.length, ...schoolData]);
 
     useEffect(() => {
         if (formData.schoolLevel) {
@@ -86,9 +113,9 @@ const StudentRegistrationForm = ({ onCancel }) => {
         }
     }, [formData.schoolLevel]);
 
-    const handleLessonTypeChange = (value) => {
+    const handleLessonTypeChange = (value: string) => {
         setLessonType(value);
-        setCourseFormData([]); // レギュラー/非レギュラー切り替え時に初期化！
+        setCourseFormData([]);
     };
 
     useEffect(() => {
@@ -101,46 +128,52 @@ const StudentRegistrationForm = ({ onCancel }) => {
         fetchAndSetStudentId();
     }, [classroomCode]);
 
-    const handleChange = (field, value) => {
+    const handleChange = (field: string, value: string) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
     const { user } = useAuth();
     const currentAdminUid = user?.uid;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.lastName || !formData.firstName) {
             alert('氏名を入力してください');
             return;
         }
 
+        // 登録用の関数呼び出し
         const success = await registerCustomerAndStudent({
-            uid: formData.studentId,
+            uid: formData.studentId ?? '',
             customerName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
-            phoneNumber: formData.guardianPhone,
+            phoneNumber: formData.guardianPhone ?? '',
             isFirstLogin: true,
             studentData: {
-                ...formData,
+                ...(formData as Student),
                 classroomCode,
                 classroomName,
-                name: `${formData.lastName} ${formData.firstName}`,
-                registrationDate: serverTimestamp(),
-                courseFormData: courseFormData.map((course) => {
-                    const updated = { ...course };
-                    if (updated.subject === 'その他') {
-                        updated.subject = updated.subjectOther || '';
-                    }
-                    delete updated.subjectOther;
-                    return updated;
-                }),
+                fullname: `${formData.lastName} ${formData.firstName}`,
+                fullnameKana:`${formData.lastNameKana} ${formData.firstNameKana}`,
+                guardianfullName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
+                guardianfullNameKana:`${formData.guardianLastNameKana} ${formData.guardianFirstNameKana}`,
+                registrationDate: Timestamp.fromDate(new Date()),
+                courses: courseFormData ?? [],
             },
+            courseFormData: courseFormData.map((course) => {
+                const updated = { ...course };
+                if (updated.subject === 'その他') {
+                    updated.subject = updated.subjectOther || '';
+                }
+                delete updated.subjectOther;
+                return updated;
+            }),
         });
+
 
         if (success) {
             const db = getFirestore();
             await addDoc(collection(db, 'logs'), {
-                adminUid: currentAdminUid, // ログイン中のadmin UID
+                adminUid: currentAdminUid,
                 action: '生徒新規登録',
                 target: `${formData.lastName} ${formData.firstName}`,
                 detail: `教室: ${classroomName} / 氏名: ${formData.lastName} ${formData.firstName}`,
@@ -193,8 +226,7 @@ const StudentRegistrationForm = ({ onCancel }) => {
                             onLessonTypeChange={handleLessonTypeChange}
                         />
                     </div>
-                    <div className=
-                        "bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                         <BasicInfoSection formData={formData} onChange={handleChange} />
                     </div>
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
@@ -216,12 +248,12 @@ const StudentRegistrationForm = ({ onCancel }) => {
                                 schoolLevel: formData.schoolLevel,
                                 schoolName: formData.schoolName,
                                 schoolKana: formData.schoolKana,
-                                grade: formData.grade, // ← ここでトップレベルの grade を渡す
+                                grade: formData.grade,
                             }}
-                            onChange={(updatedSchoolData) => {
+                            onChange={(updatedSchoolData: Partial<Student>) => {
                                 setFormData((prev) => ({
                                     ...prev,
-                                    ...updatedSchoolData, // ← grade もここでトップレベルに入る
+                                    ...updatedSchoolData,
                                 }));
                             }}
                         />
@@ -232,7 +264,6 @@ const StudentRegistrationForm = ({ onCancel }) => {
                 </div>
             </div>
 
-            {/* コース情報（受講情報） */}
             <div className="w-full overflow-x-auto">
                 <div className="min-w-[800px] bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                     <CourseInfoSection
@@ -240,12 +271,10 @@ const StudentRegistrationForm = ({ onCancel }) => {
                         formData={courseFormData || []}
                         onChange={setCourseFormData}
                         setLessonType={setLessonType}
-                        schoolLevel={formData.schoolLevel}
+                        schoolLevel={isSchoolLevel(formData.schoolLevel) ? formData.schoolLevel : undefined}
                     />
                 </div>
             </div>
-
-            {/* ボタン */}
             <div className="flex justify-center gap-6 mt-8">
                 <button
                     type="submit"

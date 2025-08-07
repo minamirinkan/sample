@@ -13,6 +13,9 @@ import ToDoContent from '../common/ToDo/ToDoContent.tsx';
 import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
+import HookStatusPage from '../pages/HookStatusPage';
+import TestUserDataFetch from "../TEST/TestUserDataFetch";
+import TestAdminDataFetch from "../TEST/testpage";
 import StudentChatManager from '../guardian/Dashboard/components/StudentChatManager'
 
 const AdminDashboard = () => {
@@ -111,6 +114,13 @@ const AdminDashboard = () => {
       case 'todo':
         return <ToDoContent logs={logs} />;
       case 'notification':
+        return <CeoMessagesAll />;
+      case "tasks":
+        return <HookStatusPage />;
+      case 'authTest':
+        return <TestUserDataFetch />;
+      case 'userTest':
+        return <TestAdminDataFetch />;
         return <CeoMessagesAll />;
       case 'chat':
         return <StudentChatManager />;

@@ -1,21 +1,3 @@
-├─ .DS_Store
-├─ .gitignore
-├─ .vscode/
-│  └─ settings.json
-├─ README.md
-├─ dump-project-structure.js
-├─ dumpFirestoreStructure.js
-├─ package-lock.json
-├─ package.json
-├─ postcss.config.js
-├─ public/
-│  ├─ favicon.ico
-│  ├─ index.html
-│  ├─ logo192.png
-│  ├─ logo512.png
-│  ├─ manifest.json
-│  └─ robots.txt
-├─ serviceAccountKey.json
 ├─ src/
 │  ├─ .DS_Store
 │  ├─ App.css
@@ -41,6 +23,8 @@
 │  │  ├─ TuitionFormContent.jsx
 │  │  ├─ TuitionRegistrationTabs.jsx
 │  │  ├─ TuitionViewModal.jsx
+│  │  ├─ firebase/
+│  │  │  └─ fetchers.ts
 │  │  ├─ saveTeacherFees.js
 │  │  ├─ saveTuitionSettings.js
 │  │  └─ updateTuitionSettings.js
@@ -55,6 +39,8 @@
 │  │  ├─ Schedule/
 │  │  │  ├─ HolidayPage.tsx
 │  │  │  ├─ components/
+│  │  │  │  ├─ FullYearCalendar.tsx
+│  │  │  │  └─ HolidayMonthCard.tsx
 │  │  │  ├─ data/
 │  │  │  │  ├─ DeleteConfirmModal.tsx
 │  │  │  │  ├─ HolidayModal.tsx
@@ -64,7 +50,9 @@
 │  │  │  └─ saveClosures.ts
 │  │  ├─ Students/
 │  │  │  ├─ Detail/
+│  │  │  │  ├─ GuardianInfoSection.js
 │  │  │  │  ├─ StudentDetail.js
+│  │  │  │  ├─ StudentInfoSection.js
 │  │  │  │  └─ Tabs/
 │  │  │  │     ├─ MakeupAttendanceTable.jsx
 │  │  │  │     ├─ StudentAttendanceTab.jsx
@@ -81,11 +69,9 @@
 │  │  │  │  │  ├─ AddressInfoSection.jsx
 │  │  │  │  │  ├─ BasicInfoSection.jsx
 │  │  │  │  │  ├─ CourseInfoSection.jsx
-│  │  │  │  │  ├─ GuardianInfoSection.js
 │  │  │  │  │  ├─ GuardianInfoSection.jsx
 │  │  │  │  │  ├─ InternalInfoSection.jsx
 │  │  │  │  │  ├─ SchoolInfoSection.jsx
-│  │  │  │  │  ├─ StudentInfoSection.js
 │  │  │  │  │  └─ SubjectSelect.jsx
 │  │  │  │  ├─ firebase/
 │  │  │  │  │  └─ studentCodeGenerator.js
@@ -188,25 +174,53 @@
 │  ├─ components/
 │  │  ├─ ActionButtons.js
 │  │  ├─ EventModal.jsx
-│  │  ├─ FullYearCalendar.tsx
-│  │  ├─ HolidayMonthCard.tsx
 │  │  ├─ SelectableStudentList.jsx
 │  │  ├─ TimetableCustomer.jsx
 │  │  └─ TimetableRowCustomer.jsx
 │  ├─ contexts/
 │  │  ├─ AuthContext.tsx
-│  │  └─ hooks/
-│  │     ├─ useAttendanceEdit.js
-│  │     ├─ useAuth.js
-│  │     ├─ useFilteredStudents.js
-│  │     ├─ useLatestWeeklySchedule.js
-│  │     ├─ useMakeupLessons.js
-│  │     ├─ usePeriodLabels.js
-│  │     ├─ usePeriodLabelsByStudentId.js
-│  │     ├─ useStudentAttendance.js
-│  │     ├─ useStudents.js
-│  │     ├─ useTeachers.js
-│  │     └─ useWeeklySchedules.js
+│  │  ├─ hooks/
+│  │  │  ├─ useAdmins.ts
+│  │  │  ├─ useAttendanceEdit.js
+│  │  │  ├─ useAuth.js
+│  │  │  ├─ useClassrooms.ts
+│  │  │  ├─ useCommon.ts
+│  │  │  ├─ useCustomers.ts
+│  │  │  ├─ useDailySchedules.ts
+│  │  │  ├─ useFilteredStudents.js
+│  │  │  ├─ useLatestWeeklySchedule.js
+│  │  │  ├─ useMakeupLessons.js
+│  │  │  ├─ usePeriodLabels.js
+│  │  │  ├─ usePeriodLabelsBySchool.ts
+│  │  │  ├─ usePeriodLabelsByStudentId.js
+│  │  │  ├─ useSchoolClosures.ts
+│  │  │  ├─ useStudentAttendance.js
+│  │  │  ├─ useStudents.ts
+│  │  │  ├─ useSuperadmins.ts
+│  │  │  ├─ useTeachers.js
+│  │  │  ├─ useTeachers.ts
+│  │  │  ├─ useWeeklySchedules.js
+│  │  │  └─ useWeeklySchedules.ts
+│  │  ├─ providers/
+│  │  │  ├─ AdminDataProvider.tsx
+│  │  │  ├─ CustomerDataProvider.tsx
+│  │  │  ├─ RoleBasedProvider.tsx
+│  │  │  ├─ SuperAdminDataProvider.tsx
+│  │  │  └─ TeacherDataProvider.tsx
+│  │  ├─ types/
+│  │  │  ├─ admin.ts
+│  │  │  ├─ classroom.ts
+│  │  │  ├─ common.ts
+│  │  │  ├─ customer.ts
+│  │  │  ├─ dailySchedule.ts
+│  │  │  ├─ periodLabel.ts
+│  │  │  ├─ schoolClosures.ts
+│  │  │  ├─ student.ts
+│  │  │  ├─ superadmin.ts
+│  │  │  ├─ teacher.ts
+│  │  │  └─ weeklySchedule.ts
+│  │  └─ utils/
+│  │     └─ filterStudents.ts
 │  ├─ firebase.js
 │  ├─ guardian/
 │  │  ├─ Dashboard/
@@ -227,6 +241,7 @@
 │  │  ├─ CustomerLogin.js
 │  │  ├─ CustomerSignup.js
 │  │  ├─ DevLoginSelector.jsx
+│  │  ├─ HookStatusPage.tsx
 │  │  ├─ Signup.js
 │  │  ├─ StudentLogin.js
 │  │  └─ SuperAdminLogin.js
