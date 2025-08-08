@@ -35,6 +35,7 @@ const StudentChatManager = () => {
             lastName: data.lastName,
           };
         });
+        console.log("fetchedStudents:", fetchedStudents);
         setStudents(fetchedStudents);
       } catch (error) {
         console.error("生徒の取得に失敗しました:", error);

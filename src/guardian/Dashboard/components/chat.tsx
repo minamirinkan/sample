@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
   collection,
   query,
@@ -26,16 +26,15 @@ type ChatProps = {
 
 const Chat = ({ chatType, roomId }: ChatProps) => {
   const { user } = useAuth();
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // ✅ Firestore 正しいパス構造に修正（doc()を使ってからcollection()）
-  const messagesRef =
-    chatType && roomId
-      ? collection(doc(db, "chats", chatType, roomId), "messages")
-      : null;
+  const messagesRef = useMemo(() => {
+    if (!chatType || !roomId) return null;
+    return collection(db, "chats", chatType, roomId);
+  }, [chatType, roomId]);
 
   // ✅ 条件付きではなく useEffect を使う：messagesRef が null のときは何もしない
   useEffect(() => {
@@ -130,11 +129,10 @@ const Chat = ({ chatType, roomId }: ChatProps) => {
               key={msg.id}
               onClick={() => isOwn && handleDelete(msg.id)}
               onTouchStart={(e) => handleTouchStart(e, msg.id, isOwn)}
-              className={`mb-2 p-2 rounded max-w-[70%] break-words ${
-                isOwn
-                  ? "ml-auto bg-blue-100 text-right"
-                  : "mr-auto bg-gray-200 text-left"
-              }`}
+              className={`mb-2 p-2 rounded max-w-[70%] break-words ${isOwn
+                ? "ml-auto bg-blue-100 text-right"
+                : "mr-auto bg-gray-200 text-left"
+                }`}
             >
               <div>{msg.text}</div>
               <div className="text-xs text-gray-500 text-right">{timeString}</div>
