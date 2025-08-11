@@ -15,7 +15,6 @@ import DevLoginSelector from './pages/DevLoginSelector';
 import ProtectedRoute from './common/ProtectedRoute.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
 import TeacherChangePassword from './teacher/TeacherChangePassword.jsx';
-import ScheduleCalendarPage from './common/StudentsSchedule/ScheduleCalendarPage.jsx'
 import { ToastContainer } from 'react-toastify';
 import { ClassroomSelectionProvider } from './contexts/ClassroomSelectionContext';
 import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
@@ -55,7 +54,6 @@ const App: React.FC = () => {
       <Route path="/calendar" element={<CalendarPopup classroomCode={userData?.classroomCode ?? null} />} />
       <Route path="/customer/change-password" element={<ChangePassword />} />
       <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
-      <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
     </Routes>
   );
 

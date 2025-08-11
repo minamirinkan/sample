@@ -1,5 +1,5 @@
-//src/components/AdminSidebar.jsx
-import { useEffect, useState } from 'react';
+// src/components/SuperAdminSidebar.tsx
+import { useEffect, useState, FC } from 'react';
 import {
     FaTasks,
     FaBell,
@@ -13,9 +13,21 @@ import {
 } from 'react-icons/fa';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase'; // Firebase初期化済みファイル
-import { useAuth } from '../../../contexts/AuthContext.tsx'; // classroomCodeを取得できるAuthContext想定
+import { useAuth } from '../../../contexts/AuthContext'; // classroomCodeを取得できるAuthContext想定
 
-const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
+interface SubItem {
+    label: string;
+    key: string;
+}
+
+interface SidebarSectionProps {
+    icon: FC<{ className?: string }>;
+    title: string;
+    subItems: SubItem[];
+    onSelectMenu?: (key: string) => void;
+}
+
+const SidebarSection: FC<SidebarSectionProps> = ({ icon: Icon, title, subItems, onSelectMenu }) => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
@@ -50,8 +62,12 @@ const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
     );
 };
 
-const AdminSidebar = ({ onSelectMenu }) => {
-    const { adminData } = useAuth(); // adminData.classroomCodeがある想定
+interface SuperAdminSidebarProps {
+    onSelectMenu?: (key: string) => void;
+}
+
+const SuperAdminSidebar: FC<SuperAdminSidebarProps> = ({ onSelectMenu }) => {
+    const { adminData } = useAuth() as { adminData?: { classroomCode?: string } };
     const [classroomName, setClassroomName] = useState('');
 
     useEffect(() => {
@@ -62,7 +78,8 @@ const AdminSidebar = ({ onSelectMenu }) => {
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                setClassroomName(docSnap.data().name);
+                const data = docSnap.data() as { name?: string };
+                setClassroomName(data.name ?? '');
             } else {
                 setClassroomName('教室名なし');
             }
@@ -102,34 +119,18 @@ const AdminSidebar = ({ onSelectMenu }) => {
                 <SidebarSection icon={FaYenSign} title="売上管理" subItems={[{ label: '請求情報', key: 'billing' }]} onSelectMenu={onSelectMenu} />
                 <SidebarSection icon={FaChartBar} title="目標管理" subItems={[{ label: '目標ファイル', key: 'goals' }]} onSelectMenu={onSelectMenu} />
                 <SidebarSection
-                    icon={FaBook} // 他のアイコンでもOK
-                    title="スケジュール"
+                    icon={FaBook}
+                    title="時間割"
                     subItems={[
-                        { label: 'カレンダー', key: 'schedule-calendar' },
-                        { label: '休講日リスト', key: 'holiday-page' }
+                        { label: '時間割一覧', key: 'timetable' }
                     ]}
                     onSelectMenu={onSelectMenu}
                 />
                 <SidebarSection
                     icon={FaBook}
-                    title="時間割"
+                    title="スケジュール"
                     subItems={[
-                        { label: '時間割一覧', key: 'timetable' },
-                        { label: '生徒時間割', key: 'student-timetable' }
-                    ]}
-                    onSelectMenu={onSelectMenu}
-                /* onSelectMenu={(key) => {
-                    if (key === 'timetable') {
-                        navigate('/superadmin/timetable'); // ← 遷移
-                    }
-                }} */
-                />
-                <SidebarSection
-                    icon={FaDatabase}
-                    title="マスタ管理"
-                    subItems={[
-                        { label: '生徒', key: 'students' },
-                        { label: '講師', key: 'teachers' }
+                        { label: '休講日リスト', key: 'holiday-page' }
                     ]}
                     onSelectMenu={onSelectMenu}
                 />
@@ -142,9 +143,21 @@ const AdminSidebar = ({ onSelectMenu }) => {
                     { label: '一括分析/教室別', key: 'bulk-by-class' },
                     { label: '一括分析/複数教室', key: 'bulk-multi-class' },
                 ]} onSelectMenu={onSelectMenu} />
+                <SidebarSection
+                    icon={FaDatabase}
+                    title="マスタ管理"
+                    subItems={[
+                        { label: '教室', key: 'admin' },
+                        { label: '料金', key: 'tuition' },
+                        { label: '講師給与', key: 'TeacherFee' },
+                        { label: '生徒', key: 'students' },
+                        { label: '講師', key: 'teachers' }
+                    ]}
+                    onSelectMenu={onSelectMenu}
+                />
             </ul>
         </aside>
     );
 };
 
-export default AdminSidebar;
+export default SuperAdminSidebar;

@@ -6,7 +6,6 @@ import SuperAdminTeachers from '../common/Teachers/SuperAdminTeachers';
 import TimetablePage from '../common/timetable/TimetablePage';
 import StudentRegistrationForm from '../common/Students/StudentRegistrationForm/StudentRegistrationForm'
 import TeacherRegistrationForm from '../common/Teachers/RegistrationForm/TeacherRegistrationForm';
-import ScheduleCalendarPage from '../common/StudentsSchedule/ScheduleCalendarPage';
 import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalendar';
 import HolidayPage from '../common/Schedule/HolidayPage.tsx';
 import ToDoContent from '../common/ToDo/ToDoContent.tsx';
@@ -104,8 +103,6 @@ const AdminDashboard = () => {
     switch (selectedContent) {
       case 'timetable':
         return <TimetablePage />;
-      case 'schedule-calendar':   // ここを追加
-        return <ScheduleCalendarPage />;
       case 'holiday-page':   // ここを追加
         return <HolidayPage />;
       case 'student-timetable':
@@ -131,7 +128,7 @@ const AdminDashboard = () => {
   return (
     <div className={`min-h-screen flex flex-col ${sidebarOpen ? 'sidebar-open' : ''}`}>
       <header>
-        <SuperAdminHeader onToggleSidebar={toggleSidebar} />
+        <SuperAdminHeader role="admin" onToggleSidebar={toggleSidebar} />
       </header>
       <div className="flex flex-1">
         <aside className={`w-64 border-r border-gray-300 ${sidebarOpen ? 'block' : 'hidden'}`}>

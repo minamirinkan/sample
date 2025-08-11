@@ -1,13 +1,27 @@
+// components/SuperAdminHeader.tsx
 import { useState, useRef, useEffect } from 'react';
 
-const SuperAdminHeader = ({ onToggleSidebar }) => {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
+interface SuperAdminHeaderProps {
+    onToggleSidebar: () => void;
+    role: 'superadmin' | 'admin' | 'customer' | 'teacher';
+}
 
-    // 外部クリックでドロップダウンを閉じる
+const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, role }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const dashboardPath =
+        role === 'superadmin'
+            ? '/superadmin/dashboard'
+            : role === 'admin'
+                ? '/admin/dashboard'
+                : role === 'customer'
+                    ? '/mypage/dashboard'
+                    : '/teacher/dashboard';
+
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsDropdownOpen(false);
             }
         };
@@ -26,14 +40,14 @@ const SuperAdminHeader = ({ onToggleSidebar }) => {
                 >
                     ☰
                 </button>
-                <a href="/superadmin/dashboard" className="text-xl font-bold">
+                <a href={dashboardPath} className="text-xl font-bold">
                     ATOM
                 </a>
             </div>
             <div className="right-section relative" ref={dropdownRef}>
                 <button
                     className="px-4 py-2 bg-gray-300 rounded"
-                    onClick={() => setIsDropdownOpen(prev => !prev)}
+                    onClick={() => setIsDropdownOpen((prev) => !prev)}
                 >
                     管理者ページ
                 </button>
@@ -45,10 +59,7 @@ const SuperAdminHeader = ({ onToggleSidebar }) => {
                         >
                             管理者情報
                         </a>
-                        <a
-                            href="/"
-                            className="block px-4 py-2 hover:bg-gray-100"
-                        >
+                        <a href="/" className="block px-4 py-2 hover:bg-gray-100">
                             ログアウト
                         </a>
                     </div>

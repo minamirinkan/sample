@@ -37,7 +37,7 @@ const CustomerDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden">
       <header>
-        <SuperAdminHeader onToggleSidebar={toggleSidebar} />
+        <SuperAdminHeader role="customer" onToggleSidebar={toggleSidebar} />
       </header>
 
       {/* ✅ オーバーレイ背景 */}
