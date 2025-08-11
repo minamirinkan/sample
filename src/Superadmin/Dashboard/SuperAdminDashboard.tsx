@@ -1,6 +1,6 @@
 // 不要になった部分は削除済み
-import SuperAdminHeader from "./components/SuperAdminHeader.js";
-import SuperAdminSidebar from "./components/SuperAdminSidebar.js";
+import SuperAdminHeader from "./components/SuperAdminHeader";
+import SuperAdminSidebar from "./components/SuperAdminSidebar";
 import SuperAdminStudents from "../../common/Students/SuperAdminStudents";
 import { useState, useEffect } from "react";
 import {
@@ -109,7 +109,7 @@ const SuperAdminDashboard = () => {
       className={`min-h-screen flex flex-col ${sidebarOpen ? "sidebar-open" : ""}`}
     >
       <header>
-        <SuperAdminHeader onToggleSidebar={toggleSidebar} />
+        <SuperAdminHeader role="superadmin" onToggleSidebar={toggleSidebar} />
       </header>
       <div className="flex flex-1">
         <aside
