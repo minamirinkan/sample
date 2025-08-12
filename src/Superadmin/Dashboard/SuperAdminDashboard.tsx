@@ -15,7 +15,7 @@ import SuperAdminTeachers from "../../common/Teachers/SuperAdminTeachers";
 import TimetablePage from "../../common/timetable/TimetablePage";
 import SchoolAccountAdmin from "../../Superadmin/SchoolAccountAdmin.jsx";
 import StudentRegistrationForm from "../../common/Students/StudentRegistrationForm/StudentRegistrationForm";
-import TeacherRegistrationForm from "../../common/Teachers/RegistrationForm/TeacherRegistrationForm.jsx";
+import TeacherRegistrationForm from "../../common/Teachers/RegistrationForm/TeacherRegistrationForm";
 import TuitionRegistrationForm from "../TuitionRegistrationTabs.jsx";
 import TeacherFeeRegistration from "../TeacherFeeRegistration.jsx";
 import HolidayPage from "../../common/Schedule/HolidayPage";
