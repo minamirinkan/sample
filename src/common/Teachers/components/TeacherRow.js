@@ -13,7 +13,7 @@ const TeacherRow = ({ teacher, isSelected, onSelect, onShowDetail }) => (
         </td>
         <td className="border px-4 py-2">{teacher.code}</td>
         <td className="border px-4 py-2">{teacher.lastName} {teacher.firstName}</td>
-        <td className="border px-4 py-2">{teacher.kanalastName} {teacher.kanafirstName}</td>
+        <td className="border px-4 py-2">{teacher.lastNameKana} {teacher.firstNameKana}</td>
         <td className="border px-4 py-2">{teacher.subject}</td>
         <td className="border px-4 py-2">{formatDate(teacher.hireDate)}</td>
         <td className="border px-4 py-2 text-center">
