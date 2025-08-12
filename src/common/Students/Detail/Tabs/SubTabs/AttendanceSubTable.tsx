@@ -5,6 +5,20 @@ import { formatDate } from '../../../../dateFormatter';
 import { MakeupLesson } from '@contexts/types/makeupLessons';
 import { Teacher } from '@contexts/types/teacher';
 
+export interface EditValues {
+    studentId?: string;
+    studentName?: string;
+    subject?: string;
+    status?: string;
+    seat?: string;
+    grade?: string;
+    classType?: string;
+    duration?: string;
+    teacherCode?: string;
+    periodLabel?: string;
+    date?: string;
+  }
+
 type Props = {
     classroomCode: string;
     studentId: string;
@@ -15,7 +29,7 @@ type Props = {
     editingIndex: number | null;
     editValues: Partial<MakeupLesson> | null;
     handleEditClick: (idx: number) => void;
-    handleChange: (field: keyof MakeupLesson | string, value: any) => void;
+    handleChange: (field: keyof EditValues, value: any) => void;
     handleSaveClick: () => void;
     setEditingIndex: React.Dispatch<React.SetStateAction<number | null>>
     getStatusClass: (status: string) => string;
@@ -45,6 +59,7 @@ const AttendanceSubTable: React.FC<Props> = ({
     mode,
 }) => {
 
+    
     return (
         <table className="w-full border-collapse border border-gray-300 text-sm">
             <thead>
@@ -70,6 +85,7 @@ const AttendanceSubTable: React.FC<Props> = ({
                                 ? entry.teacher.name
                                 : entry.teacher;
                         const isEditing = editingIndex === idx;
+                        
 
                         return (
                             <tr

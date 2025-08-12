@@ -4,15 +4,41 @@ import { getJapaneseDayOfWeek } from '../../common/dateFormatter';
 import { fetchPeriodLabels } from './usePeriodLabels';
 import { getLatestExistingWeeklySchedule } from './useWeeklySchedules';
 
-export const useStudentAttendance = (classroomCode, studentId, selectedMonth) => {
+export interface AttendanceEntry {
+    studentId: string;
+    student?: {
+        name?: string;
+        [key: string]: any;
+    };
+    status: string; // '振替' | '予定' | '未定' | '欠席' など
+    periodLabel: string;
+    period?: number;
+    date: string; // 'YYYY-MM-DD' 想定
+    teacher?: {
+        code: string;
+        name: string;
+    } | null;
+    classType?: string;
+    duration?: string;
+    seat?: string;
+    grade?: string;
+    subject?: string;
+    [key: string]: any;
+}
+
+export const useStudentAttendance = (
+    classroomCode: string,
+    studentId: string,
+    selectedMonth: string
+  ) => {
     const [loading, setLoading] = useState(true);
-    const [attendanceList, setAttendanceList] = useState([]);
+    const [attendanceList, setAttendanceList] = useState<AttendanceEntry[]>([]);
 
     useEffect(() => {
         if (!classroomCode || !studentId || !selectedMonth) return;
 
         const db = getFirestore();
-        let unsubscribeList = [];
+        let unsubscribeList: (() => void)[] = [];
 
         const fetchAndSubscribe = async () => {
             setLoading(true);
@@ -65,15 +91,15 @@ export const useStudentAttendance = (classroomCode, studentId, selectedMonth) =>
                             }
 
                             const rows = data.rows || [];
-                            const newResults = [];
+                            const newResults: any[] = [];
 
-                            rows.forEach((row) => {
+                            rows.forEach((row: any) => {
                                 const periods = row.periods || {};
                                 periodLabels.forEach((periodLabel, i) => {
                                     const key = `period${i + 1}`;
                                     const students = periods[key] || [];
 
-                                    students.forEach((student) => {
+                                    students.forEach((student:any) => {
                                         if (student.studentId?.trim().toLowerCase() === studentId.trim().toLowerCase()) {
                                             newResults.push({
                                                 date: yyyyMMdd,

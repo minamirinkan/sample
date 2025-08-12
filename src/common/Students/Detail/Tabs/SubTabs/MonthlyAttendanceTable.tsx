@@ -3,8 +3,9 @@ import { useState } from 'react';
 import AttendanceSubTable from './AttendanceSubTable';
 import useTeachers from '../../../../../contexts/hooks/useTeachers';
 import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';
-import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance.js';
+import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance';
 import { useAttendanceEdit } from '../../../../../contexts/hooks/useAttendanceEdit';
+import { MakeupLesson } from '../../../../../contexts/types/makeupLessons';
 
 type Props = {
     classroomCode: string;
@@ -50,7 +51,7 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
         <div className="min-w-[700px]">
             <h2 className="text-lg font-bold mb-2 text-blue-600">月間出席記録</h2>
             <AttendanceSubTable
-                data={regularList}
+                data={regularList as unknown as MakeupLesson[]}
                 teachers={teachers}
                 editingIndex={editingIndexRegular}
                 setEditingIndex={setEditingIndexRegular}

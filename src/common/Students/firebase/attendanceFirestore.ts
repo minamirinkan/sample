@@ -79,6 +79,8 @@ export type LessonData = {
     };
     periodKey: string;
     status?: string;
+    period?: number;
+    date?: string;
 };
 
 export async function saveMakeupLesson(studentId: string, docId: string, lessonData: LessonData): Promise<void> {
