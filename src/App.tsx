@@ -1,21 +1,21 @@
-import { Routes, Route } from 'react-router-dom';
-import React from 'react';
-import SuperAdminLogin from './pages/SuperAdminLogin.js';
+import { Routes, Route } from "react-router-dom";
+import React from "react";
+import SuperAdminLogin from "./pages/SuperAdminLogin";
 import SuperAdminDashboard from "./Superadmin/Dashboard/SuperAdminDashboard";
-import AdminDashboard from "./admin/AdminDashboard.jsx";
-import CustomerDashboard from "./guardian/Dashboard/CustomerDashboard.jsx";
-import TeacherDashboard from "./teacher/Dashboard/TeacherDashboard.jsx";
-import AdminLogin from './pages/AdminLogin.js';
-import TeacherLogin from './teacher/TeacherLogin.js';
-import CustomerLogin from './pages/CustomerLogin.js';
-import TimetablePage from './common/timetable/TimetablePage.jsx';
-import CalendarPopup from './common/timetable/components/CalendarPopup.jsx';
-import DevLoginSelector from './pages/DevLoginSelector.jsx';
-import ProtectedRoute from './common/ProtectedRoute.jsx';
-import ChangePassword from './pages/ChangePassword.jsx';
-import TeacherChangePassword from './teacher/TeacherChangePassword.jsx';
-import ScheduleCalendarPage from './common/StudentsSchedule/ScheduleCalendarPage.jsx'
-import { ToastContainer } from 'react-toastify';
+import AdminDashboard from "./admin/AdminDashboard";
+import CustomerDashboard from "./guardian/Dashboard/CustomerDashboard";
+import TeacherDashboard from "./teacher/Dashboard/TeacherDashboard";
+import AdminLogin from "./pages/AdminLogin";
+import TeacherLogin from "./teacher/TeacherLogin";
+import CustomerLogin from "./pages/CustomerLogin";
+import TimetablePage from "./common/timetable/TimetablePage";
+import CalendarPopup from "./common/timetable/components/CalendarPopup";
+import DevLoginSelector from "./pages/DevLoginSelector";
+import ProtectedRoute from "./common/ProtectedRoute";
+import ChangePassword from "./pages/ChangePassword";
+import TeacherChangePassword from "./teacher/TeacherChangePassword";
+import ScheduleCalendarPage from "./common/StudentsSchedule/ScheduleCalendarPage";
+import { ToastContainer } from "react-toastify";
 
 const App: React.FC = () => {
   return (
@@ -47,7 +47,10 @@ const App: React.FC = () => {
         <Route path="/customer-login" element={<CustomerLogin />} />
         <Route path="/calendar" element={<CalendarPopup />} />
         <Route path="/customer/change-password" element={<ChangePassword />} />
-        <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
+        <Route
+          path="/teacher/change-password"
+          element={<TeacherChangePassword />}
+        />
         <Route path="/admin/schedule" element={<ScheduleCalendarPage />} />
       </Routes>
       <ToastContainer
@@ -56,6 +59,6 @@ const App: React.FC = () => {
       />
     </>
   );
-}
+};
 
 export default App;
