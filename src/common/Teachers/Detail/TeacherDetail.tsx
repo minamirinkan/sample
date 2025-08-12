@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 // Zodで定義されたスキーマと型をインポート
 import type { Teacher } from '@/schemas'; // パスはプロジェクトに合わせてください
-import TeacherInfoSection from '@/common/Teachers/Detail/tabs/TeacherInfoSection';
+import TeacherInfoSection from './tabs/TeacherInfoSection';
 
 /**
  * Propsの型定義

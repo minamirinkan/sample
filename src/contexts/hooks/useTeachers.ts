@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { collection, query, where, getDocs, Query } from 'firebase/firestore';
-import { db } from '@/firebase';
+import { db } from '../../firebase';
 import type { Teacher } from '@/schemas';
 
 export default function useTeachers(classroomCode?: string) {
