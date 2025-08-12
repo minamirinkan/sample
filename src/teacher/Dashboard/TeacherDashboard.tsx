@@ -28,7 +28,7 @@ const TeacherDashboard = () => {
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden">
             <header>
-                <SuperAdminHeader onToggleSidebar={toggleSidebar} />
+                <SuperAdminHeader role="teacher" onToggleSidebar={toggleSidebar} />
             </header>
 
             {/* ✅ オーバーレイ背景 */}
