@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import React from 'react';
 import SuperAdminLogin from './pages/SuperAdminLogin.js';
 import SuperAdminDashboard from "./Superadmin/Dashboard/SuperAdminDashboard";
-import AdminDashboard from "./admin/AdminDashboard.jsx";
+import AdminDashboard from "./admin/AdminDashboard";
 import CustomerDashboard from "./guardian/Dashboard/CustomerDashboard.jsx";
 import TeacherDashboard from "./teacher/Dashboard/TeacherDashboard.jsx";
 import AdminLogin from './pages/AdminLogin.js';

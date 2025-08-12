@@ -17,9 +17,13 @@ import { Timestamp } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
+interface StudentRegistrationFormProps {
+  onCancel?: () => void;
+  onSubmitSuccess?: () => void;  // ← 追加
+}
 
 
-const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
+const StudentRegistrationForm = ({ onCancel, onSubmitSuccess }: StudentRegistrationFormProps) => {
     const { userData } = useAdminData();
     const classroomCode = userData?.classroomCode ?? '';
     const classroomName = userData?.classroomName ?? '';
@@ -178,7 +182,9 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 timestamp: serverTimestamp(),
             });
             alert('登録が完了しました');
-
+            if (onSubmitSuccess) {
+                onSubmitSuccess();
+            }
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
                 ...initialFormData,

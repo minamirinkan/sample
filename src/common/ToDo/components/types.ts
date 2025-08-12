@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export type Message = {
     id: string;
     subject: string;
@@ -6,10 +8,12 @@ export type Message = {
     read: boolean;
 };
 
-export type Log = {
-    id: string;
-    timestamp?: { toDate: () => Date };
-    action: string;
-    target: string;
-    detail: string;
-};
+export interface Log {
+  id: string;
+  timestamp: Timestamp;  // any→Timestampに変更
+  content: string;
+  editor: string;
+  action?: string;
+  target?: string;
+  detail?: string;
+}
