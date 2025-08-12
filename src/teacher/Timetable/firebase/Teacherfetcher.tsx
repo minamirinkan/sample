@@ -11,17 +11,14 @@ import {
   getYearMonthKey,
   getPreviousYearMonth,
 } from "../../../common/dateUtils";
-import { User } from "firebase/auth"; // FirebaseのUser型をインポート
+import { User } from "firebase/auth";
 
-// --- ▼ 型定義を追加 ▼ ---
+// --- ▼ 型定義の修正 ▼ ---
 
-// selectedDateオブジェクトの型
-interface SelectedDate {
-  year: number;
-  month: number;
-  date: number;
-  type: string;
-}
+// ★ 修正: このファイル独自のSelectedDate型を削除し、共通の型定義をインポートする想定
+// エラーメッセージから、共通の型定義ファイルがあると推測されます。
+// プロジェクトの構造に合わせてパスを調整してください。
+import { SelectedDate } from "../../../contexts/types/data"; // 例: import { SelectedDate } from '../types';
 
 // 期間ラベルの型
 interface PeriodLabel {
@@ -61,7 +58,6 @@ interface FetchResult {
 
 // --- ▼ 関数と引数に型を定義 ▼ ---
 
-// ★修正点1: 引数に型を定義
 function findLatestWeeklyDoc(
   selectedDate: SelectedDate,
   classroomCode: string,
@@ -72,7 +68,6 @@ function findLatestWeeklyDoc(
   const maxLookback = 12;
 
   for (let i = 0; i < maxLookback; i++) {
-    // ★修正点2: ymがnullの場合のチェックを追加
     if (!ym) break;
     const weeklyDocId = `${classroomCode}_${ym}_${weekdayIndex}`;
     if (cachedWeeklyDocs.has(weeklyDocId)) {
@@ -84,13 +79,11 @@ function findLatestWeeklyDoc(
   return null;
 }
 
-// ★修正点3: 関数の引数に型を定義 (User, Date)
 export async function fetchTeacherEvents(
   user: User | null,
   startDate: Date,
   endDate: Date
 ): Promise<FetchResult> {
-  // ★修正点4: resultの型を明確に定義
   const result: FetchResult = {
     matchedLessons: [],
     events: [],
@@ -122,11 +115,16 @@ export async function fetchTeacherEvents(
     }
 
     const weeklyDocIds: string[] = [];
-    // ★修正点5: ymのnullチェックを追加
+
+    // ★ 修正: getYearMonthKeyに渡すオブジェクトに不足していたプロパティを追加
     let ym: string | null = getYearMonthKey({
       year: startDate.getFullYear(),
       month: startDate.getMonth() + 1,
+      date: startDate.getDate(), // 不足していたプロパティ
+      weekday: startDate.getDay().toString(), // 不足していたプロパティ
+      type: "date", // 不足していたプロパティ
     });
+
     const weekdayIndices = [...Array(7).keys()];
     for (let i = 0; i < 12; i++) {
       if (!ym) break;
@@ -143,7 +141,6 @@ export async function fetchTeacherEvents(
     weeklyDocIds.forEach((id, i) => cachedWeeklyDocs.set(id, weeklySnaps[i]));
 
     const dateList: string[] = [];
-    // ★修正点6: dateMapの型を定義
     const dateMap: {
       [key: string]: { dateKey: string; selectedDate: SelectedDate };
     } = {};
@@ -152,10 +149,12 @@ export async function fetchTeacherEvents(
       d <= endDate;
       d.setDate(d.getDate() + 1)
     ) {
+      // ★ 修正: selectedDateオブジェクトに必須プロパティである`weekday`を追加
       const selectedDate: SelectedDate = {
         year: d.getFullYear(),
         month: d.getMonth() + 1,
         date: d.getDate(),
+        weekday: d.getDay().toString(), // getDay()は日曜日=0, 月曜日=1...を返す
         type: "date",
       };
       const dateKey = getDateKey(selectedDate);
@@ -189,16 +188,20 @@ export async function fetchTeacherEvents(
         const rowTeacher = row.teacher;
         if (!rowTeacher || rowTeacher.code !== teacherCode) continue;
 
-        // ★修正点7: periodValueが配列であることを型アサーションで示す
+        // ★ 修正: studentの型を明示的に定義（より安全にするため）
+        interface Student {
+          subject?: string;
+          grade?: string;
+        }
+
         const periods = row.periods || {};
         for (const [periodKey, periodValue] of Object.entries(
-          periods as Record<string, any[]>
+          periods as Record<string, Student[]> // 型アサーションをより具体的に
         )) {
           const periodIndex = parseInt(periodKey.replace("period", "")) - 1;
           const periodLabel = periodLabels[periodIndex]?.label || periodKey;
           const time = periodLabels[periodIndex]?.time || "";
 
-          // ★修正点8: studentの型を定義
           for (const student of periodValue) {
             const subject = student.subject || "";
             const grade = student.grade || "";
@@ -242,7 +245,6 @@ export async function fetchTeacherEvents(
 
     return result;
   } catch (error) {
-    // ★修正点9: errorの型をチェックして安全にアクセスする
     if (error instanceof Error) {
       console.error("❌ Firestore エラー:", error.message);
     } else {
