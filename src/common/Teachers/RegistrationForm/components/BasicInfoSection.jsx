@@ -40,8 +40,8 @@ const BasicInfoSection = ({ formData, onChange }) => {
                     <label className="block text-sm font-medium">フリガナ（姓）</label>
                     <input
                         type="text"
-                        value={formData.kanalastname}
-                        onChange={(e) => onChange('kanalastName', e.target.value)}
+                        value={formData.lastNameKana}
+                        onChange={(e) => onChange('lastNameKana', e.target.value)}
                         className="mt-1 w-full border rounded p-2"
                     />
                 </div>
@@ -49,8 +49,8 @@ const BasicInfoSection = ({ formData, onChange }) => {
                     <label className="block text-sm font-medium">フリガナ（名）</label>
                     <input
                         type="text"
-                        value={formData.kanafirstname}
-                        onChange={(e) => onChange('kanafirstName', e.target.value)}
+                        value={formData.firstNameKana}
+                        onChange={(e) => onChange('firstNameKana', e.target.value)}
                         className="mt-1 w-full border rounded p-2"
                     />
                 </div>

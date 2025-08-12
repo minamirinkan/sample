@@ -18,8 +18,8 @@ const TeacherInfoSection = ({ formData, isEditing, onChange }) => (
             <h2 className="text-lg font-semibold mb-3 text-green-600">講師情報</h2>
             <InfoRow label="氏名（姓）" value={formData.lastName} name="lastName" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="氏名（名）" value={formData.firstName} name="firstName" isEditing={isEditing} onChange={onChange} />
-            <InfoRow label="氏名カナ（姓）" value={formData.kanalastName} name="kanalastName" isEditing={isEditing} onChange={onChange} />
-            <InfoRow label="氏名カナ（名）" value={formData.kanafirstName} name="kanafirstName" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="氏名カナ（姓）" value={formData.lastNameKana} name="kanalastName" isEditing={isEditing} onChange={onChange} />
+            <InfoRow label="氏名カナ（名）" value={formData.firstNameKana} name="kanafirstName" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="性別" value={formData.gender} name="gender" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="電話番号" value={formData.phone} name="phone" isEditing={isEditing} onChange={onChange} />
             <InfoRow label="メールアドレス" value={formData.email} name="email" isEditing={isEditing} onChange={onChange} />

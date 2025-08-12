@@ -7,11 +7,12 @@ import { useGenerateTeacherCode } from './components/teacherCodeGenerator.js';
 import BasicInfoSection from './components/BasicInfoSection.jsx';
 import ContactInfoSection from './components/ContactInfoSection.jsx';
 import EmploymentInfoSection from './components/EmploymentInfoSection.jsx';
+import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
 const TeacherRegistrationForm = ({ onCancel }) => {
-    const { adminData } = useAuth();
-    const classroomCode = adminData?.classroomCode || '';
-    const classroomName = adminData?.classroomName || '';
+    const { teachers,classroom } = useAdminData();
+    const classroomCode = classroom.classroom.code || '';
+    const classroomName = classroom.classroom.name || '';
 
     const initialFormData = {
         code: '',

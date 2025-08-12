@@ -9,7 +9,8 @@ import { doc, setDoc } from 'firebase/firestore';
 
 export const registerTeacher = async ({
     code,
-    teacherName,
+    fullName,
+    fullNameKana,
     email,
     teacherData,
     isFirstLogin = true,
@@ -36,7 +37,8 @@ export const registerTeacher = async ({
         const teacherRef = doc(db, 'teachers', teacherUid);
         await setDoc(teacherRef, {
             uid: teacherUid,
-            name: teacherName,
+            fullName,
+            fullNameKana,
             email,
             phone: teacherData.phone, 
             role: 'teacher',
