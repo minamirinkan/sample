@@ -1,6 +1,6 @@
 import React from 'react';
 // エイリアスを @/ に統一して型をインポート
-import type { Teacher } from '@/types';
+import type { Teacher } from '@/schemas';
 
 /**
  * Propsの型定義

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-// エイリアスを @/ に統一
-import type { Teacher } from '@/types';
+// Zodで定義されたスキーマと型をインポート
+import type { Teacher } from '@/schemas'; // パスはプロジェクトに合わせてください
 import TeacherInfoSection from '@/common/Teachers/Detail/tabs/TeacherInfoSection';
 
 /**
@@ -14,7 +14,8 @@ interface TeacherDetailProps {
     // データの保存が要求されたときのコールバック
     onSave: (updatedTeacher: Teacher) => void;
     // データの削除が要求されたときのコールバック
-    onDelete: (teacherId: number) => void;
+    // ★★★★★ 修正点 ★★★★★
+    onDelete: (teacherId: string) => void; // teacher.idがstringなので、stringを受け取るように修正
 }
 
 const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, onDelete }) => {
@@ -30,6 +31,7 @@ const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, 
     }, []);
 
     const handleSave = useCallback(() => {
+        // ここでZodを使ったバリデーションを入れるのが理想的
         onSave(formData);
         setIsEditing(false);
     }, [formData, onSave]);
@@ -41,6 +43,7 @@ const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, 
 
     const handleDelete = useCallback(() => {
         if (window.confirm(`「${teacher.name}」のデータを本当に削除しますか？`)) {
+            // teacher.id は string なので、エラーなく呼び出せる
             onDelete(teacher.id);
         }
     }, [teacher, onDelete]);
