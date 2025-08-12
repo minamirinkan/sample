@@ -1,13 +1,37 @@
-// src/components/TeacherSidebar.jsx
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; // Reactをインポート
+import { IconType } from "react-icons"; // react-iconsの型をインポート
 import { FaBell, FaBook, FaYenSign, FaAngleLeft } from "react-icons/fa";
 import { doc, getDoc } from "firebase/firestore";
-import { db, auth } from "../../../firebase"; // authを直接使う
-// import { db, auth } from "@src/firebase"; // authを直接使う
+import { db, auth } from "../../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
+// --- ▼ 型定義を追加 ▼ ---
+
+// subItemsのオブジェクトの型
+interface SubItem {
+  label: string;
+  key: string;
+}
+
+// SidebarSectionコンポーネントのpropsの型
+interface SidebarSectionProps {
+  icon: IconType; // react-iconsのコンポーネントの型
+  title: string;
+  subItems: SubItem[]; // SubItemオブジェクトの配列
+  onSelectMenu?: (key: string) => void; // stringを引数に取る関数、あってもなくても良い
+}
+
+// TeacherSidebarコンポーネントのpropsの型
+interface TeacherSidebarProps {
+  onSelectMenu?: (key: string) => void;
+}
+
+const SidebarSection: React.FC<SidebarSectionProps> = ({
+  icon: Icon,
+  title,
+  subItems,
+  onSelectMenu,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
@@ -26,6 +50,7 @@ const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
         />
       </button>
       {isOpen && (
+        // `item`はSubItem型、`idx`はnumber型と自動で推論される
         <ul className="pl-8 mt-1 space-y-1 text-sm text-gray-700">
           {subItems.map((item, idx) => (
             <li
@@ -42,7 +67,7 @@ const SidebarSection = ({ icon: Icon, title, subItems, onSelectMenu }) => {
   );
 };
 
-const TeacherSidebar = ({ onSelectMenu }) => {
+const TeacherSidebar: React.FC<TeacherSidebarProps> = ({ onSelectMenu }) => {
   const [teacherName, setTeacherName] = useState("お客様");
 
   useEffect(() => {

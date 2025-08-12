@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { FirebaseError } from "firebase/app";
 
 const TeacherChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -33,6 +34,14 @@ const TeacherChangePassword = () => {
 
     setLoading(true);
     try {
+      const user = auth.currentUser;
+
+      // userとuser.emailが存在するかチェック
+      if (!user || !user.email) {
+        alert("ユーザー情報が取得できませんでした。再度ログインしてください。");
+        setLoading(false);
+        return; // 処理を中断
+      }
       // 現在のパスワードで再認証
       const credential = EmailAuthProvider.credential(
         user.email,
@@ -53,13 +62,24 @@ const TeacherChangePassword = () => {
       await signOut(auth);
       navigate("/teacher/mypage/dashboard");
     } catch (error) {
-      console.error(error);
-      if (error.code === "auth/wrong-password") {
-        alert("現在のパスワードが間違っています");
-      } else if (error.code === "auth/weak-password") {
-        alert("新しいパスワードは6文字以上で入力してください");
+      // 'error' が FirebaseError かどうかを正しく判定できるようになる
+      if (error instanceof FirebaseError) {
+        console.error("Firebase Error Code:", error.code); // 安全にアクセスできる
+        switch (error.code) {
+          case "auth/wrong-password":
+            alert("現在のパスワードが間違っています");
+            break;
+          case "auth/weak-password":
+            alert("新しいパスワードは6文字以上で入力してください");
+            break;
+          default:
+            alert("パスワードの変更に失敗しました：" + error.message);
+            break;
+        }
       } else {
-        alert("パスワード変更に失敗しました: " + error.message);
+        // Firebase以外の予期せぬエラーの処理
+        console.error("An unexpected error occurred:", error);
+        alert("予期せぬエラーが発生しました。");
       }
     } finally {
       setLoading(false);
