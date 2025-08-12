@@ -1,4 +1,4 @@
-//pages/TimetablePage.jsx
+//pages/TimetablePage.tsx
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';

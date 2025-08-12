@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { useAuth } from "../AuthContext";
 import { useStudents } from "../hooks/useStudents";
+import  useTeachers  from "../hooks/useTeachers";
 import { useCustomers } from "../hooks/useCustomers";
 import { usePeriodLabelsByClassroomCode } from "../hooks/usePeriodLabelsBySchool";
 import { useSchoolClosures } from "../hooks/useSchoolClosures";
@@ -14,6 +15,7 @@ export const AdminDataProvider = ({ children }: { children: React.ReactNode }) =
     const classroomCode = userData?.classroomCode;
     const classroom = useClassroom(classroomCode ?? undefined);
     const students = useStudents(classroomCode ?? undefined);
+    const teachers=useTeachers(classroomCode ?? undefined);
     const customers = useCustomers(undefined, classroomCode ?? undefined);
     const periodLabels = usePeriodLabelsByClassroomCode(classroomCode ?? undefined);
     const currentYear = new Date().getFullYear().toString();
@@ -30,6 +32,7 @@ export const AdminDataProvider = ({ children }: { children: React.ReactNode }) =
                 userData,
                 classroom,
                 students,
+                teachers,
                 customers,
                 periodLabels,
                 closures,

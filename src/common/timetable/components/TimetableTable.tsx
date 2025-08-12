@@ -14,8 +14,9 @@ type Props = {
 };
 
 const TimetableTable: React.FC<Props> = ({ rows, onChange, periodLabels}) => {
-  const { classroomCode } = useAdminData();
-  const { teachers } = useTeachers(classroomCode); // ← フックから取得
+  const { classroom } = useAdminData();
+  console.log('classroomCode:', classroom.classroom.code);
+  const { teachers } = useTeachers(classroom.classroom.code); // ← フックから取得
 
   return (
     <div className="flex gap-4">

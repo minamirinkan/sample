@@ -17,8 +17,8 @@ const TeacherRegistrationForm = ({ onCancel }) => {
         code: '',
         lastName: '',
         firstName: '',
-        kanalastName: '',
-        kanafirstName: '',
+        lastNameKana: '',
+        firstNameKana: '',
         gender: '',
         university: '',
         universityGrade: '',
@@ -65,8 +65,8 @@ const TeacherRegistrationForm = ({ onCancel }) => {
 
             const success = await registerTeacher({
                 code: formData.code,
-                teacherName: `${formData.lastName} ${formData.firstName}`,
-                teacherKanaName: `${formData.kanalastName} ${formData.kanafirstName}`,
+                fullName: `${formData.lastName} ${formData.firstName}`,
+                fullNameKana: `${formData.lastNameKana} ${formData.firstNameKana}`,
                 email: formData.email,
                 teacherData: {
                     ...formData,
