@@ -1,4 +1,4 @@
-import { Teacher } from '../../../types'; // 型をインポート
+import { Teacher } from '@/schemas'; // 型をインポート
 
 export const filterTeachers = (teachers: Teacher[], searchTerm: string): Teacher[] => {
     // 検索文字列が空の場合は、全ての教師を返す

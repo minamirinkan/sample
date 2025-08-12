@@ -1,6 +1,6 @@
 import React from 'react';
 // エイリアスを @/ に統一
-import type { Teacher } from '@/types';
+import type { Teacher } from '@/schemas';
 // デフォルトエクスポートを正しくインポートし、パスを修正
 import useTeachers from '@/contexts/hooks/useTeachers';
 
