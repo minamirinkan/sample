@@ -107,4 +107,8 @@ const SuperAdminTeachers: React.FC<SuperAdminTeachersProps> = ({
   );
 };
 
+<<<<<<< HEAD
 export default SuperAdminTeachers;
+=======
+export default SuperAdminTeachers;
+>>>>>>> 9563faf02922d04187e9a1d29dd43d570bb5fa40
