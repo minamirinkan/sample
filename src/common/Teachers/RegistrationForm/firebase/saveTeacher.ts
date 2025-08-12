@@ -1,4 +1,4 @@
-// utils/firebase/saveTeacher.js
+// utils/firebase/saveTeacher.ts
 import { auth, db } from '../../../../firebase';
 import {
     createUserWithEmailAndPassword,
@@ -7,6 +7,24 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
+interface RegisterTeacherParams {
+    code: string;
+    fullName: string;
+    fullNameKana: string;
+    email: string;
+    teacherData: {
+        phone?: string;
+        [key: string]: any;
+    };
+    isFirstLogin?: boolean;
+    idToken: string;
+}
+
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) return error.message;
+    return String(error);
+}
+
 export const registerTeacher = async ({
     code,
     fullName,
@@ -14,8 +32,7 @@ export const registerTeacher = async ({
     email,
     teacherData,
     isFirstLogin = true,
-}) => {
-    // 管理者のログイン情報保持・復帰用パスワード入力
+}: RegisterTeacherParams): Promise<boolean> => {
     const currentAdmin = auth.currentUser;
     const adminEmail = currentAdmin?.email;
 
@@ -26,40 +43,39 @@ export const registerTeacher = async ({
     }
 
     try {
-        // 仮パスワードは講師コードなどで作成（任意）
         const tempPassword = code;
 
-        // 1. 講師用 Authentication アカウントを作成
         const userCredential = await createUserWithEmailAndPassword(auth, email, tempPassword);
         const teacherUid = userCredential.user.uid;
 
-        // 2. Firestore に講師データを登録
         const teacherRef = doc(db, 'teachers', teacherUid);
         await setDoc(teacherRef, {
             uid: teacherUid,
             fullName,
             fullNameKana,
             email,
-            phone: teacherData.phone, 
+            phone: teacherData.phone,
             role: 'teacher',
             isFirstLogin,
             ...teacherData,
         });
 
-        // 3. 現認証が講師アカウントに変わるため、一旦 signOut
         await signOut(auth);
 
-        // 4. 管理者へ再ログイン
-        await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
+        if (adminEmail) {
+            await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
+        }
 
         return true;
-    } catch (error) {
+    } catch (error: unknown) {
         console.error('講師登録失敗:', error);
-        alert('登録に失敗しました: ' + error.message);
+        alert('登録に失敗しました: ' + getErrorMessage(error));
 
         try {
-            await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
-        } catch (e) {
+            if (adminEmail) {
+                await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
+            }
+        } catch (e: unknown) {
             console.error('管理者への復帰にも失敗しました:', e);
         }
 
