@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useState, FC, FormEvent } from 'react';
 
-const TeacherSearchForm = ({ onSearch }) => {
+// Propsの型を定義します
+interface TeacherSearchFormProps {
+    onSearch: (input: string) => void;
+}
+
+const TeacherSearchForm: FC<TeacherSearchFormProps> = ({ onSearch }) => {
     const [input, setInput] = useState('');
 
-    const handleSubmit = (e) => {
+    // イベントオブジェクト 'e' に型を付与します
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSearch(input);
     };

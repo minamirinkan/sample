@@ -1,8 +1,30 @@
-// src/components/TeacherRow.js
+// src/components/TeacherRow.tsx
+import React from 'react';
 import { FaUserSlash } from 'react-icons/fa';
 import { formatDate } from '../../dateFormatter';
 
-const TeacherRow = ({ teacher, isSelected, onSelect, onShowDetail }) => (
+// 型定義
+export type Teacher = {
+    id: number | string;
+    code: string;
+    lastName: string;
+    firstName: string;
+    lastNameKana: string;
+    firstNameKana: string;
+    subject: string;
+    hireDate: string | Date;
+    status: '在職中' | '退職済';
+};
+
+type TeacherRowProps = {
+    teacher: Teacher;
+    isSelected: boolean;
+    onSelect: (id: number | string) => void;
+    onShowDetail: (teacher: Teacher) => void;
+};
+
+// React.FCを使ってコンポーネントに型を適用
+const TeacherRow: React.FC<TeacherRowProps> = ({ teacher, isSelected, onSelect, onShowDetail }) => (
     <tr className="hover:bg-gray-50 text-sm">
         <td className="border px-4 py-2">
             <input
@@ -24,13 +46,13 @@ const TeacherRow = ({ teacher, isSelected, onSelect, onShowDetail }) => (
             )}
         </td>
         <td className="border px-4 py-2">
-                <button
-                    onClick={() => onShowDetail(teacher)}
-                    className="text-blue-600 hover:underline"
-                >
-                    詳細
-                </button>
-            </td>
+            <button
+                onClick={() => onShowDetail(teacher)}
+                className="text-blue-600 hover:underline"
+            >
+                詳細
+            </button>
+        </td>
     </tr>
 );
 
