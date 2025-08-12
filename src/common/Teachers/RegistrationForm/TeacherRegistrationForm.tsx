@@ -1,6 +1,5 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { registerTeacher } from './firebase/saveTeacher';
-import { useAuth } from '../../../contexts/AuthContext';
 import { getAuth } from 'firebase/auth';
 
 import { useGenerateTeacherCode } from './components/teacherCodeGenerator';
@@ -8,6 +7,9 @@ import BasicInfoSection from './components/BasicInfoSection';
 import ContactInfoSection from './components/ContactInfoSection';
 import EmploymentInfoSection from './components/EmploymentInfoSection';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
+
+// ★ 修正: 不要なインポートを削除
+// import { EmploymentFormData } from './components/EmploymentInfoSection';
 
 // Propsの型定義
 interface TeacherRegistrationFormProps {
@@ -28,12 +30,12 @@ interface FormData {
   phone: string;
   email: string;
   hireDate: string;
-  status: string;
+  status: "在職中" | "退職済"; // この型定義が重要
   transportation: string;
 }
 
 const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCancel, onSubmitSuccess }) => {
-  const { teachers, classroom } = useAdminData();
+  const { classroom } = useAdminData();
   const classroomCode = classroom?.classroom?.code ?? '';
   const classroomName = classroom?.classroom?.name ?? '';
 
@@ -64,13 +66,14 @@ const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCan
     setupCode();
   }, [generateTeacherCode]);
 
+  // ★ 修正: handleChangeをシンプルに
   const handleChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!formData.lastName || !formData.firstName) {
       alert('氏名を入力してください');
       return;
@@ -100,7 +103,7 @@ const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCan
         },
         idToken,
       });
-      
+
       if (success) {
         alert('講師登録が完了しました');
         if (onSubmitSuccess) onSubmitSuccess();
