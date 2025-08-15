@@ -11,10 +11,10 @@ import { formatDateDisplay } from '../dateUtils';
 import ConfirmOverwriteModal from '../modal/ConfirmOverwriteModal';
 import PDFButton from './pdf/components/PDFButton';
 import { useAdminData } from '../../contexts/providers/AdminDataProvider';
-import { Student } from '@contexts/types/student';
-import { DuplicateInfo } from '@contexts/types/timetable';
-import { RowData } from '@contexts/types/timetablerow';
-import { DateInfo, TimetableRow,TimetableStudent } from '@contexts/types/data';
+import { Student } from '@/contexts/types/student';
+import { DuplicateInfo } from '@/contexts/types/timetable';
+import { RowData } from '@/contexts/types/timetablerow';
+import { DateInfo, TimetableRow,TimetableStudent } from '@/contexts/types/data';
 
 function toTimetableStudent(student: any): TimetableStudent {
   return {
