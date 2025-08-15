@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { showErrorToast } from '../../common/ToastProvider';
 import { db } from '../../firebase';
 import {
@@ -12,8 +12,87 @@ import {
 import { buildDailyDocId } from '../../common/Students/firebase/attendanceFirestore';
 import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 
+export interface AttendanceEntry {
+    studentId: string;
+    student?: {
+        name?: string;
+        [key: string]: any;
+    };
+    status: string; // '振替' | '予定' | '未定' | '欠席' など
+    periodLabel: string;
+    period?: number;
+    date: string; // 'YYYY-MM-DD' 想定
+    teacher?: {
+        code: string;
+        name: string;
+    } | null;
+    classType?: string;
+    duration?: string;
+    seat?: string;
+    grade?: string;
+    subject?: string;
+    [key: string]: any;
+}
+
+// 期間ラベル型
+export interface PeriodLabel {
+    label: string;
+    start?: string;
+    end?: string;
+}
+
+// 教師型
+export interface Teacher {
+    code: string;
+    lastName: string;
+    firstName: string;
+}
+
+// 編集時の入力値
+interface EditValues {
+    studentId?: string;
+    studentName?: string;
+    subject?: string;
+    status?: string;
+    seat?: string;
+    grade?: string;
+    classType?: string;
+    duration?: string;
+    teacherCode?: string;
+    periodLabel?: string;
+    date?: string;
+    name?: string;
+}
+export interface StudentInfo {
+    studentId: string;
+    name?: string;
+    subject?: string;
+    status?: string;
+    seat?: string;
+    grade?: string;
+    classType?: string;
+    duration?: string;
+    teacher?: {
+        code: string;
+        name: string;
+    } | null;
+}
+export interface ScheduleRow {
+    periods: Record<string, StudentInfo[]>; // period1, period2, ...
+    status?: string;
+    teacher?: {
+        code: string;
+        name: string;
+    } | null;
+    [key: string]: any; // Firestoreに他のフィールドがある場合
+}
 // 🔽 振替レッスン削除ユーティリティ
-async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
+async function removeFromMakeupLessons(
+    studentId: string,
+    date: string,
+    period: number | undefined,
+    classroomCode: string
+): Promise<void> {
     const docId = buildDailyDocId(classroomCode, date);
     console.log(`🪵 removeFromMakeupLessons → docId: ${docId}`);
     const docRef = doc(db, 'students', studentId, 'makeupLessons', docId);
@@ -31,7 +110,7 @@ async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
     console.log('🟠 削除対象: studentId=', studentId, ' period=', period);
 
     const filtered = lessons.filter(
-        l => !(l.studentId === studentId && l.period === period)
+        (l: AttendanceEntry) => !(l.studentId === studentId && l.period === period)
     );
 
     console.log('✅ 削除後のlessons:', filtered);
@@ -47,7 +126,12 @@ async function removeFromMakeupLessons(studentId, date, period, classroomCode) {
 
 // ✅ 振替レッスンをアーカイブに移動
 // ✅ 振替レッスンをアーカイブに移動（形式を makeupLessons と同じに）
-async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomCode) {
+async function moveMakeupLessonToArchive(
+    studentId: string,
+    date: string,
+    lessonData: AttendanceEntry,
+    classroomCode: string
+): Promise<void> {
     try {
         const docId = buildDailyDocId(classroomCode, date);
         const archiveDocRef = doc(db, 'students', studentId, 'makeupLessonsArchive', docId);
@@ -62,26 +146,34 @@ async function moveMakeupLessonToArchive(studentId, date, lessonData, classroomC
     }
 }
 
-export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabels, teachers, classroomCode, studentName) => {
-    const [editingIndexRegular, setEditingIndexRegular] = useState(null);
-    const [editingIndexMakeup, setEditingIndexMakeup] = useState(null);
-    const [editingMakeupLesson, setEditingMakeupLesson] = useState(null);
-    const [editValues, setEditValues] = useState({});
+export const useAttendanceEdit = (
+    attendanceList: AttendanceEntry[],
+    setAttendanceList: React.Dispatch<React.SetStateAction<AttendanceEntry[]>>,
+    periodLabels: PeriodLabel[],
+    teachers: Teacher[],
+    classroomCode: string,
+    studentName: string
+) => {
+    const [editingIndexRegular, setEditingIndexRegular] = useState<number | null>(null);
+    const [editingIndexMakeup, setEditingIndexMakeup] = useState<number | null>(null);
+    const [editingMakeupLesson, setEditingMakeupLesson] = useState<AttendanceEntry | null>(null);
+    const [editValues, setEditValues] = useState<EditValues>({});
 
-    console.log('🐛 editingMakeupLesson:', editingMakeupLesson);
-    const [makeUpList] = useState(attendanceList.filter(e => e.status === '振替'));
-    const regularList = attendanceList.filter((e) => e.status !== '振替');
+    const [makeUpList] = useState(() => attendanceList.filter(e => e.status === '振替'));
+    const regularList = attendanceList.filter(e => e.status !== '振替');
 
-    const handleChange = (field, value) => {
+    const handleChange = (field: keyof EditValues, value: string) => {
         setEditValues(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSaveClick = async (listType) => {
 
+
+    const handleSaveClick = async (listType: 'makeup' | 'regular') => {
         try {
-            let originalEntry = null;
+            let originalEntry: AttendanceEntry | null = null;
+
             if (listType === 'makeup') {
-                if (editingIndexMakeup === null) {
+                if (editingIndexMakeup === null || !editingMakeupLesson) {
                     showErrorToast('振替リストの編集対象がありません');
                     return;
                 }
@@ -97,39 +189,30 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 return;
             }
 
-            console.log('🪵 edit:', makeUpList[editingIndexMakeup]);
-            console.log('🪵 originalEntry:', originalEntry);
-            console.log('editValues.studentName:', studentName);
             const selectedTeacher = teachers.find(t => t.code === editValues.teacherCode);
+
             const student = {
-                studentId: editValues.studentId,
-                name: editValues.studentName || originalEntry.student?.name || studentName || '',
-                subject: editValues.subject || '',
-                status: editValues.status || '',
-                seat: editValues.seat || '',
-                grade: editValues.grade || '',
-                classType: editValues.classType || originalEntry.classType || '',
-                duration: editValues.duration || originalEntry.duration || '',
-                teacher: editValues.status === '予定'
-                    ? {
-                        code: editValues.teacherCode || '',
-                        name: selectedTeacher ? `${selectedTeacher.lastName} ${selectedTeacher.firstName}` : '',
-                    }
-                    : null,
+                studentId: editValues.studentId ?? '',
+                name: editValues.studentName ?? originalEntry.student?.name ?? studentName ?? '',
+                subject: editValues.subject ?? '',
+                status: editValues.status ?? '',
+                seat: editValues.seat ?? '',
+                grade: editValues.grade ?? '',
+                classType: editValues.classType ?? originalEntry.classType ?? '',
+                duration: editValues.duration ?? originalEntry.duration ?? '',
+                teacher:
+                    editValues.status === '予定'
+                        ? {
+                            code: editValues.teacherCode ?? '',
+                            name: selectedTeacher ? `${selectedTeacher.lastName} ${selectedTeacher.firstName}` : '',
+                        }
+                        : null,
             };
 
             const oldPeriodKey = getPeriodKey(periodLabels, originalEntry.periodLabel);
-            console.log("🟡 oldPeriodKey:", oldPeriodKey);
-            console.log("🟡 originalEntry.periodLabel:", originalEntry.periodLabel);
-            console.log("🟡 periodLabels:", periodLabels);
             const periodIndex = periodLabels.findIndex(p => p.label === editValues.periodLabel);
             const newPeriodKey = `period${periodIndex + 1}`;
-            console.log('🐞 originalEntry.student:', originalEntry.student);
-            console.log('🐞 editValues:', editValues);
 
-
-            console.log('✅ oldPeriodKey:', oldPeriodKey);
-            console.log('✅ newPeriodKey:', newPeriodKey);
             const targetStudentId = String(editValues.studentId).trim();
 
             if (editValues.date) {
@@ -138,7 +221,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
 
                 // 🔽 振替 → 通常への変更だった場合、元の振替データを削除
                 const oldPeriod = originalEntry.period;
-                
+
                 if (originalEntry.status === '予定' && editValues.status === '振替') {
                     let oldData = await fetchScheduleDoc('dailySchedules', oldDocId);
                     if (!oldData) {
@@ -147,7 +230,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         oldData = weeklyData || { rows: [] };
                     }
 
-                    const updatedOldRows = (oldData.rows || []).map(row => ({
+                    const updatedOldRows = (oldData.rows || []).map((row: ScheduleRow) => ({
                         ...row,
                         periods: {
                             ...row.periods,
@@ -167,7 +250,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                         oldData = weeklyData || { rows: [] };
                     }
 
-                    const updatedOldRows = (oldData.rows || []).map(row => ({
+                    const updatedOldRows = (oldData.rows || []).map((row: ScheduleRow) => ({
                         ...row,
                         periods: {
                             ...row.periods,
@@ -199,11 +282,11 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     await createScheduleFromWeeklyTemplate('dailySchedules', newDocId, weeklyRefId, newData);
                 }
 
-                const newPeriodStudents = newData?.rows?.flatMap(row =>
+                const newPeriodStudents = newData?.rows?.flatMap((row: ScheduleRow) =>
                     row.periods?.[newPeriodKey] || []
                 ) || [];
 
-                const isDuplicate = newPeriodStudents.some(s =>
+                const isDuplicate = newPeriodStudents.some((s: StudentInfo) =>
                     String(s.studentId).trim() === targetStudentId &&
                     !(editValues.date === originalEntry.date && editValues.periodLabel === originalEntry.periodLabel)
                 );
@@ -228,7 +311,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
 
                 if (isSameDate) {
                     // 🔁 同じ日付の場合 → newData.rows を直接編集（削除 + 追加）
-                    const updatedRows = (newData.rows || []).map(row => {
+                    const updatedRows = (newData.rows || []).map((row: ScheduleRow) => {
                         if (row.periods?.[oldPeriodKey]) {
                             return {
                                 ...row,
@@ -247,7 +330,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                 }
                 else {
                     // 📅 日付が異なる → oldDataに削除だけして保存
-                    const updatedOldRows = (oldData.rows || []).map(row => ({
+                    const updatedOldRows = (oldData.rows || []).map((row: ScheduleRow) => ({
                         ...row,
                         periods: {
                             ...row.periods,
@@ -280,7 +363,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     for (let i = 0; i < grouped.length; i++) {
                         const row = grouped[i];
                         const isSameGroup =
-                            (['未定', '振替', '欠席'].includes(editValues.status) && row.status === editValues.status) ||
+                            (['未定', '振替', '欠席'].includes(editValues.status ?? '') && row.status === editValues.status) ||
                             (editValues.status === '予定' && row.teacher?.code === editValues.teacherCode);
 
                         if (isSameGroup) {
@@ -302,17 +385,17 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
                     if (editValues.status === '予定') {
                         // 🔍 classTypeによる定員チェック
                         const targetClassType = student.classType;
-                        const currentRow = (newData.rows || []).find(row =>
+                        const currentRow = (newData.rows || []).find((row: ScheduleRow) =>
                             row.teacher?.code === editValues.teacherCode
                         );
 
                         const existing = currentRow?.periods?.[newPeriodKey] || [];
 
-                        const allClassTypes = [...existing.map(s => s.classType), targetClassType];
+                        const allClassTypes = [...existing.map((s: StudentInfo) => s.classType), targetClassType];
                         const uniqueTypes = Array.from(new Set(allClassTypes));
                         const count = existing.length + 1;
 
-                        const isOnly = (type) => uniqueTypes.length === 1 && uniqueTypes[0] === type;
+                        const isOnly = (type: string) => uniqueTypes.length === 1 && uniqueTypes[0] === type;
 
                         const isMixedAllowed =
                             (uniqueTypes.every(t => t === '2名クラス' || t === '演習クラス') && count <= 2) ||
@@ -328,7 +411,7 @@ export const useAttendanceEdit = (attendanceList, setAttendanceList, periodLabel
 
                     if (originalEntry.status === '振替' && editValues.status !== '振替') {
                         await removeFromMakeupLessons(targetStudentId, originalEntry.date, oldPeriod, classroomCode);
-    
+
                         // ✅ アーカイブ用に移動させる
                         await moveMakeupLessonToArchive(targetStudentId, originalEntry.date, originalEntry, classroomCode);
                     }
