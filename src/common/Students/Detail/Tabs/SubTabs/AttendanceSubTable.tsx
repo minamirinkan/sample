@@ -134,7 +134,7 @@ const AttendanceSubTable: React.FC<Props> = ({
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <select
-                                            value={editValues?.periodLabel || (periodOptions[entry.period ? entry.period - 1 : 0] || '－')}
+                                            value={editValues?.periodLabel || entry.periodLabel }
                                             onChange={(e) => handleChange('periodLabel', e.target.value)}
                                         >
                                             {periodOptions.map((p) => (
@@ -144,8 +144,7 @@ const AttendanceSubTable: React.FC<Props> = ({
                                             ))}
                                         </select>
                                     ) : (
-                                        editValues?.periodLabel || (periodOptions[entry.period ? entry.period - 1 : 0] || '－')
-                                    )}
+                                        entry.periodLabel                                    )}
                                 </td>
                                 <td className="border px-2 py-1">
                                     {isEditing ? (

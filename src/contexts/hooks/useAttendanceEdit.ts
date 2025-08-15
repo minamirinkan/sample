@@ -158,14 +158,6 @@ export const useAttendanceEdit = (
     const [editingIndexMakeup, setEditingIndexMakeup] = useState<number | null>(null);
     const [editingMakeupLesson, setEditingMakeupLesson] = useState<AttendanceEntry | null>(null);
     const [editValues, setEditValues] = useState<EditValues>({});
-    console.log('[useAttendanceEdit] mounted');
-    useEffect(() => {
-        console.log('[useAttendanceEdit] attendanceList len', attendanceList.length);
-    }, [attendanceList]);
-    useEffect(() => {
-        console.log('[useAttendanceEdit] editingIndexRegular', editingIndexRegular);
-    }, [editingIndexRegular]);
-    
 
     const [makeUpList] = useState(() => attendanceList.filter(e => e.status === '振替'));
     const regularList = attendanceList.filter(e => e.status !== '振替');
