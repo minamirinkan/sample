@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { showErrorToast } from '../../common/ToastProvider';
 import { db } from '../../firebase';
 import {
@@ -61,7 +61,7 @@ interface EditValues {
     teacherCode?: string;
     periodLabel?: string;
     date?: string;
-    name?:string;
+    name?: string;
 }
 export interface StudentInfo {
     studentId: string;
@@ -158,6 +158,14 @@ export const useAttendanceEdit = (
     const [editingIndexMakeup, setEditingIndexMakeup] = useState<number | null>(null);
     const [editingMakeupLesson, setEditingMakeupLesson] = useState<AttendanceEntry | null>(null);
     const [editValues, setEditValues] = useState<EditValues>({});
+    console.log('[useAttendanceEdit] mounted');
+    useEffect(() => {
+        console.log('[useAttendanceEdit] attendanceList len', attendanceList.length);
+    }, [attendanceList]);
+    useEffect(() => {
+        console.log('[useAttendanceEdit] editingIndexRegular', editingIndexRegular);
+    }, [editingIndexRegular]);
+    
 
     const [makeUpList] = useState(() => attendanceList.filter(e => e.status === '振替'));
     const regularList = attendanceList.filter(e => e.status !== '振替');
@@ -166,7 +174,7 @@ export const useAttendanceEdit = (
         setEditValues(prev => ({ ...prev, [field]: value }));
     };
 
-    
+
 
     const handleSaveClick = async (listType: 'makeup' | 'regular') => {
         try {
@@ -203,9 +211,9 @@ export const useAttendanceEdit = (
                 teacher:
                     editValues.status === '予定'
                         ? {
-                              code: editValues.teacherCode ?? '',
-                              name: selectedTeacher ? `${selectedTeacher.lastName} ${selectedTeacher.firstName}` : '',
-                          }
+                            code: editValues.teacherCode ?? '',
+                            name: selectedTeacher ? `${selectedTeacher.lastName} ${selectedTeacher.firstName}` : '',
+                        }
                         : null,
             };
 
@@ -221,7 +229,7 @@ export const useAttendanceEdit = (
 
                 // 🔽 振替 → 通常への変更だった場合、元の振替データを削除
                 const oldPeriod = originalEntry.period;
-                
+
                 if (originalEntry.status === '予定' && editValues.status === '振替') {
                     let oldData = await fetchScheduleDoc('dailySchedules', oldDocId);
                     if (!oldData) {
@@ -282,7 +290,7 @@ export const useAttendanceEdit = (
                     await createScheduleFromWeeklyTemplate('dailySchedules', newDocId, weeklyRefId, newData);
                 }
 
-                const newPeriodStudents = newData?.rows?.flatMap((row: ScheduleRow)=>
+                const newPeriodStudents = newData?.rows?.flatMap((row: ScheduleRow) =>
                     row.periods?.[newPeriodKey] || []
                 ) || [];
 
@@ -411,7 +419,7 @@ export const useAttendanceEdit = (
 
                     if (originalEntry.status === '振替' && editValues.status !== '振替') {
                         await removeFromMakeupLessons(targetStudentId, originalEntry.date, oldPeriod, classroomCode);
-    
+
                         // ✅ アーカイブ用に移動させる
                         await moveMakeupLessonToArchive(targetStudentId, originalEntry.date, originalEntry, classroomCode);
                     }

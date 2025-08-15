@@ -25,9 +25,10 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
 
     // 通常の出席データを取得
     const { loading, attendanceList, setAttendanceList } = useStudentAttendance(classroomCode, studentId, selectedMonth);
-    const [editingIndexRegular, setEditingIndexRegular] = useState<number | null>(null);
     // 編集用フック
     const {
+        editingIndexRegular,        // ★ 追加
+        setEditingIndexRegular,     // ★ 追加
         editValues,
         setEditValues,
         handleChange,
@@ -53,11 +54,11 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
             <AttendanceSubTable
                 data={regularList as unknown as MakeupLesson[]}
                 teachers={teachers}
-                editingIndex={editingIndexRegular}
-                setEditingIndex={setEditingIndexRegular}
+                editingIndex={editingIndexRegular}          // ← フックの値
+                setEditingIndex={setEditingIndexRegular}    // ← フックの setter
                 editValues={editValues}
                 handleEditClick={(idx) => {
-                    setEditingIndexRegular(idx);
+                    setEditingIndexRegular(idx);              // ← フックの setter を呼ぶ
                     const entry = regularList[idx];
                     setEditValues({
                         ...entry,
@@ -66,7 +67,7 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
                     });
                 }}
                 handleChange={handleChange}
-                handleSaveClick={() => handleSaveClick('regular')}
+                handleSaveClick={() => handleSaveClick('regular')} // ← フック内の editingIndexRegular を参照してOK
                 getStatusClass={getStatusClass}
                 periodLabels={periodLabels}
                 classroomCode={classroomCode}
