@@ -1,50 +1,108 @@
-import { useState, FC, FormEvent } from 'react';
+// src/components/TeacherTable.tsx
+import React, { useState, useEffect } from 'react';
+import TeacherTableHeader from './TeacherTableHeader';
+import TeacherRow from './TeacherRow';
+import Pagination from '../../PaginationControls';
+import type { Teacher as TeacherRowType } from './TeacherRow';
 
-// Propsの型を定義します
-interface TeacherSearchFormProps {
-    onSearch: (input: string) => void;
+// 講師オブジェクトの型定義
+export interface Teacher {
+    id: number | string;
+    code: string;
+    lastName: string;
+    firstName: string;
+    lastNameKana: string;
+    firstNameKana: string;
+    subject: string;
+    hireDate: string | Date;
+    status: '在職中' | '退職済';
 }
 
-const TeacherSearchForm: FC<TeacherSearchFormProps> = ({ onSearch }) => {
-    const [input, setInput] = useState('');
 
-    // イベントオブジェクト 'e' に型を付与します
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        onSearch(input);
-    };
+// Propsの型定義
+interface TeacherTableProps {
+  teachers: TeacherRowType[];           // ← 型を TeacherRow.tsx と一致させる
+  onShowDetail: (teacher: TeacherRowType) => void;  // ← 型も一致
+}
 
-    return (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-4">
-            <div className="box-header with-border">
-                <h3 className="box-title">検索条件の設定</h3>
-            </div>
 
-            {/* 検索条件例 */}
-            <div className="flex space-x-4 items-center">
-                <label className="font-semibold">在籍形態:</label>
-                <label><input type="checkbox" defaultChecked /> 在籍中</label>
-                <label><input type="checkbox" defaultChecked /> 退職</label>
-            </div>
+const TeacherTable: React.FC<TeacherTableProps> = ({ teachers, onShowDetail }) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div>
-                    <label className="block font-semibold mb-1">講師コード / 名前</label>
-                    <input
-                        type="text"
-                        placeholder="コード or 名前"
-                        className="w-full border rounded px-3 py-2"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                    />
-                </div>
-            </div>
 
-            <div>
-                <button type="submit" className="btn btn-primary">検索</button>
-            </div>
-        </form>
+  const totalPages = Math.ceil(teachers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, teachers.length);
+  const currentTeachers = teachers.slice(startIndex, endIndex);
+
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
+
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
+
+  const handleCheckboxChange = (id: string | number) => {
+    setSelectedIds((prev: (string | number)[]) =>
+        prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
+  };
+
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold">講師一覧</h2>
+        <div className="flex items-center space-x-2 text-sm">
+          <span>表示件数:</span>
+          <select
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="border px-2 py-1 rounded"
+          >
+            <option value={10}>10件</option>
+            <option value={20}>20件</option>
+            <option value={50}>50件</option>
+          </select>
+        </div>
+      </div>
+
+      <table className="w-full table-auto border-collapse">
+        <TeacherTableHeader />
+        <tbody>
+          {currentTeachers.map((teacher) => (
+            <TeacherRow
+              key={teacher.id}
+              teacher={teacher}
+              isSelected={selectedIds.includes(teacher.id)}
+              onSelect={handleCheckboxChange}
+              onShowDetail={onShowDetail}
+            />
+          ))}
+        </tbody>
+      </table>
+
+      <div className="mt-4 text-sm text-gray-600">
+        {teachers.length > 0 ? (
+          <>
+            {teachers.length}件中 {startIndex + 1}〜{endIndex}件を表示中
+          </>
+        ) : (
+          <>データがありません</>
+        )}
+      </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+    </div>
+  );
 };
 
-export default TeacherSearchForm;
+export default TeacherTable;
