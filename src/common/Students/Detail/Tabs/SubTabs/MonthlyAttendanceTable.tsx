@@ -3,8 +3,9 @@ import { useState } from 'react';
 import AttendanceSubTable from './AttendanceSubTable';
 import useTeachers from '../../../../../contexts/hooks/useTeachers';
 import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';
-import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance.js';
+import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance';
 import { useAttendanceEdit } from '../../../../../contexts/hooks/useAttendanceEdit';
+import { MakeupLesson } from '../../../../../contexts/types/makeupLessons';
 
 type Props = {
     classroomCode: string;
@@ -24,9 +25,10 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
 
     // 通常の出席データを取得
     const { loading, attendanceList, setAttendanceList } = useStudentAttendance(classroomCode, studentId, selectedMonth);
-    const [editingIndexRegular, setEditingIndexRegular] = useState<number | null>(null);
     // 編集用フック
     const {
+        editingIndexRegular,        // ★ 追加
+        setEditingIndexRegular,     // ★ 追加
         editValues,
         setEditValues,
         handleChange,
@@ -50,13 +52,13 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
         <div className="min-w-[700px]">
             <h2 className="text-lg font-bold mb-2 text-blue-600">月間出席記録</h2>
             <AttendanceSubTable
-                data={regularList}
+                data={regularList as unknown as MakeupLesson[]}
                 teachers={teachers}
-                editingIndex={editingIndexRegular}
-                setEditingIndex={setEditingIndexRegular}
+                editingIndex={editingIndexRegular}          // ← フックの値
+                setEditingIndex={setEditingIndexRegular}    // ← フックの setter
                 editValues={editValues}
                 handleEditClick={(idx) => {
-                    setEditingIndexRegular(idx);
+                    setEditingIndexRegular(idx);              // ← フックの setter を呼ぶ
                     const entry = regularList[idx];
                     setEditValues({
                         ...entry,
@@ -65,7 +67,7 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
                     });
                 }}
                 handleChange={handleChange}
-                handleSaveClick={() => handleSaveClick('regular')}
+                handleSaveClick={() => handleSaveClick('regular')} // ← フック内の editingIndexRegular を参照してOK
                 getStatusClass={getStatusClass}
                 periodLabels={periodLabels}
                 classroomCode={classroomCode}
