@@ -18,17 +18,21 @@ interface TeacherDetailProps {
     onDelete: (teacherId: string) => void; // teacher.idがstringなので、stringを受け取るように修正
 }
 
-const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, onDelete }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState<Teacher>(teacher);
+    const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, onDelete }) => {
+        const [isEditing, setIsEditing] = useState(false);
+        const [formData, setFormData] = useState<Teacher>(teacher);
 
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    }, []);
+        const handleChange = useCallback(
+            (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+                const { name, value } = e.target;
+                setFormData((prev: Teacher) => ({
+                    ...prev,
+                    [name]: value,
+                }));
+            },
+            []
+        );
+
 
     const handleSave = useCallback(() => {
         // ここでZodを使ったバリデーションを入れるのが理想的

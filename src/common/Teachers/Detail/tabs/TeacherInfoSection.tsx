@@ -1,62 +1,80 @@
+// src/components/TeacherInfoSection.tsx
 import React from 'react';
-// エイリアスを @/ に統一して型をインポート
-import type { Teacher } from '@/schemas';
+import InfoRow from '../../../Students/components/InfoRow';
+import { formatDate } from '../../../dateFormatter';
 
-/**
- * Propsの型定義
- */
-interface TeacherInfoSectionProps {
-    // 表示・編集対象のフォームデータ
-    formData: Partial<Teacher>;
-    // 現在編集モードであるかどうかのフラグ
-    isEditing: boolean;
-    // フォームの入力値が変更されたときに呼び出される関数
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+// --- 型定義 ---
+export interface TeacherFormData {
+  code: string;
+  classroomName: string;
+  hireDate: string | Date | null;
+  status: string;
+  transportation: number | string;
+  lastName: string;
+  firstName: string;
+  lastNameKana: string;
+  firstNameKana: string;
+  gender: string;
+  phone: string;
+  email: string;
+  university: string;
+  universityGrade: string;
 }
 
-const TeacherInfoSection: React.FC<TeacherInfoSectionProps> = ({ formData, isEditing, onChange }) => {
-    return (
-        <div className="p-6 border border-gray-200 rounded-lg bg-white shadow-sm">
-            <h3 className="text-xl font-semibold text-gray-800 mb-6">基本情報</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                {/* --- 姓（カナ） --- */}
-                <div>
-                    <label htmlFor="kanalast" className="block text-sm font-medium text-gray-700 mb-1">
-                        姓（カナ）
-                    </label>
-                    <input
-                        type="text"
-                        id="kanalast"
-                        name="kanalast"
-                        value={formData.kanalast || ''}
-                        onChange={onChange}
-                        readOnly={!isEditing}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-50"
-                        disabled={!isEditing}
-                    />
-                </div>
+interface TeacherInfoSectionProps {
+  formData: TeacherFormData;
+  isEditing: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+}
 
-                {/* --- 名（カナ） --- */}
-                <div>
-                    <label htmlFor="kanafirst" className="block text-sm font-medium text-gray-700 mb-1">
-                        名（カナ）
-                    </label>
-                    <input
-                        type="text"
-                        id="kanafirst"
-                        name="kanafirst"
-                        value={formData.kanafirst || ''}
-                        onChange={onChange}
-                        readOnly={!isEditing}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-50"
-                        disabled={!isEditing}
-                    />
-                </div>
+// --- コンポーネント ---
+const TeacherInfoSection: React.FC<TeacherInfoSectionProps> = ({ formData, isEditing, onChange }) => (
+  <div className="space-y-4 w-1/2 pr-6">
+    <div className="p-3 rounded-md border border-gray-300 border-t-4 border-t-green-500 shadow-sm">
+      <h2 className="text-lg font-semibold mb-3 text-green-600">雇用情報</h2>
+      <InfoRow label="講師コード" value={formData.code} isEditing={false} />
+      <InfoRow label="教室名" value={formData.classroomName} isEditing={false} />
+      <InfoRow
+        label="雇用日"
+        value={formData.hireDate ? formatDate(formData.hireDate) : ''}
+        name="hireDate"
+        isEditing={isEditing}
+        onChange={onChange}
+      />
+      <InfoRow label="ステータス" value={formData.status} name="status" isEditing={isEditing} onChange={onChange} />
+      <InfoRow
+  label="交通費（円）"
+  value={formData.transportation?.toString() ?? ''}
+  name="transportation"
+  isEditing={isEditing}
+  onChange={onChange}
+/>
 
-                {/* --- 他の項目もここに追加 --- */}
-            </div>
-        </div>
-    );
-};
+    </div>
+
+    <div className="p-3 rounded-md border border-gray-300 border-t-4 border-t-green-500 shadow-sm">
+      <h2 className="text-lg font-semibold mb-3 text-green-600">講師情報</h2>
+      <InfoRow label="氏名（姓）" value={formData.lastName} name="lastName" isEditing={isEditing} onChange={onChange} />
+      <InfoRow label="氏名（名）" value={formData.firstName} name="firstName" isEditing={isEditing} onChange={onChange} />
+      <InfoRow label="氏名カナ（姓）" value={formData.lastNameKana} name="lastNameKana" isEditing={isEditing} onChange={onChange} />
+      <InfoRow label="氏名カナ（名）" value={formData.firstNameKana} name="firstNameKana" isEditing={isEditing} onChange={onChange} />
+      <InfoRow label="性別" value={formData.gender} name="gender" isEditing={isEditing} onChange={onChange} />
+      <InfoRow label="電話番号" value={formData.phone} name="phone" isEditing={isEditing} onChange={onChange} />
+      <InfoRow label="メールアドレス" value={formData.email} name="email" isEditing={isEditing} onChange={onChange} />
+    </div>
+
+    <div className="p-3 rounded-md border border-gray-300 border-t-4 border-t-green-500 shadow-sm">
+      <h2 className="text-lg font-semibold mb-3 text-green-600">大学情報</h2>
+      <InfoRow label="大学名" value={formData.university} name="university" isEditing={isEditing} onChange={onChange} />
+      <InfoRow
+        label="大学の学年"
+        value={formData.universityGrade}
+        name="universityGrade"
+        isEditing={isEditing}
+        onChange={onChange}
+      />
+    </div>
+  </div>
+);
 
 export default TeacherInfoSection;
