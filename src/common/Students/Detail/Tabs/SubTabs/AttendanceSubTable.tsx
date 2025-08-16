@@ -2,8 +2,8 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatDate } from '../../../../dateFormatter';
-import { MakeupLesson } from '@contexts/types/makeupLessons';
-import { Teacher } from '@contexts/types/teacher';
+import { MakeupLesson } from '@/contexts/types/makeupLessons';
+import { Teacher } from '@/contexts/types/teacher';
 
 export interface EditValues {
     studentId?: string;
