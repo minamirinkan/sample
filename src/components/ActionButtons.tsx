@@ -1,8 +1,24 @@
-// src/components/ActionButtons.js
+// src/components/ActionButtons.tsx
 import React from 'react';
 import { FaArrowLeft, FaEdit, FaSave, FaTimes, FaTrash } from 'react-icons/fa';
 
-const ActionButtons = ({ isEditing, onBack, onEdit, onCancel, onSave, onDelete }) => (
+type ActionButtonsProps = {
+    isEditing: boolean;
+    onBack: () => void;
+    onEdit: () => void;
+    onCancel: () => void;
+    onSave: () => void;
+    onDelete: () => void;
+};
+
+const ActionButtons: React.FC<ActionButtonsProps> = ({
+    isEditing,
+    onBack,
+    onEdit,
+    onCancel,
+    onSave,
+    onDelete,
+}) => (
     <div className="flex justify-center space-x-8 mb-4">
         {isEditing ? (
             <>

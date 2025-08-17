@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface FormData {
-  university: string;
-  universityGrade: string;
-  phone: string;
-  email: string;
-}
+import { FormData } from '../TeacherRegistrationForm';
 
 interface ContactInfoSectionProps {
   formData: FormData;

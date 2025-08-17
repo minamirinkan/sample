@@ -1,14 +1,9 @@
 import React from 'react';
-
-interface EmploymentFormData {
-  hireDate: string;
-  status: '在職中' | '退職済';
-  transportation?: string;
-}
+import { FormData } from '../TeacherRegistrationForm';
 
 interface EmploymentInfoSectionProps {
-  formData: EmploymentFormData;
-  onChange: (field: keyof EmploymentFormData, value: string) => void;
+  formData: FormData;
+  onChange: (field: keyof FormData, value: any) => void;
 }
 
 const EmploymentInfoSection: React.FC<EmploymentInfoSectionProps> = ({ formData, onChange }) => {
@@ -18,9 +13,11 @@ const EmploymentInfoSection: React.FC<EmploymentInfoSectionProps> = ({ formData,
         <label className="block text-sm font-medium">雇用日</label>
         <input
           type="date"
-          value={formData.hireDate}
-          onChange={(e) => onChange('hireDate', e.target.value)}
-          className="mt-1 w-full border rounded p-2"
+          name="hireDate"
+          value={formData.hireDate instanceof Date ? formData.hireDate.toISOString().split("T")[0] : ""}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange("hireDate", e.target.value ? new Date(e.target.value) : undefined)
+          }
         />
       </div>
 

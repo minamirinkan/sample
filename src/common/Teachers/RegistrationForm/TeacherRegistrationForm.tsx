@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { z } from 'zod';
 import { registerTeacher } from './firebase/saveTeacher';
 import { getAuth } from 'firebase/auth';
-
 import { useGenerateTeacherCode } from './components/teacherCodeGenerator';
 import BasicInfoSection from './components/BasicInfoSection';
 import ContactInfoSection from './components/ContactInfoSection';
 import EmploymentInfoSection from './components/EmploymentInfoSection';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
+import { TeacherSchema } from '../../../schemas';
 
 // ★ 修正: 不要なインポートを削除
 // import { EmploymentFormData } from './components/EmploymentInfoSection';
@@ -18,42 +19,54 @@ interface TeacherRegistrationFormProps {
 }
 
 // formDataの型定義
-interface FormData {
-  code: string;
-  lastName: string;
-  firstName: string;
-  lastNameKana: string;
-  firstNameKana: string;
-  gender: string;
-  university: string;
-  universityGrade: string;
-  phone: string;
-  email: string;
-  hireDate: string;
-  status: "在職中" | "退職済"; // この型定義が重要
-  transportation: string;
-}
+const PartialTeacherSchema = TeacherSchema.pick({
+  classroomCode: true,
+  classroomName: true,
+  code: true,
+  lastName: true,
+  firstName: true,
+  fullname: true,
+  lastNameKana: true,
+  firstNameKana: true,
+  fullnameKana: true,
+  gender: true,
+  university: true,
+  universityGrade: true,
+  phone: true,
+  email: true,
+  hireDate: true,
+  status: true,
+  transportation: true,
+  registrationDate: true,
+}).partial();
+
+export type FormData = z.infer<typeof PartialTeacherSchema>;
+
+const initialFormData: FormData = {
+  classroomCode: '',
+  classroomName: '',
+  code: '',
+  lastName: '',
+  firstName: '',
+  fullname: '',
+  lastNameKana: '',
+  firstNameKana: '',
+  fullnameKana: '',
+  gender: '男',           // enum の初期値を設定
+  university: '',
+  universityGrade: '',
+  phone: '',
+  email: '',
+  hireDate: undefined,    // optional なので undefined でOK
+  status: '在職中',       // enum の初期値を設定
+  transportation: 0,
+  registrationDate: undefined,      // number 型なので0で初期化
+};
 
 const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCancel, onSubmitSuccess }) => {
   const { classroom } = useAdminData();
   const classroomCode = classroom?.classroom?.code ?? '';
   const classroomName = classroom?.classroom?.name ?? '';
-
-  const initialFormData: FormData = {
-    code: '',
-    lastName: '',
-    firstName: '',
-    lastNameKana: '',
-    firstNameKana: '',
-    gender: '',
-    university: '',
-    universityGrade: '',
-    phone: '',
-    email: '',
-    hireDate: '',
-    status: '在職中',
-    transportation: '',
-  };
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const generateTeacherCode = useGenerateTeacherCode(classroomCode);
@@ -91,15 +104,14 @@ const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCan
       const idToken = await currentUser.getIdToken();
 
       const success = await registerTeacher({
-        code: formData.code,
+        code: formData.code ?? '',
         fullName: `${formData.lastName} ${formData.firstName}`,
         fullNameKana: `${formData.lastNameKana} ${formData.firstNameKana}`,
-        email: formData.email,
+        classroomCode,
+        classroomName,
+        email: formData.email ?? '',
         teacherData: {
           ...formData,
-          classroomCode,
-          classroomName,
-          registrationDate: new Date(),
         },
         idToken,
       });
