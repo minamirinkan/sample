@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 // Zodで定義されたスキーマと型をインポート
 import type { Teacher } from '@/schemas'; // パスはプロジェクトに合わせてください
 import TeacherInfoSection from './tabs/TeacherInfoSection';
+import ActionButtons from '../../../components/ActionButtons';
 
 /**
  * Propsの型定義
@@ -18,21 +19,23 @@ interface TeacherDetailProps {
     onDelete: (teacherId: string) => void; // teacher.idがstringなので、stringを受け取るように修正
 }
 
-    const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, onDelete }) => {
-        const [isEditing, setIsEditing] = useState(false);
-        const [formData, setFormData] = useState<Teacher>(teacher);
+const TABS = ['基本情報', '担当情報', 'スケジュール', '支払情報'];
 
-        const handleChange = useCallback(
-            (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-                const { name, value } = e.target;
-                setFormData((prev: Teacher) => ({
-                    ...prev,
-                    [name]: value,
-                }));
-            },
-            []
-        );
+const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, onDelete }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState<Teacher>(teacher);
+    const [activeTab, setActiveTab] = useState('基本情報');
 
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+            const { name, value } = e.target;
+            setFormData((prev: Teacher) => ({
+                ...prev,
+                [name]: value,
+            }));
+        },
+        []
+    );
 
     const handleSave = useCallback(() => {
         // ここでZodを使ったバリデーションを入れるのが理想的
@@ -46,57 +49,95 @@ interface TeacherDetailProps {
     }, [teacher]);
 
     const handleDelete = useCallback(() => {
-        if (window.confirm(`「${teacher.name}」のデータを本当に削除しますか？`)) {
+        if (window.confirm(`「${teacher.fullname}」のデータを本当に削除しますか？`)) {
             // teacher.id は string なので、エラーなく呼び出せる
-            onDelete(teacher.id);
+            onDelete(teacher.code);
         }
     }, [teacher, onDelete]);
 
+    const renderTabContent = () => {
+        switch (activeTab) {
+            case '基本情報':
+                return (
+                    <div className="flex gap-6">
+                        <TeacherInfoSection
+                            formData={formData}
+                            isEditing={isEditing}
+                            onChange={handleChange}
+                        />
+                    </div>
+                );
+            case '担当情報':
+                return (
+                    <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
+                );
+            case 'スケジュール':
+                return (
+                    <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
+                );
+            case '支払情報':
+                return (
+                    <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
-        <div className="container mx-auto p-4">
-            {/* --- ヘッダーと操作ボタン --- */}
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">{isEditing ? '講師情報の編集' : '講師の詳細'}</h2>
-                <div>
-                    {isEditing ? (
-                        <>
-                            <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mr-2">
-                                保存
-                            </button>
-                            <button onClick={handleCancel} className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400">
-                                キャンセル
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <button onClick={onBack} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 mr-2">
-                                一覧へ戻る
-                            </button>
-                            <button onClick={() => setIsEditing(true)} className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-                                編集
-                            </button>
-                        </>
-                    )}
-                </div>
+        <div className="p-6 bg-white rounded shadow-md max-w-5xl mx-auto">
+            {/* タイトル */}
+            <div className="flex items-center mb-4 space-x-6">
+                <h1 className="text-2xl font-bold text-gray-800">講師マスタ</h1>
+                <span className="text-2xl text-gray-500 font-normal">詳細</span>
             </div>
 
-            {/* --- メインコンテンツ --- */}
-            <div className="space-y-6">
-                <TeacherInfoSection
-                    formData={formData}
-                    isEditing={isEditing}
-                    onChange={handleChange}
-                />
-            </div>
-
-            {/* --- フッターと削除ボタン --- */}
-            <div className="mt-8 pt-4 border-t border-gray-200 flex justify-end">
-                {!isEditing && (
-                    <button onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
-                        この講師を削除
+            {/* タブ */}
+            <div className="flex gap-3 border-b border-gray-300 mb-6 bg-gray-50 rounded-t">
+                {TABS.map((tab) => (
+                    <button
+                        key={tab}
+                        className={`px-5 py-2 text-sm font-semibold border-t-[2px] transition-all duration-200
+                            ${activeTab === tab
+                                ? 'border-green-600 text-green-700 bg-white'
+                                : 'border-transparent text-gray-600 hover:text-green-600 hover:border-green-400'
+                            }
+                        `}
+                        onClick={() => setActiveTab(tab)}
+                        aria-selected={activeTab === tab}
+                        role="tab"
+                    >
+                        {tab}
                     </button>
-                )}
+                ))}
             </div>
+            {/* --- ボタン（上） --- */}
+            {activeTab === '基本情報' && (
+                <ActionButtons
+                    isEditing={isEditing}
+                    onBack={onBack}
+                    onEdit={() => setIsEditing(true)}
+                    onCancel={handleCancel}
+                    onSave={handleSave}
+                    onDelete={handleDelete}
+                />
+            )}
+            {/* --- メインコンテンツ --- */}
+            <div className="mt-4">{renderTabContent()}</div>
+
+            {/* --- ボタン（下） --- */}
+            {activeTab === '基本情報' && (
+                <div className="mt-6">
+                    <ActionButtons
+                        isEditing={isEditing}
+                        onBack={onBack}
+                        onEdit={() => setIsEditing(true)}
+                        onCancel={handleCancel}
+                        onSave={handleSave}
+                        onDelete={handleDelete}
+                    />
+                </div>
+            )}
         </div>
     );
 };

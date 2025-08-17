@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../../../firebase';
 
-export const useGenerateTeacherCode = (classroomCode) => {
-    const generateTeacherCode = useCallback(async () => {
+export const useGenerateTeacherCode = (classroomCode: string | undefined) => {
+    const generateTeacherCode = useCallback(async (): Promise<string> => {
         if (!classroomCode) return '';
 
         const q = query(

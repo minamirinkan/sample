@@ -2,6 +2,7 @@
 import React from 'react';
 import InfoRow from '../../../Students/components/InfoRow';
 import { formatDate } from '../../../dateFormatter';
+import { Teacher } from '@/schemas';
 
 // --- 型定義 ---
 export interface TeacherFormData {
@@ -22,7 +23,7 @@ export interface TeacherFormData {
 }
 
 interface TeacherInfoSectionProps {
-  formData: TeacherFormData;
+  formData: Teacher;
   isEditing: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }

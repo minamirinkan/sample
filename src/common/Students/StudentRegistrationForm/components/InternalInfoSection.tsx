@@ -23,7 +23,8 @@ const InternalInfoSection: React.FC<InternalInfoSectionProps> = ({
                 type="text"
                 placeholder="生徒ID"
                 value={formData.studentId || ''}
-                readOnly
+                onChange={(e) => onChange('studentId', e.target.value)}//あとで消す
+                // readOnly
                 className="border rounded p-2 bg-gray-100 cursor-not-allowed"
             />
             <input

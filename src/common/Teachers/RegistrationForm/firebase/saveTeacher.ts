@@ -9,6 +9,8 @@ import { doc, setDoc } from 'firebase/firestore';
 
 interface RegisterTeacherParams {
     code: string;
+    classroomCode: string;
+    classroomName: string;
     fullName: string;
     fullNameKana: string;
     email: string;

@@ -1,7 +1,13 @@
 import React from 'react';
+import { FormData } from '../TeacherRegistrationForm';
 
 const genders = ['男性', '女性', 'その他'];
-const BasicInfoSection = ({ formData, onChange }) => {
+
+type BasicInfoSectionProps = {
+    formData: FormData;
+    onChange: (field: keyof FormData, value: any) => void;
+};
+const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({ formData, onChange }) => {
     return (
         <>
             <div>
@@ -57,9 +63,9 @@ const BasicInfoSection = ({ formData, onChange }) => {
                 <div>
                     <label className="block text-sm font-medium">性別</label>
                     <select value={formData.gender} onChange={(e) => onChange('gender', e.target.value)} className="border rounded p-2">
-                    <option value="">性別を選択</option>
-                    {genders.map((g) => <option key={g} value={g}>{g}</option>)}
-                </select>
+                        <option value="">性別を選択</option>
+                        {genders.map((g) => <option key={g} value={g}>{g}</option>)}
+                    </select>
                 </div>
             </div>
         </>
