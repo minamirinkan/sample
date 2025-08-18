@@ -20,8 +20,6 @@ interface TeacherRegistrationFormProps {
 
 // formDataの型定義
 const PartialTeacherSchema = TeacherSchema.pick({
-  classroomCode: true,
-  classroomName: true,
   code: true,
   lastName: true,
   firstName: true,
@@ -37,14 +35,11 @@ const PartialTeacherSchema = TeacherSchema.pick({
   hireDate: true,
   status: true,
   transportation: true,
-  registrationDate: true,
 }).partial();
 
 export type FormData = z.infer<typeof PartialTeacherSchema>;
 
 const initialFormData: FormData = {
-  classroomCode: '',
-  classroomName: '',
   code: '',
   lastName: '',
   firstName: '',
@@ -59,14 +54,12 @@ const initialFormData: FormData = {
   email: '',
   hireDate: undefined,    // optional なので undefined でOK
   status: '在職中',       // enum の初期値を設定
-  transportation: 0,
-  registrationDate: undefined,      // number 型なので0で初期化
+  transportation: 0,      // number 型なので0で初期化
 };
 
 const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCancel, onSubmitSuccess }) => {
   const { classroom } = useAdminData();
   const classroomCode = classroom?.classroom?.code ?? '';
-  const classroomName = classroom?.classroom?.name ?? '';
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const generateTeacherCode = useGenerateTeacherCode(classroomCode);
@@ -105,13 +98,13 @@ const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCan
 
       const success = await registerTeacher({
         code: formData.code ?? '',
-        fullName: `${formData.lastName} ${formData.firstName}`,
-        fullNameKana: `${formData.lastNameKana} ${formData.firstNameKana}`,
-        classroomCode,
-        classroomName,
+        classroomCode: classroom?.classroom?.code ?? '',
+        classroomName: classroom?.classroom?.name ?? '',
         email: formData.email ?? '',
         teacherData: {
           ...formData,
+          fullname: `${formData.lastName} ${formData.firstName}`,
+          fullnameKana: `${formData.lastNameKana} ${formData.firstNameKana}`,
         },
         idToken,
       });

@@ -5,14 +5,12 @@ import {
     signInWithEmailAndPassword,
     signOut
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 interface RegisterTeacherParams {
     code: string;
     classroomCode: string;
     classroomName: string;
-    fullName: string;
-    fullNameKana: string;
     email: string;
     teacherData: {
         phone?: string;
@@ -29,8 +27,8 @@ function getErrorMessage(error: unknown): string {
 
 export const registerTeacher = async ({
     code,
-    fullName,
-    fullNameKana,
+    classroomCode,
+    classroomName,
     email,
     teacherData,
     isFirstLogin = true,
@@ -53,12 +51,14 @@ export const registerTeacher = async ({
         const teacherRef = doc(db, 'teachers', teacherUid);
         await setDoc(teacherRef, {
             uid: teacherUid,
-            fullName,
-            fullNameKana,
+            code,
+            classroomCode,
+            classroomName,
             email,
             phone: teacherData.phone,
             role: 'teacher',
             isFirstLogin,
+            registrationDate: serverTimestamp(),
             ...teacherData,
         });
 
