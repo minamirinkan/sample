@@ -8,14 +8,9 @@ import TeacherTable from "./components/TeacherTable";
 import { filterTeachers } from "./utils/filterTeachers";
 import TeacherDetail from "./Detail/TeacherDetail";
 // TeacherRow.tsx から型をインポートする
-import type { Teacher as TeacherRowType } from "./components/TeacherRow";
-
-
+import type { Teacher } from "../../schemas";
 // グローバルなState管理フックからデータを取得
 import { useAdminData } from "../../contexts/providers/AdminDataProvider";
-
-
-
 
 // このコンポーネントが受け取るProps（プロパティ）の型を定義
 interface SuperAdminTeachersProps {
@@ -30,21 +25,19 @@ const SuperAdminTeachers: React.FC<SuperAdminTeachersProps> = ({
   // --- State定義 ---
   // 各Stateにジェネリクス(<>)で型を明示的に指定します
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredTeachers, setFilteredTeachers] = useState<TeacherRowType[]>([]);
+  const [filteredTeachers, setFilteredTeachers] = useState<Teacher[]>([]);
   const [view, setView] = useState<"list" | "detail" | "form">("list");
-  const [selectedTeacherDetail, setSelectedTeacherDetail] = useState<TeacherRowType | null>(null);
+  const [selectedTeacherDetail, setSelectedTeacherDetail] = useState<Teacher | null>(null);
 
   // --- パフォーマンス最適化 ---
   // useMemoを使い、依存配列 `[teachers]` の値が変わらない限り再計算を防ぎます。
   // これにより、コンポーネントが再レンダリングされるたびに `teacherList` が
   // 新しい配列として再生成されるのを防ぎ、useEffectの不要な実行を抑制します。
   const { teachers } = useAdminData();
-  const teacherList: TeacherRowType[] = useMemo(
+  const teacherList: Teacher[] = useMemo(
   () => Array.isArray(teachers) ? teachers : (Array.isArray(teachers?.teachers) ? teachers.teachers : []),
   [teachers]
 );
-
-
 
   const breadcrumbItems = ["講師マスタ", "一覧"];
 
@@ -57,7 +50,7 @@ const SuperAdminTeachers: React.FC<SuperAdminTeachersProps> = ({
   // --- イベントハンドラ ---
   // 関数の引数にも型を適用し、意図しないデータが渡されるのを防ぎます
   // handleShowDetail の型も統一
-  const handleShowDetail = (teacher: TeacherRowType) => {
+  const handleShowDetail = (teacher: Teacher) => {
     setSelectedTeacherDetail(teacher);
     setView("detail");
   };

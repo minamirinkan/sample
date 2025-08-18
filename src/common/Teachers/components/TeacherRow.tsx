@@ -2,19 +2,7 @@
 import React from 'react';
 import { FaUserSlash } from 'react-icons/fa';
 import { formatDate } from '../../dateFormatter';
-
-// 型定義
-export type Teacher = {
-    id: number | string;
-    code: string;
-    lastName: string;
-    firstName: string;
-    lastNameKana: string;
-    firstNameKana: string;
-    subject: string;
-    hireDate: string | Date;
-    status: '在職中' | '退職済';
-};
+import { Teacher } from '../../../schemas'
 
 type TeacherRowProps = {
     teacher: Teacher;
@@ -30,7 +18,7 @@ const TeacherRow: React.FC<TeacherRowProps> = ({ teacher, isSelected, onSelect, 
             <input
                 type="checkbox"
                 checked={isSelected}
-                onChange={() => onSelect(teacher.id)}
+                onChange={() => onSelect(teacher.id ?? '')}
             />
         </td>
         <td className="border px-4 py-2">{teacher.code}</td>
