@@ -21,6 +21,7 @@ export const TeacherSchema = z.object({
     fullname: z.string().min(1, { message: "名前は必須です" }), // バリデーションルールも追加可能
     status: z.enum(['在職中', '休職中', '退職済']), // 特定の文字列しか許可しない
     registrationDate: z.date(),
+    subject: z.string(),
 });
 
 // 2. スキーマからTypeScriptの型を自動で生成します

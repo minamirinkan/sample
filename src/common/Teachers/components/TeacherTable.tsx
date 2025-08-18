@@ -3,26 +3,11 @@ import React, { useState, useEffect } from 'react';
 import TeacherTableHeader from './TeacherTableHeader';
 import TeacherRow from './TeacherRow';
 import Pagination from '../../PaginationControls';
-import type { Teacher as TeacherRowType } from './TeacherRow';
-
-// 講師オブジェクトの型定義
-export interface Teacher {
-    id: number | string;
-    code: string;
-    lastName: string;
-    firstName: string;
-    lastNameKana: string;
-    firstNameKana: string;
-    subject: string;
-    hireDate: string | Date;
-    status: '在職中' | '退職済';
-}
-
-
+import { Teacher } from '../../../schemas'
 // Propsの型定義
 interface TeacherTableProps {
-  teachers: TeacherRowType[];           // ← 型を TeacherRow.tsx と一致させる
-  onShowDetail: (teacher: TeacherRowType) => void;  // ← 型も一致
+  teachers: Teacher[];           // ← 型を TeacherRow.tsx と一致させる
+  onShowDetail: (teacher: Teacher) => void;  // ← 型も一致
 }
 
 
@@ -31,11 +16,15 @@ const TeacherTable: React.FC<TeacherTableProps> = ({ teachers, onShowDetail }) =
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [selectedIds, setSelectedIds] = useState<(string | number)[]>([]);
 
-
   const totalPages = Math.ceil(teachers.length / itemsPerPage);
+  const sortedTeachers = [...teachers].sort((a, b) => {
+    const numA = parseInt(a.code.slice(4), 10); // "t0470001" → 1
+    const numB = parseInt(b.code.slice(4), 10);
+    return numB - numA; // 大きい順に並べる
+  });
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, teachers.length);
-  const currentTeachers = teachers.slice(startIndex, endIndex);
+  const endIndex = Math.min(startIndex + itemsPerPage, sortedTeachers.length);
+  const currentTeachers = sortedTeachers.slice(startIndex, endIndex);
 
 
   useEffect(() => {
@@ -49,7 +38,7 @@ const TeacherTable: React.FC<TeacherTableProps> = ({ teachers, onShowDetail }) =
 
   const handleCheckboxChange = (id: string | number) => {
     setSelectedIds((prev: (string | number)[]) =>
-        prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
 
@@ -78,7 +67,7 @@ const TeacherTable: React.FC<TeacherTableProps> = ({ teachers, onShowDetail }) =
             <TeacherRow
               key={teacher.id}
               teacher={teacher}
-              isSelected={selectedIds.includes(teacher.id)}
+              isSelected={selectedIds.includes(teacher.id ?? '')}
               onSelect={handleCheckboxChange}
               onShowDetail={onShowDetail}
             />
