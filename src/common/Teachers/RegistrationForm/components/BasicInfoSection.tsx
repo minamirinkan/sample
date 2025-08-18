@@ -5,8 +5,9 @@ const genders = ['男性', '女性', 'その他'];
 
 type BasicInfoSectionProps = {
     formData: FormData;
-    onChange: (field: keyof FormData, value: any) => void;
+    onChange: <K extends keyof FormData>(field: K, value: FormData[K]) => void;
 };
+
 const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({ formData, onChange }) => {
     return (
         <>
@@ -62,9 +63,17 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({ formData, onChange 
                 </div>
                 <div>
                     <label className="block text-sm font-medium">性別</label>
-                    <select value={formData.gender} onChange={(e) => onChange('gender', e.target.value)} className="border rounded p-2">
+                    <select
+                        value={formData.gender}
+                        onChange={(e) => onChange('gender', e.target.value as FormData['gender'])}
+                        className="border rounded p-2"
+                    >
                         <option value="">性別を選択</option>
-                        {genders.map((g) => <option key={g} value={g}>{g}</option>)}
+                        {genders.map((g) => (
+                            <option key={g} value={g}>
+                                {g}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>

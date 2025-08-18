@@ -9,7 +9,7 @@ export const TeacherSchema = z.object({
     email: z.string(),
     firstName: z.string(),
     firstNameKana: z.string(),
-    gender: z.enum(['男', '女']),
+    gender: z.enum(['男', '女', 'その他']),
     lastName: z.string(),
     lastNameKana: z.string(),
     phone: z.string(),
