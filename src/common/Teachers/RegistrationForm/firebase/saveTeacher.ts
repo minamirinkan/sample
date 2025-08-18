@@ -1,21 +1,16 @@
 // utils/firebase/saveTeacher.ts
 import { auth, db } from '../../../../firebase';
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { TeacherSchema, Teacher } from '../../../../schemas';
+import { z } from 'zod';
 
 interface RegisterTeacherParams {
     code: string;
     classroomCode: string;
     classroomName: string;
     email: string;
-    teacherData: {
-        phone?: string;
-        [key: string]: any;
-    };
+    teacherData: z.infer<typeof TeacherSchema>;
     isFirstLogin?: boolean;
     idToken: string;
 }
@@ -43,8 +38,10 @@ export const registerTeacher = async ({
     }
 
     try {
-        const tempPassword = code;
+        // teacherDataをスキーマで検証
+        const parsedData = TeacherSchema.partial().parse(teacherData);
 
+        const tempPassword = code;
         const userCredential = await createUserWithEmailAndPassword(auth, email, tempPassword);
         const teacherUid = userCredential.user.uid;
 
@@ -55,15 +52,14 @@ export const registerTeacher = async ({
             classroomCode,
             classroomName,
             email,
-            phone: teacherData.phone,
             role: 'teacher',
             isFirstLogin,
             registrationDate: serverTimestamp(),
-            ...teacherData,
+            ...parsedData, // zodで型安全になったデータ
         });
 
+        // 管理者に戻る
         await signOut(auth);
-
         if (adminEmail) {
             await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
         }
@@ -73,6 +69,7 @@ export const registerTeacher = async ({
         console.error('講師登録失敗:', error);
         alert('登録に失敗しました: ' + getErrorMessage(error));
 
+        // 管理者復帰も試みる
         try {
             if (adminEmail) {
                 await signInWithEmailAndPassword(auth, adminEmail, adminPassword);

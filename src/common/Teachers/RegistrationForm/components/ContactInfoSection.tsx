@@ -1,12 +1,14 @@
 import React from 'react';
 import { FormData } from '../TeacherRegistrationForm';
 
-interface ContactInfoSectionProps {
+type ContactInfoSectionProps = {
   formData: FormData;
-  onChange: (field: keyof FormData, value: string) => void;
-}
+  onChange: <K extends keyof FormData>(field: K, value: FormData[K]) => void;
+};
 
 const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ formData, onChange }) => {
+  const grades = ['高3', '大1', '大2', '大3', '大4', '院1', '院2', 'その他'];
+
   return (
     <div className="grid grid-cols-2 gap-4">
       <div>
@@ -23,11 +25,11 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ formData, onCha
         <label className="block text-sm font-medium">学年</label>
         <select
           value={formData.universityGrade}
-          onChange={(e) => onChange('universityGrade', e.target.value)}
+          onChange={(e) => onChange('universityGrade', e.target.value as FormData['universityGrade'])}
           className="mt-1 w-full border rounded p-2"
         >
           <option value="">選択してください</option>
-          {['高3', '大1', '大2', '大3', '大4', '院1', '院2', 'その他'].map((grade) => (
+          {grades.map((grade) => (
             <option key={grade} value={grade}>
               {grade}
             </option>

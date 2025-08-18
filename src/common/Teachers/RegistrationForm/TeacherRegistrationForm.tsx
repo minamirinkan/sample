@@ -7,7 +7,7 @@ import BasicInfoSection from './components/BasicInfoSection';
 import ContactInfoSection from './components/ContactInfoSection';
 import EmploymentInfoSection from './components/EmploymentInfoSection';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
-import { TeacherSchema } from '../../../schemas';
+import { TeacherSchema, Teacher } from '../../../schemas';
 
 // ★ 修正: 不要なインポートを削除
 // import { EmploymentFormData } from './components/EmploymentInfoSection';
@@ -73,50 +73,65 @@ const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCan
   }, [generateTeacherCode]);
 
   // ★ 修正: handleChangeをシンプルに
-  const handleChange = (field: keyof FormData, value: string) => {
+  const handleChange = <K extends keyof FormData>(field: K, value: FormData[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formData.lastName || !formData.firstName) {
-      alert('氏名を入力してください');
+    if (!formData.lastName || !formData.firstName || !formData.email) {
+      alert('氏名とメールアドレスを入力してください');
       return;
     }
 
     try {
       const auth = getAuth();
       const currentUser = auth.currentUser;
-
       if (!currentUser) {
         alert('ログイン情報が確認できません。再ログインしてください。');
         return;
       }
-
       const idToken = await currentUser.getIdToken();
 
-      const success = await registerTeacher({
-        code: formData.code ?? '',
+      // TeacherSchema の必須項目をすべて埋める
+      const teacherData: Teacher = TeacherSchema.parse({
+        code: formData.code!,
+        lastName: formData.lastName,
+        firstName: formData.firstName,
+        fullname: `${formData.lastName} ${formData.firstName}`,
+        lastNameKana: formData.lastNameKana || '',
+        firstNameKana: formData.firstNameKana || '',
+        fullnameKana: `${formData.lastNameKana || ''} ${formData.firstNameKana || ''}`,
+        gender: formData.gender || '男',
+        university: formData.university || '',
+        universityGrade: formData.universityGrade || '',
+        phone: formData.phone || '',
+        email: formData.email!,
+        hireDate: formData.hireDate,
+        status: formData.status || '在職中',
+        transportation: formData.transportation ?? 0,
+        registrationDate: new Date(), // Firestore側で serverTimestamp() に置き換えられる
+        subject: '', // 必須項目なので空文字で初期化
         classroomCode: classroom?.classroom?.code ?? '',
         classroomName: classroom?.classroom?.name ?? '',
-        email: formData.email ?? '',
-        teacherData: {
-          ...formData,
-          fullname: `${formData.lastName} ${formData.firstName}`,
-          fullnameKana: `${formData.lastNameKana} ${formData.firstNameKana}`,
-        },
+      });
+
+      const success = await registerTeacher({
+        code: formData.code!,
+        classroomCode: classroom?.classroom?.code ?? '',
+        classroomName: classroom?.classroom?.name ?? '',
+        email: formData.email!,
+        teacherData,
         idToken,
       });
 
       if (success) {
         alert('講師登録が完了しました');
         if (onSubmitSuccess) onSubmitSuccess();
+
         const newCode = await generateTeacherCode();
-        setFormData({
-          ...initialFormData,
-          code: newCode,
-        });
+        setFormData({ ...initialFormData, code: newCode });
       } else {
         alert('講師登録に失敗しました。');
       }
