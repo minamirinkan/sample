@@ -185,12 +185,15 @@ export default function TimetablePage() {
     }
 
     const cleanedRows: TimetableRow[] = rows.map(row => ({
-      status: row.status || '予定',
-      teacher: row.teacher ?? null,
-      periods: row.periods.map(period =>
-        period.map(toTimetableStudent)
-      ),
-    }));
+  status: row.status || '予定',
+  teacher: row.teacher
+    ? { code: '', name: row.teacher.name } // code がなければ空文字でもOK
+    : null,
+  periods: row.periods.map(period =>
+    period.map(toTimetableStudent)
+  ),
+}));
+
     
     
 
@@ -305,7 +308,11 @@ export default function TimetablePage() {
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
 
-        {/* <PDFButton rows={rows} /> */}
+        <PDFButton
+  rows={rows}
+  teachers={[]}
+  periods={[]}
+/>
 
       </div>
       {/* 出席確定ボタンだけを下に分離 */}
