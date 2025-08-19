@@ -47,6 +47,8 @@ export type BasedStudent = {
     courses?: any; // courses の詳細わからないので any にしておく。必要なら型定義追加
     courseFormData?: any;
     billingStatus?: string;
+    seat?: string;     // 座席番号
+    subject?: string;  // 科目
 };
 
 export type Student = BasedStudent
@@ -54,5 +56,7 @@ export type Student = BasedStudent
 export type RowStudent = BasedStudent & {
     originRow: number;
     originPeriod: number;
+    seat?: string;     // 座席番号
+    subject?: string;  // 科目
 };
 
