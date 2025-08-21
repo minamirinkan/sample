@@ -24,17 +24,11 @@ import CeoMessagesAll from "../../common/ceoMessage/CeoMessagesAll";
 import HookStatusPage from "../../pages/HookStatusPage";
 import TestUserDataFetch from "../../TEST/TestUserDataFetch";
 import TestAdminDataFetch from "../../TEST/testpage";
-import useDynamicTitle from "../../contexts/hooks/useDynamicTitle";
 
 const SuperAdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState("welcome");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [logs, setLogs] = useState<any[]>([]);
-  const role = "superadmin"; // 本番では AuthContext などから取得
-  const classroomName = "管理者"; // 本番では選択中の教室や DB から取得
-
-  // タイトル用 hook を呼ぶ
-  useDynamicTitle({ role, classroomName });
 
   useEffect(() => {
     const q = query(
