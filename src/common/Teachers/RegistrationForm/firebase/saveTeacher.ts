@@ -2,7 +2,7 @@
 import { auth, db } from '../../../../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { TeacherSchema, Teacher } from '../../../../schemas';
+import { TeacherSchema } from '../../../../schemas';
 import { z } from 'zod';
 
 interface RegisterTeacherParams {
