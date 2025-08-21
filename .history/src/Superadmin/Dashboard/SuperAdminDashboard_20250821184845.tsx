@@ -24,7 +24,7 @@ import CeoMessagesAll from "../../common/ceoMessage/CeoMessagesAll";
 import HookStatusPage from "../../pages/HookStatusPage";
 import TestUserDataFetch from "../../TEST/TestUserDataFetch";
 import TestAdminDataFetch from "../../TEST/testpage";
-import useDynamicTitle from "../../contexts/hooks/useDynamicTitle";
+import useDynamicTitle from "@/contexts/hooks/useDynamicTitle";
 
 const SuperAdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState("welcome");
