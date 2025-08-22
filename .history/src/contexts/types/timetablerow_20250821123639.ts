@@ -1,7 +1,7 @@
 import { Student, RowStudent } from './student';
 
 export type Teacher = {
-  fullname: string;
+  name: string;
 };
 
 export type RowData = {

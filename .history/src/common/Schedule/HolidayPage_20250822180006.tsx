@@ -24,8 +24,8 @@ const HolidayPage = () => {
     const [activeTab, setActiveTab] = useState<'holidayList' | 'calendar'>('holidayList');
     const [addModalMonth, setAddModalMonth] = useState<string | null>(null);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-    const { userData } = useAuth();
-    const classroomCode = userData?.classroomCode;
+    const { userData, user } = useAuth();
+    const classroomCode = user?.classroomCode;
     const role = userData?.role as UserRole | undefined;
 
     const load = async () => {
@@ -89,7 +89,6 @@ const HolidayPage = () => {
         const deleted: Closure[] = deletedHolidays.map(h => ({ date: h.date, name: h.name, type: h.type }));
         try {
             console.log('role', role);
-            console.log('classroomCode', classroomCode);
             if (role === "superadmin") {
                 await saveSchoolClosures(`${year}`, closures, deleted, role);
             } else if (role === "admin" && classroomCode) {
