@@ -18,15 +18,15 @@ import { SchoolLevel } from '../../../contexts/types/schoolData';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
 interface StudentRegistrationFormProps {
-    onCancel?: () => void;
-    onSubmitSuccess?: () => void;  // ← 追加
+  onCancel?: () => void;
+  onSubmitSuccess?: () => void;  // ← 追加
 }
 
 
 const StudentRegistrationForm = ({ onCancel, onSubmitSuccess }: StudentRegistrationFormProps) => {
     const { userData } = useAdminData();
     const classroomCode = userData?.classroomCode ?? '';
-    const classroomName = userData?.name ?? '';
+    const classroomName = userData?.classroomName ?? '';
 
     const initialFormData: Partial<Student> = {
         studentId: '',

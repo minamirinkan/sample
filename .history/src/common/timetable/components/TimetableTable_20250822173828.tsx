@@ -3,7 +3,7 @@ import TimetableRow from './TimetableRow';
 import StudentList from './StudentList';
 import periods from '../../periods';
 import useTeachers from '../../../contexts/hooks/useTeachers';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 import { RowData } from '@/contexts/types/timetablerow';
 
 type Props = {
@@ -13,9 +13,9 @@ type Props = {
 };
 
 const TimetableTable: React.FC<Props> = ({ rows, onChange, periodLabels}) => {
-  const { classroomCode } = useAuth();
-  console.log('classroomCode:', classroomCode);
-  const { teachers } = useTeachers(classroomCode ?? undefined); // ← フックから取得
+  const { classroom } = useAdminData();
+  console.log('classroomCode:', classroom.classroom.code);
+  const { teachers } = useTeachers(classroom.classroom.code); // ← フックから取得
 
   return (
     <div className="flex gap-4">
