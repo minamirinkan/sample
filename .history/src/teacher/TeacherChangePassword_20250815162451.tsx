@@ -60,7 +60,7 @@ const TeacherChangePassword = () => {
 
       alert("パスワードを変更しました。再ログインしてください。");
       await signOut(auth);
-      navigate("/teacher/dashboard");
+      navigate("/teacher/mypage/dashboard");
     } catch (error) {
       // 'error' が FirebaseError かどうかを正しく判定できるようになる
       if (error instanceof FirebaseError) {
