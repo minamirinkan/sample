@@ -1,4 +1,4 @@
-// src/components/PDFButton.tsx
+//src/components/PDFButton.tsx
 import React from 'react';
 import {
   PDFDownloadLink,
@@ -9,44 +9,33 @@ import {
   Font,
   View
 } from '@react-pdf/renderer';
-// import periods from '../../../periods'; // これをコメントアウトまたは削除
-import { Student } from '@/contexts/types/student';
-import { RowData, Teacher, Period } from '@/contexts/types/timetablerow';
+import periods from '../../../periods';
 
-// ローカルフォントのインポート
+import { RowData } from '../../../../contexts/types/timetablerow';
+
 import NotoSansJp from '../../fonts/NotoSansJP-Regular.ttf';
-
-// フォント登録（ローカルファイル使用）
-Font.register({
-  family: 'NotoSansJP',
-  src: NotoSansJp,
-  fontWeight: 'normal',
-});
-
-// 型定義
-interface StudentData {
-  seat?: string;
-  grade?: string;
-  name?: string;
-  subject?: string;
-}
-
-interface TimetablePDFProps {
-  rows: RowData[];
-  teachers: Teacher[];
-  periods: Period[];
-}
 
 interface PDFButtonProps {
   rows: RowData[];
-  teachers: Teacher[];
-  periods: Period[];
+  classroomName: string;
 }
 
-// createDynamicStyles 関数（フォント指定を統一）
-const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMode = false) => {
-  const baseFontSize = isSmallFont ? 6 : 10;
-  
+// フォント登録 - より詳細な設定
+Font.register({
+  family: 'NotoSansJP',
+  src: NotoSansJp,
+});
+
+// 動的スタイル生成関数の改善版
+const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMode: boolean = false) => {
+  const baseFontSize = isSmallFont ? 5 : 10;
+  const titleFontSize = isSmallFont ? 8 : 16;
+  const cellFontSize = isSmallFont ? 4 : 9;
+  const sectionLabelSize = isSmallFont ? 1.5 : 3;
+  const sectionValueSize = isSmallFont ? 2.5 : 5;
+  const nameValueSize = isSmallFont ? 3 : 6;
+  const teacherValueSize = isSmallFont ? 2.5 : 5;
+
   return StyleSheet.create({
     page: {
       fontFamily: 'NotoSansJP',
@@ -55,114 +44,288 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       alignItems: 'center',
       justifyContent: 'flex-start',
     },
-    cell: {
-      fontFamily: 'NotoSansJP',
-      fontSize: baseFontSize,
-      padding: 2,
-      lineHeight: 1.3,
-    },
-    headerText: {
-      fontFamily: 'NotoSansJP',
-      fontWeight: 'bold',
-      fontSize: baseFontSize + 1,
-    },
-    headerSubText: {
-      fontFamily: 'NotoSansJP',
-      fontSize: baseFontSize - 1,
-    },
     contentWrapper: {
       alignItems: 'center',
+      fontFamily: 'NotoSansJP',
+    },
+    title: {
+      fontSize: titleFontSize,
+      marginBottom: 10,
+      textAlign: 'center',
+      fontFamily: 'NotoSansJP',
     },
     tableContainer: {
       alignItems: 'center',
+      fontFamily: 'NotoSansJP',
+      borderLeftWidth: 2,
+      borderRightWidth: 2,
+      borderBottomWidth: 2,
+      borderTopWidth: 0,
+      borderColor: '#000',
+      padding: 0,
     },
     tableRow: {
       flexDirection: 'row',
+      marginTop: 0,
+      paddingTop: 0,
+      fontFamily: 'NotoSansJP',
     },
     tableHeader: {
-      border: '1pt solid black',
-      backgroundColor: '#f0f0f0',
+      width: columnWidth,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderBottomWidth: 2,
+      borderRightWidth: 1,
+      borderRightColor: '#000',
+      backgroundColor: '#e0e0e0',
+      fontFamily: 'NotoSansJP',
+      marginBottom: 0,
+      paddingBottom: 3,
+    },
+    headerTimeSection: {
+      backgroundColor: '#e0e0e0',
+      padding: 3,
+      marginBottom: 2,
+      borderRadius: 2,
+      fontFamily: 'NotoSansJP',
+    },
+    headerInfoSection: {
+      backgroundColor: '#e0e0e0',
+      padding: 2,
+      fontSize: isSmallFont ? 3.5 : 7,
+      lineHeight: 1.2,
+      fontFamily: 'NotoSansJP',
+    },
+    tableCell: {
+      width: columnWidth,
+      textAlign: 'center',
+      paddingHorizontal: 2,
+      borderRightWidth: 2,
+      borderRightColor: '#555',
+      borderTopWidth: 0.5,
+      borderBottomWidth: 0,
+      justifyContent: isSmallFont ? 'flex-start' : 'center',
+      alignItems: isSmallFont ? 'flex-start' : 'center',
+      fontFamily: 'NotoSansJP',
+    },
+    teacherName: {
+      width: '11%',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      borderRightWidth: 1,
+      borderRightColor: '#ccc',
+      minHeight: 40,
+      backgroundColor: '#e0e0e0',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontFamily: 'NotoSansJP',
+    },
+    cellText: {
+      fontSize: cellFontSize,
+      lineHeight: 2.0,
+      fontFamily: 'NotoSansJP',
+    },
+    emptyCell: {
+      backgroundColor: 'transparent',
+      fontFamily: 'NotoSansJP',
+    },
+    studentBox: {
+      paddingVertical: isSmallFont ? 1.5 : 3,
+      width: '100%',
+      marginRight: 0,
+      fontFamily: 'NotoSansJP',
+    },
+    studentInfoGrid: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'stretch',
+      width: '100%',
+      minHeight: isSmallFont ? 9 : 18,
+      fontFamily: 'NotoSansJP',
+    },
+    studentInfoSection: {
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      borderRight: '1 solid #000',
+      paddingHorizontal: isSmallFont ? 1 : 2,
+      paddingVertical: isSmallFont ? 1 : 2,
+      fontFamily: 'NotoSansJP',
+    },
+    longBottomLine: {
+      height: 1,
+      backgroundColor: '#000',
+      width: '104%',
+      marginLeft: '-2%',
+      marginTop: 1,
+    },
+    studentInfoSection_for_teacher: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: isSmallFont ? 1 : 2,
+      paddingVertical: isSmallFont ? 1 : 2,
+      fontFamily: 'NotoSansJP',
+    },
+    seatSection: {
+      flex: 0.4,
+      fontFamily: 'NotoSansJP',
+    },
+    gradeSection: {
+      flex: 0.8,
+      fontFamily: 'NotoSansJP',
+    },
+    nameSection: {
+      flex: 1.7,
+      fontFamily: 'NotoSansJP',
+    },
+    subjectSection: {
+      flex: 1,
+      fontFamily: 'NotoSansJP',
+    },
+    teacherSection: {
+      flex: 1.3,
+      fontFamily: 'NotoSansJP',
+    },
+    sectionLabel: {
+      fontSize: sectionLabelSize,
+      color: '#666',
+      marginBottom: 1,
+      fontWeight: 'bold',
+      paddingBottom: 1,
+      width: '100%',
+      textAlign: 'center',
+      fontFamily: 'NotoSansJP',
+    },
+    sectionValue: {
+      fontSize: sectionValueSize,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontFamily: 'NotoSansJP',
+    },
+    nameValue: {
+      fontSize: nameValueSize,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontFamily: 'NotoSansJP',
+    },
+    teacherValue: {
+      fontSize: teacherValueSize,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontFamily: 'NotoSansJP',
+    },
+    sectionDivider: {
+      height: 0.5,
+      backgroundColor: '#ccc',
+      marginVertical: 1,
+    },
+    headerText: {
+      fontSize: isSmallFont ? 5 : 10,
+      fontWeight: 'bold',
+      fontFamily: 'NotoSansJP',
+    },
+    headerSubText: {
+      fontSize: isSmallFont ? 2.5 : 5,
+      fontWeight: 'bold',
+      fontFamily: 'NotoSansJP',
     },
     dateText: {
-      fontFamily: 'NotoSansJP',
       fontSize: isSmallFont ? 12.5 : 25,
-      fontWeight: 'bold',
+      fontFamily: 'NotoSansJP',
+    },
+    studentContainer: {
+      width: '100%',
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      justifyContent: isSmallFont ? 'flex-start' : 'center',
+      alignItems: isSmallFont ? 'flex-start' : 'center',
+      fontFamily: 'NotoSansJP',
     },
   });
 };
 
-// EmptyDocument コンポーネント
+// 空のドキュメント（データがない時用）
 const EmptyDocument: React.FC = () => (
   <Document>
-    <Page style={{ fontFamily: 'NotoSansJP', padding: 20 }}>
+    <Page style={{ padding: 20, fontFamily: 'NotoSansJP' }}>
       <Text style={{ fontFamily: 'NotoSansJP' }}>データがありません</Text>
     </Page>
   </Document>
 );
 
-// TimetablePDF コンポーネント
-const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, teachers, periods }) => {
-  // デバッグ用ログ
-  console.log('PDF Generation Debug:');
-  console.log('rows:', rows);
-  console.log('periods:', periods);
-  console.log('teachers:', teachers);
+interface TimetablePDFProps {
+  rows: RowData[];
+  classroomName: string;
+}
 
+const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
   const today = new Date();
   const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
   const dayOfWeek = weekdays[today.getDay()];
-  const formattedDate = `${today.getMonth() + 1}月${today.getDate()}日（${dayOfWeek}）`;
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1);
+  const dd = String(today.getDate());
+  const formattedDate = `${mm}月${dd}日（${dayOfWeek}）`;
 
   const visibleRows = rows.filter(
-    (row) => !['未定', '振替', '欠席'].includes(row.status ?? '')
+    (row) => !['未定', '振替', '欠席'].includes(row.status || '')
   );
 
-  console.log('visibleRows after filter:', visibleRows);
-
   const periodCount = periods.length;
-  const hasStudentInPeriod = Array<boolean>(periodCount).fill(false);
-  const studentsPerPeriod = Array<number>(periodCount).fill(0);
+  const hasStudentInPeriod = Array(periodCount).fill(false);
+  const studentsPerPeriod = Array(periodCount).fill(0);
 
-  visibleRows.forEach((row) => {
-    row.periods.forEach((students, idx) => {
-      const safeStudents = Array.isArray(students) ? students : [];
-      console.log(`Period ${idx}:`, safeStudents); // デバッグログ
-      if (safeStudents.length > 0) {
-        hasStudentInPeriod[idx] = true;
-        studentsPerPeriod[idx] += safeStudents.length;
-      }
-    });
+  visibleRows.forEach(row => {
+    if (Array.isArray(row.periods)) {
+      row.periods.forEach((students, idx) => {
+        const safeStudents = Array.isArray(students) ? students : [];
+        if (safeStudents.length > 0) {
+          hasStudentInPeriod[idx] = true;
+          studentsPerPeriod[idx] += safeStudents.length;
+        }
+      });
+    }
   });
 
-  console.log('hasStudentInPeriod:', hasStudentInPeriod);
-  console.log('studentsPerPeriod:', studentsPerPeriod);
-
   const maxStudentsInPeriod = Math.max(...studentsPerPeriod);
-
   const isSmallFont = maxStudentsInPeriod > 20;
   const isWrapMode = maxStudentsInPeriod > 23;
 
   let columnWidth: number;
-  if (maxStudentsInPeriod > 23) columnWidth = 60;
-  else if (maxStudentsInPeriod > 20) columnWidth = 90;
-  else columnWidth = 120;
+  if (maxStudentsInPeriod > 23) {
+    columnWidth = 60;
+  } else if (maxStudentsInPeriod > 20) {
+    columnWidth = 90;
+  } else {
+    columnWidth = 120;
+  }
 
   const styles = createDynamicStyles(isSmallFont, columnWidth, isWrapMode);
 
   let startIdx = 0;
-  while (startIdx < periodCount && !hasStudentInPeriod[startIdx]) startIdx++;
-  let endIdx = periodCount - 1;
-  while (endIdx >= 0 && !hasStudentInPeriod[endIdx]) endIdx--;
+  while (startIdx < periodCount && !hasStudentInPeriod[startIdx]) {
+    startIdx++;
+  }
 
-  console.log('startIdx:', startIdx, 'endIdx:', endIdx, 'periodCount:', periodCount);
+  let endIdx = periodCount - 1;
+  while (endIdx >= 0 && !hasStudentInPeriod[endIdx]) {
+    endIdx--;
+  }
 
   if (startIdx > endIdx) {
     return (
       <Document>
-        <Page style={{ fontFamily: 'NotoSansJP', padding: 20 }}>
-          <Text style={{ fontFamily: 'NotoSansJP' }}>表示できる時間帯がありません</Text>
+        <Page size="B4" orientation="landscape" style={styles.page}>
+          <View style={styles.contentWrapper}>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', textAlign: 'center', marginBottom: 10 }}>
+              <Text style={styles.dateText}>
+                {classroomName} 教室 {formattedDate}
+              </Text>
+            </View>
+          </View>
         </Page>
       </Document>
     );
@@ -172,124 +335,149 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, teachers, periods }) 
   const totalColumns = visiblePeriods.length;
   const dynamicTableWidth = totalColumns * columnWidth;
 
-  const processedData = { firstHalf: [] as RowData[], secondHalf: [] as RowData[] };
+  interface ProcessedData {
+    firstHalf: RowData[];
+    secondHalf: RowData[];
+  }
+
+  const processedData: ProcessedData = {
+    firstHalf: [],
+    secondHalf: []
+  };
 
   if (isWrapMode) {
     const middleIndex = Math.ceil(visibleRows.length / 2);
+
     processedData.firstHalf = visibleRows.slice(0, middleIndex).map(row => ({
       ...row,
-      periods: row.periods.slice(startIdx, endIdx + 1),
+      periods: row.periods.slice(startIdx, endIdx + 1)
     }));
+
     processedData.secondHalf = visibleRows.slice(middleIndex).map(row => ({
       ...row,
-      periods: row.periods.slice(startIdx, endIdx + 1),
+      periods: row.periods.slice(startIdx, endIdx + 1)
     }));
 
     const maxRows = Math.max(processedData.firstHalf.length, processedData.secondHalf.length);
-    while (processedData.firstHalf.length < maxRows)
-      processedData.firstHalf.push({ teacher: null, status: '', periods: Array(visiblePeriods.length).fill([]) });
-    while (processedData.secondHalf.length < maxRows)
-      processedData.secondHalf.push({ teacher: null, status: '', periods: Array(visiblePeriods.length).fill([]) });
+    while (processedData.firstHalf.length < maxRows) {
+      processedData.firstHalf.push({
+        teacher: null,
+        status: '',
+        periods: Array(visiblePeriods.length).fill(null).map(() => [])
+      });
+    }
+    while (processedData.secondHalf.length < maxRows) {
+      processedData.secondHalf.push({
+        teacher: null,
+        status: '',
+        periods: Array(visiblePeriods.length).fill(null).map(() => [])
+      });
+    }
   } else {
     processedData.firstHalf = visibleRows.map(row => ({
       ...row,
-      periods: row.periods.slice(startIdx, endIdx + 1),
+      periods: row.periods.slice(startIdx, endIdx + 1)
     }));
   }
 
-  // renderHeader 関数
-  const renderHeader = (visiblePeriods: Period[], columnWidth: number, styles: any) => (
+  const renderHeader = () => (
     <View style={styles.tableRow}>
       {visiblePeriods.map((p, idx) => (
         <View key={idx} style={[styles.tableHeader, { width: columnWidth, padding: 3 }]}>
           <Text style={styles.headerText}>【{p.label}】{p.time}</Text>
-          <Text style={styles.headerSubText}>座席 学年 生徒氏名 科目 講師</Text>
+          <Text style={styles.headerSubText}>座席　学年　生徒氏名　科目　講師</Text>
         </View>
       ))}
     </View>
   );
 
-  // renderTableRows 関数（フォント指定を明示的に追加）
-  const renderTableRows = (
-    rows: RowData[],
-    visiblePeriods: Period[],
-    columnWidth: number,
-    styles: any
-  ) => {
-    return rows.map((row, rowIndex) => (
-      <View key={rowIndex} style={{ flexDirection: "row" }}>
-        {visiblePeriods.map((_, colIndex) => {
-          const students = row.periods[colIndex] ?? [];
+  const renderStudentData = (studentsData: any[], row: RowData) => (
+    studentsData.filter(s => typeof s === 'object' && s !== null).map((s, i, arr) => (
+      <View
+        key={i}
+        style={[
+          styles.studentBox,
+          ...(i === arr.length - 1 ? [{ borderBottom: 'none', marginBottom: 0 }] : [])
+        ]}
+      >
+        <View style={styles.longBottomLine} />
+        <View style={styles.studentInfoGrid}>
+          <View style={[styles.studentInfoSection, styles.seatSection]}>
+            <Text style={styles.sectionValue}>{String(s.seat ?? '―')}</Text>
+          </View>
 
-          if (!Array.isArray(students) || students.length === 0) {
-            return (
-              <Text
-                key={colIndex}
-                style={{ 
-                  width: columnWidth, 
-                  fontFamily: 'NotoSansJP',
-                  ...styles.cell 
-                }}
-              >
-                {/* 空欄 */}
-              </Text>
-            );
-          }
+          <View style={[styles.studentInfoSection, styles.gradeSection]}>
+            <Text style={styles.sectionValue}>{String(s.grade ?? '―')}</Text>
+          </View>
 
-          return (
-            <View
-              key={colIndex}
-              style={{ 
-                width: columnWidth, 
-                border: '0.5pt solid black',
-                ...styles.cell 
-              }}
-            >
-              {students.map((student, sIdx) => {
-                const s = student as Student;
-                const studentInfo = `${s.seat ?? ""} ${s.grade ?? ""} ${s.fullname ?? ""} ${s.subject ?? ""} ${row.teacher?.name ?? ""}`;
-                return (
-                  <Text 
-                    key={sIdx}
-                    style={{ 
-                      fontFamily: 'NotoSansJP',
-                      fontSize: styles.cell.fontSize,
-                    }}
-                  >
-                    {studentInfo}
-                  </Text>
-                );
-              })}
-            </View>
-          );
-        })}
+          <View style={[styles.studentInfoSection, styles.nameSection]}>
+            <Text style={styles.nameValue}>
+              {String(s.name ?? s.fullname ?? '―')}
+            </Text>
+          </View>
+
+          <View style={[styles.studentInfoSection, styles.subjectSection]}>
+            <Text style={styles.sectionValue}>{String(s.subject ?? '―')}</Text>
+          </View>
+
+          <View style={[styles.studentInfoSection_for_teacher, styles.teacherSection]}>
+            <Text style={styles.teacherValue}>{String(row.teacher?.fullname ?? '―')}</Text>
+          </View>
+        </View>
+        <View style={styles.longBottomLine} />
       </View>
-    ));
-  };
+    ))
+  );
+
+  const renderTableRows = (rowsData: RowData[]) => (
+    rowsData.map((row, rowIdx) => (
+      <View key={rowIdx} style={styles.tableRow}>
+        {row.periods.map((students, idx) => (
+          <View
+            key={idx}
+            style={[
+              styles.tableCell,
+              { width: columnWidth },
+              ...(!students || students.length === 0 ? [styles.emptyCell] : [])
+            ]}
+          >
+            {students && students.length > 0 ? (
+              <View style={styles.studentContainer}>
+                {renderStudentData(students, row)}
+              </View>
+            ) : (
+              <Text style={styles.cellText}></Text>
+            )}
+          </View>
+        ))}
+      </View>
+    ))
+  );
 
   return (
     <Document>
       <Page size="B4" orientation="landscape" style={styles.page}>
         <View style={styles.contentWrapper}>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', textAlign: 'center', marginBottom: 10 }}>
-            <Text style={styles.dateText}>進学個別ATOM南林間教室                       {formattedDate}</Text>
+            <Text style={styles.dateText}>{classroomName} {formattedDate}</Text>
           </View>
 
           {isWrapMode ? (
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
               <View style={[styles.tableContainer, { width: dynamicTableWidth, marginRight: 20 }]}>
-                {renderHeader(visiblePeriods, columnWidth, styles)}
-                {renderTableRows(processedData.firstHalf, visiblePeriods, columnWidth, styles)}
+                {renderHeader()}
+                {renderTableRows(processedData.firstHalf)}
               </View>
+
               <View style={[styles.tableContainer, { width: dynamicTableWidth }]}>
-                {renderHeader(visiblePeriods, columnWidth, styles)}
-                {renderTableRows(processedData.secondHalf, visiblePeriods, columnWidth, styles)}
+                {renderHeader()}
+                {renderTableRows(processedData.secondHalf)}
               </View>
             </View>
           ) : (
             <View style={[styles.tableContainer, { width: dynamicTableWidth }]}>
-              {renderHeader(visiblePeriods, columnWidth, styles)}
-              {renderTableRows(processedData.firstHalf, visiblePeriods, columnWidth, styles)}
+              {renderHeader()}
+              {renderTableRows(processedData.firstHalf)}
             </View>
           )}
         </View>
@@ -298,15 +486,29 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, teachers, periods }) 
   );
 };
 
-// PDFButton コンポーネント
-const PDFButton: React.FC<PDFButtonProps> = ({ rows, teachers, periods }) => {
+const PDFButton: React.FC<PDFButtonProps> = ({ rows, classroomName }) => {
+  const isDisabled = !rows || rows.length === 0;
+  
   return (
-    <PDFDownloadLink
-      document={<TimetablePDF rows={rows} teachers={teachers} periods={periods} />}
-      fileName="timetable.pdf"
-    >
-      {({ loading }) => (loading ? '読み込み中...' : 'PDFダウンロード')}
-    </PDFDownloadLink>
+    <div className="text-center mt-4">
+      <PDFDownloadLink
+        document={rows.length > 0 ? <TimetablePDF rows={rows} classroomName={classroomName} /> : <EmptyDocument />}
+        fileName="timetable.pdf"
+      >
+        {({ loading }) => (
+          <button
+            className={`px-4 py-2 rounded text-white ${
+              isDisabled 
+                ? 'bg-gray-400 cursor-not-allowed opacity-50' 
+                : 'bg-green-500 hover:bg-green-600'
+            }`}
+            disabled={isDisabled}
+          >
+            {loading ? '生成中...' : 'PDFをダウンロード'}
+          </button>
+        )}
+      </PDFDownloadLink>
+    </div>
   );
 };
 
