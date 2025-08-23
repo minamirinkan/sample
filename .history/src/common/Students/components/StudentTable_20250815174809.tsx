@@ -13,15 +13,11 @@ const StudentTable: React.FC<Props> = ({ students, onShowDetail }) => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [itemsPerPage, setItemsPerPage] = useState<number>(10);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
     const totalPages = Math.ceil(students.length / itemsPerPage);
-    const sortedStudents = [...students].sort((a, b) => {
-        const numA = a.studentId ? parseInt(a.studentId.slice(4), 10) : 0;
-        const numB = b.studentId ? parseInt(b.studentId.slice(4), 10) : 0;
-        return numB - numA; // 大きい順に並べる
-    });
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, sortedStudents.length);
-    const currentStudents = sortedStudents.slice(startIndex, endIndex);
+    const endIndex = Math.min(startIndex + itemsPerPage, students.length);
+    const currentStudents = students.slice(startIndex, endIndex);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });

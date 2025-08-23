@@ -11,6 +11,7 @@ import {
     arrayUnion,
     getDoc,
     collection,
+    getFirestore,
     serverTimestamp,
   } from 'firebase/firestore';
   import { auth, db } from '../../../firebase';
