@@ -187,7 +187,7 @@ export default function TimetablePage() {
     const cleanedRows: TimetableRow[] = rows.map(row => ({
   status: row.status || '予定',
   teacher: row.teacher
-    ? { code: '', name: row.teacher.name } // code がなければ空文字でもOK
+    ? { code: '', name: row.teacher.fullname } // code がなければ空文字でもOK
     : null,
   periods: row.periods.map(period =>
     period.map(toTimetableStudent)
@@ -308,11 +308,11 @@ export default function TimetablePage() {
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
 
-        <PDFButton
+       <PDFButton
   rows={rows}
-  teachers={[]}
-  periods={[]}
+  classroomName={classroomName}
 />
+
 
       </div>
       {/* 出席確定ボタンだけを下に分離 */}
