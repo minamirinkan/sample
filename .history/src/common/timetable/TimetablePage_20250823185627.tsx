@@ -14,7 +14,7 @@ import { useAdminData } from '../../contexts/providers/AdminDataProvider';
 import { Student } from '@/contexts/types/student';
 import { DuplicateInfo } from '@/contexts/types/timetable';
 import { RowData } from '@/contexts/types/timetablerow';
-import { DateInfo, TimetableRow, TimetableStudent } from '@/contexts/types/data';
+import { DateInfo, TimetableRow,TimetableStudent } from '@/contexts/types/data';
 
 function toTimetableStudent(student: any): TimetableStudent {
   return {
@@ -37,7 +37,7 @@ export default function TimetablePage() {
       console.log('userData is undefined or not loaded yet');
     }
   }, [userData]);
-  const { classroom } = useAdminData();
+  const {adminData,classroom}=useAdminData();
   useEffect(() => {
     console.log('classroom.name:', classroom.classroom.name);
   }, [classroom]);
@@ -142,7 +142,7 @@ export default function TimetablePage() {
   const checkDuplicateStudentsPerPeriod = (rows: RowData[]): DuplicateInfo[] => {
     const periodStudentMap: Set<string>[] = Array(8).fill(null).map(() => new Set<string>());
     const duplicates: DuplicateInfo[] = [];
-
+  
     rows.forEach((row: RowData, rowIndex: number) => {
       row.periods.forEach((students: Student[], periodIdx: number) => {
         students.forEach((student: Student) => {
@@ -157,7 +157,7 @@ export default function TimetablePage() {
         });
       });
     });
-
+  
     return duplicates;
   };
 
@@ -185,14 +185,17 @@ export default function TimetablePage() {
     }
 
     const cleanedRows: TimetableRow[] = rows.map(row => ({
-      status: row.status || '予定',
-      teacher: row.teacher
-        ? { code: '', name: row.teacher.fullname } // code がなければ空文字でもOK
-        : null,
-      periods: row.periods.map(period =>
-        period.map(toTimetableStudent)
-      ),
-    }));
+  status: row.status || '予定',
+  teacher: row.teacher
+    ? { code: '', name: row.teacher.fullname } // code がなければ空文字でもOK
+    : null,
+  periods: row.periods.map(period =>
+    period.map(toTimetableStudent)
+  ),
+}));
+
+    
+    
 
     await saveTimetableData(selectedDate, userData.classroomCode, cleanedRows);
 
@@ -201,6 +204,7 @@ export default function TimetablePage() {
     setIsConfirmOverwriteModalOpen(false); // 忘れず閉じる
     setPendingSave(null);
   };
+
 
   // 「出席を確定」ボタン押下 → モーダルを開く
   const openConfirmModal = () => {
@@ -304,10 +308,10 @@ export default function TimetablePage() {
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
 
-        <PDFButton
-          rows={rows}
-          classroomName={classroomName}
-        />
+       <PDFButton
+  rows={rows}
+  classroomName={classroomName}
+/>
 
 
       </div>
