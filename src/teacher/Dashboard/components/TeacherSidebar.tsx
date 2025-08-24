@@ -105,6 +105,12 @@ const TeacherSidebar: React.FC<TeacherSidebarProps> = ({ onSelectMenu }) => {
           onSelectMenu={onSelectMenu}
         />
         <SidebarSection
+          icon={FaBook}
+          title="予定"
+          subItems={[{ label: "色塗り", key: "attendance" }]}
+          onSelectMenu={onSelectMenu}
+        />
+        <SidebarSection
           icon={FaBell}
           title="成績管理"
           subItems={[
