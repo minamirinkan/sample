@@ -2,6 +2,7 @@ import SuperAdminHeader from '../../Superadmin/Dashboard/components/SuperAdminHe
 import TeacherSidebar from './components/TeacherSidebar';
 import { useState } from 'react';
 import TimetablePageC from '../Timetable/TimetableTeacherPage';
+import Attendance from '../Attendance/AttendancePage'; 
 
 const TeacherDashboard = () => {
     const [selectedContent, setSelectedContent] = useState('timetable');
@@ -11,6 +12,8 @@ const TeacherDashboard = () => {
         switch (selectedContent) {
             case 'timetable':
                 return <TimetablePageC />;
+            case 'attendance':
+                return <Attendance/>;
             default:
                 return (
                     <>
