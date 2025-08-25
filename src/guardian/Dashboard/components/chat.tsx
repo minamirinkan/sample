@@ -8,32 +8,6 @@ import {
   serverTimestamp,
   deleteDoc,
   doc,
-} from "firebase/firestore";
-import { db } from "../../../firebase";
-import { useAuth } from "../../../contexts/AuthContext";
-
-type Message = {
-  id: string;
-  text: string;
-  senderId: string;
-  createdAt: any;
-};
-
-type ChatProps = {
-  chatType: "headquarters" | "classroom";
-  roomId: string;
-};
-
-const Chat = ({ chatType, roomId }: ChatProps) => {
-  const { user } = useAuth();
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // ✅ Firestore 正しいパス構造に修正（doc()を使ってからcollection()）
-  const messagesRef = useMemo(() => {
-    if (!chatType || !roomId) return null;
-    return collection(db, "chats", chatType, roomId);
   }, [chatType, roomId]);
 
   // ✅ 条件付きではなく useEffect を使う：messagesRef が null のときは何もしない
@@ -162,3 +136,30 @@ const Chat = ({ chatType, roomId }: ChatProps) => {
 };
 
 export default Chat;
+
+} from "firebase/firestore";
+import { db } from "../../../firebase";
+import { useAuth } from "../../../contexts/AuthContext";
+
+type Message = {
+  id: string;
+  text: string;
+  senderId: string;
+  createdAt: any;
+};
+
+type ChatProps = {
+  chatType: "headquarters" | "classroom";
+  roomId: string;
+};
+
+const Chat = ({ chatType, roomId }: ChatProps) => {
+  const { user } = useAuth();
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // ✅ Firestore 正しいパス構造に修正（doc()を使ってからcollection()）
+  const messagesRef = useMemo(() => {
+    if (!chatType || !roomId) return null;
+    return collection(db, "chats", chatType, roomId);
