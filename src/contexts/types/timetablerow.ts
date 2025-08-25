@@ -1,3 +1,5 @@
+//src/contexts/types/timetablerow.ts
+
 import { Student, RowStudent } from './student';
 
 export type Teacher = {

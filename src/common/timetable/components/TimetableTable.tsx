@@ -1,4 +1,5 @@
-//components/TimetableTable.jsx
+//components/TimetableTable.tsx
+import React from 'react';
 import TimetableRow from './TimetableRow';
 import StudentList from './StudentList';
 import periods from '../../periods';
@@ -52,4 +53,5 @@ const TimetableTable: React.FC<Props> = ({ rows, onChange, periodLabels}) => {
     </div>
   );
 }
+
 export default TimetableTable;
