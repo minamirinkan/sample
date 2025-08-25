@@ -17,6 +17,7 @@ import TestAdminDataFetch from "../TEST/testpage";
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "../contexts/AuthContext"
 import useDynamicTitle from "../contexts/hooks/useDynamicTitle";
+import StudentChatManager from '../guardian/Dashboard/components/StudentChatManager';
 
 // ログのデータ型を定義
 interface Log {
@@ -38,7 +39,8 @@ type MenuType =
   | 'notification'
   | 'tasks'
   | 'authTest'
-  | 'userTest';
+  | 'userTest'
+  | 'chat';
 
 const AdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState<MenuType>('welcome');
@@ -84,6 +86,7 @@ const AdminDashboard = () => {
       'tasks',
       'authTest',
       'userTest',
+      'chat',
     ];
 
     if (validMenus.includes(menu as MenuType)) {
@@ -184,6 +187,8 @@ const AdminDashboard = () => {
         return <TestUserDataFetch />;
       case 'userTest':
         return <TestAdminDataFetch />;
+        case 'chat':
+        return <StudentChatManager />;
       default:
         return <ToDoContent logs={logs} />;
     }

@@ -5,6 +5,7 @@ import TimetablePageC from '../timetable/TimetableCustomerPage';
 import HookStatusPage from '../../pages/HookStatusPage';
 import TestUserDataFetch from "../../TEST/TestUserDataFetch";
 import TestAdminDataFetch from "../../TEST/testpage";
+import StudentChatManager from './components/StudentChatManager';
 
 const CustomerDashboard = () => {
   const [selectedContent, setSelectedContent] = useState('timetable');
@@ -20,6 +21,8 @@ const CustomerDashboard = () => {
         return <TestUserDataFetch />;
       case 'userTest':
         return <TestAdminDataFetch />;
+        case 'chat':
+        return <StudentChatManager />;
       default:
         return (
           <>

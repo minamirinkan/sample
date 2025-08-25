@@ -102,6 +102,15 @@ const AdminSidebar: FC<AdminSidebarProps> = ({ onSelectMenu }) => {
             </h4>
             <ul className="sidebar-menu">
                 <SidebarSection
+                    icon={FaBell}
+                    title="チャット"
+                    subItems={[
+                        { label: '本部', key: 'chat' },
+                        { label: '教室', key: 'chat' }
+                    ]}
+                    onSelectMenu={onSelectMenu}
+                />
+                <SidebarSection
                     icon={FaDatabase}
                     title="テストデータ"
                     subItems={[
