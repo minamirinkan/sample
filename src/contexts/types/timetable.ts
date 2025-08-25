@@ -1,3 +1,5 @@
+//src/contexts/types/timetable.ts
+
 import { Student } from './student'; // すでにあるStudent型を再利用
 import { Teacher } from './teacher';
 import { RowData } from './timetablerow';

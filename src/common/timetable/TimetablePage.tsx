@@ -17,10 +17,15 @@ import { RowData } from '@/contexts/types/timetablerow';
 import { DateInfo, TimetableRow, TimetableStudent } from '@/contexts/types/data';
 
 function toTimetableStudent(student: any): TimetableStudent {
+  // firstName と lastName から fullname を構築
+  const firstName = student.firstName || '';
+  const lastName = student.lastName || '';
+  const fullName = `${lastName} ${firstName}`.trim() || student.name || '';
+
   return {
     studentId: student.studentId ?? '',
     grade: student.grade ?? '',
-    name: student.name ?? '',
+    name: fullName,  // 修正: firstNameとlastNameから構築した名前を使用
     seat: student.seat ?? '',
     subject: student.subject ?? '',
     classType: student.classType ?? '',
@@ -305,9 +310,12 @@ export default function TimetablePage() {
         </button>
 
         <PDFButton
-          rows={rows}
-          classroomName={classroomName}
-        />
+  getData={() => ({
+    rows,
+    classroomName
+  })}
+/>
+
 
 
       </div>

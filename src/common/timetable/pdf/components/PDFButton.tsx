@@ -10,23 +10,21 @@ import {
   View
 } from '@react-pdf/renderer';
 import periods from '../../../periods';
-
 import { RowData } from '../../../../contexts/types/timetablerow';
-
+import { Student, RowStudent } from '../../../../contexts/types/student';
 import NotoSansJp from '../../fonts/NotoSansJP-Regular.ttf';
-
+import { DocumentProps } from '@react-pdf/renderer';
 interface PDFButtonProps {
-  rows: RowData[];
-  classroomName: string;
+  getData: () => { rows: RowData[]; classroomName: string };
 }
 
-// フォント登録 - より詳細な設定
+// フォント登録
 Font.register({
   family: 'NotoSansJP',
   src: NotoSansJp,
 });
 
-// 動的スタイル生成関数の改善版
+// 動的スタイル生成関数
 const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMode: boolean = false) => {
   const baseFontSize = isSmallFont ? 5 : 10;
   const titleFontSize = isSmallFont ? 8 : 16;
@@ -262,6 +260,12 @@ interface TimetablePDFProps {
 }
 
 const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
+  // データ検証を追加
+  if (!Array.isArray(rows)) {
+    console.error('rows is not an array:', rows);
+    return <EmptyDocument />;
+  }
+
   const today = new Date();
   const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
   const dayOfWeek = weekdays[today.getDay()];
@@ -391,8 +395,52 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
     </View>
   );
 
-  const renderStudentData = (studentsData: any[], row: RowData) => (
-    studentsData.filter(s => typeof s === 'object' && s !== null).map((s, i, arr) => (
+  // Student型またはRowStudent型の生徒データを安全に処理する関数
+  const getStudentDisplayName = (student: Student | RowStudent | any): string => {
+  try {
+    if (!student) return '名前不明';
+
+    // TimetableStudent型のnameプロパティを最優先で確認
+    if (student.name && typeof student.name === 'string' && student.name.trim()) {
+      return student.name.trim();
+    }
+
+    // Student/RowStudent型のfirstName, lastNameを確認
+    const firstName = student.firstName || '';
+    const lastName = student.lastName || '';
+
+    if (firstName || lastName) {
+      const fullName = `${lastName} ${firstName}`.trim();
+      if (fullName) return fullName;
+    }
+
+    // fullname のフォールバック
+    if (student.fullname && typeof student.fullname === 'string' && student.fullname.trim()) {
+      return student.fullname.trim();
+    }
+
+    return '名前不明';
+  } catch (error) {
+    console.error('Student name processing error:', error, student);
+    return '名前エラー';
+  }
+};
+
+
+  const renderStudentData = (studentsData: (Student | RowStudent)[], row: RowData) => {
+    // 安全な処理を追加
+    if (!Array.isArray(studentsData)) {
+      console.warn('studentsData is not an array:', studentsData);
+      return null;
+    }
+
+    const validStudents = studentsData.filter(s => 
+      typeof s === 'object' && 
+      s !== null && 
+      (s.studentId || s.fullname || s.firstName || s.lastName)
+    );
+
+    return validStudents.map((s, i, arr) => (
       <View
         key={i}
         style={[
@@ -412,7 +460,7 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
 
           <View style={[styles.studentInfoSection, styles.nameSection]}>
             <Text style={styles.nameValue}>
-              {String(s.name ?? s.fullname ?? '―')}
+              {getStudentDisplayName(s)}
             </Text>
           </View>
 
@@ -426,8 +474,8 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
         </View>
         <View style={styles.longBottomLine} />
       </View>
-    ))
-  );
+    ));
+  };
 
   const renderTableRows = (rowsData: RowData[]) => (
     rowsData.map((row, rowIdx) => (
@@ -486,28 +534,54 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
   );
 };
 
-const PDFButton: React.FC<PDFButtonProps> = ({ rows, classroomName }) => {
-  const isDisabled = !rows || rows.length === 0;
-  
+const PDFButton: React.FC<PDFButtonProps> = ({ getData }) => {
+  const [pdfDoc, setPdfDoc] = React.useState<React.ReactElement<DocumentProps> | null>(null);
+
+  const handleClick = () => {
+    const { rows, classroomName } = getData();
+    if (!rows || rows.length === 0) {
+      setPdfDoc(<EmptyDocument />);
+    } else {
+      setPdfDoc(<TimetablePDF rows={rows} classroomName={classroomName} />);
+    }
+  };
+
   return (
     <div className="text-center mt-4">
-      <PDFDownloadLink
-        document={rows.length > 0 ? <TimetablePDF rows={rows} classroomName={classroomName} /> : <EmptyDocument />}
-        fileName="timetable.pdf"
-      >
-        {({ loading }) => (
-          <button
-            className={`px-4 py-2 rounded text-white ${
-              isDisabled 
-                ? 'bg-gray-400 cursor-not-allowed opacity-50' 
-                : 'bg-green-500 hover:bg-green-600'
-            }`}
-            disabled={isDisabled}
-          >
-            {loading ? '生成中...' : 'PDFをダウンロード'}
-          </button>
-        )}
-      </PDFDownloadLink>
+      {pdfDoc ? (
+        <PDFDownloadLink document={pdfDoc} fileName="timetable.pdf">
+          {({ loading, error }) => {
+            if (error) {
+              console.error('PDF生成エラー:', error);
+              return (
+                <button
+                  className="px-4 py-2 rounded text-white bg-red-500 cursor-not-allowed"
+                  disabled
+                >
+                  PDF生成エラー
+                </button>
+              );
+            }
+            return (
+              <button
+                className={`px-4 py-2 rounded text-white ${
+                  loading ? 'bg-gray-400 cursor-not-allowed opacity-50' : 'bg-green-500 hover:bg-green-600'
+                }`}
+                disabled={loading}
+              >
+                {loading ? '生成中...' : 'PDFをダウンロード'}
+              </button>
+            );
+          }}
+        </PDFDownloadLink>
+      ) : (
+        <button
+          className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600"
+          onClick={handleClick}
+        >
+          PDFを作成
+        </button>
+      )}
     </div>
   );
 };
