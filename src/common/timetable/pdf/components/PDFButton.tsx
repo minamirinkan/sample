@@ -560,16 +560,33 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
   );
 };
 
-const PDFButton: React.FC<PDFButtonProps> = ({ getData }) => {
+const PDFButton = React.forwardRef<
+  { updatePDFData: () => void; resetPDFData: () => void },
+  PDFButtonProps
+>(({ getData }, ref) => {
   const [pdfDoc, setPdfDoc] = React.useState<React.ReactElement<DocumentProps> | null>(null);
 
-  const handleClick = () => {
+  const updatePDFData = React.useCallback(() => {
     const { rows, classroomName } = getData();
     if (!rows || rows.length === 0) {
       setPdfDoc(<EmptyDocument />);
     } else {
       setPdfDoc(<TimetablePDF rows={rows} classroomName={classroomName} />);
     }
+  }, [getData]);
+
+  const resetPDFData = React.useCallback(() => {
+    setPdfDoc(null);
+  }, []);
+
+  // refを通じて親コンポーネントから関数を呼び出せるようにする
+  React.useImperativeHandle(ref, () => ({
+    updatePDFData,
+    resetPDFData
+  }), [updatePDFData, resetPDFData]);
+
+  const handleClick = () => {
+    updatePDFData();
   };
 
   return (
@@ -610,6 +627,8 @@ const PDFButton: React.FC<PDFButtonProps> = ({ getData }) => {
       )}
     </div>
   );
-};
+});
+
+PDFButton.displayName = 'PDFButton';
 
 export default PDFButton;
