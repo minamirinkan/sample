@@ -13,9 +13,9 @@ export default function TimetableRow({
   const isFixedRow = ['未定', '振替', '欠席'].includes(row.status);
   const { classroom } = useAdminData();
   const MANAGER_CODE = 't0470000';
-  console.log('classroom.classroom.fullname',classroom.classroom.fullname)
+  console.log('classroom',classroom)
   const teacherOptions = [
-    ...(classroom.classroom.fullname
+    ...(classroom?.name
       ? [{
         code: MANAGER_CODE,
         fullname: classroom.classroom.fullname,
@@ -31,7 +31,7 @@ export default function TimetableRow({
 
     // 教室長が選ばれたときの特別処理
     if (selectedCode === MANAGER_CODE) {
-      const updatedTeacher = classroom.classroom.fullname
+      const updatedTeacher = classroom?.name
         ? { code: MANAGER_CODE, name: classroom.classroom.fullname }
         : null;
       onChange(rowIndex, { ...row, teacher: updatedTeacher });
@@ -40,7 +40,7 @@ export default function TimetableRow({
 
     const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
     const updatedTeacher = teacherObj
-      ? { code: teacherObj.code, fullname: teacherObj.fullname }
+      ? { code: teacherObj.code, name: teacherObj.fullname }
       : null;
 
     onChange(rowIndex, { ...row, teacher: updatedTeacher });

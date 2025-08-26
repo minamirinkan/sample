@@ -3,8 +3,8 @@
 import { Student, RowStudent } from './student';
 
 export type Teacher = {
-  code?: string;
-  fullname?: string;
+  code: string;
+  fullname: string;
 };
 
 export type RowData = {

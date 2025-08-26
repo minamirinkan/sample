@@ -1,6 +1,4 @@
 // types/date.ts
-import { Teacher } from './timetablerow'
-
 export type SelectedDate = {
     year: number;
     month: number;
@@ -28,7 +26,7 @@ export type DateInfo = {
   }
   
   export interface TimetableRow {
-    teacher: Teacher | null;
+    teacher: { code: string; name: string } | null;
     periods: TimetableStudent[][];
     status: string;
   }
