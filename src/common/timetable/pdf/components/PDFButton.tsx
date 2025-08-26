@@ -397,35 +397,61 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
 
   // Student型またはRowStudent型の生徒データを安全に処理する関数
   const getStudentDisplayName = (student: Student | RowStudent | any): string => {
-  try {
-    if (!student) return '名前不明';
+    try {
+      if (!student) return '名前不明';
 
-    // TimetableStudent型のnameプロパティを最優先で確認
-    if (student.name && typeof student.name === 'string' && student.name.trim()) {
-      return student.name.trim();
+      // TimetableStudent型のnameプロパティを最優先で確認
+      if (student.name && typeof student.name === 'string' && student.name.trim()) {
+        return student.name.trim();
+      }
+
+      // Student/RowStudent型のfirstName, lastNameを確認
+      const firstName = student.firstName || '';
+      const lastName = student.lastName || '';
+
+      if (firstName || lastName) {
+        const fullName = `${lastName} ${firstName}`.trim();
+        if (fullName) return fullName;
+      }
+
+      // fullname のフォールバック
+      if (student.fullname && typeof student.fullname === 'string' && student.fullname.trim()) {
+        return student.fullname.trim();
+      }
+
+      return '名前不明';
+    } catch (error) {
+      console.error('Student name processing error:', error, student);
+      return '名前エラー';
     }
+  };
 
-    // Student/RowStudent型のfirstName, lastNameを確認
-    const firstName = student.firstName || '';
-    const lastName = student.lastName || '';
-
-    if (firstName || lastName) {
-      const fullName = `${lastName} ${firstName}`.trim();
-      if (fullName) return fullName;
+  // 講師名を安全に取得する関数を追加
+  const getTeacherDisplayName = (row: RowData): string => {
+    try {
+      if (!row.teacher) return '―';
+      
+      // fullnameがあればそれを使用
+      if (row.teacher.fullname && typeof row.teacher.fullname === 'string' && row.teacher.fullname.trim()) {
+        return row.teacher.fullname.trim();
+      }
+      
+      // lastNameがあればそれを使用（データベースからの場合）
+      if ((row.teacher as any).lastName && typeof (row.teacher as any).lastName === 'string' && (row.teacher as any).lastName.trim()) {
+        return (row.teacher as any).lastName.trim();
+      }
+      
+      // nameプロパティがあればそれを使用
+      if ((row.teacher as any).name && typeof (row.teacher as any).name === 'string' && (row.teacher as any).name.trim()) {
+        return (row.teacher as any).name.trim();
+      }
+      
+      return '講師名不明';
+    } catch (error) {
+      console.error('Teacher name processing error:', error, row.teacher);
+      return '講師名エラー';
     }
-
-    // fullname のフォールバック
-    if (student.fullname && typeof student.fullname === 'string' && student.fullname.trim()) {
-      return student.fullname.trim();
-    }
-
-    return '名前不明';
-  } catch (error) {
-    console.error('Student name processing error:', error, student);
-    return '名前エラー';
-  }
-};
-
+  };
 
   const renderStudentData = (studentsData: (Student | RowStudent)[], row: RowData) => {
     // 安全な処理を追加
@@ -469,7 +495,7 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
           </View>
 
           <View style={[styles.studentInfoSection_for_teacher, styles.teacherSection]}>
-            <Text style={styles.teacherValue}>{String(row.teacher?.fullname ?? '―')}</Text>
+            <Text style={styles.teacherValue}>{getTeacherDisplayName(row)}</Text>
           </View>
         </View>
         <View style={styles.longBottomLine} />
