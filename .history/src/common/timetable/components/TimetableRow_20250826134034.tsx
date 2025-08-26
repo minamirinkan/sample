@@ -1,6 +1,5 @@
 import TimetableCell from './TimetableCell';
 import { TimetableRowProps } from '../../../contexts/types/timetablerow';
-import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
 export default function TimetableRow({
   rowIndex,
@@ -11,36 +10,15 @@ export default function TimetableRow({
 }: TimetableRowProps) {
   // statusに基づいて振替・欠席・未定などの固定行かどうかを判断
   const isFixedRow = ['未定', '振替', '欠席'].includes(row.status);
-  const { classroom } = useAdminData();
-  const MANAGER_CODE = 't0470000';
-  console.log('classroom.classroom.fullname',classroom.classroom.fullname)
-  const teacherOptions = [
-    ...(classroom.classroom.fullname
-      ? [{
-        code: MANAGER_CODE,
-        fullname: classroom.classroom.fullname,
-      }]
-      : []),
-    ...allTeachers,
-  ].filter((opt, idx, arr) =>
-    idx === arr.findIndex(o => o.code === opt.code)
-  );
 
   const handleTeacherChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCode = e.target.value;
-
-    // 教室長が選ばれたときの特別処理
-    if (selectedCode === MANAGER_CODE) {
-      const updatedTeacher = classroom.classroom.fullname
-        ? { code: MANAGER_CODE, name: classroom.classroom.fullname }
-        : null;
-      onChange(rowIndex, { ...row, teacher: updatedTeacher });
-      return;
-    }
-
     const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
     const updatedTeacher = teacherObj
-      ? { code: teacherObj.code, fullname: teacherObj.fullname }
+      ? {
+        code: teacherObj.code,
+        name: teacherObj.fullname
+      }
       : null;
 
     onChange(rowIndex, { ...row, teacher: updatedTeacher });
@@ -61,7 +39,7 @@ export default function TimetableRow({
             title="講師を選択"
           >
             <option value="">選択</option>
-            {teacherOptions.map((t) => (
+            {allTeachers.map((t) => (
               <option key={t.code} value={t.code}>
                 {t.fullname}
               </option>

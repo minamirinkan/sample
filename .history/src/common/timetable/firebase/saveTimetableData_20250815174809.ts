@@ -11,7 +11,7 @@ export const saveTimetableData = async (
     selectedDate: SelectedDate,
     classroomCode: string,
     rows: RowData[]
-): Promise<void> => {
+  ): Promise<void> => {
     const isDate = selectedDate.type === 'date';
 
     let docRef;

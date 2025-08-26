@@ -1,6 +1,6 @@
 //pages/TimetablePage.tsx
 import React from 'react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import TimetableTable from './components/TimetableTable';
 import CalendarPopup from './components/CalendarPopup';
@@ -33,7 +33,6 @@ function toTimetableStudent(student: any): TimetableStudent {
     status: student.status ?? '予定',
   };
 }
-
 export default function TimetablePage() {
   const { userData } = useAuth();
   useEffect(() => {
@@ -66,8 +65,6 @@ export default function TimetablePage() {
   const [classroomName, setClassroomName] = useState('');
   const [periodLabels, setPeriodLabels] = useState<string[]>([]);
 
-  // PDFButton用のrefを追加
-  const pdfButtonRef = useRef<{ updatePDFData: () => void; resetPDFData: () => void } | null>(null);
 
   // 追加: モーダル開閉と処理中フラグ
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -114,13 +111,6 @@ export default function TimetablePage() {
   useEffect(() => {
     loadTimetableData();
   }, [loadTimetableData]);
-
-  // rowsが変更されるたびにPDFのデータをリセット
-  useEffect(() => {
-    if (pdfButtonRef.current) {
-      pdfButtonRef.current.resetPDFData();
-    }
-  }, [rows, classroomName]);
 
   useEffect(() => {
     const handler = (e: CustomEvent<RowData[]>) => {
@@ -274,7 +264,6 @@ export default function TimetablePage() {
       date: info.date ?? 1, // fallback 例
     });
   };
-
   return (
     <div className="p-6">
       <div className="flex items-center justify-center mb-4 space-x-4">

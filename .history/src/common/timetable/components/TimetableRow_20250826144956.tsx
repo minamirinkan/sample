@@ -40,7 +40,7 @@ export default function TimetableRow({
 
     const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
     const updatedTeacher = teacherObj
-      ? { code: teacherObj.code, fullname: teacherObj.fullname }
+      ? { code: teacherObj.code, name: teacherObj.fullname }
       : null;
 
     onChange(rowIndex, { ...row, teacher: updatedTeacher });
