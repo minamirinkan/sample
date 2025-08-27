@@ -6,6 +6,7 @@ import StudentAttendanceTab from './Tabs/StudentAttendanceTab'
 import StudentCourseTable from './Tabs/StudentCourseTable';
 import { Student } from '../../../contexts/types/student';
 import { Customer } from '../../../contexts/types/customer';
+import StudentGrades from './Tabs/StudentGrades';
 
 type StudentDetailProps = {
     student: Student;
@@ -14,7 +15,7 @@ type StudentDetailProps = {
     onBack: () => void;
 };
 
-const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報'];
+const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報', '成績管理'];
 
 const StudentDetail: React.FC<StudentDetailProps> = ({ student, customer, classroomCode, onBack }) => {
     console.log("✅ StudentDetail 受け取った student:", student);
@@ -95,6 +96,16 @@ const StudentDetail: React.FC<StudentDetailProps> = ({ student, customer, classr
             case '請求情報':
                 return (
                     <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
+                );
+            case '成績管理':
+                return (
+                    <div className="text-gray-500 italic">
+                        < StudentGrades
+                            studentId={formData.id}
+                            studentName={`${formData?.lastName ?? ''} ${formData?.firstName ?? ''}`}
+                            classroomCode={formData.classroomCode} // これが student データに含まれていれば
+                        />
+                        </div>
                 );
             default:
                 return null;
