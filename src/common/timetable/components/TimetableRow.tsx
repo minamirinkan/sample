@@ -13,7 +13,15 @@ export default function TimetableRow({
   const isFixedRow = ['未定', '振替', '欠席'].includes(row.status);
   const { classroom } = useAdminData();
   const MANAGER_CODE = 't0470000';
-  console.log('classroom.classroom.fullname',classroom.classroom.fullname)
+  if (!classroom || !classroom.classroom) {
+    return (
+      <tr>
+        <td colSpan={row.periods.length + 1} className="text-center text-gray-500">
+          Loading...
+        </td>
+      </tr>
+    );
+  }
   const teacherOptions = [
     ...(classroom.classroom.fullname
       ? [{
