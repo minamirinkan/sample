@@ -14,18 +14,18 @@ import { useAdminData } from '../../contexts/providers/AdminDataProvider';
 import { Student } from '@/contexts/types/student';
 import { DuplicateInfo } from '@/contexts/types/timetable';
 import { RowData } from '@/contexts/types/timetablerow';
-import { DateInfo, TimetableRow, TimetableStudent } from '@/contexts/types/data';
+import { TimetableRow, TimetableStudent } from '@/contexts/types/data';
 
 function toTimetableStudent(student: any): TimetableStudent {
   // firstName と lastName から fullname を構築
   const firstName = student.firstName || '';
   const lastName = student.lastName || '';
-  const fullName = `${lastName} ${firstName}`.trim() || student.name || '';
+  const fullName = `${lastName} ${firstName}`.trim() || student?.fullname || '';
 
   return {
     studentId: student.studentId ?? '',
     grade: student.grade ?? '',
-    name: fullName,  // 修正: firstNameとlastNameから構築した名前を使用
+    name: fullName ?? '',  // 修正: firstNameとlastNameから構築した名前を使用
     seat: student.seat ?? '',
     subject: student.subject ?? '',
     classType: student.classType ?? '',
@@ -36,28 +36,26 @@ function toTimetableStudent(student: any): TimetableStudent {
 
 export default function TimetablePage() {
   const { userData } = useAuth();
-  useEffect(() => {
-    if (userData) {
-      console.log('userData:', userData);
-    } else {
-      console.log('userData is undefined or not loaded yet');
-    }
-  }, [userData]);
   const { classroom } = useAdminData();
-  useEffect(() => {
-    console.log('classroom.name:', classroom.classroom.name);
-  }, [classroom]);
-  useEffect(() => {
-    console.log('classroom:', classroom);
-  }, [classroom]);
-  const today = new Date();
 
-  const [selectedDate, setSelectedDate] = useState<DateInfo>({
-    year: today.getFullYear(),
-    month: today.getMonth() + 1,
-    date: today.getDate(),
-    weekday: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'][today.getDay()],
-    type: 'date',
+  // URL から日付を初期化
+  const getInitialDate = (): Date => {
+    const params = new URLSearchParams(window.location.search);
+    const dateParam = params.get('date'); // 'YYYY-MM-DD'
+    if (dateParam) {
+      const [year, month, day] = dateParam.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+    return new Date();
+  };
+
+  const initialDate = getInitialDate();
+  const [selectedDate, setSelectedDate] = useState({
+    year: initialDate.getFullYear(),
+    month: initialDate.getMonth() + 1,
+    date: initialDate.getDate(),
+    weekday: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'][initialDate.getDay()],
+    type: 'date' as 'date' | 'weekday'
   });
 
   const [rows, setRows] = useState<RowData[]>([
@@ -132,26 +130,37 @@ export default function TimetablePage() {
 
   const [confirmedDates, setConfirmedDates] = useState<string[]>([]);
 
+  useEffect(() => { loadTimetableData(); }, [loadTimetableData]);
+
+  // 確定済み日付取得
   useEffect(() => {
     const loadConfirmedDates = async () => {
       if (!userData?.classroomCode) return;
       const dates = await fetchConfirmedAttendanceDatesFromDailySchedules(userData.classroomCode);
       setConfirmedDates(dates);
     };
-
     loadConfirmedDates();
   }, [userData?.classroomCode]);
+
+  // 日付変更時に URL を更新
+  const updateURLDate = (date: { year: number; month: number; date: number }) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('date', `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.date).padStart(2, '0')}`);
+    window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+  };
 
   const changeDateBy = (days: number) => {
     const date = new Date(selectedDate.year, selectedDate.month - 1, selectedDate.date);
     date.setDate(date.getDate() + days);
-    setSelectedDate({
+    const newDate = {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       date: date.getDate(),
       weekday: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'][date.getDay()],
-      type: 'date'
-    });
+      type: 'date' as 'date' | 'weekday'
+    };
+    setSelectedDate(newDate);
+    updateURLDate(newDate);
   };
 
   const checkDuplicateStudentsPerPeriod = (rows: RowData[]): DuplicateInfo[] => {
@@ -202,8 +211,8 @@ export default function TimetablePage() {
     const cleanedRows: TimetableRow[] = rows.map(row => ({
       status: row.status || '予定',
       teacher: row.teacher
-        ? { code: row.teacher.code, name: row.teacher.fullname } // code がなければ空文字でもOK
-        : null,
+        ? { code: row.teacher.code ?? '', name: row.teacher.fullname ?? '' }
+        : { code: '', name: '' },
       periods: row.periods.map(period =>
         period.map(toTimetableStudent)
       ),
@@ -262,24 +271,20 @@ export default function TimetablePage() {
     ]);
   };
 
-  const handleDateSelect = (info: {
-    type: 'date' | 'weekday';
-    year: number;
-    month: number;
-    date?: number;
-    weekday: string;
-  }) => {
-    setSelectedDate({
+  const handleDateSelect = (info: { type: 'date' | 'weekday'; year: number; month: number; date?: number; weekday: string }) => {
+    const newDate = {
       ...info,
-      date: info.date ?? 1, // fallback 例
-    });
+      date: info.date ?? 1
+    };
+    setSelectedDate(newDate);
+    updateURLDate(newDate);
   };
 
   return (
     <div className="p-6">
       <div className="flex items-center justify-center mb-4 space-x-4">
         <h1 className="text-2xl font-bold flex items-center space-x-2">
-          <span>時間割（{classroom.classroom.name || '教室名取得中...'}）</span>
+          <span>時間割（{classroom?.classroom?.name ?? '教室名取得中...'}）</span>
           <span
             className={`text-sm px-2 py-1 rounded-full font-medium ${isSaved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
               }`}
