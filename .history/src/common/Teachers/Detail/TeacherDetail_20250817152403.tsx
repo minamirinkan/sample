@@ -1,66 +1,47 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
+import React, { useState, useCallback } from 'react';
+// Zodで定義されたスキーマと型をインポート
 import type { Teacher } from '@/schemas'; // パスはプロジェクトに合わせてください
 import TeacherInfoSection from './tabs/TeacherInfoSection';
 import ActionButtons from '../../../components/ActionButtons';
 
+/**
+ * Propsの型定義
+ */
+interface TeacherDetailProps {
+    // 表示対象の教師データ
+    teacher: Teacher;
+    // 「戻る」ボタンが押されたときのコールバック
+    onBack: () => void;
+    // データの保存が要求されたときのコールバック
+    onSave: (updatedTeacher: Teacher) => void;
+    // データの削除が要求されたときのコールバック
+    // ★★★★★ 修正点 ★★★★★
+    onDelete: (teacherId: string) => void; // teacher.idがstringなので、stringを受け取るように修正
+}
+
 const TABS = ['基本情報', '担当情報', 'スケジュール', '支払情報'];
 
-const TeacherDetail: React.FC = () => {
-    const { code } = useParams<{ code: string }>();
-    const navigate = useNavigate();
-    const [teacher, setTeacher] = useState<Teacher | null>(null);
+const TeacherDetail: React.FC<TeacherDetailProps> = ({ teacher, onBack, onSave, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState<Teacher | null>(null);
+    const [formData, setFormData] = useState<Teacher>(teacher);
     const [activeTab, setActiveTab] = useState('基本情報');
-    const [loading, setLoading] = useState(true);
-    const [originalData, setOriginalData] = useState<Teacher | null>(null);
 
-    console.log('code', code)
-
-    useEffect(() => {
-        if (!code) return;
-
-        const fetchTeacherByCode = async () => {
-            setLoading(true);
-            const db = getFirestore();
-            const teachersRef = collection(db, 'teachers');
-
-            // code フィールドで検索
-            const q = query(teachersRef, where('code', '==', code));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                console.warn(`教師コード "${code}" のドキュメントは見つかりませんでした`);
-                setTeacher(null);
-                setFormData(null);
-                setOriginalData(null);
-                setLoading(false);
-                return;
-            }
-
-            // 先頭のドキュメントを取得
-            const teacherDoc = querySnapshot.docs[0];
-            const teacherData = { id: teacherDoc.id, ...(teacherDoc.data() as Teacher) };
-
-            setTeacher(teacherData);
-            setFormData(teacherData);
-            setOriginalData(teacherData);
-            setLoading(false);
-        };
-
-        fetchTeacherByCode();
-    }, [code]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => prev ? { ...prev, [name]: value } : prev);
-    };
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+            const { name, value } = e.target;
+            setFormData((prev: Teacher) => ({
+                ...prev,
+                [name]: value,
+            }));
+        },
+        []
+    );
 
     const handleSave = useCallback(() => {
+        // ここでZodを使ったバリデーションを入れるのが理想的
+        onSave(formData);
         setIsEditing(false);
-    }, [formData]);
+    }, [formData, onSave]);
 
     const handleCancel = useCallback(() => {
         setFormData(teacher);
@@ -68,28 +49,22 @@ const TeacherDetail: React.FC = () => {
     }, [teacher]);
 
     const handleDelete = useCallback(() => {
-        if (window.confirm(`「${teacher?.fullname}」のデータを本当に削除しますか？`)) {
+        if (window.confirm(`「${teacher.fullname}」のデータを本当に削除しますか？`)) {
             // teacher.id は string なので、エラーなく呼び出せる
-            console.log('削除ボタンが押されました');
+            onDelete(teacher.code);
         }
-    }, [teacher]);
-
-    const onBack = () => navigate(-1);
+    }, [teacher, onDelete]);
 
     const renderTabContent = () => {
         switch (activeTab) {
             case '基本情報':
                 return (
                     <div className="flex gap-6">
-                        {formData ? (
-                            <TeacherInfoSection
-                                formData={formData}
-                                isEditing={isEditing}
-                                onChange={handleChange}
-                            />
-                        ) : (
-                            <p>読み込み中...</p>
-                        )}
+                        <TeacherInfoSection
+                            formData={formData}
+                            isEditing={isEditing}
+                            onChange={handleChange}
+                        />
                     </div>
                 );
             case '担当情報':

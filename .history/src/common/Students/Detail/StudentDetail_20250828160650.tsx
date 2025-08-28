@@ -8,6 +8,7 @@ import StudentAttendanceTab from './Tabs/StudentAttendanceTab';
 import StudentCourseTable from './Tabs/StudentCourseTable';
 import StudentGrades from './Tabs/StudentGrades';
 import { Student } from '../../../contexts/types/student';
+import { Customer } from '../../../contexts/types/customer';
 import { useCustomerByStudent } from '../../../contexts/hooks/useCustomerByStudent';
 
 const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報', '成績管理'];

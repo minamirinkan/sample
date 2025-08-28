@@ -175,7 +175,7 @@ const StudentRegistrationForm = () => {
                 timestamp: serverTimestamp(),
             });
             alert('登録が完了しました');
-            navigate('/admin/students/new');
+            navigate('/superadmin/students/new');
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({

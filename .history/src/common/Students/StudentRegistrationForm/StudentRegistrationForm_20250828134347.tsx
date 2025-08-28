@@ -19,12 +19,22 @@ import { SchoolLevel } from '../../../contexts/types/schoolData';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
 const StudentRegistrationForm = () => {
-
-    const { user } = useAuth();
-    const currentAdminUid = user?.uid;
-    const { userData, loading } = useAdminData() ?? { userData: null, loading: true };
+    const { userData } = useAdminData();
     const navigate = useNavigate();
+    // ローディング中（データ取得中）
+    if (loading) {
+        return <div className="text-center text-gray-500">読み込み中...</div>;
+    }    
+    // データは取得できたけど存在しなかった場合（エラーハンドリング）
+    if (!userData) {
+        return <div className="text-center text-red-500">ユーザーデータが見つかりません</div>;
+    }
     const classroomCode = userData?.classroomCode ?? '';
+    // classroomCode がまだ取れてない場合もローディング扱い
+    if (!classroomCode) {
+        return <div className="text-center text-gray-500">読み込み中...</div>;
+    }
+
     const classroomName = userData?.name ?? '';
     const initialFormData: Partial<Student> = {
         studentId: '',
@@ -91,6 +101,7 @@ const StudentRegistrationForm = () => {
         ['小学校', '中学校', '高等学校', '通信制'].includes(value);
 
     const [formData, setFormData] = useState(initialFormData);
+    const [loading, setLoading] = useState(true);
     const [lessonType, setLessonType] = React.useState<'regular' | 'nonRegular'>('regular');
     const [courseFormData, setCourseFormData] = useState<SchoolDataItem[]>([]);
 
@@ -122,6 +133,7 @@ const StudentRegistrationForm = () => {
             if (!classroomCode) return;
             const newId = await generateStudentCode(classroomCode);
             setFormData((prev) => ({ ...prev, studentId: newId }));
+            setLoading(false);
         };
         fetchAndSetStudentId();
     }, [classroomCode]);
@@ -129,6 +141,9 @@ const StudentRegistrationForm = () => {
     const handleChange = (field: string, value: string) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
+
+    const { user } = useAuth();
+    const currentAdminUid = user?.uid;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -175,7 +190,7 @@ const StudentRegistrationForm = () => {
                 timestamp: serverTimestamp(),
             });
             alert('登録が完了しました');
-            navigate('/admin/students/new');
+            navigate('/superadmin/students/new');
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
@@ -196,16 +211,7 @@ const StudentRegistrationForm = () => {
         });
     };
 
-    // ローディング中（データ取得中）
-    if (loading) {
-        return <div className="text-center text-gray-500">読み込み中...</div>;
-    }
-    // データは取得できたけど存在しなかった場合（エラーハンドリング）
-    if (!userData) {
-        return <div className="text-center text-red-500">ユーザーデータが見つかりません</div>;
-    }
-    // classroomCode がまだ取れてない場合もローディング扱い
-    if (!classroomCode) {
+    if (!userData || !classroomCode || loading) {
         return <div className="text-center text-gray-500">読み込み中...</div>;
     }
 
