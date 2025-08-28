@@ -40,9 +40,9 @@ const TeacherList: React.FC<TeacherListProps> = ({ onSelectTeacher }) => {
                         onClick={() => onSelectTeacher(teacher)}
                     >
                         <div>
-                            <p className="text-lg font-semibold text-gray-900">{teacher.fullname}</p>
+                            <p className="text-lg font-semibold text-gray-900">{teacher.name}</p>
                             <p className="text-sm text-gray-600">
-                                {teacher.lastNameKana} {teacher.firstNameKana}
+                                {teacher.kanalast} {teacher.kanafirst}
                             </p>
                         </div>
                         <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import type { Teacher } from '@/schemas'; // パスはプロジェクトに合わせてください
 import TeacherInfoSection from './tabs/TeacherInfoSection';
 import ActionButtons from '../../../components/ActionButtons';
@@ -20,43 +20,34 @@ const TeacherDetail: React.FC = () => {
     console.log('code', code)
 
     useEffect(() => {
-        if (!code) return;
-
-        const fetchTeacherByCode = async () => {
-            setLoading(true);
-            const db = getFirestore();
-            const teachersRef = collection(db, 'teachers');
-
-            // code フィールドで検索
-            const q = query(teachersRef, where('code', '==', code));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                console.warn(`教師コード "${code}" のドキュメントは見つかりませんでした`);
-                setTeacher(null);
-                setFormData(null);
-                setOriginalData(null);
+            if (!code) return;
+    
+            const fetchData = async () => {
+                setLoading(true);
+                const db = getFirestore();
+    
+                // student を取得
+                const teacherRef = doc(db, 'teachers', code);
+                const teacherSnap = await getDoc(teacherRef);
+                if (!teacherSnap.exists()) {
+                    setTeacher(null);
+                    setLoading(false);
+                    return;
+                }
+                const teacherData = { id: teacherSnap.id, ...(teacherSnap.data() as Teacher) };
+                setTeacher(teacherData);
+                setFormData(teacherData);
+                setOriginalData(teacherData);
                 setLoading(false);
-                return;
-            }
-
-            // 先頭のドキュメントを取得
-            const teacherDoc = querySnapshot.docs[0];
-            const teacherData = { id: teacherDoc.id, ...(teacherDoc.data() as Teacher) };
-
-            setTeacher(teacherData);
-            setFormData(teacherData);
-            setOriginalData(teacherData);
-            setLoading(false);
-        };
-
-        fetchTeacherByCode();
-    }, [code]);
-
+            };
+    
+            fetchData();
+        }, [code]);
+console.log('formData', formData)
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => prev ? { ...prev, [name]: value } : prev);
-    };
+            const { name, value } = e.target;
+            setFormData(prev => prev ? { ...prev, [name]: value } : prev);
+        };
 
     const handleSave = useCallback(() => {
         setIsEditing(false);

@@ -1,6 +1,5 @@
 import React from 'react';
 import InfoRow from '../components/InfoRow';
-import { Customer } from '../../../contexts/types/customer';
 
 type GuardianInfoSectionProps = {
     formData: {
@@ -21,14 +20,12 @@ type GuardianInfoSectionProps = {
     };
     isEditing: boolean;
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    customer?: Customer | null;
 };
 
 const GuardianInfoSection: React.FC<GuardianInfoSectionProps> = ({
     formData,
     isEditing,
     onChange,
-    customer,
 }) => (
     <div className="space-y-4 w-1/2 pl-6">
         {/* 保護者情報 */}

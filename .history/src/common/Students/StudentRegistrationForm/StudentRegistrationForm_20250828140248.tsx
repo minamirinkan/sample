@@ -22,7 +22,7 @@ const StudentRegistrationForm = () => {
 
     const { user } = useAuth();
     const currentAdminUid = user?.uid;
-    const { userData, loading } = useAdminData() ?? { userData: null, loading: true };
+    const { userData, loading } = useAdminData();
     const navigate = useNavigate();
     const classroomCode = userData?.classroomCode ?? '';
     const classroomName = userData?.name ?? '';
@@ -175,7 +175,7 @@ const StudentRegistrationForm = () => {
                 timestamp: serverTimestamp(),
             });
             alert('登録が完了しました');
-            navigate('/admin/students/new');
+            navigate('/superadmin/students/new');
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
@@ -199,7 +199,7 @@ const StudentRegistrationForm = () => {
     // ローディング中（データ取得中）
     if (loading) {
         return <div className="text-center text-gray-500">読み込み中...</div>;
-    }
+    }    
     // データは取得できたけど存在しなかった場合（エラーハンドリング）
     if (!userData) {
         return <div className="text-center text-red-500">ユーザーデータが見つかりません</div>;

@@ -8,6 +8,7 @@ import StudentAttendanceTab from './Tabs/StudentAttendanceTab';
 import StudentCourseTable from './Tabs/StudentCourseTable';
 import StudentGrades from './Tabs/StudentGrades';
 import { Student } from '../../../contexts/types/student';
+import { Customer } from '../../../contexts/types/customer';
 import { useCustomerByStudent } from '../../../contexts/hooks/useCustomerByStudent';
 
 const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報', '成績管理'];
@@ -16,7 +17,7 @@ const StudentDetail: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
     const navigate = useNavigate();
     const [student, setStudent] = useState<Student | null>(null);
-    const { customer, loading: customerLoading, error } = useCustomerByStudent(studentId ?? null);
+    const { customer, loading: customerLoading, error } = useCustomerByStudent(studentId);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('基本情報');
     const [isEditing, setIsEditing] = useState(false);
@@ -83,18 +84,19 @@ const StudentDetail: React.FC = () => {
             case '基本情報':
                 return (
                     <div className="flex gap-6">
-                        <StudentInfoSection formData={formData} isEditing={isEditing} onChange={handleChange} />
+                        <StudentInfoSection formData={formData} customer={customer} isEditing={isEditing} onChange={handleChange} />
                         <GuardianInfoSection formData={formData} customer={customer} isEditing={isEditing} onChange={handleChange} />
                     </div>
                 );
             case '受講情報':
-                return <StudentCourseTable studentId={formData.id ?? ""} />;
+                return <StudentCourseTable studentId={formData.id ?? ""} customer={customer} />;
             case '授業情報':
                 return (
                     <StudentAttendanceTab
                         studentId={formData.id}
                         studentName={`${formData.lastName ?? ''} ${formData.firstName ?? ''}`}
                         classroomCode={formData.classroomCode}
+                        customer={customer}
                     />
                 );
             case '成績管理':
@@ -103,6 +105,7 @@ const StudentDetail: React.FC = () => {
                         studentId={formData.id}
                         studentName={`${formData.lastName ?? ''} ${formData.firstName ?? ''}`}
                         classroomCode={formData.classroomCode}
+                        customer={customer}
                     />
                 );
             default:

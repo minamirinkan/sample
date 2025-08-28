@@ -14,8 +14,6 @@ import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalenda
 import StudentChatManager from '../guardian/Dashboard/components/StudentChatManager';
 import StudentRegistrationForm from "../common/Students/StudentRegistrationForm/StudentRegistrationForm";
 import StudentDetail from "../common/Students/Detail/StudentDetail";
-import TeacherRegistrationForm from "../common/Teachers/RegistrationForm/TeacherRegistrationForm";
-import TeacherDetail from "../common/Teachers/Detail/TeacherDetail";
 
 export const adminRoutes = (
     <>
@@ -35,7 +33,5 @@ export const adminRoutes = (
         <Route path="students/new" element={<StudentRegistrationForm />} />
         <Route path="students/:studentId" element={<StudentDetail />} />
         <Route path="teachers" element={<SuperAdminTeachers />} />
-        <Route path="teachers/new" element={<TeacherRegistrationForm />} />
-        <Route path="teachers/:code" element={<TeacherDetail />} />
     </>
 );

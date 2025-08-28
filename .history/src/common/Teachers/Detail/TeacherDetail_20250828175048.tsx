@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getFirestore, query, collection, where, getDocs } from 'firebase/firestore';
 import type { Teacher } from '@/schemas'; // パスはプロジェクトに合わせてください
 import TeacherInfoSection from './tabs/TeacherInfoSection';
 import ActionButtons from '../../../components/ActionButtons';
@@ -14,49 +13,13 @@ const TeacherDetail: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<Teacher | null>(null);
     const [activeTab, setActiveTab] = useState('基本情報');
-    const [loading, setLoading] = useState(true);
-    const [originalData, setOriginalData] = useState<Teacher | null>(null);
 
-    console.log('code', code)
-
-    useEffect(() => {
-        if (!code) return;
-
-        const fetchTeacherByCode = async () => {
-            setLoading(true);
-            const db = getFirestore();
-            const teachersRef = collection(db, 'teachers');
-
-            // code フィールドで検索
-            const q = query(teachersRef, where('code', '==', code));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                console.warn(`教師コード "${code}" のドキュメントは見つかりませんでした`);
-                setTeacher(null);
-                setFormData(null);
-                setOriginalData(null);
-                setLoading(false);
-                return;
-            }
-
-            // 先頭のドキュメントを取得
-            const teacherDoc = querySnapshot.docs[0];
-            const teacherData = { id: teacherDoc.id, ...(teacherDoc.data() as Teacher) };
-
-            setTeacher(teacherData);
-            setFormData(teacherData);
-            setOriginalData(teacherData);
-            setLoading(false);
-        };
-
-        fetchTeacherByCode();
-    }, [code]);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => prev ? { ...prev, [name]: value } : prev);
-    };
+    const handleChange = useCallback(() => {
+        if (teacher) setFormData(teacher);
+        setIsEditing(false);
+    },
+        [teacher]
+    );
 
     const handleSave = useCallback(() => {
         setIsEditing(false);

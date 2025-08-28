@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
 import { registerTeacher } from './firebase/saveTeacher';
 import { getAuth } from 'firebase/auth';
 import { useGenerateTeacherCode } from './components/teacherCodeGenerator';
@@ -9,6 +8,15 @@ import ContactInfoSection from './components/ContactInfoSection';
 import EmploymentInfoSection from './components/EmploymentInfoSection';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 import { TeacherSchema, Teacher } from '../../../schemas';
+
+// ★ 修正: 不要なインポートを削除
+// import { EmploymentFormData } from './components/EmploymentInfoSection';
+
+// Propsの型定義
+interface TeacherRegistrationFormProps {
+  onCancel?: () => void;
+  onSubmitSuccess?: () => void;
+}
 
 // formDataの型定義
 const PartialTeacherSchema = TeacherSchema.pick({
@@ -39,7 +47,7 @@ const initialFormData: FormData = {
   lastNameKana: '',
   firstNameKana: '',
   fullnameKana: '',
-  gender: '男性',           // enum の初期値を設定
+  gender: '男',           // enum の初期値を設定
   university: '',
   universityGrade: '',
   phone: '',
@@ -49,8 +57,7 @@ const initialFormData: FormData = {
   transportation: 0,      // number 型なので0で初期化
 };
 
-const TeacherRegistrationForm: React.FC = () => {
-  const navigate = useNavigate();
+const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCancel, onSubmitSuccess }) => {
   const { classroom } = useAdminData();
   const classroomCode = classroom?.classroom?.code ?? '';
 
@@ -121,7 +128,10 @@ const TeacherRegistrationForm: React.FC = () => {
 
       if (success) {
         alert('講師登録が完了しました');
-        navigate("/admin/teachers/new");
+        if (onSubmitSuccess) onSubmitSuccess();
+
+        const newCode = await generateTeacherCode();
+        setFormData({ ...initialFormData, code: newCode });
       } else {
         alert('講師登録に失敗しました。');
       }
@@ -155,6 +165,10 @@ const TeacherRegistrationForm: React.FC = () => {
               setFormData((prev) => ({ ...prev, code: newCode }));
             };
             setup();
+
+            if (typeof onCancel === 'function') {
+              onCancel();
+            }
           }}
           className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
         >

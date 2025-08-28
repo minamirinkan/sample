@@ -22,9 +22,22 @@ const StudentRegistrationForm = () => {
 
     const { user } = useAuth();
     const currentAdminUid = user?.uid;
-    const { userData, loading } = useAdminData() ?? { userData: null, loading: true };
+    const { userData, loading } = useAdminData();
     const navigate = useNavigate();
+    // ローディング中（データ取得中）
+    if (loading) {
+        return <div className="text-center text-gray-500">読み込み中...</div>;
+    }    
+    // データは取得できたけど存在しなかった場合（エラーハンドリング）
+    if (!userData) {
+        return <div className="text-center text-red-500">ユーザーデータが見つかりません</div>;
+    }
     const classroomCode = userData?.classroomCode ?? '';
+    // classroomCode がまだ取れてない場合もローディング扱い
+    if (!classroomCode) {
+        return <div className="text-center text-gray-500">読み込み中...</div>;
+    }
+
     const classroomName = userData?.name ?? '';
     const initialFormData: Partial<Student> = {
         studentId: '',
@@ -175,7 +188,7 @@ const StudentRegistrationForm = () => {
                 timestamp: serverTimestamp(),
             });
             alert('登録が完了しました');
-            navigate('/admin/students/new');
+            navigate('/superadmin/students/new');
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
@@ -195,19 +208,6 @@ const StudentRegistrationForm = () => {
             studentId: newCode,
         });
     };
-
-    // ローディング中（データ取得中）
-    if (loading) {
-        return <div className="text-center text-gray-500">読み込み中...</div>;
-    }
-    // データは取得できたけど存在しなかった場合（エラーハンドリング）
-    if (!userData) {
-        return <div className="text-center text-red-500">ユーザーデータが見つかりません</div>;
-    }
-    // classroomCode がまだ取れてない場合もローディング扱い
-    if (!classroomCode) {
-        return <div className="text-center text-gray-500">読み込み中...</div>;
-    }
 
     return (
         <form onSubmit={handleSubmit} className="max-w-5xl mx-auto p-4 space-y-6 h-adr">
