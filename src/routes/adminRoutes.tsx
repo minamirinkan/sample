@@ -1,5 +1,5 @@
 // routes/adminRoutes.tsx
-import { Route } from "react-router-dom";
+import { Route, Navigate, useParams } from "react-router-dom";
 import AdminProfile from '../common/pages/adminProfile'
 import ToDoContent from "../common/ToDo/ToDoContent";
 import TimetablePage from '../common/timetable/TimetablePage';
@@ -17,6 +17,12 @@ import StudentDetail from "../common/Students/Detail/StudentDetail";
 import TeacherRegistrationForm from "../common/Teachers/RegistrationForm/TeacherRegistrationForm";
 import TeacherDetail from "../common/Teachers/Detail/TeacherDetail";
 
+const RedirectToBasic: React.FC = () => {
+    const { studentId } = useParams<{ studentId: string }>();
+    if (!studentId) return null;
+    return <Navigate to={`/admin/students/${studentId}/basic`} replace />;
+};
+
 export const adminRoutes = (
     <>
         <Route path="dashboard" element={<ToDoContent />} />
@@ -33,7 +39,8 @@ export const adminRoutes = (
         <Route path="chat" element={<StudentChatManager />} />
         <Route path="students" element={<SuperAdminStudents />} />
         <Route path="students/new" element={<StudentRegistrationForm />} />
-        <Route path="students/:studentId" element={<StudentDetail />} />
+        <Route path="students/:studentId" element={<RedirectToBasic />} />
+        <Route path="students/:studentId/:section" element={<StudentDetail />} />
         <Route path="teachers" element={<SuperAdminTeachers />} />
         <Route path="teachers/new" element={<TeacherRegistrationForm />} />
         <Route path="teachers/:code" element={<TeacherDetail />} />

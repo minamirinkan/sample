@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, Navigate } from 'react-router-dom';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import StudentInfoSection from './StudentInfoSection';
 import GuardianInfoSection from './GuardianInfoSection';
@@ -10,15 +10,21 @@ import StudentGrades from './Tabs/StudentGrades';
 import { Student } from '../../../contexts/types/student';
 import { useCustomerByStudent } from '../../../contexts/hooks/useCustomerByStudent';
 
-const TABS = ['基本情報', '在籍情報', '受講情報', '授業情報', '請求情報', '成績管理'];
+const TAB_MAP: Record<string, string> = {
+    '基本情報': 'basic',
+    '在籍情報': 'enrollment',
+    '受講情報': 'course',
+    '授業情報': 'attendance',
+    '成績管理': 'grades',
+    '請求情報': 'bill',
+};
 
 const StudentDetail: React.FC = () => {
-    const { studentId } = useParams<{ studentId: string }>();
+    const { studentId, section } = useParams<{ studentId: string; section: string }>();
     const navigate = useNavigate();
     const [student, setStudent] = useState<Student | null>(null);
     const { customer, loading: customerLoading, error } = useCustomerByStudent(studentId ?? null);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('基本情報');
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<Student | null>(null);
     const [originalData, setOriginalData] = useState<Student | null>(null);
@@ -29,8 +35,6 @@ const StudentDetail: React.FC = () => {
         const fetchData = async () => {
             setLoading(true);
             const db = getFirestore();
-
-            // student を取得
             const studentRef = doc(db, 'students', studentId);
             const studentSnap = await getDoc(studentRef);
             if (!studentSnap.exists()) {
@@ -48,48 +52,40 @@ const StudentDetail: React.FC = () => {
         fetchData();
     }, [studentId]);
 
-    const onBack = () => navigate(-1);
-
     if (loading || customerLoading) return <div className="text-center text-gray-500">読み込み中...</div>;
     if (!student) return <div className="text-center text-red-500">生徒データが見つかりません</div>;
     if (error) return <div className="text-center text-red-500">顧客データの取得に失敗しました</div>;
+    if (!section) {
+        return <Navigate to={`/admin/students/${studentId}/basic`} replace />;
+    }
+    const onBack = () => navigate(-1);
 
-    const handleEditClick = () => {
-        setOriginalData(formData);
-        setIsEditing(true);
-    };
-
+    const handleEditClick = () => setIsEditing(true);
     const handleCancelClick = () => {
         setFormData(originalData);
         setIsEditing(false);
     };
-
-    const handleSaveClick = () => {
-        setIsEditing(false);
-    };
-
+    const handleSaveClick = () => setIsEditing(false);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => prev ? { ...prev, [name]: value } : prev);
     };
-
-    const handleDelete = () => {
-        console.log('削除ボタンが押されました');
-    };
+    const handleDelete = () => console.log('削除ボタンが押されました');
 
     const renderTabContent = () => {
         if (!formData) return null;
-        switch (activeTab) {
-            case '基本情報':
+
+        switch (section) {
+            case 'basic':
                 return (
                     <div className="flex gap-6">
                         <StudentInfoSection formData={formData} isEditing={isEditing} onChange={handleChange} />
                         <GuardianInfoSection formData={formData} customer={customer} isEditing={isEditing} onChange={handleChange} />
                     </div>
                 );
-            case '受講情報':
+            case 'course':
                 return <StudentCourseTable studentId={formData.id ?? ""} />;
-            case '授業情報':
+            case 'attendance':
                 return (
                     <StudentAttendanceTab
                         studentId={formData.id}
@@ -97,7 +93,7 @@ const StudentDetail: React.FC = () => {
                         classroomCode={formData.classroomCode}
                     />
                 );
-            case '成績管理':
+            case 'grades':
                 return (
                     <StudentGrades
                         studentId={formData.id}
@@ -117,23 +113,25 @@ const StudentDetail: React.FC = () => {
                 <span className="text-2xl text-gray-500 font-normal">詳細</span>
             </div>
 
+            {/* タブナビゲーション */}
             <div className="flex gap-3 border-b border-gray-300 mb-6 bg-gray-50 rounded-t">
-                {TABS.map(tab => (
-                    <button
-                        key={tab}
+                {Object.entries(TAB_MAP).map(([label, key]) => (
+                    <Link
+                        key={key}
+                        to={`/admin/students/${studentId}/${key}`}
                         className={`px-5 py-2 text-sm font-semibold border-t-[2px] transition-all duration-200
-                            ${activeTab === tab ? 'border-blue-600 text-blue-700 bg-white' : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-400'}
+                            ${section === key ? 'border-blue-600 text-blue-700 bg-white' : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-400'}
                         `}
-                        onClick={() => setActiveTab(tab)}
-                        aria-selected={activeTab === tab}
+                        aria-selected={section === key}
                         role="tab"
                     >
-                        {tab}
-                    </button>
+                        {label}
+                    </Link>
                 ))}
             </div>
 
-            {activeTab === '基本情報' && (
+            {/* 編集ボタン（基本情報タブのみ表示） */}
+            {section === 'basic' && (
                 <ActionButtons
                     isEditing={isEditing}
                     onBack={onBack}
@@ -146,7 +144,7 @@ const StudentDetail: React.FC = () => {
 
             <div className="mt-4">{renderTabContent()}</div>
 
-            {activeTab === '基本情報' && (
+            {section === 'basic' && (
                 <div className="mt-6">
                     <ActionButtons
                         isEditing={isEditing}

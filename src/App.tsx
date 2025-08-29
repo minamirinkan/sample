@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
 import SuperAdminLogin from './pages/SuperAdminLogin';
 import SuperAdminDashboard from "./Superadmin/Dashboard/SuperAdminDashboard";
-import AdminDashboard from "./admin/AdminDashboard";
 import CustomerDashboard from "./guardian/Dashboard/CustomerDashboard";
 import TeacherDashboard from "./teacher/Dashboard/TeacherDashboard";
 import AdminLogin from './pages/AdminLogin';
@@ -19,8 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import { ClassroomSelectionProvider } from './contexts/ClassroomSelectionContext';
 import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
 import { useAuth } from './contexts/AuthContext';
-import Layout from "./components/Layout";
-import { adminRoutes } from "./routes/adminRoutes";
+import AdminRouteWrapper from "./routes/AdminRouteWrapper";
 
 const App: React.FC = () => {
   const { userData, loading } = useAuth();
@@ -55,16 +53,8 @@ const App: React.FC = () => {
       <Route path="/calendar" element={<CalendarPopup classroomCode={userData?.classroomCode ?? null} />} />
       <Route path="/customer/change-password" element={<ChangePassword />} />
       <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
-      <Route
-        path="/admin/*"
-        element={
-          <ProtectedRoute>
-            <Layout role="admin" />
-          </ProtectedRoute>
-        }
-      >
-        {adminRoutes}
-      </Route>
+      {/* 管理者ルートラッパー */}
+      <Route path="/*" element={<AdminRouteWrapper />} />
     </Routes>
   );
 
@@ -77,15 +67,15 @@ const App: React.FC = () => {
   }
 
   return (
-  <BrowserRouter>
-    <RoleBasedProvider>
-      <ClassroomSelectionProvider>
-        {routes}
-        <ToastContainer position="top-center" className="custom-toast-container" />
-      </ClassroomSelectionProvider>
-    </RoleBasedProvider>
-  </BrowserRouter>
-);
+    <BrowserRouter>
+      <RoleBasedProvider>
+        <ClassroomSelectionProvider>
+          {routes}
+          <ToastContainer position="top-center" className="custom-toast-container" />
+        </ClassroomSelectionProvider>
+      </RoleBasedProvider>
+    </BrowserRouter>
+  );
 };
 
 export default App;
