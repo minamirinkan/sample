@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import AttendanceSubTable from './AttendanceSubTable';
 import useTeachers from '../../../../../contexts/hooks/useTeachers';
 import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';

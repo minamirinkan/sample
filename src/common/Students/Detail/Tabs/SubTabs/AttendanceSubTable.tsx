@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatDate } from '../../../../dateFormatter';
 import { MakeupLesson } from '@/contexts/types/makeupLessons';
-import { Teacher } from '@/contexts/types/teacher';
+import { Teacher } from '@/schemas';
 
 export interface EditValues {
     studentId?: string;
@@ -17,7 +17,7 @@ export interface EditValues {
     teacherCode?: string;
     periodLabel?: string;
     date?: string;
-  }
+}
 
 type Props = {
     classroomCode: string;
@@ -59,7 +59,6 @@ const AttendanceSubTable: React.FC<Props> = ({
     mode,
 }) => {
 
-    
     return (
         <table className="w-full border-collapse border border-gray-300 text-sm">
             <thead>
@@ -85,7 +84,7 @@ const AttendanceSubTable: React.FC<Props> = ({
                                 ? entry.teacher.name
                                 : entry.teacher;
                         const isEditing = editingIndex === idx;
-                        
+
 
                         return (
                             <tr
@@ -134,7 +133,7 @@ const AttendanceSubTable: React.FC<Props> = ({
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
                                         <select
-                                            value={editValues?.periodLabel || entry.periodLabel }
+                                            value={editValues?.periodLabel || entry.periodLabel}
                                             onChange={(e) => handleChange('periodLabel', e.target.value)}
                                         >
                                             {periodOptions.map((p) => (
@@ -144,7 +143,7 @@ const AttendanceSubTable: React.FC<Props> = ({
                                             ))}
                                         </select>
                                     ) : (
-                                        entry.periodLabel                                    )}
+                                        entry.periodLabel)}
                                 </td>
                                 <td className="border px-2 py-1">
                                     {isEditing ? (
