@@ -100,7 +100,7 @@ const StudentDetail: React.FC = () => {
             case '成績管理':
                 return (
                     <StudentGrades
-                        studentId={formData.id}
+                        studentId={formData.id ?? ''}
                         studentName={`${formData.lastName ?? ''} ${formData.firstName ?? ''}`}
                         classroomCode={formData.classroomCode}
                     />
