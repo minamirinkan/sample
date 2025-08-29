@@ -250,6 +250,7 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
                             <td className="border p-1">
                                 <div className="flex flex-col items-center">
                                     <span className="font-semibold">点数</span>
+                                    <span className="font-semibold">-------</span>
                                     <span className="font-semibold">偏差値</span>
                                 </div>
                             </td>
@@ -306,8 +307,10 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
             {/* 1つ目の表 */}
             <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg font-semibold">{studentName} さんの成績管理</h3>
+            </div>
+            <div className="flex justify-between items-center mb-2">
+                <span className="font-semibold text-gray-700">テスト結果</span>
                 <div className="flex items-center space-x-2">
-                    <span className="font-semibold text-gray-700">テスト結果</span>
                     {!isEditing1 ? (
                         <button onClick={() => setIsEditing1(true)} className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">編集</button>
                     ) : (
