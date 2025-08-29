@@ -96,7 +96,7 @@ const StudentDetail: React.FC = () => {
             case 'grades':
                 return (
                     <StudentGrades
-                        studentId={formData.id}
+                        studentId={formData.id ?? ''}
                         studentName={`${formData.lastName ?? ''} ${formData.firstName ?? ''}`}
                         classroomCode={formData.classroomCode}
                     />
