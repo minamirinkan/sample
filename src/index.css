@@ -1,24 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .fc {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  .fc-view-harness, .fc-scrollgrid {
-    width: 100% !important;
-  }
-  
-  /* FullCalendarのボタンを小さく */
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.fc-view-harness,
+.fc-scrollgrid {
+  width: 100% !important;
+}
+
+/* FullCalendarのボタンを小さく */
 .fc .fc-button {
-    font-size: 0.75rem !important;
-    padding: 0.25rem 0.5rem !important;
-  }
-  
-  /* イベント表示のテキストサイズを調整 */
-  .fc-event {
-    font-size: 0.7rem !important;
-    white-space: normal !important;
-    word-break: break-word !important;
-  }
-  
+  font-size: 0.75rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+/* イベント表示のテキストサイズを調整 */
+.fc-event {
+  font-size: 0.7rem !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+/* Chrome, Edge, Safari */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
