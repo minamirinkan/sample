@@ -1,4 +1,4 @@
-// セル選択・色付けをまとめたフック
+// useCalendarSelection.ts
 import { useCallback, useMemo, useState } from "react";
 
 export type CellKey = string; // `${yyyy-mm-dd}|${periodIndex}`
@@ -41,6 +41,10 @@ export function useCalendarSelection(initial?: CellKey[]) {
 
   const clear = useCallback(() => setSelected(new Set()), []);
 
+  const setAll = useCallback((keys: CellKey[]) => {
+    setSelected(new Set(keys));
+  }, []);
+
   const getCellClass = useCallback((key: CellKey): string => {
     if (!isSelected(key)) return "";
     return colorsByCell[key] ?? DEFAULT_SELECTED_COLOR;
@@ -49,7 +53,7 @@ export function useCalendarSelection(initial?: CellKey[]) {
   const selectionList = useMemo(() => Array.from(selected), [selected]);
 
   return {
-    selectionList, isSelected, toggle, remove, clear, getCellClass,
+    selectionList, isSelected, toggle, remove, clear, getCellClass, setAll,
     setColor: (key: CellKey, c: ColorClass) => setColorsByCell(prev => ({ ...prev, [key]: c })),
   } as const;
 }
