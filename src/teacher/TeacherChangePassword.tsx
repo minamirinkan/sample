@@ -6,7 +6,6 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
   updatePassword,
-  signOut,
 } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -23,7 +22,7 @@ const TeacherChangePassword = () => {
 
     if (!user) {
       alert("ログイン情報が見つかりません。再ログインしてください。");
-      navigate("/teacher/login");
+      navigate("/teacher-login");
       return;
     }
 
@@ -34,19 +33,14 @@ const TeacherChangePassword = () => {
 
     setLoading(true);
     try {
-      const user = auth.currentUser;
-
-      // userとuser.emailが存在するかチェック
-      if (!user || !user.email) {
-        alert("ユーザー情報が取得できませんでした。再度ログインしてください。");
-        setLoading(false);
-        return; // 処理を中断
-      }
       // 現在のパスワードで再認証
-      const credential = EmailAuthProvider.credential(
-        user.email,
-        currentPassword
-      );
+      if (!user.email) {
+        alert("メールアドレスが取得できません。再ログインしてください。");
+        setLoading(false);
+        return;
+      }
+
+      const credential = EmailAuthProvider.credential(user.email, currentPassword);
       await reauthenticateWithCredential(user, credential);
 
       // パスワード更新
@@ -59,7 +53,6 @@ const TeacherChangePassword = () => {
       });
 
       alert("パスワードを変更しました。再ログインしてください。");
-      await signOut(auth);
       navigate("/teacher/dashboard");
     } catch (error) {
       // 'error' が FirebaseError かどうかを正しく判定できるようになる
@@ -110,9 +103,8 @@ const TeacherChangePassword = () => {
         />
         <button
           onClick={handleChangePassword}
-          className={`w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-md transition ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-md transition ${loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           disabled={loading}
         >
           {loading ? "変更中..." : "パスワードを変更"}

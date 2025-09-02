@@ -20,7 +20,8 @@ type TestGradesRow = {
     name: string;
     grades: { [subject: string]: number | null };
     deviations: { [subject: string]: number | null };
-    avgDeviation?: number | null; // ← ここを追加
+    avgDeviation?: number | null;
+    totalInput?: number | null;
 };
 
 
@@ -50,6 +51,12 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
     const [originalTestRows3, setOriginalTestRows3] = useState<TestGradesRow[]>([]);
     const [isEditing3, setIsEditing3] = useState(false);
 
+    const initialTestRow: TestGradesRow = {
+        name: "第一回",
+        grades: { "国語": null, "社会": null, "数学": null, "理科": null, "英語": null },
+        deviations: { "国語": null, "社会": null, "数学": null, "理科": null, "英語": null }
+    };
+
     useEffect(() => {
         const fetchGrades = async () => {
             const docRef = doc(db, "studentGrades", studentId);
@@ -63,17 +70,20 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
 
             if (snap.exists()) {
                 const data = snap.data();
+                const loadedRows = data.testRows3 && data.testRows3.length > 0 ? data.testRows3 : [initialTestRow];
                 setGrades1(data.grades1 || emptyGrades);
                 setOriginalGrades1(data.grades1 || emptyGrades);
                 setGrades2(data.grades2 || emptyGrades);
                 setOriginalGrades2(data.grades2 || emptyGrades);
-                setTestRows3(data.testRows3 || testRows3);
-                setOriginalTestRows3(data.testRows3 || testRows3);
+                setTestRows3(loadedRows);
+                setOriginalTestRows3(loadedRows);
             } else {
                 setGrades1(emptyGrades);
                 setOriginalGrades1(emptyGrades);
                 setGrades2(emptyGrades);
                 setOriginalGrades2(emptyGrades);
+                setTestRows3([initialTestRow]);
+                setOriginalTestRows3([initialTestRow]);
             }
         };
         fetchGrades();
@@ -163,8 +173,14 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
         setIsEditing3(false);
         alert("3つ目の表を保存しました！");
     };
-    const handleCancel3 = () => { setTestRows3(originalTestRows3); setIsEditing3(false); };
-
+    const handleCancel3 = () => {
+        if (!originalTestRows3 || originalTestRows3.length === 0) {
+            setTestRows3([initialTestRow]); // 空なら初期行を復元
+        } else {
+            setTestRows3(originalTestRows3);
+        }
+        setIsEditing3(false);
+    };
     // 表描画関数
     const renderTable = (grades: SemesterGrades, isEditing: boolean, handleChange: (sem: string, subj: string, val: string) => void) => (
         <table className="border-collapse text-sm min-w-[700px] mb-6">
@@ -206,26 +222,16 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
         </table>
     );
 
-    const calcDeviationAverage = (row: TestGradesRow) => {
-        const vals = subjects3.map(subj => row.deviations[subj] ?? 0);
-        return (vals.reduce((sum, v) => sum + v, 0) / vals.length).toFixed(1);
-    };
-
     const renderTable3 = () => (
-        <table className="border-collapse text-sm min-w-[700px] mb-6">
+        <table className="border-collapse text-sm min-w-[700px] mb-6 text-center">
             <thead>
                 <tr>
-                    <th className="border p-1" rowSpan={2}>回</th>
-                    <th className="border p-1" rowSpan={2}>種類</th>
-
+                    <th className="border p-1 text-center">種類</th>
+                    <th className="border p-1 text-center">結果</th>
                     {subjects3.map(subj => (
                         <th key={subj} className="border p-1 text-center">{subj}</th>
                     ))}
-                    <th className="border p-1 text-center" rowSpan={2}>5科合計</th>
-                    <th className="border p-1 text-center" rowSpan={2}>5科偏差値平均</th>
-                </tr>
-                <tr>
-                    {subjects3.map(subj => <></>)} {/* 2行目は空に */}
+                    <th className="border p-1 text-center">5科合計</th>
                 </tr>
             </thead>
 
@@ -234,38 +240,49 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
                     const total5 = subjects3.reduce((sum, subj) => sum + (row.grades[subj] ?? 0), 0);
 
                     return (
-                        <tr key={idx}>
-                            <td className="border p-1">
-                                {isEditing3 ? (
-                                    <input
-                                        type="text"
-                                        value={row.name}
-                                        onChange={(e) => handleNameChange3(idx, e.target.value)}
-                                        className="w-20 p-1 border rounded text-center"
-                                    />
-                                ) : row.name}
-                            </td>
+                        <>
+                            {/* 上段行：点数 / 自動計算 */}
+                            <tr key={`row-${idx}-1`}>
+                                {/* 種類列：2行結合 */}
+                                <td className="border p-1 text-center" rowSpan={2}>
+                                    {isEditing3 ? (
+                                        <input
+                                            type="text"
+                                            value={row.name}
+                                            onChange={(e) => handleNameChange3(idx, e.target.value)}
+                                            className="w-20 p-1 border rounded text-center"
+                                        />
+                                    ) : row.name}
+                                </td>
 
-                            {/* 空白列（ラベルなし） */}
-                            <td className="border p-1">
-                                <div className="flex flex-col items-center">
-                                    <span className="font-semibold">点数</span>
-                                    <span className="font-semibold">-------</span>
-                                    <span className="font-semibold">偏差値</span>
-                                </div>
-                            </td>
+                                {/* 結果列：上段は点数 */}
+                                <td className="border p-1 font-semibold text-center">点数</td>
 
-
-                            {subjects3.map(subj => (
-                                <td key={subj} className="border p-1">
-                                    <div className="flex flex-col">
+                                {/* 科目列：上段は点数 input */}
+                                {subjects3.map(subj => (
+                                    <td key={`score-${subj}-${idx}`} className="border p-1 text-center">
                                         <input
                                             type="number"
                                             value={row.grades[subj] ?? ""}
                                             onChange={(e) => handleGradeChange3(idx, subj, e.target.value)}
-                                            className="w-16 p-1 border rounded text-center appearance-none mb-1"
+                                            className="w-16 p-1 border rounded text-center appearance-none"
                                             disabled={!isEditing3}
                                         />
+                                    </td>
+                                ))}
+
+                                {/* 5科合計列：上段は自動計算 */}
+                                <td className="border p-1 font-semibold text-center">{total5}</td>
+                            </tr>
+
+                            {/* 下段行：偏差値 / input */}
+                            <tr key={`row-${idx}-2`}>
+                                {/* 結果列：下段は偏差値 */}
+                                <td className="border p-1 font-semibold text-center">偏差値</td>
+
+                                {/* 科目列：下段は偏差値 input */}
+                                {subjects3.map(subj => (
+                                    <td key={`dev-${subj}-${idx}`} className="border p-1 text-center">
                                         <input
                                             type="number"
                                             value={row.deviations[subj] ?? ""}
@@ -273,32 +290,29 @@ export default function StudentGrades({ studentId, studentName, classroomCode }:
                                             className="w-16 p-1 border rounded text-center appearance-none"
                                             disabled={!isEditing3}
                                         />
-                                    </div>
+                                    </td>
+                                ))}
+
+                                {/* 5科合計列：下段は編集可能 input */}
+                                <td className="border p-1 text-center">
+                                    <input
+                                        type="number"
+                                        value={row.totalInput ?? ""}
+                                        onChange={(e) => {
+                                            const newRows = [...testRows3];
+                                            newRows[idx].totalInput = e.target.value === "" ? null : Number(e.target.value);
+                                            setTestRows3(newRows);
+                                        }}
+                                        className="w-16 p-1 border rounded text-center appearance-none"
+                                        disabled={!isEditing3}
+                                        placeholder="入力"
+                                    />
                                 </td>
-                            ))}
-
-                            <td className="border p-1 font-semibold">{total5}</td>
-
-                            <td className="border p-1">
-                                <input
-                                    type="number"
-                                    value={row.avgDeviation ?? ""}
-                                    onChange={(e) => {
-                                        const newRows = [...testRows3];
-                                        newRows[idx].avgDeviation = e.target.value === "" ? null : Number(e.target.value);
-                                        setTestRows3(newRows);
-                                    }}
-                                    className="w-16 p-1 border rounded text-center appearance-none"
-                                    disabled={!isEditing3}
-                                    placeholder="偏差値平均"
-                                />
-                            </td>
-                        </tr>
+                            </tr>
+                        </>
                     );
                 })}
             </tbody>
-
-
         </table>
     );
 

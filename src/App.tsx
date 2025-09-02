@@ -15,7 +15,6 @@ import ProtectedRoute from './common/ProtectedRoute';
 import ChangePassword from './pages/ChangePassword';
 import TeacherChangePassword from './teacher/TeacherChangePassword';
 import { ToastContainer } from 'react-toastify';
-import { ClassroomSelectionProvider } from './contexts/ClassroomSelectionContext';
 import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
 import { useAuth } from './contexts/AuthContext';
 import AdminRouteWrapper from "./routes/AdminRouteWrapper";
@@ -69,10 +68,8 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <RoleBasedProvider>
-        <ClassroomSelectionProvider>
           {routes}
           <ToastContainer position="top-center" className="custom-toast-container" />
-        </ClassroomSelectionProvider>
       </RoleBasedProvider>
     </BrowserRouter>
   );

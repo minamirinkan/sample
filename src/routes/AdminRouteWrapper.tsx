@@ -9,9 +9,9 @@ import LoadingSpinner from '../common/LoadingSpinner';
 const AdminRouteWrapper: React.FC = () => {
     const { userData, loading } = useAuth();
 
-    if (loading) return <LoadingSpinner />;
+    if (loading || !userData) return <LoadingSpinner />;
 
-    if (!userData?.email) return <Navigate to="/admin-login" replace />;
+    if (!userData?.email) return <Navigate to="/" replace />;
 
     return (
         <Routes>
