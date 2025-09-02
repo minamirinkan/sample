@@ -54,11 +54,12 @@ const TeacherLogin = () => {
         }
 
         alert("初回ログインです。パスワードを変更してください。");
-        navigate("/teacher/change-password");
+        navigate("/teacher/change-password");  // ← ✅ ここは残す
       } else {
         alert("ログイン成功");
         navigate("/teacher/dashboard");
       }
+
     } catch (error) {
       // ★修正点2: errorがFirebaseErrorかチェックする
       if (error instanceof FirebaseError) {

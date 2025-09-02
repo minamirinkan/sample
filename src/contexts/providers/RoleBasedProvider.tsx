@@ -10,18 +10,15 @@ const RoleBasedProvider = ({ children }: { children: React.ReactNode }) => {
     const { userData } = useAuth();
 
     if (!userData) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p className="text-gray-500">ユーザー情報を取得中...</p>
-            </div>
-        );
+        // null でも children を描画。ProtectedRoute が制御する
+        return <>{children}</>;
     }
 
     switch (userData.role) {
         case "superadmin":
             return (
                 <ClassroomSelectionProvider>
-                    <SuperAdminDataProvider>{children}</SuperAdminDataProvider>;
+                    <SuperAdminDataProvider>{children}</SuperAdminDataProvider>
                 </ClassroomSelectionProvider>
             );
         case "admin":

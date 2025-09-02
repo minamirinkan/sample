@@ -12,6 +12,7 @@ const AuthContext = createContext<AuthContextType>({
     userData: null,
     classroomCode: null,
     loading: true,
+    updateUserData: () => { }, // デフォルトは空関数
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -19,6 +20,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [role, setRole] = useState<UserRole>(null);
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
+
+    // 外部から userData を更新する関数
+    const updateUserData = (newData: UserData) => {
+        setUserData(newData);
+    };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -48,8 +54,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return () => unsubscribe();
     }, []);
 
+    // value を useMemo で安定化
+    const value = React.useMemo(() => ({
+        user,
+        role,
+        userData,
+        classroomCode: userData?.classroomCode ?? null,
+        loading,
+        updateUserData, // 外部から更新可能
+    }), [user, role, userData, loading]);
+
     return (
-        <AuthContext.Provider value={{ user, role, userData, classroomCode: userData?.classroomCode ?? null, loading }}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

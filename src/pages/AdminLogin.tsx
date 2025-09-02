@@ -1,14 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore'; // ← serverTimestamp を追加
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { useAuth } from '../contexts/AuthContext';
+import { UserData } from '../contexts/types/user';
 
 const AdminLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const { updateUserData, userData } = useAuth();
     const navigate = useNavigate();
+
+    // userData が揃ったら自動でダッシュボードへ遷移
+    useEffect(() => {
+        if (!userData) return;
+
+        if (userData.role === 'superadmin') {
+            navigate('/superadmin/dashboard');
+        } else if (userData.role === 'admin') {
+            navigate('/admin/dashboard');
+        }
+    }, [userData, navigate]);
 
     const handleLogin = async () => {
         if (!email || !password) {
@@ -21,13 +35,12 @@ const AdminLogin = () => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // 管理者データの取得（adminsコレクション）
+            // Firestore から管理者データ取得
             const adminRef = doc(db, 'admins', user.uid);
             const adminSnap = await getDoc(adminRef);
 
             if (!adminSnap.exists()) {
                 alert('管理者データが見つかりません');
-                await signOut(auth);
                 return;
             }
 
@@ -35,10 +48,8 @@ const AdminLogin = () => {
             const role = adminData.role;
             const classroomCode = adminData.classroomCode;
 
-            // ロールチェック
-            if (role !== 'superadmin' && role !== 'admin') {
-                alert('このアカウントには管理者権限がありません');
-                await signOut(auth);
+            if (role !== 'admin' && role !== 'superadmin') {
+                alert('管理者権限がありません');
                 return;
             }
 
@@ -49,27 +60,14 @@ const AdminLogin = () => {
                 await updateDoc(classroomRef, { lastLogin: serverTimestamp() });
             }
 
-            // ロールに応じて遷移
-            if (role === 'superadmin') {
-                alert('SuperAdminとしてログイン成功');
-                navigate('/superadmin/dashboard');
-            } else {
-                alert('Adminとしてログイン成功');
-                navigate('/admin/dashboard');
-            }
+            // AuthContext に userData をセット（これで useEffect が反応）
+            updateUserData({
+                ...adminData,
+                uid: user.uid
+            } as UserData);
 
-        } catch (error) {
-            if (error.code === 'auth/user-not-found') {
-                alert('ユーザーが見つかりません');
-            } else if (error.code === 'auth/wrong-password') {
-                alert('パスワードが間違っています');
-            } else if (error.code === 'auth/invalid-email') {
-                alert('メールアドレスの形式が正しくありません');
-            } else if (error.code === 'auth/invalid-credential') {
-                alert('認証情報が無効です。再度お試しください。');
-            } else {
-                alert('ログイン失敗: ' + error.message);
-            }
+        } catch (error: any) {
+            alert('ログイン失敗: ' + error.message);
         } finally {
             setLoading(false);
         }
@@ -78,9 +76,7 @@ const AdminLogin = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-                <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">
-                    管理者ログイン
-                </h2>
+                <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">管理者ログイン</h2>
 
                 <input
                     type="email"
@@ -100,8 +96,7 @@ const AdminLogin = () => {
                 />
                 <button
                     onClick={handleLogin}
-                    className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition ${loading ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
+                    className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     disabled={loading}
                 >
                     {loading ? 'ログイン中...' : 'ログイン'}

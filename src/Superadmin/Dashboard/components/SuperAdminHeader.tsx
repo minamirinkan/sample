@@ -1,6 +1,7 @@
 // components/SuperAdminHeader.tsx
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { auth } from '../../../firebase';
 interface SuperAdminHeaderProps {
     onToggleSidebar: () => void;
     role: 'superadmin' | 'admin' | 'customer' | 'teacher';
@@ -60,9 +61,15 @@ const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, ro
                         >
                             管理者情報
                         </button>
-                        <a href="/" className="block px-4 py-2 hover:bg-gray-100">
+                        <button
+                            className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
+                            onClick={async () => {
+                                await auth.signOut(); // Firebase Auth のログアウト
+                                navigate("/");
+                            }}
+                        >
                             ログアウト
-                        </a>
+                        </button>
                     </div>
                 )}
             </div>

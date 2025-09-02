@@ -14,7 +14,7 @@ const Layout: React.FC<{ role: 'superadmin' | 'admin' | 'customer' | 'teacher' }
                 role={role}
             />
             <div className="flex flex-1 overflow-hidden">
-                <AdminSidebar />
+                <AdminSidebar isOpen={isSidebarOpen} />
                 <main className="flex-1 p-4 overflow-auto">
                     <Outlet />
                 </main>
