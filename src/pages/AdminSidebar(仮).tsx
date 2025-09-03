@@ -1,15 +1,67 @@
-import { FC, useEffect, useState } from 'react';
+// AdminSidebar.tsx（修正版）
+import { useEffect, useState, FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaTasks, FaBell, FaBook, FaComments, FaYenSign, FaChartBar, FaFileAlt, FaDatabase, FaAngleLeft } from 'react-icons/fa';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import { useAuth } from '../../../contexts/AuthContext';
-import SidebarSection from './SidebarSection';
-import {
-    FaBell, FaDatabase, FaTasks, FaBook, FaComments, FaYenSign, FaChartBar, FaFileAlt
-} from 'react-icons/fa';
+import { db } from '../firebase';
+import { useAuth } from '../contexts/AuthContext';
+import useDynamicTitle from "../contexts/hooks/useDynamicTitle";
+
+interface SubItem {
+    label: string;
+    key: string;
+    path: string;
+}
+
+interface SidebarSectionProps {
+    icon: FC<{ className?: string }>;
+    title: string;
+    subItems: SubItem[];
+}
+
+const SidebarSection: FC<SidebarSectionProps & { onNavigate?: (path: string) => void }> = ({ icon: Icon, title, subItems, onNavigate }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const toggle = () => setIsOpen(!isOpen);
+    const navigate = useNavigate();
+
+    return (
+        <li className="mb-2">
+            <button
+                className="flex items-center justify-between w-full text-left hover:bg-gray-100 p-2 rounded"
+                onClick={toggle}
+            >
+                <div className="flex items-center">
+                    <Icon className="mr-2" />
+                    {title}
+                </div>
+                <FaAngleLeft className={`transition-transform duration-200 ${isOpen ? 'rotate-[-90deg]' : ''}`} />
+            </button>
+
+            {isOpen && (
+                <ul className="pl-8 mt-1 space-y-1 text-sm text-gray-700">
+                    {subItems.map((item) => (
+                        <li
+                            key={item.key}
+                            className="hover:underline cursor-pointer"
+                            onClick={() => {
+                                console.log(item.path);
+                                navigate(item.path)
+                            }}
+                        >
+                            {item.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </li>
+    );
+};
 
 const AdminSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
     const { userData } = useAuth();
     const [classroomName, setClassroomName] = useState('');
+    const [navigatePath, setNavigatePath] = useState<string | null>(null);
+    const navigate = useNavigate();
     const classroomCode = userData?.classroomCode;
 
     // classroomName を取得
@@ -18,10 +70,25 @@ const AdminSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
             if (!classroomCode) return;
             const docRef = doc(db, 'classrooms', classroomCode);
             const docSnap = await getDoc(docRef);
-            setClassroomName(docSnap.exists() ? (docSnap.data() as { name?: string }).name ?? '' : '教室名なし');
+            if (docSnap.exists()) {
+                setClassroomName((docSnap.data() as { name?: string }).name ?? '');
+            } else {
+                setClassroomName('教室名なし');
+            }
         };
         fetchClassroomName();
     }, [classroomCode]);
+
+    // userData が揃ったら navigate
+    useEffect(() => {
+        if (userData && navigatePath) {
+            navigate(navigatePath);
+            setNavigatePath(null); // 1回だけ
+        }
+    }, [userData, navigatePath, navigate]);
+
+    // タイトル用 hook
+    useDynamicTitle({ role: userData?.role, classroomName });
 
     if (!isOpen) return null;
 
