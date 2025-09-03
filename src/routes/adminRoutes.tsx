@@ -8,7 +8,6 @@ import SuperAdminTeachers from '../common/Teachers/SuperAdminTeachers';
 import HolidayPage from '../common/Schedule/HolidayPage';
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
 import HookStatusPage from '../pages/HookStatusPage';
-import TestUserDataFetch from "../TEST/TestUserDataFetch";
 import TestAdminDataFetch from "../TEST/testpage";
 import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalendar';
 import StudentChatManager from '../guardian/Dashboard/components/StudentChatManager';
@@ -16,6 +15,7 @@ import StudentRegistrationForm from "../common/Students/StudentRegistrationForm/
 import StudentDetail from "../common/Students/Detail/StudentDetail";
 import TeacherRegistrationForm from "../common/Teachers/RegistrationForm/TeacherRegistrationForm";
 import TeacherDetail from "../common/Teachers/Detail/TeacherDetail";
+import SchoolScoreTable from "../common/ScoreTable/SchoolScoreTable";
 
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
@@ -34,7 +34,7 @@ export const adminRoutes = (
         <Route path="student-timetable" element={<AdminStudentCalendar />} />
         <Route path="notification" element={<CeoMessagesAll />} />
         <Route path="tasks" element={<HookStatusPage />} />
-        <Route path="authTest" element={<TestUserDataFetch />} />
+        <Route path="schoolTest" element={<SchoolScoreTable />} />
         <Route path="userTest" element={<TestAdminDataFetch />} />
         <Route path="chat" element={<StudentChatManager />} />
         <Route path="students" element={<SuperAdminStudents />} />
