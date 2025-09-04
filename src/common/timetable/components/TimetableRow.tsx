@@ -23,10 +23,10 @@ export default function TimetableRow({
     );
   }
   const teacherOptions = [
-    ...(classroom.classroom.name
+    ...(classroom.classroom.fullname
       ? [{
         code: MANAGER_CODE,
-        name: classroom.classroom.name,
+        fullname: classroom.classroom.fullname,
       }]
       : []),
     ...allTeachers,
@@ -39,8 +39,8 @@ export default function TimetableRow({
 
     // 教室長が選ばれたときの特別処理
     if (selectedCode === MANAGER_CODE) {
-      const updatedTeacher = classroom.classroom.name
-        ? { code: MANAGER_CODE, name: classroom.classroom.name }
+      const updatedTeacher = classroom.classroom.fullname
+        ? { code: MANAGER_CODE, name: classroom.classroom.fullname }
         : null;
       onChange(rowIndex, { ...row, teacher: updatedTeacher });
       return;
@@ -48,7 +48,7 @@ export default function TimetableRow({
 
     const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
     const updatedTeacher = teacherObj
-      ? { code: teacherObj.code, name: teacherObj.name }
+      ? { code: teacherObj.code, name: teacherObj.fullname }
       : null;
 
     onChange(rowIndex, { ...row, teacher: updatedTeacher });
@@ -71,7 +71,7 @@ export default function TimetableRow({
             <option value="">選択</option>
             {teacherOptions.map((t) => (
               <option key={t.code} value={t.code}>
-                {t.name}
+                {t.fullname}
               </option>
             ))}
           </select>
