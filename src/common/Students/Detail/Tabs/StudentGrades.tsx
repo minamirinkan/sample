@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
 import { getStudentScoresByGrade } from "../../../ScoreTable/scoreService";
+import { getStudentGradePointsByGrade } from "../../../ScoreTable/gradePointService";
 
 type StudentGradesProps = {
     studentId: string;
@@ -42,7 +43,7 @@ const testSemesters3 = [
 const gradeSemesters3 = [
     "1年1学期", "1年2学期", "1年3学期",
     "2年1学期", "2年2学期", "2年3学期",
-    "3年1学期", "3年2学期"
+    "3年1学期", "3年2学期", "3年3学期"
 ];
 const testSemesters2 = [
     "1年前期中間", "1年前期期末", "1年後期中間", "1年後期期末",
@@ -59,50 +60,39 @@ export default function StudentGrades({ studentId, studentName }: StudentGradesP
     const [grades1, setGrades1] = useState<SemesterGrades>({});
     const [grades2, setGrades2] = useState<SemesterGrades>({});
     const [testRows3, setTestRows3] = useState<TestGradesRow[]>([initialTestRow]);
-    const [termSystem, setTermSystem] = useState<number>(3); // デフォルト3
+    const [termSystem, setTermSystem] = useState<number>(3);
     const [testSemesters, setTestSemesters] = useState<string[]>(testSemesters3);
     const [gradeSemesters, setGradeSemesters] = useState<string[]>(gradeSemesters3);
 
     // useEffect内に追加
     useEffect(() => {
-    const fetchGrades = async () => {
-        // students ドキュメントから termSystem 取得
-        const studentSnap = await getDoc(doc(db, "students", studentId));
-        let term = 3;
-        if (studentSnap.exists()) {
-            const studentData = studentSnap.data();
-            term = studentData.termSystem ?? 3;
-        }
-        setTermSystem(term);
-        setTestSemesters(term === 2 ? testSemesters2 : testSemesters3);
-        setGradeSemesters(term === 2 ? gradeSemesters2 : gradeSemesters3);
+        const fetchGrades = async () => {
+            // students ドキュメントから termSystem 取得
+            const studentSnap = await getDoc(doc(db, "students", studentId));
+            let term = 3;
+            if (studentSnap.exists()) {
+                const studentData = studentSnap.data();
+                term = studentData.termSystem ?? 3;
+            }
+            setTermSystem(term);
+            setTestSemesters(term === 2 ? testSemesters2 : testSemesters3);
+            setGradeSemesters(term === 2 ? gradeSemesters2 : gradeSemesters3);
 
-        // scores 取得
-        const fetchedGrades = await getStudentScoresByGrade(studentId);
-        setGrades1(fetchedGrades);
+            // テスト結果取得
+            const fetchedTestGrades = await getStudentScoresByGrade(studentId);
+            setGrades1(fetchedTestGrades);
 
-        // 成績や模試は以前通り
-        const snap = await getDoc(doc(db, "studentGrades", studentId));
-        const emptyGrades: SemesterGrades = {};
-        const semList = [...new Set([...testSemesters, ...gradeSemesters])]; // 空初期用
-        semList.forEach(sem => {
-            emptyGrades[sem] = {};
-            subjects.forEach(subj => emptyGrades[sem][subj] = null);
-        });
+            // 成績取得
+            const fetchedGradePoints = await getStudentGradePointsByGrade(studentId);
+            setGrades2(fetchedGradePoints);
 
-        if (snap.exists()) {
-            const data = snap.data();
-            setGrades2(data.grades2 || emptyGrades);
-            setTestRows3(data.testRows3 && data.testRows3.length > 0 ? data.testRows3 : [initialTestRow]);
-        } else {
-            setGrades2(emptyGrades);
-            setTestRows3([initialTestRow]);
-        }
-    };
+            // 模試結果はそのまま
+            const snap = await getDoc(doc(db, "studentGrades", studentId));
+            setTestRows3(snap.exists() && snap.data().testRows3?.length > 0 ? snap.data().testRows3 : [initialTestRow]);
+        };
 
-    fetchGrades();
-}, [studentId]);
-
+        fetchGrades();
+    }, [studentId]);
 
     const renderTable = (grades: SemesterGrades, semestersToUse: string[]) => (
         <table className="w-full border-collapse text-sm mb-6 text-center">

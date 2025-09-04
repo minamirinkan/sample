@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAdminData } from "../../contexts/providers/AdminDataProvider";
 import { saveStudentScores, getStudentScores, StudentScore } from "./scoreService";
+import { getStudentGradePoints, saveStudentGradePoints, StudentGradePoint } from "./gradePointService";
 
 type Student = {
     studentId: string;
@@ -17,6 +18,11 @@ const testsByTermSystem: Record<number, string[]> = {
     2: ["前期中間", "前期期末", "後期中間", "後期期末"],
 };
 
+const pointsByTermSystem: Record<number, string[]> = {
+    3: ["1学期", "2学期", "学年末"],
+    2: ["前期", "後期"],
+};
+
 export default function SchoolScoreTable() {
     const { students, loading } = useAdminData();
     const typedStudents: Student[] = Array.isArray(students?.students)
@@ -25,6 +31,7 @@ export default function SchoolScoreTable() {
 
     const [selectedTerm, setSelectedTerm] = useState<number>(3);
     const [selectedTest, setSelectedTest] = useState<string>("");
+    const [selectedGradePoint, setSelectedGradePoint] = useState<string>("");
     const [selectedSchoolLevel, setSelectedSchoolLevel] = useState<string>("中");
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [scores, setScores] = useState<Record<string, Record<string, string>>>({});
@@ -46,6 +53,7 @@ export default function SchoolScoreTable() {
         });
 
     const tests = testsByTermSystem[selectedTerm] || [];
+    const points = pointsByTermSystem[selectedTerm] || [];
 
     // -------------------
     // 点数変更
@@ -80,27 +88,50 @@ export default function SchoolScoreTable() {
     // 保存ボタン
     // -------------------
     const handleSave = async () => {
-        const scoresToSave: StudentScore[] = filteredStudents.map(student => {
-            const gradeNumber = getGradeNumber(student.grade);
+        if (selectedTest) {
+            const scoresToSave: StudentScore[] = filteredStudents.map(student => {
+                const gradeNumber = getGradeNumber(student.grade);
 
-            return {
-                studentId: student.studentId,
-                gradeNumber,                  // ← 追加
-                termSystem: student.termSystem, // ← 追加
-                test: selectedTest,
-                scores: Object.fromEntries(
-                    subjects.map(subj => [subj, Number(scores[student.studentId]?.[subj] || 0)])
-                ),
-            };
-        });
+                return {
+                    studentId: student.studentId,
+                    gradeNumber,                  // ← 追加
+                    termSystem: student.termSystem, // ← 追加
+                    test: selectedTest,
+                    scores: Object.fromEntries(
+                        subjects.map(subj => [subj, Number(scores[student.studentId]?.[subj] || 0)])
+                    ),
+                };
+            });
+            try {
+                await saveStudentScores(scoresToSave);
+                alert("保存しました！");
+                setIsEditing(false);
+            } catch (error) {
+                console.error(error);
+                alert("保存に失敗しました。");
+            }
+        } else if (selectedGradePoint) {
+            const scoresToSave: StudentGradePoint[] = filteredStudents.map(student => {
+                const gradeNumber = getGradeNumber(student.grade);
 
-        try {
-            await saveStudentScores(scoresToSave);
-            alert("保存しました！");
-            setIsEditing(false);
-        } catch (error) {
-            console.error(error);
-            alert("保存に失敗しました。");
+                return {
+                    studentId: student.studentId,
+                    gradeNumber,                  // ← 追加
+                    termSystem: student.termSystem, // ← 追加
+                    term: selectedGradePoint,
+                    scores: Object.fromEntries(
+                        subjects.map(subj => [subj, Number(scores[student.studentId]?.[subj] || 0)])
+                    ),
+                };
+            });
+            try {
+                await saveStudentGradePoints(scoresToSave);
+                alert("保存しました！");
+                setIsEditing(false);
+            } catch (error) {
+                console.error(error);
+                alert("保存に失敗しました。");
+            }
         }
     };
 
@@ -108,95 +139,143 @@ export default function SchoolScoreTable() {
     // テスト選択時にFirestoreから取得
     // -------------------
     React.useEffect(() => {
-        if (!selectedTest) return;
+        if (!selectedTest && !selectedGradePoint) return;
         if (isEditing) return;
 
-        const fetchScores = async () => {
-            const newScores: Record<string, Record<string, string>> = {};
-            for (const student of filteredStudents) {
-                const savedScore = await getStudentScores(
-                    student.studentId,
-                    getGradeNumber(student.grade), // ← ここを追加
-                    selectedTest
-                );
-                newScores[student.studentId] = {};
-                subjects.forEach(subj => {
-                    newScores[student.studentId][subj] = savedScore?.scores[subj]?.toString() || "";
-                });
+        const fetchData = async () => {
+            if (selectedTest) {
+                const newScores: Record<string, Record<string, string>> = {};
+                for (const student of filteredStudents) {
+                    const savedScore = await getStudentScores(
+                        student.studentId,
+                        getGradeNumber(student.grade),
+                        selectedTest
+                    );
+                    newScores[student.studentId] = {};
+                    subjects.forEach(subj => {
+                        newScores[student.studentId][subj] = savedScore?.scores[subj]?.toString() || "";
+                    });
+                }
+                setScores(newScores);
+            } else if (selectedGradePoint) {
+                const newScores: Record<string, Record<string, string>> = {};
+                for (const student of filteredStudents) {
+                    const savedScore = await getStudentGradePoints(
+                        student.studentId,
+                        getGradeNumber(student.grade),
+                        selectedGradePoint
+                    );
+                    newScores[student.studentId] = {};
+                    subjects.forEach(subj => {
+                        newScores[student.studentId][subj] = savedScore?.scores[subj]?.toString() || "";
+                    });
+                }
+                setScores(newScores);
             }
-            setScores(newScores);
         };
 
-        fetchScores();
-    }, [selectedTest, filteredStudents]);
+        fetchData();
+    }, [selectedTest, selectedGradePoint, filteredStudents, isEditing]);
 
     if (loading) return <div>読み込み中…</div>;
 
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold mb-6">成績入力・集計</h1>
+            <h1 className="text-2xl font-bold mb-6">学校成績入力・集計</h1>
 
             {/* 学年区分 */}
             <div className="mb-2">
-                <label>学年区分: </label>
-                <select
-                    value={selectedSchoolLevel}
-                    onChange={e => setSelectedSchoolLevel(e.target.value)}
-                    className="border p-1"
-                >
-                    <option value="小">小学生</option>
-                    <option value="中">中学生</option>
-                    <option value="高">高校生</option>
-                </select>
-            </div>
-
-            {/* 期制選択 */}
-            <div className="mb-2">
-                <label>期制: </label>
-                <select
-                    value={selectedTerm}
-                    onChange={e => {
-                        const term = Number(e.target.value);
-                        setSelectedTerm(term);
-                        setSelectedTest("");
-                        setIsEditing(false);
-                    }}
-                    className="border p-1"
-                >
-                    <option value={3}>3期制</option>
-                    <option value={2}>2期制</option>
-                </select>
-            </div>
-
-            {/* テスト選択 */}
-            <div className="mb-4">
-                <label>テスト: </label>
-                <select
-                    value={selectedTest}
-                    onChange={e => {
-                        setSelectedTest(e.target.value);
-                        setIsEditing(false);
-                    }}
-                    className="border p-1"
-                >
-                    <option value="">-- 選択してください --</option>
-                    {tests.map(test => (
-                        <option key={test} value={test}>
-                            {test}
-                        </option>
+                <label className="block font-semibold">学年区分:</label>
+                <div className="flex gap-4">
+                    {["小", "中", "高"].map(level => (
+                        <label key={level} className="flex items-center gap-1">
+                            <input
+                                type="radio"
+                                value={level}
+                                checked={selectedSchoolLevel === level}
+                                onChange={e => setSelectedSchoolLevel(e.target.value)}
+                            />
+                            {level === "小" ? "小学生" : level === "中" ? "中学生" : "高校生"}
+                        </label>
                     ))}
-                </select>
+                </div>
+            </div>
+
+            <div className="mb-2">
+                <label className="block font-semibold">期制:</label>
+                <div className="flex gap-4">
+                    {[3, 2].map(term => (
+                        <label key={term} className="flex items-center gap-1">
+                            <input
+                                type="radio"
+                                value={term}
+                                checked={selectedTerm === term}
+                                onChange={e => {
+                                    const t = Number(e.target.value);
+                                    setSelectedTerm(t);
+                                    setSelectedTest("");
+                                    setIsEditing(false);
+                                }}
+                            />
+                            {term}期制
+                        </label>
+                    ))}
+                </div>
+            </div>
+
+            <div className="mb-4 flex items-center gap-4">
+                {/* テスト選択 */}
+                <div>
+                    <label className="mr-2 font-semibold">テスト: </label>
+                    <select
+                        value={selectedTest}
+                        onChange={e => {
+                            setSelectedTest(e.target.value);
+                            setIsEditing(false);
+                            setSelectedGradePoint("");
+                        }}
+                        className="border p-1"
+                    >
+                        <option value="">-- 選択 --</option>
+                        {tests.map(test => (
+                            <option key={test} value={test}>
+                                {test}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* 内申点選択 */}
+                <div>
+                    <label className="mr-2 font-semibold">内申: </label>
+                    <select
+                        value={selectedGradePoint}
+                        onChange={e => {
+                            setSelectedGradePoint(e.target.value);
+                            setIsEditing(false);
+                            setSelectedTest("");
+                        }}
+                        className="border p-1"
+                    >
+                        <option value="">-- 選択 --</option>
+                        {points.map(point => (
+                            <option key={point} value={point}>
+                                {point}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             {/* 点数入力ボタン / 保存 / キャンセル */}
-            {selectedTest && (
+            {(selectedTest || selectedGradePoint) && (
                 <div className="mb-4">
                     {!isEditing ? (
                         <button
                             onClick={() => setIsEditing(true)}
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
-                            点数入力
+                            編集
                         </button>
                     ) : (
                         <div className="flex gap-2">
@@ -221,19 +300,27 @@ export default function SchoolScoreTable() {
             )}
 
             {/* 生徒テーブル */}
-            {selectedTest && filteredStudents.length > 0 && (
-                <div className="overflow-x-auto">
+            {(selectedTest || selectedGradePoint) && filteredStudents.length > 0 && (
+                <div className="overflow-x-auto overflow-y-auto max-h-[500px]">
                     <table className="border-collapse border w-full min-w-max">
                         <thead className="bg-gray-100">
                             <tr>
-                                <th className="sticky left-0 w-32 bg-gray-100 border p-2">生徒名</th>
-                                <th className="border p-2">学年</th>
-                                <th className="border p-2">生徒コード</th>
+                                {/* 生徒名ヘッダーセル */}
+                                <th className="sticky top-0 left-0 z-30 w-32 bg-gray-100 border p-2">
+                                    生徒名
+                                </th>
+                                <th className="sticky top-0 z-20 bg-gray-100 border p-2">学年</th>
+                                <th className="sticky top-0 z-20 bg-gray-100 border p-2">生徒コード</th>
                                 {subjects.map(subj => (
-                                    <th key={subj} className="border p-2 min-w-[80px]">{subj}</th>
+                                    <th
+                                        key={subj}
+                                        className="sticky top-0 z-20 bg-gray-100 border p-2 min-w-[80px]"
+                                    >
+                                        {subj}
+                                    </th>
                                 ))}
-                                <th className="border p-2 min-w-[80px]">5科目合計</th>
-                                <th className="border p-2 min-w-[80px]">9科目合計</th>
+                                <th className="sticky top-0 z-20 bg-gray-100 border p-2 min-w-[80px]">5科目合計</th>
+                                <th className="sticky top-0 z-20 bg-gray-100 border p-2 min-w-[80px]">9科目合計</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -275,7 +362,7 @@ export default function SchoolScoreTable() {
                 </div>
             )}
 
-            {selectedTest && filteredStudents.length === 0 && <div>該当する生徒がいません。</div>}
+            {(selectedTest || selectedGradePoint) && filteredStudents.length === 0 && <div>該当する生徒がいません。</div>}
         </div>
     );
 }
