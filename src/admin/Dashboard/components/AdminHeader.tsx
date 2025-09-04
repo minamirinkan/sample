@@ -2,12 +2,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../../firebase';
-interface SuperAdminHeaderProps {
+interface dminHeaderProps {
     onToggleSidebar: () => void;
     role: 'superadmin' | 'admin' | 'customer' | 'teacher';
 }
 
-const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, role }) => {
+const AdminHeader: React.FC<dminHeaderProps> = ({ onToggleSidebar, role }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
@@ -80,4 +80,4 @@ const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, ro
     );
 };
 
-export default SuperAdminHeader;
+export default AdminHeader;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAdminData } from "../../contexts/providers/AdminDataProvider";
 import { saveStudentScores, getStudentScores, StudentScore } from "./scoreService";
 import { getStudentGradePoints, saveStudentGradePoints, StudentGradePoint } from "./gradePointService";
@@ -326,7 +327,14 @@ export default function SchoolScoreTable() {
                         <tbody>
                             {filteredStudents.map(student => (
                                 <tr key={student.studentId} className="odd:bg-white even:bg-gray-50">
-                                    <td className="sticky left-0 w-32 bg-white border p-2">{student.fullname}</td>
+                                    <td className="sticky left-0 w-32 bg-white border p-2">
+                                        <Link
+                                            to={`/admin/students/${student.studentId}/grades`} // 遷移先のURL
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            {student.fullname}
+                                        </Link>
+                                    </td>
                                     <td className="border p-2">{student.grade}</td>
                                     <td className="border p-2">{student.studentId}</td>
 
