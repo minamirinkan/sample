@@ -4,7 +4,7 @@ import { Student, RowStudent } from './student';
 
 export type Teacher = {
   code?: string;
-  fullname?: string;
+  name?: string;
 };
 
 export type RowData = {

@@ -17,15 +17,11 @@ import { RowData } from '@/contexts/types/timetablerow';
 import { TimetableRow, TimetableStudent } from '@/contexts/types/data';
 
 function toTimetableStudent(student: any): TimetableStudent {
-  // firstName と lastName から fullname を構築
-  const firstName = student.firstName || '';
-  const lastName = student.lastName || '';
-  const fullName = `${lastName} ${firstName}`.trim() || student?.fullname || '';
 
   return {
     studentId: student.studentId ?? '',
     grade: student.grade ?? '',
-    name: fullName ?? '',  // 修正: firstNameとlastNameから構築した名前を使用
+    name: student.name ?? '',  // 修正: firstNameとlastNameから構築した名前を使用
     seat: student.seat ?? '',
     subject: student.subject ?? '',
     classType: student.classType ?? '',
@@ -211,7 +207,7 @@ export default function TimetablePage() {
     const cleanedRows: TimetableRow[] = rows.map(row => ({
       status: row.status || '予定',
       teacher: row.teacher
-        ? { code: row.teacher.code ?? '', name: row.teacher.fullname ?? '' }
+        ? { code: row.teacher.code ?? '', name: row.teacher.name ?? '' }
         : { code: '', name: '' },
       periods: row.periods.map(period =>
         period.map(toTimetableStudent)
