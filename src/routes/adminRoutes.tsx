@@ -16,6 +16,9 @@ import StudentDetail from "../common/Students/Detail/StudentDetail";
 import TeacherRegistrationForm from "../common/Teachers/RegistrationForm/TeacherRegistrationForm";
 import TeacherDetail from "../common/Teachers/Detail/TeacherDetail";
 import SchoolScoreTable from "../common/ScoreTable/SchoolScoreTable";
+import TuitionPage from "../admin/pages/TuitionPage";
+import TeacherWorkFeesPage from "../admin/pages/TeacherWorkFeesPage";
+
 
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
@@ -44,5 +47,7 @@ export const adminRoutes = (
         <Route path="teachers" element={<SuperAdminTeachers />} />
         <Route path="teachers/new" element={<TeacherRegistrationForm />} />
         <Route path="teachers/:code" element={<TeacherDetail />} />
+        <Route path="tuition/:classroomName" element={<TuitionPage />} />
+        <Route path="work-fees/:location" element={<TeacherWorkFeesPage />} />
     </>
 );

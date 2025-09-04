@@ -1,5 +1,6 @@
 // src/admin/components/AdminProfile.tsx
 import React from "react";
+import { Link } from "react-router-dom";
 import { useAdminData } from "../../contexts/providers/AdminDataProvider";
 import { formatDate } from "../dateFormatter";
 import { Avatar, AvatarFallback } from "../../components/ui/avatar";
@@ -35,8 +36,8 @@ const AdminProfile: React.FC = () => {
     if (!classroom || !classroom.classroom) {
         return <p className="text-gray-500 animate-pulse">読み込み中...</p>;
     }
-    
-    const admin = classroom.classroom as AdminData;
+
+    const admin = classroom.classroom as AdminData & { addressInfo: any }; // 型を簡単に拡張
 
     return (
         <div className="p-6 grid gap-6 md:grid-cols-2">
@@ -70,11 +71,11 @@ const AdminProfile: React.FC = () => {
                 </div>
 
                 <p>教室名: {admin.name}</p>
+                <p>郵便番号: {admin.addressInfo?.postalCode}</p>
                 <p>
-                    住所: {admin.prefecture} {admin.city} {admin.streetAddress}{" "}
-                    {admin.buildingName}
+                    住所: {admin.addressInfo?.prefecture} {admin.addressInfo?.city} {admin.addressInfo?.streetAddress}{" "}
+                    {admin.addressInfo?.buildingName}
                 </p>
-                <p>郵便番号: {admin.postalCode}</p>
                 <p>電話番号: {admin.phoneNumber}</p>
                 <p>FAX: {admin.faxNumber}</p>
             </div>
@@ -89,8 +90,20 @@ const AdminProfile: React.FC = () => {
                 </div>
 
                 <p>最低賃金: {admin.minimumWage} 円</p>
-                <p>授業料表示名: {admin.tuitionName}</p>
-                <p>講師給与表示名: {admin.teacherFeeName}</p>
+                <p>授業料表示名:
+                    <Link to={`/admin/tuition/${admin.tuitionName}`}
+                        className="text-blue-600 hover:underline"
+                    >
+                        {admin.tuitionName}
+                    </Link>
+                </p>
+                <p>講師給与表示名:
+                    <Link to={`/admin/work-fees/${admin.name}`}
+                        className="text-blue-600 hover:underline"
+                    >
+                        {admin.teacherFeeName}
+                    </Link>
+                </p>
                 <p>時限名: {admin.periodTimeName}</p>
             </div>
         </div>

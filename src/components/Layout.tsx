@@ -2,14 +2,14 @@
 import React from "react";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import SuperAdminHeader from "../Superadmin/Dashboard/components/SuperAdminHeader";
+import AdminHeader from "../admin/Dashboard/components/AdminHeader";
 import AdminSidebar from "../admin/Dashboard/components/AdminSidebar";
 
 const Layout: React.FC<{ role: 'superadmin' | 'admin' | 'customer' | 'teacher' }> = ({ role }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     return (
         <div className="flex-col h-screen">
-            <SuperAdminHeader
+            <AdminHeader
                 onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
                 role={role}
             />
