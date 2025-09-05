@@ -1,8 +1,8 @@
 // src/pages/AdminStudentsPage.tsx
 import { Routes, Route } from 'react-router-dom';
-import SuperAdminStudents from '../../../common/Students/SuperAdminStudents';
-import StudentRegistrationForm from '../../../common/Students/StudentRegistrationForm/StudentRegistrationForm';
-import StudentDetailPage from '../../../common/Students/Detail/StudentDetail';
+import SuperAdminStudents from '@/common/Students/SuperAdminStudents';
+import StudentRegistrationForm from '@/common/Students/StudentRegistrationForm/StudentRegistrationForm';
+import StudentDetailPage from '@/common/Students/Detail/StudentDetail';
 
 export default function AdminStudentsPage() {
     return (

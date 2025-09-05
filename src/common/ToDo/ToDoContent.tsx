@@ -18,7 +18,7 @@ import {
   limit
 } from "firebase/firestore";
 import { db } from "../../firebase.js";
-import { showErrorToast } from "..//ToastProvider";
+import { showErrorToast } from "../ToastProvider";
 import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -63,27 +63,27 @@ const ToDoContent: React.FC = () => {
   }, [user, classroomCode]);
 
   useEffect(() => {
-      const q = query(
-        collection(db, "logs"),
-        orderBy("timestamp", "desc"),
-        limit(10)
-      );
-  
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const data: Log[] = snapshot.docs.map((doc) => {
-          const d = doc.data();
-          return {
-            id: doc.id,
-            timestamp: d.timestamp,
-            content: d.content ?? "",
-            editor: d.editor ?? "",
-          };
-        });
-        setLogs(data);
+    const q = query(
+      collection(db, "logs"),
+      orderBy("timestamp", "desc"),
+      limit(10)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data: Log[] = snapshot.docs.map((doc) => {
+        const d = doc.data();
+        return {
+          id: doc.id,
+          timestamp: d.timestamp,
+          content: d.content ?? "",
+          editor: d.editor ?? "",
+        };
       });
-  
-      return () => unsubscribe();
-    }, []);
+      setLogs(data);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // 初回取得＋user,classroomCode変化時にfetchMessages呼ぶ
   useEffect(() => {
