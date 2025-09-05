@@ -10,6 +10,11 @@ import EmploymentInfoSection from './components/EmploymentInfoSection';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 import { TeacherSchema, Teacher } from '../../../schemas';
 
+// Propsの型を定義
+interface TeacherRegistrationFormProps {
+  onCancel?: () => void;
+}
+
 // formDataの型定義
 const PartialTeacherSchema = TeacherSchema.pick({
   code: true,
@@ -49,7 +54,7 @@ const initialFormData: FormData = {
   transportation: 0,      // number 型なので0で初期化
 };
 
-const TeacherRegistrationForm: React.FC = () => {
+const TeacherRegistrationForm: React.FC<TeacherRegistrationFormProps> = ({ onCancel }) => {
   const navigate = useNavigate();
   const { classroom } = useAdminData();
   const classroomCode = classroom?.classroom?.code ?? '';
@@ -70,6 +75,15 @@ const TeacherRegistrationForm: React.FC = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleCancel = () => {
+    setFormData(initialFormData);
+    const setup = async () => {
+      const newCode = await generateTeacherCode();
+      setFormData((prev) => ({ ...prev, code: newCode }));
+    };
+    setup();
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -77,6 +91,7 @@ const TeacherRegistrationForm: React.FC = () => {
       alert('氏名とメールアドレスを入力してください');
       return;
     }
+
 
     try {
       const auth = getAuth();
@@ -148,14 +163,7 @@ const TeacherRegistrationForm: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => {
-            setFormData(initialFormData);
-            const setup = async () => {
-              const newCode = await generateTeacherCode();
-              setFormData((prev) => ({ ...prev, code: newCode }));
-            };
-            setup();
-          }}
+          onClick={onCancel ? onCancel : handleCancel}
           className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
         >
           キャンセル
