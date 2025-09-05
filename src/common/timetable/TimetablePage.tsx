@@ -1,7 +1,8 @@
 //pages/TimetablePage.tsx
 import React from 'react';
 import { useEffect, useState, useRef } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { createRoot } from 'react-dom/client';
+import { useAuth, AuthProvider } from '../../contexts/AuthContext';
 import TimetableTable from './components/TimetableTable';
 import CalendarPopup from './components/CalendarPopup';
 import { fetchTimetableData, saveTimetableData } from './firebase/timetableFirestore';
@@ -10,11 +11,12 @@ import ConfirmAttendanceModal from '../modal/ConfirmAttendanceModal';
 import { formatDateDisplay } from '../dateUtils';
 import ConfirmOverwriteModal from '../modal/ConfirmOverwriteModal';
 import PDFButton from './pdf/components/PDFButton';
-import { useAdminData } from '../../contexts/providers/AdminDataProvider';
+import { useAdminData, AdminDataProvider } from '../../contexts/providers/AdminDataProvider';
 import { Student } from '@/contexts/types/student';
 import { DuplicateInfo } from '@/contexts/types/timetable';
 import { RowData } from '@/contexts/types/timetablerow';
 import { TimetableRow, TimetableStudent } from '@/contexts/types/data';
+import StudentList from './components/StudentList';
 
 function toTimetableStudent(student: any): TimetableStudent {
 
@@ -276,6 +278,23 @@ export default function TimetablePage() {
     updateURLDate(newDate);
   };
 
+  const openStudentListWindow = () => {
+    const newWindow = window.open('', '_blank', 'width=600,height=800');
+    if (newWindow) {
+      newWindow.document.title = "生徒一覧";
+      const root = newWindow.document.createElement('div');
+      newWindow.document.body.appendChild(root);
+
+      createRoot(root).render(
+        <AuthProvider>
+          <AdminDataProvider>
+            <StudentList />
+          </AdminDataProvider>
+        </AuthProvider>
+      );
+    }
+  };
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-center mb-4 space-x-4">
@@ -310,8 +329,11 @@ export default function TimetablePage() {
 
       <TimetableTable rows={rows} onChange={updateRow} periodLabels={periodLabels} />
 
-      <div className="text-center mt-4 space-x-2">
-        <button onClick={addRow} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+      <div className="flex flex-wrap justify-center gap-3 mt-6">
+        <button
+          onClick={addRow}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+        >
           講師行を追加
         </button>
         <button
@@ -320,43 +342,49 @@ export default function TimetablePage() {
         >
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
-
         <PDFButton
           ref={pdfButtonRef}
           getData={() => ({
             rows,
-            classroomName
+            classroomName,
           })}
         />
-
+        <button
+          className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded"
+          onClick={openStudentListWindow}
+        >
+          生徒一覧を開く
+        </button>
       </div>
-      {/* 出席確定ボタンだけを下に分離 */}
-      <div className="text-center mt-6">
+
+      {/* --- 出席確定ボタン --- */}
+      <div className="text-center mt-10">
         <button
           onClick={openConfirmModal}
           disabled={!isTodayOrPast() || isProcessingConfirm || isSaved}
-          className={`px-4 py-2 rounded text-white
-            ${!isTodayOrPast() || isProcessingConfirm || isSaved
+          className={`px-6 py-3 rounded text-white font-bold shadow-md transition ${!isTodayOrPast() || isProcessingConfirm || isSaved
               ? 'bg-red-300 cursor-not-allowed'
-              : 'bg-red-600 hover:bg-red-700'}`}
+              : 'bg-red-600 hover:bg-red-700'
+            }`}
         >
           出席を確定
         </button>
 
-        {/* 補足テキストもここに */}
         {(!isTodayOrPast() || isSaved) && (
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-500 mt-3">
             {!isTodayOrPast()
               ? '出席の確定は当日または過去の日付のみ可能です。'
               : '既に出席が確定済みです。'}
           </p>
         )}
       </div>
+
+      {/* --- モーダル類 --- */}
       <ConfirmOverwriteModal
         isOpen={isConfirmOverwriteModalOpen}
         onCancel={() => setIsConfirmOverwriteModalOpen(false)}
         onConfirm={() => {
-          pendingSave?.(); // 保存処理実行
+          pendingSave?.();
         }}
       />
       <ConfirmAttendanceModal
