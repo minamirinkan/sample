@@ -56,7 +56,7 @@ export default function TimetableRow({
 
   return (
     <tr>
-      <td className="border p-2 text-center font-bold bg-gray-50">
+      <td className="border p-2 text-center font-bold bg-gray-50 sticky left-0 z-10">
         {isFixedRow ? (
           // 固定行 ― status文字列をそのまま表示
           <span className="text-gray-700">{row.status}</span>

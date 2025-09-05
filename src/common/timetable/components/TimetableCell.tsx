@@ -125,6 +125,8 @@ export default function TimetableCell({
           const existsInOtherRows = newAllRows.some((r: RowData, i: number) => {
             if (i === rowIndex) return false;
 
+            if (['未定', '振替', '欠席'].includes(r.status)) return false;
+
             return r.periods[periodIdx].some(
               (s): s is RowStudent => 'originRow' in s && s.originRow !== undefined
             );
