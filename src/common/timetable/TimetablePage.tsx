@@ -279,7 +279,7 @@ export default function TimetablePage() {
   };
 
   const openStudentListWindow = () => {
-    const newWindow = window.open('', '_blank', 'width=600,height=800');
+    const newWindow = window.open('/admin/timetable/studentlist', '_blank', 'width=600,height=800');
     if (newWindow) {
       newWindow.document.title = "生徒一覧";
       const root = newWindow.document.createElement('div');
