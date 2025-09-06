@@ -1,7 +1,7 @@
-// src/pages/ChangePassword.jsx
+// src/pages/ChangePassword.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
     reauthenticateWithCredential,
     EmailAuthProvider,
@@ -9,12 +9,11 @@ import {
     signOut,
 } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebase';
 
 const ChangePassword = () => {
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState<string>('');
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleChangePassword = async () => {
@@ -31,16 +30,19 @@ const ChangePassword = () => {
             return;
         }
 
+        // 【改善点.1】現在のパスワードと新しいパスワードが同じかチェック
+        if (currentPassword === newPassword) {
+            alert('新しいパスワードが現在のパスワードと同じです。別のパスワードを設定してください。');
+            return;
+        }
+
         setLoading(true);
         try {
-            // 現在のパスワードで再認証
-            const credential = EmailAuthProvider.credential(user.email, currentPassword);
+            const credential = EmailAuthProvider.credential(user.email!, currentPassword);
             await reauthenticateWithCredential(user, credential);
 
-            // パスワード更新
             await updatePassword(user, newPassword);
 
-            // isFirstLogin を false に更新
             const userRef = doc(db, 'customers', user.uid);
             await updateDoc(userRef, {
                 isFirstLogin: false,
@@ -48,8 +50,8 @@ const ChangePassword = () => {
 
             alert('パスワードを変更しました。再ログインしてください。');
             await signOut(auth);
-            navigate('/mypage/dashboard');
-        } catch (error) {
+            navigate('/mypage/dashboard'); // ログインページに遷移させる方が親切かもしれません
+        } catch (error: any) { // エラーオブジェクトに型を付ける
             console.error(error);
             if (error.code === 'auth/wrong-password') {
                 alert('現在のパスワードが間違っています');
@@ -73,7 +75,8 @@ const ChangePassword = () => {
                     type="password"
                     placeholder="現在のパスワード"
                     value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    // 【改善点.2】イベントオブジェクトに型を付ける
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentPassword(e.target.value)}
                     className="border border-gray-300 rounded-md p-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-red-500"
                     disabled={loading}
                 />
@@ -81,7 +84,7 @@ const ChangePassword = () => {
                     type="password"
                     placeholder="新しいパスワード（6文字以上）"
                     value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)}
                     className="border border-gray-300 rounded-md p-3 w-full mb-6 focus:outline-none focus:ring-2 focus:ring-red-500"
                     disabled={loading}
                 />

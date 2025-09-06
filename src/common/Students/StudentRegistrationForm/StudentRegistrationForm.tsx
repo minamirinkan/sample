@@ -18,7 +18,12 @@ import { Timestamp } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 
-const StudentRegistrationForm = () => {
+// Propsの型を定義
+interface StudentRegistrationFormProps {
+    onCancel?: () => void;
+}
+
+const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCancel }) => {
 
     const { user } = useAuth();
     const currentAdminUid = user?.uid;
@@ -283,7 +288,7 @@ const StudentRegistrationForm = () => {
                 </button>
                 <button
                     type="button"
-                    onClick={handleCancel}
+                    onClick={onCancel ? onCancel : handleCancel}
                     className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
                 >
                     キャンセル
