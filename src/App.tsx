@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
 import { useAuth } from './contexts/AuthContext';
 import AdminRouteWrapper from "./routes/AdminRouteWrapper";
+import StudentList from "./common/timetable/components/StudentList";
 
 const App: React.FC = () => {
   const { userData, loading } = useAuth();
@@ -52,6 +53,7 @@ const App: React.FC = () => {
       <Route path="/calendar" element={<CalendarPopup classroomCode={userData?.classroomCode ?? null} />} />
       <Route path="/customer/change-password" element={<ChangePassword />} />
       <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
+      <Route path="/admin/timetable/studentlist" element={<StudentList />} />
       {/* 管理者ルートラッパー */}
       <Route path="/*" element={<AdminRouteWrapper />} />
     </Routes>

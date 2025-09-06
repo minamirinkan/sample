@@ -19,7 +19,6 @@ import SchoolScoreTable from "../common/ScoreTable/SchoolScoreTable";
 import TuitionPage from "../admin/pages/TuitionPage";
 import TeacherWorkFeesPage from "../admin/pages/TeacherWorkFeesPage";
 
-
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
     if (!studentId) return null;

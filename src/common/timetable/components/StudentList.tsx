@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 import useFilteredStudents from '../../../contexts/hooks/useFilteredStudents';
 import shortGrade from '../utils/shortGrade';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -31,8 +31,8 @@ interface UseAdminDataReturn {
 }
 
 export default function StudentList() {
-    const [searchKeyword, setSearchKeyword] = useState < string > ('');
-    const [gradeFilter, setGradeFilter] = useState < string > ('');
+    const [searchKeyword, setSearchKeyword] = useState<string>('');
+    const [gradeFilter, setGradeFilter] = useState<string>('');
     const { userData } = useAuth();
     const { loading }: UseAdminDataReturn = useAdminData(); // ✅ Contextからadmin情報を取得
     const classroomCode = userData?.classroomCode || '';
@@ -41,26 +41,43 @@ export default function StudentList() {
         gradeFilter,
         classroomCode
     );
+    const gradeOrder = ['小', '中', '高']; // 優先順
+
+    const sortedStudents = [...filteredStudents].sort((a, b) => {
+        const getGradeIndex = (grade: string) => {
+            const prefix = grade.charAt(0); // 「小」「中」「高」を取得
+            return gradeOrder.indexOf(prefix);
+        };
+
+        // 学年順で比較
+        const gradeDiff = getGradeIndex(a.grade) - getGradeIndex(b.grade);
+        if (gradeDiff !== 0) return gradeDiff;
+
+        // 同じ学年内なら数字順（例: 小1, 小2）
+        const numA = parseInt(a.grade.match(/\d+/)?.[0] || '0', 10);
+        const numB = parseInt(b.grade.match(/\d+/)?.[0] || '0', 10);
+        return numA - numB;
+    });
 
     if (loading) return <div>読み込み中...</div>;
     if (!classroomCode) return <div>教室情報が取得できません</div>;
 
     return (
-        <div className="w-48 p-2 border bg-white rounded shadow text-sm">
-            <h3 className="font-bold mb-2">生徒一覧</h3>
+        <div className="p-4 w-[500px] mx-auto">
+            <h3 className="font-bold text-lg mb-3 text-center border-b pb-1">生徒一覧</h3>
 
             <input
                 type="text"
                 placeholder="名前で検索"
                 value={searchKeyword}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchKeyword(e.target.value)}
-                className="mb-2 p-1 border rounded w-full text-sm"
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                className="mb-2 p-2 border rounded w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
 
             <select
                 value={gradeFilter}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => setGradeFilter(e.target.value)}
-                className="mb-2 p-1 border rounded w-full text-sm"
+                onChange={(e) => setGradeFilter(e.target.value)}
+                className="mb-3 p-2 border rounded w-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
                 <option value="">すべての学年</option>
                 {existingGrades.map((g) => (
@@ -70,11 +87,10 @@ export default function StudentList() {
                 ))}
             </select>
 
-            <div className="overflow-y-auto max-h-[500px] pr-1">
-                {filteredStudents.map((s) => {
-                    console.log('🧾 生徒データ:', s);
-
-                    return (
+            {/* 横幅いっぱいではなく中央揃え */}
+            <div className="flex justify-center">
+                <div className="grid grid-cols-3 gap-x-8 gap-y-3">
+                    {sortedStudents.map((s) => (
                         <div
                             key={s.id}
                             draggable
@@ -95,12 +111,15 @@ export default function StudentList() {
                                     })
                                 )
                             }
-                            className="p-1 mb-1 border rounded bg-blue-100 hover:bg-blue-200 cursor-move"
+                            className="flex justify-between items-center p-1 border rounded bg-blue-50 hover:bg-blue-100 cursor-move text-sm"
                         >
-                            {`(${shortGrade(s.grade)}) ${s.lastName} ${s.firstName}`}
+                            <span>{`${s.lastName} ${s.firstName}`}</span>
+                            <span className="text-xs px-1 py-0.5 bg-blue-200 rounded-full font-semibold">
+                                {shortGrade(s.grade)}
+                            </span>
                         </div>
-                    );
-                })}
+                    ))}
+                </div>
             </div>
         </div>
     );

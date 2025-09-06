@@ -124,7 +124,6 @@ async function removeFromMakeupLessons(
     }
 }
 
-// ✅ 振替レッスンをアーカイブに移動
 // ✅ 振替レッスンをアーカイブに移動（形式を makeupLessons と同じに）
 async function moveMakeupLessonToArchive(
     studentId: string,
@@ -165,8 +164,6 @@ export const useAttendanceEdit = (
     const handleChange = (field: keyof EditValues, value: string) => {
         setEditValues(prev => ({ ...prev, [field]: value }));
     };
-
-
 
     const handleSaveClick = async (listType: 'makeup' | 'regular') => {
         try {
@@ -262,7 +259,6 @@ export const useAttendanceEdit = (
 
                     await saveScheduleDoc('dailySchedules', oldDocId, { ...oldData, rows: updatedOldRows });
                 }
-
 
                 const noChange =
                     editValues.date === originalEntry.date &&
@@ -401,7 +397,6 @@ export const useAttendanceEdit = (
                             (uniqueTypes.every(t => t === '2名クラス' || t === '演習クラス') && count <= 2) ||
                             (isOnly('演習クラス') && count <= 6) ||
                             (isOnly('1名クラス') && count <= 1);
-
 
                         if (!isMixedAllowed) {
                             showErrorToast('classTypeによる定員制限または混在制限により追加できません');

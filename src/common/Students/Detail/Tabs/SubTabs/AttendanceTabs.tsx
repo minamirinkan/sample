@@ -24,7 +24,7 @@ const TAB_LABELS: Record<TabKey, string> = {
 const AttendanceTabs: React.FC<Props> = ({ classroomCode, studentId, studentName, selectedMonth, mode }) => {
     const { tab } = useParams<{ tab?: TabKey }>();
     const activeTab: TabKey = TAB_KEYS.includes(tab as TabKey) ? (tab as TabKey) : 'monthly';
-
+    
     return (
         <div className="min-w-[700px]">
             {/* タブナビ */}
