@@ -26,6 +26,7 @@ import TestUserDataFetch from "../../TEST/TestUserDataFetch";
 import TestAdminDataFetch from "../../TEST/testpage";
 import useDynamicTitle from "../../contexts/hooks/useDynamicTitle";
 
+
 const SuperAdminDashboard = () => {
   const [selectedContent, setSelectedContent] = useState("welcome");
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -92,7 +93,7 @@ const SuperAdminDashboard = () => {
           />
         );
       case "todo":
-        return <ToDoContent logs={logs} />;
+        return <ToDoContent />;
       case "notification":
         return <CeoMessagesAll />;
       case "tasks":
@@ -102,7 +103,7 @@ const SuperAdminDashboard = () => {
       case 'userTest':
         return <TestAdminDataFetch />;
       default:
-        return <ToDoContent logs={logs} />;
+        return <ToDoContent />;
     }
   };
 
