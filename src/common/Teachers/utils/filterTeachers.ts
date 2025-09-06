@@ -14,9 +14,9 @@ export const filterTeachers = (teachers: Teacher[], searchTerm: string): Teacher
     }
 
     return teachers.filter((t: Teacher) => { // filter内のコールバック引数 't' にも型を定義
-        const name = t.name || '';
-        const kanafirst = t.kanafirst || '';
-        const kanalast = t.kanalast || '';
+        const name = `${t.lastName} ${t.firstName}` || '';
+        const kanafirst = t.firstNameKana || '';
+        const kanalast = t.lastNameKana || '';
 
         return (
             name.toLowerCase().includes(lowercasedSearchTerm) ||
