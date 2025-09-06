@@ -6,7 +6,7 @@ import StudentSearchForm from './components/StudentSearchForm';
 import Breadcrumb from './components/Breadcrumb';
 import StudentTable from './components/StudentTable';
 import { filterStudents } from './components/filterStudents';
-import { Student } from '../../contexts/types/student';
+import { Student } from '@/contexts/types/student';
 
 // Propsの型を定義
 interface SuperAdminStudentsProps {
@@ -14,10 +14,14 @@ interface SuperAdminStudentsProps {
 }
 
 const SuperAdminStudents: React.FC<SuperAdminStudentsProps> = ({ onAddNewStudent }) => {
-    const { students } = useAdminData();
+    const adminData = useAdminData();
     const navigate = useNavigate();
-
     const [searchTerm, setSearchTerm] = useState<string>('');
+
+    if (!adminData) {
+        return <div>Loading...</div>;
+    }
+    const { students } = adminData;
     const breadcrumbItems: string[] = ['生徒マスタ', '一覧'];
     const filteredStudents = filterStudents(students.students ?? [], searchTerm);
 

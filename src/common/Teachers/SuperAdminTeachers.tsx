@@ -6,7 +6,7 @@ import TeacherSearchForm from "./components/TeacherSearchForm";
 import Breadcrumb from "../Students/components/Breadcrumb";
 import TeacherTable from "./components/TeacherTable";
 import { filterTeachers } from "./utils/filterTeachers";
-import type { Teacher } from "../../schemas";
+import type { Teacher } from "@/schemas";
 
 // Propsの型を定義
 interface SuperAdminTeachersProps {
@@ -15,8 +15,11 @@ interface SuperAdminTeachersProps {
 
 const SuperAdminTeachers: React.FC<SuperAdminTeachersProps> = ({ onAddNewTeacher }) => {
   const navigate = useNavigate();
-  const { teachers } = useAdminData();
+  const adminData = useAdminData();
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filteredTeachers, setFilteredTeachers] = useState<Teacher[]>([]);
 
+  const teachers = adminData?.teachers;
   const teacherList: Teacher[] = useMemo(
     () =>
       Array.isArray(teachers)
@@ -26,9 +29,6 @@ const SuperAdminTeachers: React.FC<SuperAdminTeachersProps> = ({ onAddNewTeacher
           : [],
     [teachers]
   );
-
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredTeachers, setFilteredTeachers] = useState<Teacher[]>([]);
 
   useEffect(() => {
     setFilteredTeachers(filterTeachers(teacherList, searchTerm));
