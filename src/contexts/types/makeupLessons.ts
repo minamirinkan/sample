@@ -1,4 +1,4 @@
-import { Teacher } from '@contexts/types/teacher';
+import { Teacher } from '@/contexts/types/teacher';
 
 export type MakeupLesson = {
     date?: string | null;

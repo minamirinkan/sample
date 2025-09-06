@@ -8,7 +8,12 @@ import StudentTable from './components/StudentTable';
 import { filterStudents } from './components/filterStudents';
 import { Student } from '../../contexts/types/student';
 
-const SuperAdminStudents: React.FC = () => {
+// Propsの型を定義
+interface SuperAdminStudentsProps {
+    onAddNewStudent?: () => void;
+}
+
+const SuperAdminStudents: React.FC<SuperAdminStudentsProps> = ({ onAddNewStudent }) => {
     const { students } = useAdminData();
     const navigate = useNavigate();
 

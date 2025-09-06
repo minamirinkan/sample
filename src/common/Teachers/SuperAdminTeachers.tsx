@@ -8,7 +8,12 @@ import TeacherTable from "./components/TeacherTable";
 import { filterTeachers } from "./utils/filterTeachers";
 import type { Teacher } from "../../schemas";
 
-const SuperAdminTeachers: React.FC = () => {
+// Propsの型を定義
+interface SuperAdminTeachersProps {
+  onAddNewTeacher?: () => void;
+}
+
+const SuperAdminTeachers: React.FC<SuperAdminTeachersProps> = ({ onAddNewTeacher }) => {
   const navigate = useNavigate();
   const { teachers } = useAdminData();
 
@@ -48,7 +53,7 @@ const SuperAdminTeachers: React.FC = () => {
           講師マスタ <span className="text-lg font-normal ml-1">一覧</span>
         </h1>
         <Breadcrumb items={breadcrumbItems} />
-        <button onClick={handleAddNewTeacher} className="btn-primary">
+        <button onClick={onAddNewTeacher ? onAddNewTeacher : handleAddNewTeacher} className="btn-primary">
           新規登録
         </button>
       </div>
