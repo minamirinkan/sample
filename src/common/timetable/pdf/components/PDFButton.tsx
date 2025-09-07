@@ -16,6 +16,7 @@ import NotoSansJp from '../../fonts/NotoSansJP-Regular.ttf';
 import { DocumentProps } from '@react-pdf/renderer';
 interface PDFButtonProps {
   getData: () => { rows: RowData[]; classroomName: string };
+  isLoading?: boolean; // ローディング状態を受け取る
 }
 
 // フォント登録
@@ -67,6 +68,8 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       marginTop: 0,
       paddingTop: 0,
       fontFamily: 'NotoSansJP',
+      borderBottomWidth: 1,
+      borderColor: '#000',
     },
     tableHeader: {
       width: columnWidth,
@@ -80,7 +83,8 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       backgroundColor: '#e0e0e0',
       fontFamily: 'NotoSansJP',
       marginBottom: 0,
-      paddingBottom: 3,
+      paddingVertical: 0.5,
+      minHeight: 20,      
     },
     headerTimeSection: {
       backgroundColor: '#e0e0e0',
@@ -112,13 +116,14 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       width: '11%',
       fontWeight: 'bold',
       textAlign: 'center',
-      borderRightWidth: 1,
-      borderRightColor: '#ccc',
+      borderRightWidth: 2,
+      borderRightColor: '#000',
       minHeight: 40,
       backgroundColor: '#e0e0e0',
       justifyContent: 'center',
       alignItems: 'center',
       fontFamily: 'NotoSansJP',
+      fontSize: teacherValueSize,
     },
     cellText: {
       fontSize: cellFontSize,
@@ -142,23 +147,24 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       width: '100%',
       minHeight: isSmallFont ? 9 : 18,
       fontFamily: 'NotoSansJP',
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: '#000',
     },
     studentInfoSection: {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRight: '1 solid #000',
       paddingHorizontal: isSmallFont ? 1 : 2,
       paddingVertical: isSmallFont ? 1 : 2,
       fontFamily: 'NotoSansJP',
+      borderRightWidth: 1,
+      borderColor: '#000',
+      // 修正: 縦線を下まで伸ばすための設定
+      height: '100%',
+      minHeight: isSmallFont ? 9 : 18,
     },
-    longBottomLine: {
-      height: 1,
-      backgroundColor: '#000',
-      width: '104%',
-      marginLeft: '-2%',
-      marginTop: 1,
-    },
+    
     studentInfoSection_for_teacher: {
       flexDirection: 'column',
       alignItems: 'center',
@@ -166,6 +172,9 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       paddingHorizontal: isSmallFont ? 1 : 2,
       paddingVertical: isSmallFont ? 1 : 2,
       fontFamily: 'NotoSansJP',
+      // 最後の要素なので右ボーダーは不要
+      height: '100%',
+      minHeight: isSmallFont ? 9 : 18,
     },
     seatSection: {
       flex: 0.4,
@@ -229,6 +238,34 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       fontSize: isSmallFont ? 2.5 : 5,
       fontWeight: 'bold',
       fontFamily: 'NotoSansJP',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'stretch',
+      width: '100%',
+    },
+    headerSubSection: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'NotoSansJP',
+      borderRightWidth: 1,
+      borderColor: '#000',
+      // ヘッダー部分も高さを統一
+      height: '100%',
+    },
+    headerSeatSection: {
+      flex: 0.4,
+    },
+    headerGradeSection: {
+      flex: 0.8,
+    },
+    headerNameSection: {
+      flex: 1.7,
+    },
+    headerSubjectSection: {
+      flex: 1,
+      // 最後の要素なので右ボーダーは不要
+      borderRightWidth: 0,
     },
     dateText: {
       fontSize: isSmallFont ? 12.5 : 25,
@@ -386,10 +423,33 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
 
   const renderHeader = () => (
     <View style={styles.tableRow}>
+      <View style={[styles.teacherName, { width: '11%', height: 40 }]}>
+        <Text style={{ fontSize: isSmallFont ? 3 : 6, fontWeight: 'bold' }}>講師</Text>
+      </View>
       {visiblePeriods.map((p, idx) => (
         <View key={idx} style={[styles.tableHeader, { width: columnWidth, padding: 3 }]}>
           <Text style={styles.headerText}>【{p.label}】{p.time}</Text>
-          <Text style={styles.headerSubText}>座席　学年　生徒氏名　科目　講師</Text>
+          <View style={{
+            height: 1,
+            backgroundColor: '#000',
+            width: '105%',
+            marginLeft: '-2.5%',
+            marginVertical: 1,
+          }} />
+          <View style={styles.headerSubText}>
+            <View style={[styles.headerSubSection, styles.headerSeatSection]}>
+              <Text style={{ fontSize: isSmallFont ? 2.5 : 5, fontWeight: 'bold' }}>座席</Text>
+            </View>
+            <View style={[styles.headerSubSection, styles.headerGradeSection]}>
+              <Text style={{ fontSize: isSmallFont ? 2.5 : 5, fontWeight: 'bold' }}>学年</Text>
+            </View>
+            <View style={[styles.headerSubSection, styles.headerNameSection]}>
+              <Text style={{ fontSize: isSmallFont ? 2.5 : 5, fontWeight: 'bold' }}>生徒氏名</Text>
+            </View>
+            <View style={[styles.headerSubSection, styles.headerSubjectSection]}>
+              <Text style={{ fontSize: isSmallFont ? 2.5 : 5, fontWeight: 'bold' }}>科目</Text>
+            </View>
+          </View>
         </View>
       ))}
     </View>
@@ -474,7 +534,7 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
           ...(i === arr.length - 1 ? [{ borderBottom: 'none', marginBottom: 0 }] : [])
         ]}
       >
-        <View style={styles.longBottomLine} />
+        
         <View style={styles.studentInfoGrid}>
           <View style={[styles.studentInfoSection, styles.seatSection]}>
             <Text style={styles.sectionValue}>{String(s.seat ?? '―')}</Text>
@@ -490,15 +550,11 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
             </Text>
           </View>
 
-          <View style={[styles.studentInfoSection, styles.subjectSection]}>
+          <View style={[styles.studentInfoSection_for_teacher, styles.subjectSection]}>
             <Text style={styles.sectionValue}>{String(s.subject ?? '―')}</Text>
           </View>
-
-          <View style={[styles.studentInfoSection_for_teacher, styles.teacherSection]}>
-            <Text style={styles.teacherValue}>{getTeacherDisplayName(row)}</Text>
-          </View>
         </View>
-        <View style={styles.longBottomLine} />
+        
       </View>
     ));
   };
@@ -506,6 +562,11 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
   const renderTableRows = (rowsData: RowData[]) => (
     rowsData.map((row, rowIdx) => (
       <View key={rowIdx} style={styles.tableRow}>
+        <View style={styles.teacherName}>
+          <Text style={{ fontSize: isSmallFont ? 2.5 : 5, fontWeight: 'bold' }}>
+            {getTeacherDisplayName(row)}
+          </Text>
+        </View>
         {row.periods.map((students, idx) => (
           <View
             key={idx}
@@ -538,18 +599,18 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
 
           {isWrapMode ? (
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-              <View style={[styles.tableContainer, { width: dynamicTableWidth, marginRight: 20 }]}>
+              <View style={[styles.tableContainer, { width: dynamicTableWidth + (dynamicTableWidth * 0.11), marginRight: 20 }]}>
                 {renderHeader()}
                 {renderTableRows(processedData.firstHalf)}
               </View>
 
-              <View style={[styles.tableContainer, { width: dynamicTableWidth }]}>
+              <View style={[styles.tableContainer, { width: dynamicTableWidth + (dynamicTableWidth * 0.11) }]}>
                 {renderHeader()}
                 {renderTableRows(processedData.secondHalf)}
               </View>
             </View>
           ) : (
-            <View style={[styles.tableContainer, { width: dynamicTableWidth }]}>
+            <View style={[styles.tableContainer, { width: dynamicTableWidth + (dynamicTableWidth * 0.11) }]}>
               {renderHeader()}
               {renderTableRows(processedData.firstHalf)}
             </View>
@@ -563,7 +624,7 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
 const PDFButton = React.forwardRef<
   { updatePDFData: () => void; resetPDFData: () => void },
   PDFButtonProps
->(({ getData }, ref) => {
+>(({ getData, isLoading = false }, ref) => {
   const [pdfDoc, setPdfDoc] = React.useState<React.ReactElement<DocumentProps> | null>(null);
 
   const updatePDFData = React.useCallback(() => {
@@ -586,6 +647,7 @@ const PDFButton = React.forwardRef<
   }), [updatePDFData, resetPDFData]);
 
   const handleClick = () => {
+    if (isLoading) return; // ローディング中はクリックを無効化
     updatePDFData();
   };
 
@@ -619,10 +681,15 @@ const PDFButton = React.forwardRef<
         </PDFDownloadLink>
       ) : (
         <button
-          className="px-4 py-2 rounded text-white bg-blue-500 hover:bg-blue-600"
+          className={`px-4 py-2 rounded text-white ${
+            isLoading 
+              ? 'bg-gray-400 cursor-not-allowed opacity-50' 
+              : 'bg-blue-500 hover:bg-blue-600'
+          }`}
           onClick={handleClick}
+          disabled={isLoading}
         >
-          PDFを作成
+          {isLoading ? 'データ読み込み中...' : 'PDFを作成'}
         </button>
       )}
     </div>

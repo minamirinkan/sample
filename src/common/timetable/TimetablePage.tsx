@@ -61,6 +61,7 @@ export default function TimetablePage() {
   ]);
   const [classroomName, setClassroomName] = useState('');
   const [periodLabels, setPeriodLabels] = useState<string[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(false); // データ読み込み状態を追加
 
   // PDFButton用のrefを追加
   const pdfButtonRef = useRef<{ updatePDFData: () => void; resetPDFData: () => void } | null>(null);
@@ -76,35 +77,42 @@ export default function TimetablePage() {
   const loadTimetableData = React.useCallback(async () => {
     if (!userData?.classroomCode) return;
 
-    const { rows, periodLabels, classroomName } = await fetchTimetableData(selectedDate, userData.classroomCode);
-    setPeriodLabels(periodLabels ?? []);
-    // ここでisSavedを判定
-    const saved = rows?.some((row: RowData) => row.status === '出勤') ?? false;
-    setIsSaved(saved);
+    setIsLoadingData(true); // ローディング開始
+    try {
+      const { rows, periodLabels, classroomName } = await fetchTimetableData(selectedDate, userData.classroomCode);
+      setPeriodLabels(periodLabels ?? []);
+      // ここでisSavedを判定
+      const saved = rows?.some((row: RowData) => row.status === '出勤') ?? false;
+      setIsSaved(saved);
 
-    let finalRows;
-    if (rows && rows.length > 0) {
-      const hasUndecided = rows.find((r: RowData) => r.status === '未定');
-      const hasTransfer = rows.find((r: RowData) => r.status === '振替');
-      const hasAbsent = rows.find((r: RowData) => r.status === '欠席');
-      const normalRows = rows.filter((r: RowData) => !['未定', '振替', '欠席'].includes(r.status));
+      let finalRows;
+      if (rows && rows.length > 0) {
+        const hasUndecided = rows.find((r: RowData) => r.status === '未定');
+        const hasTransfer = rows.find((r: RowData) => r.status === '振替');
+        const hasAbsent = rows.find((r: RowData) => r.status === '欠席');
+        const normalRows = rows.filter((r: RowData) => !['未定', '振替', '欠席'].includes(r.status));
 
-      finalRows = [
-        ...normalRows.map((r: RowData) => ({ ...r, status: '予定' })),
-        hasUndecided || { status: '未定', teacher: null, periods: Array.from({ length: 8 }, () => []) },
-        hasTransfer || { status: '振替', teacher: null, periods: Array.from({ length: 8 }, () => []) },
-        hasAbsent || { status: '欠席', teacher: null, periods: Array.from({ length: 8 }, () => []) },
-      ];
-    } else {
-      finalRows = [
-        { status: '未定', teacher: null, periods: Array.from({ length: 8 }, () => []) },
-        { status: '振替', teacher: null, periods: Array.from({ length: 8 }, () => []) },
-        { status: '欠席', teacher: null, periods: Array.from({ length: 8 }, () => []) },
-      ];
+        finalRows = [
+          ...normalRows.map((r: RowData) => ({ ...r, status: '予定' })),
+          hasUndecided || { status: '未定', teacher: null, periods: Array.from({ length: 8 }, () => []) },
+          hasTransfer || { status: '振替', teacher: null, periods: Array.from({ length: 8 }, () => []) },
+          hasAbsent || { status: '欠席', teacher: null, periods: Array.from({ length: 8 }, () => []) },
+        ];
+      } else {
+        finalRows = [
+          { status: '未定', teacher: null, periods: Array.from({ length: 8 }, () => []) },
+          { status: '振替', teacher: null, periods: Array.from({ length: 8 }, () => []) },
+          { status: '欠席', teacher: null, periods: Array.from({ length: 8 }, () => []) },
+        ];
+      }
+
+      setRows(finalRows);
+      setClassroomName(classroomName);
+    } catch (error) {
+      console.error('データ読み込みエラー:', error);
+    } finally {
+      setIsLoadingData(false); // ローディング終了
     }
-
-    setRows(finalRows);
-    setClassroomName(classroomName);
   }, [selectedDate, userData?.classroomCode]);
 
   useEffect(() => {
@@ -348,6 +356,7 @@ export default function TimetablePage() {
             rows,
             classroomName,
           })}
+          isLoading={isLoadingData} // ローディング状態を渡す
         />
         <button
           className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded"
