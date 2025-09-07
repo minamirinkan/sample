@@ -242,6 +242,8 @@ const createDynamicStyles = (isSmallFont: boolean, columnWidth: number, isWrapMo
       justifyContent: 'space-between',
       alignItems: 'stretch',
       width: '100%',
+      flex: 1.5,            // 👈 均等に伸びる
+  height: '320%',
     },
     headerSubSection: {
       flexDirection: 'column',
