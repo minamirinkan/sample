@@ -42,7 +42,7 @@ export const adminRoutes = (
         <Route path="students" element={<SuperAdminStudents />} />
         <Route path="students/new" element={<StudentRegistrationForm />} />
         <Route path="students/:studentId" element={<RedirectToBasic />} />
-        <Route path="students/:studentId/:section" element={<StudentDetail />} />
+        <Route path="students/:studentId/:section/:tab?" element={<StudentDetail />} />
         <Route path="teachers" element={<SuperAdminTeachers />} />
         <Route path="teachers/new" element={<TeacherRegistrationForm />} />
         <Route path="teachers/:code" element={<TeacherDetail />} />

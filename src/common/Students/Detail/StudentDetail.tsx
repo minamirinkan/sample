@@ -20,7 +20,7 @@ const TAB_MAP: Record<string, string> = {
 };
 
 const StudentDetail: React.FC = () => {
-    const { studentId, section } = useParams<{ studentId: string; section: string }>();
+    const { studentId, section, tab } = useParams<{ studentId: string; section: string; tab?: string }>();
     const navigate = useNavigate();
     const [student, setStudent] = useState<Student | null>(null);
     const { customer, loading: customerLoading, error } = useCustomerByStudent(studentId ?? null);
@@ -28,6 +28,9 @@ const StudentDetail: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<Student | null>(null);
     const [originalData, setOriginalData] = useState<Student | null>(null);
+    const isAttendanceTab = (value: string | undefined): value is 'regular' | 'monthly' | 'seasonal' => {
+        return value === 'regular' || value === 'monthly' || value === 'seasonal';
+    };
 
     useEffect(() => {
         if (!studentId) return;
@@ -55,7 +58,7 @@ const StudentDetail: React.FC = () => {
     if (loading || customerLoading) return <div className="text-center text-gray-500">読み込み中...</div>;
     if (!student) return <div className="text-center text-red-500">生徒データが見つかりません</div>;
     if (error) return <div className="text-center text-red-500">顧客データの取得に失敗しました</div>;
-    if (!section) {
+    if (!section && window.location.pathname.includes('/attendance') === false) {
         return <Navigate to={`/admin/students/${studentId}/basic`} replace />;
     }
     const onBack = () => navigate(-1);
@@ -74,7 +77,7 @@ const StudentDetail: React.FC = () => {
 
     const renderTabContent = () => {
         if (!formData) return null;
-
+        console.log('section', section);
         switch (section) {
             case 'basic':
                 return (
@@ -86,11 +89,15 @@ const StudentDetail: React.FC = () => {
             case 'course':
                 return <StudentCourseTable studentId={formData.id ?? ""} />;
             case 'attendance':
+                const initialAttendanceTab: 'regular' | 'monthly' | 'seasonal' =
+                    tab === 'regular' || tab === 'monthly' || tab === 'seasonal' ? tab : 'monthly';
+
                 return (
                     <StudentAttendanceTab
-                        studentId={formData.id}
-                        studentName={`${formData.lastName ?? ''} ${formData.firstName ?? ''}`}
                         classroomCode={formData.classroomCode}
+                        studentId={studentId!}
+                        studentName={`${formData.lastName} ${formData.firstName}`}
+                        initialTab={initialAttendanceTab}
                     />
                 );
             case 'grades':

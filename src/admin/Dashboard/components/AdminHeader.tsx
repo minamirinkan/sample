@@ -68,7 +68,6 @@ const AdminHeader: React.FC<dminHeaderProps> = ({ onToggleSidebar, role }) => {
                             className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
                             onClick={async () => {
                                 await auth.signOut(); // Firebase Auth のログアウト
-                                navigate("/");
                             }}
                         >
                             ログアウト
