@@ -488,32 +488,53 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
     }
   };
 
-  // 講師名を安全に取得する関数を追加
-  const getTeacherDisplayName = (row: RowData): string => {
-    try {
-      if (!row.teacher) return '―';
-      
-      // fullnameがあればそれを使用
-      if (row.teacher.fullname && typeof row.teacher.fullname === 'string' && row.teacher.fullname.trim()) {
-        return row.teacher.fullname.trim();
-      }
-      
-      // lastNameがあればそれを使用（データベースからの場合）
-      if ((row.teacher as any).lastName && typeof (row.teacher as any).lastName === 'string' && (row.teacher as any).lastName.trim()) {
-        return (row.teacher as any).lastName.trim();
-      }
-      
-      // nameプロパティがあればそれを使用
-      if ((row.teacher as any).name && typeof (row.teacher as any).name === 'string' && (row.teacher as any).name.trim()) {
+ // 講師名を安全に取得する関数を改善
+const getTeacherDisplayName = (row: RowData): string => {
+  try {
+    if (!row.teacher) return '―';
+
+    const MANAGER_CODE = 't0470000'; // 教室長の特殊コード
+
+    // 教室長かどうか判定
+    if ((row.teacher as any).code === MANAGER_CODE) {
+      // TimetableRowで設定されるnameプロパティを最優先で確認
+      if ((row.teacher as any).name && typeof (row.teacher as any).name === 'string') {
         return (row.teacher as any).name.trim();
       }
       
-      return '講師名不明';
-    } catch (error) {
-      console.error('Teacher name processing error:', error, row.teacher);
-      return '講師名エラー';
+      // フォールバック: fullnameも確認
+      if ((row.teacher as any).fullname && typeof (row.teacher as any).fullname === 'string') {
+        return (row.teacher as any).fullname.trim();
+      }
+      
+      // 最後のフォールバック: 教室長として表示
+      return '教室長';
     }
-  };
+
+    // 通常講師の処理 - nameプロパティを最優先
+    if ((row.teacher as any).name && typeof (row.teacher as any).name === 'string') {
+      return (row.teacher as any).name.trim();
+    }
+
+    // フォールバック: fullnameを確認
+    if ((row.teacher as any).fullname && typeof (row.teacher as any).fullname === 'string') {
+      return (row.teacher as any).fullname.trim();
+    }
+
+    // さらなるフォールバック: firstName + lastName
+    const firstName = (row.teacher as any).firstName || '';
+    const lastName = (row.teacher as any).lastName || '';
+    if (firstName || lastName) {
+      const fullName = `${lastName} ${firstName}`.trim();
+      if (fullName) return fullName;
+    }
+
+    return '講師名不明';
+  } catch (error) {
+    console.error('Teacher name processing error:', error, row.teacher);
+    return '講師名エラー';
+  }
+};
 
   const renderStudentData = (studentsData: (Student | RowStudent)[], row: RowData) => {
     // 安全な処理を追加
