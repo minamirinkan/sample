@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import MakeupAttendanceTable from './MakeupAttendanceTable';
 import AttendanceTabs from './SubTabs/AttendanceTabs';
+import { useParams } from 'react-router-dom';
 
 type Props = {
     classroomCode: string;
     studentId?: string;
     studentName: string;
+    initialTab: 'regular' | 'monthly' | 'seasonal';
 };
 
-const StudentAttendanceTab: React.FC<Props> = ({ classroomCode, studentId, studentName }) => {
+const StudentAttendanceTab: React.FC<Props> = ({ classroomCode, studentId, studentName, initialTab }) => {
     const today = new Date();
     const [selectedYear, setSelectedYear] = useState<number>(today.getFullYear());
+    const { tab } = useParams<{ tab?: 'regular' | 'monthly' | 'seasonal' }>();
+    const [selectedTab, setSelectedTab] = useState<'regular' | 'monthly' | 'seasonal'>(initialTab);
     const [selectedMonth, setSelectedMonth] = useState<string>(
         `${selectedYear}-${String(today.getMonth() + 1).padStart(2, '0')}`
     );
@@ -70,8 +74,9 @@ const StudentAttendanceTab: React.FC<Props> = ({ classroomCode, studentId, stude
                     classroomCode={classroomCode}
                     studentId={studentId}
                     studentName={studentName}
+                    tab={selectedTab}
                     selectedMonth={selectedMonth}
-                    mode="regular"
+                    setTab={setSelectedTab}
                 />
             )}
         </div>
