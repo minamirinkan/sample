@@ -37,14 +37,14 @@ export default function TimetableRow({
   const handleTeacherChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCode = e.target.value;
 
-    // 教室長が選ばれたときの特別処理
-    if (selectedCode === MANAGER_CODE) {
-      const updatedTeacher = classroom.classroom.fullname
-        ? { code: MANAGER_CODE, name: classroom.classroom.fullname }
-        : null;
-      onChange(rowIndex, { ...row, teacher: updatedTeacher });
-      return;
-    }
+    // TimetableRowの修正が必要な部分
+if (selectedCode === MANAGER_CODE) {
+  const updatedTeacher = classroom?.classroom?.fullname
+    ? { code: MANAGER_CODE, name: classroom.classroom.fullname } // ここでnameを正しく設定
+    : null;
+  onChange(rowIndex, { ...row, teacher: updatedTeacher });
+  return;
+}
 
     const teacherObj = allTeachers.find(t => t.code === selectedCode) || null;
     const updatedTeacher = teacherObj
