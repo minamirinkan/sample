@@ -17,7 +17,7 @@ import {
   orderBy,
   limit
 } from "firebase/firestore";
-import { db } from "../../firebase.js";
+import { db } from "../../firebase";
 import { showErrorToast } from "../ToastProvider";
 import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";

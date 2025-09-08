@@ -1,11 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import React from 'react';
-import SuperAdminLogin from './pages/SuperAdminLogin';
-import AdminLogin from './pages/AdminLogin';
-import TeacherLogin from './teacher/TeacherLogin';
-import CustomerLogin from './pages/CustomerLogin';
-import DevLoginSelector from './pages/DevLoginSelector';
-
 import SuperAdminDashboard from "./Superadmin/Dashboard/SuperAdminDashboard";
 import CustomerDashboard from "./guardian/Dashboard/CustomerDashboard";
 import TeacherDashboard from "./teacher/Dashboard/TeacherDashboard";

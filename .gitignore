@@ -27,3 +27,5 @@ yarn-error.log*
 .firebase/
 firebase-debug.log
 hosting.*.cache
+# Firebase Functions を無視
+functions/
