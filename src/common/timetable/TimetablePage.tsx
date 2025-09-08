@@ -351,13 +351,14 @@ export default function TimetablePage() {
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
         <PDFButton
-          ref={pdfButtonRef}
-          getData={() => ({
-            rows,
-            classroomName,
-          })}
-          isLoading={isLoadingData} // ローディング状態を渡す
-        />
+  ref={pdfButtonRef}
+  getData={() => ({
+    rows,
+    classroomName,
+    classroomData: classroom?.classroom // この行を追加
+  })}
+  isLoading={isLoadingData}
+/>
         <button
           className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded"
           onClick={openStudentListWindow}

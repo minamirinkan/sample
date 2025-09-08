@@ -15,8 +15,8 @@ import { Student, RowStudent } from '../../../../contexts/types/student';
 import NotoSansJp from '../../fonts/NotoSansJP-Regular.ttf';
 import { DocumentProps } from '@react-pdf/renderer';
 interface PDFButtonProps {
-  getData: () => { rows: RowData[]; classroomName: string };
-  isLoading?: boolean; // ローディング状態を受け取る
+  getData: () => { rows: RowData[]; classroomName: string; classroomData?: any };
+  isLoading?: boolean;
 }
 
 // フォント登録
@@ -296,9 +296,10 @@ const EmptyDocument: React.FC = () => (
 interface TimetablePDFProps {
   rows: RowData[];
   classroomName: string;
+  classroomData?: any;
 }
 
-const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
+const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName, classroomData }) => {
   // データ検証を追加
   if (!Array.isArray(rows)) {
     console.error('rows is not an array:', rows);
@@ -488,8 +489,8 @@ const TimetablePDF: React.FC<TimetablePDFProps> = ({ rows, classroomName }) => {
     }
   };
 
- // 講師名を安全に取得する関数を改善
-const getTeacherDisplayName = (row: RowData): string => {
+// 講師名を安全に取得する関数を改善（教室データ対応版）
+const getTeacherDisplayName = (row: RowData, classroomData?: any): string => {
   try {
     if (!row.teacher) return '―';
 
@@ -497,17 +498,33 @@ const getTeacherDisplayName = (row: RowData): string => {
 
     // 教室長かどうか判定
     if ((row.teacher as any).code === MANAGER_CODE) {
-      // TimetableRowで設定されるnameプロパティを最優先で確認
-      if ((row.teacher as any).name && typeof (row.teacher as any).name === 'string') {
+      // 1. TimetableRowで設定されるnameプロパティを最優先で確認（空文字列でない場合）
+      if ((row.teacher as any).name && typeof (row.teacher as any).name === 'string' && (row.teacher as any).name.trim()) {
         return (row.teacher as any).name.trim();
       }
       
-      // フォールバック: fullnameも確認
+      // 2. 教室データから教室長名を取得
+      if (classroomData) {
+        // fullnameが最優先
+        if (classroomData.fullname && typeof classroomData.fullname === 'string') {
+          return classroomData.fullname.trim();
+        }
+        
+        // leaderFirstName + leaderLastNameの組み合わせ
+        const leaderFirstName = classroomData.leaderFirstName || '';
+        const leaderLastName = classroomData.leaderLastName || '';
+        if (leaderFirstName || leaderLastName) {
+          const fullName = `${leaderLastName} ${leaderFirstName}`.trim();
+          if (fullName) return fullName;
+        }
+      }
+      
+      // 3. フォールバック: teacher オブジェクト内のfullname
       if ((row.teacher as any).fullname && typeof (row.teacher as any).fullname === 'string') {
         return (row.teacher as any).fullname.trim();
       }
       
-      // 最後のフォールバック: 教室長として表示
+      // 4. 最後のフォールバック: 教室長として表示
       return '教室長';
     }
 
@@ -587,7 +604,7 @@ const getTeacherDisplayName = (row: RowData): string => {
       <View key={rowIdx} style={styles.tableRow}>
         <View style={styles.teacherName}>
           <Text style={{ fontSize: isSmallFont ? 2.5 : 5, fontWeight: 'bold' }}>
-            {getTeacherDisplayName(row)}
+            {getTeacherDisplayName(row, classroomData)}
           </Text>
         </View>
         {row.periods.map((students, idx) => (
@@ -651,13 +668,13 @@ const PDFButton = React.forwardRef<
   const [pdfDoc, setPdfDoc] = React.useState<React.ReactElement<DocumentProps> | null>(null);
 
   const updatePDFData = React.useCallback(() => {
-    const { rows, classroomName } = getData();
-    if (!rows || rows.length === 0) {
-      setPdfDoc(<EmptyDocument />);
-    } else {
-      setPdfDoc(<TimetablePDF rows={rows} classroomName={classroomName} />);
-    }
-  }, [getData]);
+  const { rows, classroomName, classroomData } = getData();
+  if (!rows || rows.length === 0) {
+    setPdfDoc(<EmptyDocument />);
+  } else {
+    setPdfDoc(<TimetablePDF rows={rows} classroomName={classroomName} classroomData={classroomData} />);
+  }
+}, [getData]);
 
   const resetPDFData = React.useCallback(() => {
     setPdfDoc(null);
