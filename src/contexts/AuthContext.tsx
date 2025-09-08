@@ -1,6 +1,6 @@
 // contexts/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, getIdTokenResult, signOut } from "firebase/auth";
+import { User, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { getUserDataByRole } from "./utils/getUserDataByRole";
 import { UserRole, UserData } from "./types/user";
@@ -17,43 +17,49 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<any | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [role, setRole] = useState<UserRole>(null);
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // 外部から userData を更新する関数
     const updateUserData = (newData: UserData) => {
         setUserData(newData);
     };
 
+    const resetAuthState = () => {
+        setUser(null);
+        setRole(null);
+        setUserData(null);
+    };
+
     // ログイン状態の監視
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            setUser(user);
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            setUser(firebaseUser);
             setLoading(true);
 
-            if (!user) {
-                setRole(null);
-                setUserData(null);
-                setLoading(false); // ← 必ず false に
+            if (!firebaseUser) {
+                resetAuthState();
+                setLoading(false);
                 return;
             }
 
+            // 本番用：2時間後に自動ログアウト
+            const expiry = Date.now() + 2 * 60 * 60 * 1000;
+            (firebaseUser as any).claims = { expiry };
+
             try {
-                const result = await getUserDataByRole(user.uid);
+                const result = await getUserDataByRole(firebaseUser.uid);
                 if (result) {
                     setRole(result.role);
                     setUserData(result.userData);
                 } else {
-                    setRole(null);
-                    setUserData(null);
+                    resetAuthState();
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
-                setRole(null);
-                setUserData(null);
+                resetAuthState();
             }
 
             setLoading(false);
@@ -62,45 +68,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return () => unsubscribe();
     }, []);
 
-    // user が null になったら自動でログイン画面へ
+    // 自動ログイン画面遷移
     useEffect(() => {
         if (!loading && !user) {
             const pathname = window.location.pathname;
-            if (!pathname.includes("-login")) {
-                navigate("/");
-            }
+            if (!pathname.includes("-login")) navigate("/");
         }
     }, [user, loading, navigate]);
 
-    // 2時間セッションチェック（カスタムクレームの expiry）
+    // セッション期限チェック
     useEffect(() => {
         if (!user) return;
 
-        let interval: ReturnType<typeof setInterval>;
-
         const checkExpiry = async () => {
             try {
-                const tokenResult = await getIdTokenResult(user, true);
-                const expiry = tokenResult.claims.expiry as number | undefined;
-
+                const expiry = (user as any).claims?.expiry as number | undefined;
                 if (expiry && Date.now() > expiry) {
                     await signOut(auth);
-                    setRole(null);
-                    setUserData(null);
+                    resetAuthState();
                     alert("セッションが期限切れです。再ログインしてください。");
-                    // navigate は不要、上の effect が処理
                 }
             } catch (error) {
                 console.error("Error checking session expiry:", error);
             }
         };
 
-        // 初回チェック
         checkExpiry();
-        // 1分ごとにチェック
-        interval = setInterval(checkExpiry, 60 * 1000);
+        const interval = setInterval(checkExpiry, 5 * 60 * 1000);
 
-        return () => clearInterval(interval);
+        // タブ切り替え時にもチェック
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === "visible") checkExpiry();
+        };
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+
+        return () => {
+            clearInterval(interval);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+        };
     }, [user]);
 
     const value = React.useMemo(
