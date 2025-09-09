@@ -2,12 +2,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../../firebase';
+import { useAuth } from '../../../contexts/AuthContext';
 interface dminHeaderProps {
     onToggleSidebar: () => void;
     role: 'superadmin' | 'admin' | 'customer' | 'teacher';
 }
 
 const AdminHeader: React.FC<dminHeaderProps> = ({ onToggleSidebar, role }) => {
+    const { setUserPassword } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
@@ -67,7 +69,8 @@ const AdminHeader: React.FC<dminHeaderProps> = ({ onToggleSidebar, role }) => {
                         <button
                             className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
                             onClick={async () => {
-                                await auth.signOut(); // Firebase Auth のログアウト
+                                await auth.signOut();
+                                setUserPassword(null)
                             }}
                         >
                             ログアウト

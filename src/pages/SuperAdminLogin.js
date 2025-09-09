@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from 'firebase/auth';
+import { useAuth } from '../contexts/AuthContext';
 
 const SuperAdminLogin = () => {
+    const { setUserPassword, updateUserData } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -30,6 +32,7 @@ const SuperAdminLogin = () => {
             if (!userSnap.exists()) {
                 alert('ユーザー情報が見つかりません');
                 await signOut(auth);
+                setUserPassword(null);
                 setLoading(false);
                 return;
             }
@@ -38,9 +41,13 @@ const SuperAdminLogin = () => {
             if (userData.role !== 'superadmin') {
                 alert('このアカウントにはSuperAdminの権限がありません');
                 await signOut(auth);
+                setUserPassword(null);
                 setLoading(false);
                 return;
             }
+
+            setUserPassword(password);
+            updateUserData({ ...userData, uid: user.uid });
 
             alert('SuperAdminとしてログイン成功！');
             navigate('/superadmin/dashboard'); // SuperAdmin専用ページへ遷移

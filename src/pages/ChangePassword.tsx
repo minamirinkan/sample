@@ -9,8 +9,10 @@ import {
     signOut,
 } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
+import { useAuth } from '../contexts/AuthContext';
 
 const ChangePassword = () => {
+    const { setUserPassword } = useAuth();
     const [currentPassword, setCurrentPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -50,6 +52,7 @@ const ChangePassword = () => {
 
             alert('パスワードを変更しました。再ログインしてください。');
             await signOut(auth);
+            setUserPassword(null);
             navigate('/mypage/dashboard'); // ログインページに遷移させる方が親切かもしれません
         } catch (error: any) { // エラーオブジェクトに型を付ける
             console.error(error);

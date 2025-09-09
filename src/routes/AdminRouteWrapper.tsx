@@ -8,10 +8,15 @@ import LoadingSpinner from '../common/LoadingSpinner';
 
 const AdminRouteWrapper: React.FC = () => {
     const { userData, loading } = useAuth();
+    const pathname = window.location.pathname;
+    const excludedPaths = ['/admin/students/new'];
 
-    if (loading || !userData) return <LoadingSpinner />;
+    if (loading) return <LoadingSpinner />;
 
-    if (!userData?.email) return <Navigate to="/" replace />;
+    // userData が無くても excludedPaths なら例外で通す
+    if (!userData?.email && !excludedPaths.includes(pathname)) {
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <Routes>
