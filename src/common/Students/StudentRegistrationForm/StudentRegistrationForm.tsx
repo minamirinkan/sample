@@ -17,6 +17,7 @@ import { SchoolDataItem } from '../../../contexts/types/schoolData';
 import { Timestamp } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
+import LoadingSpinner from '../../../common/LoadingSpinner';
 
 // Propsの型を定義
 interface StudentRegistrationFormProps {
@@ -24,10 +25,9 @@ interface StudentRegistrationFormProps {
 }
 
 const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCancel }) => {
-
-    const { user } = useAuth();
+    const { user, userPassword } = useAuth();
     const currentAdminUid = user?.uid;
-    const { userData, loading } = useAdminData() ?? { userData: null, loading: true };
+    const { userData, loading: adminLoading } = useAdminData() ?? { userData: null, loading: true };
     const navigate = useNavigate();
     const classroomCode = userData?.classroomCode ?? '';
     const classroomName = userData?.name ?? '';
@@ -98,6 +98,7 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
     const [formData, setFormData] = useState(initialFormData);
     const [lessonType, setLessonType] = React.useState<'regular' | 'nonRegular'>('regular');
     const [courseFormData, setCourseFormData] = useState<SchoolDataItem[]>([]);
+    const [submitting, setSubmitting] = useState(false);
 
     console.log('保存するデータ:', courseFormData);
     useEffect(() => {
@@ -142,7 +143,12 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
             return;
         }
 
+        if (!userPassword) {
+            alert("管理者パスワードが取得できません。再ログインしてください。");
+            return;
+        }
         // 登録用の関数呼び出し
+        setSubmitting(true);
         const success = await registerCustomerAndStudent({
             uid: formData.studentId ?? '',
             customerName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
@@ -167,8 +173,10 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
                 delete updated.subjectOther;
                 return updated;
             }),
+            userPassword: userPassword,
+            setLoading: setSubmitting,
         });
-
+        setSubmitting(false);
 
         if (success) {
             const db = getFirestore();
@@ -179,14 +187,14 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
                 detail: `教室: ${classroomName} / 氏名: ${formData.lastName} ${formData.firstName}`,
                 timestamp: serverTimestamp(),
             });
-            alert('登録が完了しました');
-            navigate('/admin/students/new');
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
                 ...initialFormData,
                 studentId: newStudentId,
             });
+            alert('登録が完了しました');
+            navigate('/admin/students/new');
         } else {
             alert('登録に失敗しました');
         }
@@ -202,7 +210,7 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
     };
 
     // ローディング中（データ取得中）
-    if (loading) {
+    if (adminLoading) {
         return <div className="text-center text-gray-500">読み込み中...</div>;
     }
     // データは取得できたけど存在しなかった場合（エラーハンドリング）
@@ -280,12 +288,15 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
                 </div>
             </div>
             <div className="flex justify-center gap-6 mt-8">
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-                >
-                    登録する
-                </button>
+                <>
+                    {adminLoading && <LoadingSpinner />}
+                    <button
+                        type="submit"
+                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                    >
+                        登録する
+                    </button>
+                </>
                 <button
                     type="button"
                     onClick={onCancel ? onCancel : handleCancel}

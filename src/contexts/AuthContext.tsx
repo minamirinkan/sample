@@ -14,6 +14,8 @@ const AuthContext = createContext<AuthContextType>({
     classroomCode: null,
     loading: true,
     updateUserData: () => { },
+    userPassword: null,
+    setUserPassword: () => { },
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -21,6 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [role, setRole] = useState<UserRole>(null);
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
+    const [userPassword, setUserPassword] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const updateUserData = (newData: UserData) => {
@@ -72,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         if (!loading && !user) {
             const pathname = window.location.pathname;
-            if (!pathname.includes("-login")) navigate("/");
+            if (!pathname.includes("-login") && pathname !== '/admin/students/new') navigate("/");
         }
     }, [user, loading, navigate]);
 
@@ -85,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 const expiry = (user as any).claims?.expiry as number | undefined;
                 if (expiry && Date.now() > expiry) {
                     await signOut(auth);
+                    setUserPassword(null);
                     resetAuthState();
                     alert("セッションが期限切れです。再ログインしてください。");
                 }
@@ -116,8 +120,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             classroomCode: userData?.classroomCode ?? null,
             loading,
             updateUserData,
+            userPassword,
+            setUserPassword,
         }),
-        [user, role, userData, loading]
+        [user, role, userData, loading, userPassword]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

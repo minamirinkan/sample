@@ -7,5 +7,7 @@ export type AuthContextType = {
     userData: UserData | null;
     classroomCode: string | null;
     loading: boolean;
-    updateUserData: (newData: UserData) => void; 
+    updateUserData: (newData: UserData) => void;
+    userPassword: string | null;
+    setUserPassword: (pw: string | null) => void;
 };
