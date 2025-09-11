@@ -61,7 +61,7 @@ const StudentDetail: React.FC = () => {
     if (!section && window.location.pathname.includes('/attendance') === false) {
         return <Navigate to={`/admin/students/${studentId}/basic`} replace />;
     }
-    const onBack = () => navigate(-1);
+    const onBack = () => navigate("/admin/students");
 
     const handleEditClick = () => setIsEditing(true);
     const handleCancelClick = () => {

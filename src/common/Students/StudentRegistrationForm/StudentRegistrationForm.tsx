@@ -18,6 +18,7 @@ import { Timestamp } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 import LoadingSpinner from '../../../common/LoadingSpinner';
+import { toast } from 'react-toastify';
 
 // Propsの型を定義
 interface StudentRegistrationFormProps {
@@ -139,7 +140,7 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.lastName || !formData.firstName) {
-            alert('氏名を入力してください');
+            toast.error('氏名を入力してください');
             return;
         }
 
@@ -193,10 +194,10 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
                 ...initialFormData,
                 studentId: newStudentId,
             });
-            alert('登録が完了しました');
+            toast.success('登録が完了しました！');
             navigate('/admin/students/new');
         } else {
-            alert('登録に失敗しました');
+            toast.error('登録に失敗しました');
         }
     };
 
