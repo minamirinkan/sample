@@ -105,7 +105,8 @@ const AdminSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
                     title="マスタ管理"
                     subItems={[
                         { label: '生徒', key: 'students', path: '/admin/students' },
-                        { label: '講師', key: 'teachers', path: '/admin/teachers' }
+                        { label: '講師', key: 'teachers', path: '/admin/teachers' },
+                        { label: 'シフト計算', key: 'teacher-shifts', path: '/admin/teacher-shifts' }
                     ]}
                 />
                 <SidebarSection
