@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import StudentChip from './StudentChip';
+import StudentChip from './StudentChip.jsx';
 import { TimetableCellProps, RowData } from '../../../contexts/types/timetablerow';
 import { RowStudent } from '../../../contexts/types/student';
 import { SchoolDataItem } from '../../../contexts/types/schoolData';
@@ -173,7 +173,6 @@ export default function TimetableCell({
         }
       }}
 
-
     >
       <div className="flex flex-wrap gap-1">
         {students.map((student, studentIdx) => (
@@ -218,6 +217,19 @@ export default function TimetableCell({
                       onClick={() => handleAction(studentIdx, '欠席')}
                     >
                       欠席
+                    </button>
+                    <button
+                      className="block px-2 py-1 hover:bg-gray-100 w-full text-left text-blue-600"
+                      onClick={() => {
+                        // studentId と section は student オブジェクトから取得
+                        const studentId = student.studentId;
+                        const section = 'attendance'; // 例: courses セクションにする場合
+                        const url = `/admin/students/${studentId}/${section}`;
+                        window.open(url, '_blank', 'width=1000,height=600');
+                        setMenuIndex(null);
+                      }}
+                    >
+                      詳細を見る
                     </button>
                     <button
                       className="block px-2 py-1 hover:bg-gray-100 w-full text-left text-red-600"

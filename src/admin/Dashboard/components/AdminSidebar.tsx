@@ -120,6 +120,11 @@ const AdminSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
                         { label: '一括分析/複数教室', key: 'bulk-multi-class', path: '/admin/bulk-multi-class' },
                     ]}
                 />
+                <SidebarSection
+                    icon={FaBell} title="sample時間割" subItems={[
+                        { label: 'sample', key: 'sample', path: '/admin/sample' }
+                    ]}
+                />
             </ul>
         </aside>
     );

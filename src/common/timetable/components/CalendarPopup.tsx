@@ -108,6 +108,9 @@ class CalendarPopup extends Component<CalendarPopupProps, CalendarPopupState> {
   };
 
   setupSavedDatesListener = () => {
+    // 前のリスナーがあれば解除
+    if (this.unsubscribe) this.unsubscribe();
+
     const { year, month } = this.state;
     const { classroomCode } = this.props;
 
@@ -120,10 +123,7 @@ class CalendarPopup extends Component<CalendarPopupProps, CalendarPopupState> {
     const prefix = `${classroomCode}_`;
     const dailySchedulesRef = collection(db, "dailySchedules");
 
-    const q = query(
-      dailySchedulesRef,
-      where("isSaved", "==", true)
-    );
+    const q = query(dailySchedulesRef, where("isSaved", "==", true));
 
     this.unsubscribe = onSnapshot(q, (snapshot) => {
       const datesSet = new Set<string>();
@@ -144,42 +144,42 @@ class CalendarPopup extends Component<CalendarPopupProps, CalendarPopupState> {
   };
 
   fetchClosuresFromFirestore = async () => {
-  console.log('fetchClosuresFromFirestore called');
-  const { classroomCode } = this.props;
-  if (!classroomCode) {
-    console.warn('classroomCode prop is required');
-    return;
-  }
-
-  const db = getFirestore();
-  const closuresSet = new Set<string>();
-
-  const yearStr = this.state.year.toString();
-
-  try {
-    // classrooms/{classroomCode}/closures/{year} ドキュメントを取得
-    const closuresYearDocRef = doc(db, `classrooms/${classroomCode}/closures/${yearStr}`);
-    const closuresYearDocSnap = await getDoc(closuresYearDocRef);
-
-    if (closuresYearDocSnap.exists()) {
-      const data = closuresYearDocSnap.data();
-      const closuresArray = data.closures || [];
-
-      closuresArray.forEach((closure: { date?: string }) => {
-        if (closure.date) {
-          closuresSet.add(closure.date);
-        }
-      });
-
-      this.setState({ holidayDates: closuresSet });
-    } else {
-      console.warn(`closures doc for year ${yearStr} not found`);
-      this.setState({ holidayDates: new Set() });
+    console.log('fetchClosuresFromFirestore called');
+    const { classroomCode } = this.props;
+    if (!classroomCode) {
+      console.warn('classroomCode prop is required');
+      return;
     }
-  } catch (err) {
-    console.error('Firestore 休校日の取得に失敗:', err);
-  }
-};
+
+    const db = getFirestore();
+    const closuresSet = new Set<string>();
+
+    const yearStr = this.state.year.toString();
+
+    try {
+      // classrooms/{classroomCode}/closures/{year} ドキュメントを取得
+      const closuresYearDocRef = doc(db, `classrooms/${classroomCode}/closures/${yearStr}`);
+      const closuresYearDocSnap = await getDoc(closuresYearDocRef);
+
+      if (closuresYearDocSnap.exists()) {
+        const data = closuresYearDocSnap.data();
+        const closuresArray = data.closures || [];
+
+        closuresArray.forEach((closure: { date?: string }) => {
+          if (closure.date) {
+            closuresSet.add(closure.date);
+          }
+        });
+
+        this.setState({ holidayDates: closuresSet });
+      } else {
+        console.warn(`closures doc for year ${yearStr} not found`);
+        this.setState({ holidayDates: new Set() });
+      }
+    } catch (err) {
+      console.error('Firestore 休校日の取得に失敗:', err);
+    }
+  };
 
   render() {
     const { year, month, showCalendar, selectedDate, today, selectedWeekday, savedDates } = this.state;
