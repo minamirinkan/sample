@@ -17,6 +17,7 @@ import { DuplicateInfo } from '@/contexts/types/timetable';
 import { RowData } from '@/contexts/types/timetablerow';
 import { TimetableRow, TimetableStudent } from '@/contexts/types/data';
 import StudentList from './components/StudentList';
+import { BrowserRouter } from 'react-router-dom';
 
 function toTimetableStudent(student: any): TimetableStudent {
 
@@ -294,11 +295,13 @@ export default function TimetablePage() {
       newWindow.document.body.appendChild(root);
 
       createRoot(root).render(
-        <AuthProvider>
-          <AdminDataProvider>
-            <StudentList />
-          </AdminDataProvider>
-        </AuthProvider>
+        <BrowserRouter>
+          <AuthProvider>
+            <AdminDataProvider>
+              <StudentList />
+            </AdminDataProvider>
+          </AuthProvider>
+        </BrowserRouter>
       );
     }
   };
@@ -351,14 +354,14 @@ export default function TimetablePage() {
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
         <PDFButton
-  ref={pdfButtonRef}
-  getData={() => ({
-    rows,
-    classroomName,
-    classroomData: classroom?.classroom // この行を追加
-  })}
-  isLoading={isLoadingData}
-/>
+          ref={pdfButtonRef}
+          getData={() => ({
+            rows,
+            classroomName,
+            classroomData: classroom?.classroom // この行を追加
+          })}
+          isLoading={isLoadingData}
+        />
         <button
           className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded"
           onClick={openStudentListWindow}
@@ -373,8 +376,8 @@ export default function TimetablePage() {
           onClick={openConfirmModal}
           disabled={!isTodayOrPast() || isProcessingConfirm || isSaved}
           className={`px-6 py-3 rounded text-white font-bold shadow-md transition ${!isTodayOrPast() || isProcessingConfirm || isSaved
-              ? 'bg-red-300 cursor-not-allowed'
-              : 'bg-red-600 hover:bg-red-700'
+            ? 'bg-red-300 cursor-not-allowed'
+            : 'bg-red-600 hover:bg-red-700'
             }`}
         >
           出席を確定

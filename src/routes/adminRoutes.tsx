@@ -19,6 +19,7 @@ import SchoolScoreTable from "../common/ScoreTable/SchoolScoreTable";
 import TuitionPage from "../admin/pages/TuitionPage";
 import TeacherWorkFeesPage from "../admin/pages/TeacherWorkFeesPage";
 import PayrollSheet from "../common/Teachers/components/PayrollSheet";
+import TimetableDragDrop from "../common/sampleTimetable/TimetableFlat";
 
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
@@ -50,5 +51,6 @@ export const adminRoutes = (
         <Route path="tuition/:classroomName" element={<TuitionPage />} />
         <Route path="work-fees/:location" element={<TeacherWorkFeesPage />} />
         <Route path="teacher-shifts" element={<PayrollSheet />} />
+        <Route path="sample" element={<TimetableDragDrop />} />
     </>
 );
