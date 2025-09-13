@@ -3,22 +3,50 @@ import { collectionGroup, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
 // データ構造の型定義
-type ClassTypeCounts = {
-    [classType: string]: number;
+type CategoryCounts = { [category: string]: number };
+type MonthlyCounts = { [month: string]: CategoryCounts };
+type PayrollData = { [teacherName: string]: MonthlyCounts };
+
+// ヘルパー関数（変更なし）
+const getSchoolLevel = (grade: string): '小学生' | '中学生' | '高校生' => {
+    if (grade?.startsWith('高')) return '高校生';
+    if (grade?.startsWith('中')) return '中学生';
+    return '小学生';
 };
-type MonthlyCounts = {
-    [month: string]: ClassTypeCounts;
+const getHighestSchoolLevel = (grades: string[]): '小学生' | '中学生' | '高校生' => {
+    if (grades.some(g => g?.startsWith('高'))) return '高校生';
+    if (grades.some(g => g?.startsWith('中'))) return '中学生';
+    return '小学生';
 };
-type PayrollData = {
-    [teacherName: string]: MonthlyCounts;
+const categorizePeriod = (periodArray: any[]): string => {
+    if (!Array.isArray(periodArray) || periodArray.length === 0) return '不明';
+    const isAllSeminar = periodArray.every(p => p.classType === '演習クラス');
+    if (isAllSeminar) return '演習クラス';
+    if (periodArray.length === 1) {
+        const level = getSchoolLevel(periodArray[0].grade);
+        return `1名（${level}）`;
+    }
+    if (periodArray.length === 2) {
+        const grades = periodArray.map(p => p.grade);
+        const highestLevel = getHighestSchoolLevel(grades);
+        return `2名（${highestLevel}）`;
+    }
+    return '演習クラス';
 };
+
+// ★★★ 修正点1: 表示する列のカテゴリーを固定リストとして定義 ★★★
+const DISPLAY_CATEGORIES = [
+    '1名（小学生）', '1名（中学生）', '1名（高校生）',
+    '2名（小学生）', '2名（中学生）', '2名（高校生）',
+    '演習クラス'
+];
 
 const PayrollSheet: React.FC = () => {
     const [payrollData, setPayrollData] = useState<PayrollData>({});
     const [months, setMonths] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedMonth, setSelectedMonth] = useState<string>('');
-    const [uniqueClassTypes, setUniqueClassTypes] = useState<string[]>([]);
+    // uniqueCategories stateは不要になったため削除
 
     useEffect(() => {
         const fetchSchedules = async () => {
@@ -26,38 +54,28 @@ const PayrollSheet: React.FC = () => {
                 const querySnapshot = await getDocs(collectionGroup(db, 'dailySchedules'));
                 const aggregatedData: PayrollData = {};
                 const allMonths = new Set<string>();
-                const allClassTypes = new Set<string>();
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
                     const docId = doc.id;
                     if (data.rows && Array.isArray(data.rows)) {
                         data.rows.forEach(row => {
-                            if (!row.teacher || !row.teacher.name || !row.periods) {
-                                return;
-                            }
+                            if (!row.teacher || !row.teacher.name || !row.periods) return;
                             const teacherName = row.teacher.name;
-
                             const dateMatch = docId.match(/(\d{4}-\d{2}-\d{2})/);
                             if (!dateMatch) return;
                             const yearMonth = dateMatch[1].substring(0, 7);
-
                             allMonths.add(yearMonth);
                             if (!aggregatedData[teacherName]) aggregatedData[teacherName] = {};
                             if (!aggregatedData[teacherName][yearMonth]) aggregatedData[teacherName][yearMonth] = {};
 
-                            // periodsマップの値（period1~8の配列）をループ
                             Object.values(row.periods).forEach((periodArray: any) => {
-                                // 配列であり、空でなく、最初の要素が存在することを確認
-                                if (Array.isArray(periodArray) && periodArray.length > 0 && periodArray[0]) {
-                                    // 配列の最初の要素に授業情報があると仮定
-                                    const classInfo = periodArray[0];
-                                    const classType = classInfo.classType || '不明';
-                                    allClassTypes.add(classType);
+                                const category = categorizePeriod(periodArray);
+                                if (category === '不明') return;
 
-                                    const currentCount = aggregatedData[teacherName][yearMonth][classType] || 0;
-                                    aggregatedData[teacherName][yearMonth][classType] = currentCount + 1;
-                                }
+                                // allCategoriesの収集は不要に
+                                const currentCount = aggregatedData[teacherName][yearMonth][category] || 0;
+                                aggregatedData[teacherName][yearMonth][category] = currentCount + 1;
                             });
                         });
                     }
@@ -66,16 +84,11 @@ const PayrollSheet: React.FC = () => {
                 const sortedMonths = Array.from(allMonths).sort().reverse();
                 setPayrollData(aggregatedData);
                 setMonths(sortedMonths);
-                setUniqueClassTypes(Array.from(allClassTypes).sort());
 
                 if (sortedMonths.length > 0) {
                     const now = new Date();
                     const currentYearMonth = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`;
-                    if (sortedMonths.includes(currentYearMonth)) {
-                        setSelectedMonth(currentYearMonth);
-                    } else {
-                        setSelectedMonth(sortedMonths[0]);
-                    }
+                    setSelectedMonth(sortedMonths.includes(currentYearMonth) ? currentYearMonth : sortedMonths[0]);
                 }
             } catch (error) {
                 console.error("データ取得中にエラーが発生しました:", error);
@@ -83,13 +96,10 @@ const PayrollSheet: React.FC = () => {
                 setLoading(false);
             }
         };
-
         fetchSchedules();
     }, []);
 
-    const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedMonth(event.target.value);
-    };
+    const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => setSelectedMonth(event.target.value);
 
     if (loading) return <p className="text-gray-500 animate-pulse p-6">読み込み中...</p>;
     if (Object.keys(payrollData).length === 0) return <p className="text-red-500 p-6">表示するデータがありません。</p>;
@@ -109,8 +119,9 @@ const PayrollSheet: React.FC = () => {
                         <tr>
                             <th className="border p-2 text-left">講師名</th>
                             <th className="border p-2">合計コマ数</th>
-                            {uniqueClassTypes.map(type => (
-                                <th key={type} className="border p-2">{type}</th>
+                            {/* ★★★ 修正点2: 固定リストを使って列ヘッダーを生成 ★★★ */}
+                            {DISPLAY_CATEGORIES.map(category => (
+                                <th key={category} className="border p-2">{category}</th>
                             ))}
                         </tr>
                     </thead>
@@ -118,14 +129,14 @@ const PayrollSheet: React.FC = () => {
                         {Object.entries(payrollData).map(([teacher, monthlyCounts]) => {
                             const countsForMonth = monthlyCounts[selectedMonth] || {};
                             const totalCount = Object.values(countsForMonth).reduce((sum, count) => sum + count, 0);
-
                             return (
                                 <tr key={teacher} className="odd:bg-white even:bg-gray-50">
                                     <td className="border p-2 font-medium">{teacher}</td>
                                     <td className="border p-2 text-center font-bold">{totalCount}</td>
-                                    {uniqueClassTypes.map(type => (
-                                        <td key={type} className="border p-2 text-center">
-                                            {countsForMonth[type] || 0}
+                                    {/* ★★★ 修正点3: 固定リストを使ってセルを生成 ★★★ */}
+                                    {DISPLAY_CATEGORIES.map(category => (
+                                        <td key={category} className="border p-2 text-center">
+                                            {countsForMonth[category] || 0}
                                         </td>
                                     ))}
                                 </tr>
