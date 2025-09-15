@@ -2,14 +2,14 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
-import { adminRoutes } from '../routes/adminRoutes';
+import { superadminRoutes } from '../routes/SuperadminRoutes';
 import ProtectedRoute from '../common/ProtectedRoute';
 import LoadingSpinner from '../common/LoadingSpinner';
 
-const AdminRouteWrapper: React.FC = () => {
+const SuperadminRouteWrapper: React.FC = () => {
     const { userData, loading } = useAuth();
     const pathname = window.location.pathname;
-    const excludedPaths = ['/admin/students/new'];
+    const excludedPaths = ['/superadmin/students/new'];
 
     if (loading) return <LoadingSpinner />;
 
@@ -24,15 +24,15 @@ const AdminRouteWrapper: React.FC = () => {
             <Route
                 path={`/*`}
                 element={
-                    <ProtectedRoute role="admin">
-                        <Layout role="admin" />
+                    <ProtectedRoute role="superadmin">
+                        <Layout role="superadmin" />
                     </ProtectedRoute>
                 }
             >
-                {adminRoutes}
+                {superadminRoutes}
             </Route>
         </Routes>
     );
 };
 
-export default AdminRouteWrapper;
+export default SuperadminRouteWrapper;

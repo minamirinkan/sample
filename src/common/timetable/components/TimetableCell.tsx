@@ -225,7 +225,7 @@ export default function TimetableCell({
                         const studentId = student.studentId;
                         const section = 'attendance'; // 例: courses セクションにする場合
                         const url = `/admin/students/${studentId}/${section}`;
-                        window.open(url, '_blank', 'width=1000,height=600');
+                        window.open(url, '_blank', 'width=1000,height=700,scrollbars=yes,resizable=yes');
                         setMenuIndex(null);
                       }}
                     >

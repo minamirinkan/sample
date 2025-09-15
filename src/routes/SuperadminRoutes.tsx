@@ -15,23 +15,25 @@ import StudentDetail from "../common/Students/Detail/StudentDetail";
 import TeacherRegistrationForm from "../common/Teachers/RegistrationForm/TeacherRegistrationForm";
 import TeacherDetail from "../common/Teachers/Detail/TeacherDetail";
 import SchoolScoreTable from "../common/ScoreTable/SchoolScoreTable";
-import TuitionPage from "../admin/pages/TuitionPage";
-import TeacherWorkFeesPage from "../admin/pages/TeacherWorkFeesPage";
 import PayrollSheet from "../common/Teachers/components/PayrollSheet";
 import TimetableDragDrop from "../common/sampleTimetable/TimetableFlat";
+import SchoolAccountAdmin from "../Superadmin/SchoolAccountAdmin";
+import TuitionFormContent from "../Superadmin/TuitionFormContent";
 
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
     if (!studentId) return null;
-    return <Navigate to={`/admin/students/${studentId}/basic`} replace />;
+    return <Navigate to={`/superadmin/students/${studentId}/basic`} replace />;
 };
 
-export const adminRoutes = (
+export const superadminRoutes = (
     <>
         <Route path="dashboard" element={<ToDoContent />} />
         <Route path="profile" element={<AdminProfile />} />
         <Route path="todo" element={<ToDoContent />} />
         <Route path="welcome" element={<ToDoContent />} />
+        <Route path="admin" element={<SchoolAccountAdmin />} />
+        <Route path="tuition" element={<TuitionFormContent />} />        
         <Route path="timetable" element={<TimetablePage />} />
         <Route path="holiday-page" element={<HolidayPage />} />
         <Route path="student-timetable" element={<AdminStudentCalendar />} />
@@ -46,8 +48,6 @@ export const adminRoutes = (
         <Route path="teachers" element={<SuperAdminTeachers />} />
         <Route path="teachers/new" element={<TeacherRegistrationForm />} />
         <Route path="teachers/:code" element={<TeacherDetail />} />
-        <Route path="tuition/:classroomName" element={<TuitionPage />} />
-        <Route path="work-fees/:location" element={<TeacherWorkFeesPage />} />
         <Route path="teacher-shifts" element={<PayrollSheet />} />
         <Route path="sample" element={<TimetableDragDrop />} />
     </>

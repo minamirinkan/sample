@@ -18,7 +18,11 @@ const RoleBasedProvider = ({ children }: { children: React.ReactNode }) => {
         case "superadmin":
             return (
                 <ClassroomSelectionProvider>
-                    <SuperAdminDataProvider>{children}</SuperAdminDataProvider>
+                    <SuperAdminDataProvider>
+                        <AdminDataProvider>
+                            {children}
+                        </AdminDataProvider>
+                    </SuperAdminDataProvider>
                 </ClassroomSelectionProvider>
             );
         case "admin":
