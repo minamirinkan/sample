@@ -11,6 +11,7 @@ import AdminRouteWrapper from "./routes/AdminRouteWrapper";
 import StudentList from "./common/timetable/components/StudentList";
 import LoadingSpinner from "./common/LoadingSpinner";
 import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
+import AdminStudentCalendar from './common/StudentsSchedule/StudentSchedule';
 import SuperadminRouteWrapper from "./routes/SuperadminRouteWrapper";
 
 const App: React.FC = () => {
@@ -30,6 +31,7 @@ const App: React.FC = () => {
           <Route path="/admin/timetable/studentlist" element={<StudentList />} />
           <Route path="/admin/*" element={<AdminRouteWrapper />} />
           <Route path="/superadmin/*" element={<SuperadminRouteWrapper />} />
+          <Route path="/admin/student-timetable" element={<AdminStudentCalendar />} />
         </Routes>
       </ProtectedRoute>
     </RoleBasedProvider>

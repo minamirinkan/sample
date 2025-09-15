@@ -1,10 +1,15 @@
 import React from 'react';
 import AttendanceSubTable from './AttendanceSubTable';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { useAuth, AuthProvider } from '../../../../../contexts/AuthContext';
+import { useAdminData, AdminDataProvider } from '../../../../../contexts/providers/AdminDataProvider';
 import useTeachers from '../../../../../contexts/hooks/useTeachers';
 import usePeriodLabels from '../../../../../contexts/hooks/usePeriodLabels';
 import { useStudentAttendance } from '../../../../../contexts/hooks/useStudentAttendance';
 import { useAttendanceEdit } from '../../../../../contexts/hooks/useAttendanceEdit';
 import { MakeupLesson } from '../../../../../contexts/types/makeupLessons';
+import AdminStudentCalendar from '../../../../StudentsSchedule/StudentSchedule';
 
 type Props = {
     classroomCode: string;
@@ -43,13 +48,50 @@ const MonthlyAttendanceTable: React.FC<Props> = ({
 
     const getStatusClass = (status: string) => statusStyles[status] || '';
 
+
+    const openCalendarWindow = () => {
+        const newWindow = window.open('/admin/student-timetable', '_blank', 'width=600,height=800');
+        if (newWindow) {
+          // ★ 追加: 子ウィンドウに一時的なプロップを注入
+          (newWindow as any).__CALENDAR_PROPS__ = {
+            classroomCode,
+            studentId,
+            studentName,
+            selectedMonth,
+          };
+      
+          newWindow.document.title = "生徒一覧";
+          const root = newWindow.document.createElement('div');
+          newWindow.document.body.appendChild(root);
+      
+          createRoot(root).render(
+            <BrowserRouter>
+              <AuthProvider>
+                <AdminDataProvider>
+                  <AdminStudentCalendar />
+                </AdminDataProvider>
+              </AuthProvider>
+            </BrowserRouter>
+          );
+        }
+      };      
     if (loading) {
         return <p>読み込み中...</p>;
     }
 
     return (
         <div className="min-w-[700px]">
-            <h2 className="text-lg font-bold mb-2 text-blue-600">月間出席記録</h2>
+            <div className="mb-2 flex items-center justify-between">
+        <h2 className="text-lg font-bold text-blue-600">月間出席記録</h2>
+        <button
+          type="button"
+          onClick={openCalendarWindow}
+          className="px-3 py-1.5 rounded-md bg-blue-600 text-white text-sm hover:bg-blue-700 active:scale-[0.99] transition"
+          aria-label="カレンダーを別ウィンドウで開く"
+        >
+          カレンダーを別ウィンドウで表示
+        </button>
+      </div>
             <AttendanceSubTable
                 data={regularList as unknown as MakeupLesson[]}
                 teachers={teachers}
