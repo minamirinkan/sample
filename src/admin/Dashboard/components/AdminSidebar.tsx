@@ -1,34 +1,24 @@
-import { FC, useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
-import { useAuth } from '../../../contexts/AuthContext';
+import { FC } from 'react';
 import SidebarSection from './SidebarSection';
 import {
     FaBell, FaDatabase, FaTasks, FaBook, FaComments, FaYenSign, FaChartBar, FaFileAlt
 } from 'react-icons/fa';
+import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
+import LoadingSpinner from '../../../common/LoadingSpinner';
 
 const AdminSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
-    const { userData } = useAuth();
-    const [classroomName, setClassroomName] = useState('');
-    const classroomCode = userData?.classroomCode;
+    const { classroom, loading } = useAdminData();
 
-    // classroomName を取得
-    useEffect(() => {
-        const fetchClassroomName = async () => {
-            if (!classroomCode) return;
-            const docRef = doc(db, 'classrooms', classroomCode);
-            const docSnap = await getDoc(docRef);
-            setClassroomName(docSnap.exists() ? (docSnap.data() as { name?: string }).name ?? '' : '教室名なし');
-        };
-        fetchClassroomName();
-    }, [classroomCode]);
+    if (loading) return <LoadingSpinner />;
 
+    const classroomName = classroom?.classroom?.name ?? '';
+    
     if (!isOpen) return null;
 
     return (
         <aside className="w-64 border-r border-gray-300 p-4 overflow-auto h-screen">
             <h4 className="text-lg font-bold mb-4 text-center text-gray-800">
-                {classroomName ? `${classroomName}教室` : '管理者'}
+                {classroomName ? `${classroomName}教室` : '読み込み中．．．'}
             </h4>
             <ul className="sidebar-menu">
                 <SidebarSection

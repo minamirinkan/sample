@@ -2,64 +2,83 @@ import React, { useState } from 'react';
 import ExistingLocationsList from './ExistingLocationsList';
 import TuitionDetails from './TuitionDetails';
 import { db } from '../firebase';
-import { doc,getDoc,collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { saveTuitionSettings } from './saveTuitionSettings';
 
-const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'];
+const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'] as const;
 
-const initialSchedulesW = [
-  '週1回（40分）',
-  '週1回',
-  '週2回',
-  '週3回',
-  '週4回',
-  '週5回',
-  '追加1コマ'
-];
+export type Expenses = {
+  admissionFee: string;
+  materialFee: string;
+  testFee: { elementary: string; middle: string };
+  maintenanceFee: string;
+};
 
-const initialSchedulesA = [
-  '週1回',
-  '週2回',
-  '週3回',
-  '週4回',
-  '週5回',
-  '追加1コマ'
-];
+type TuitionFormContentProps = {
+  onRegistered?: (location: string) => void;
+};
 
-const createInitialData = (rows, cols) => {
+const createInitialData = (rows: string[], cols: readonly string[]): string[][] => {
   return rows.map(() => new Array(cols.length).fill(''));
 };
 
-const TuitionFormContent = ({ onRegistered }) => {
-  const [schedulesW, setSchedulesW] = useState(initialSchedulesW);
-  const [schedulesA, setSchedulesA] = useState(initialSchedulesA);
+const TuitionFormContent: React.FC<TuitionFormContentProps> = ({ onRegistered }) => {
+  const initialSchedulesW = [
+    '週1回（40分）',
+    '週1回',
+    '週2回',
+    '週3回',
+    '週4回',
+    '週5回',
+    '追加1コマ',
+  ];
+  const initialSchedulesA = [
+    '週1回',
+    '週2回',
+    '週3回',
+    '週4回',
+    '週5回',
+    '追加1コマ',
+  ];
+
+  const [schedulesW, setSchedulesW] = useState<string[]>(initialSchedulesW);
+  const [schedulesA, setSchedulesA] = useState<string[]>(initialSchedulesA);
   const [addedWeek6, setAddedWeek6] = useState(false);
 
-  const [tuitionDataW, setTuitionDataW] = useState(() =>
-    createInitialData(initialSchedulesW, grades)
+  const [tuitionDataW, setTuitionDataW] = useState<string[][]>(
+    () => createInitialData(initialSchedulesW, grades)
   );
-  const [tuitionDataA, setTuitionDataA] = useState(() =>
-    createInitialData(initialSchedulesA, grades)
+  const [tuitionDataA, setTuitionDataA] = useState<string[][]>(
+    () => createInitialData(initialSchedulesA, grades)
   );
 
-  const [expenses, setExpenses] = useState({
+  const [expenses, setExpenses] = useState<Expenses>({
     admissionFee: '',
     materialFee: '',
     testFee: { elementary: '', middle: '' },
     maintenanceFee: '',
   });
 
-  const [testPrices, setTestPrices] = useState(['', '']);
+  const [testPrices, setTestPrices] = useState<string[]>(['', '']);
   const [registrationLocation, setRegistrationLocation] = useState('');
-  const [selectedLocationData, setSelectedLocationData] = useState(null);
+  const [selectedLocationData, setSelectedLocationData] =
+    useState<null | { id: string;[key: string]: any }>(null);
 
-  const handleChange = (data, setData, rowIdx, colIdx, value) => {
+  const handleChange = (
+    data: string[][],
+    setData: React.Dispatch<React.SetStateAction<string[][]>>,
+    rowIdx: number,
+    colIdx: number,
+    value: string
+  ) => {
     const updated = [...data];
     updated[rowIdx][colIdx] = value;
     setData(updated);
   };
 
-  const handleExpenseChange = (e) => {
+  const handleExpenseChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     if (name.startsWith('testFee_')) {
       const key = name === 'testFee_elementary' ? 'elementary' : 'middle';
@@ -94,20 +113,24 @@ const TuitionFormContent = ({ onRegistered }) => {
 
       setAddedWeek6(true);
     } else {
-      setSchedulesW(schedulesW.filter(row => row !== '週6回'));
-      setTuitionDataW(tuitionDataW.filter((_, idx) => schedulesW[idx] !== '週6回'));
-      setSchedulesA(schedulesA.filter(row => row !== '週6回'));
-      setTuitionDataA(tuitionDataA.filter((_, idx) => schedulesA[idx] !== '週6回'));
+      setSchedulesW(schedulesW.filter((row) => row !== '週6回'));
+      setTuitionDataW(
+        tuitionDataW.filter((_, idx) => schedulesW[idx] !== '週6回')
+      );
+      setSchedulesA(schedulesA.filter((row) => row !== '週6回'));
+      setTuitionDataA(
+        tuitionDataA.filter((_, idx) => schedulesA[idx] !== '週6回')
+      );
       setAddedWeek6(false);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const tuitionDataW_flattened = schedulesW.map((label, rowIdx) => {
       const row = tuitionDataW[rowIdx];
-      const obj = { scheduleLabel: label };
+      const obj: Record<string, string> = { scheduleLabel: label };
       grades.forEach((grade, colIdx) => {
         obj[grade] = row[colIdx];
       });
@@ -116,28 +139,35 @@ const TuitionFormContent = ({ onRegistered }) => {
 
     const tuitionDataA_flattened = schedulesA.map((label, rowIdx) => {
       const row = tuitionDataA[rowIdx];
-      const obj = { scheduleLabel: label };
+      const obj: Record<string, string> = { scheduleLabel: label };
       grades.forEach((grade, colIdx) => {
         obj[grade] = row[colIdx];
       });
       return obj;
     });
 
+    // 数値型に変換
+    const expensesNum = {
+      admissionFee: Number(expenses.admissionFee),
+      materialFee: Number(expenses.materialFee),
+      testFee: {
+        elementary: Number(expenses.testFee.elementary),
+        middle: Number(expenses.testFee.middle),
+      },
+      maintenanceFee: Number(expenses.maintenanceFee),
+    };
+
     try {
       const id = await saveTuitionSettings({
         registrationLocation,
         tuitionDataW: tuitionDataW_flattened,
         tuitionDataA: tuitionDataA_flattened,
-        expenses,
+        expenses: expensesNum,
         testPreparationData: testPrices
       });
 
       alert(`保存完了（tuitionCode: ${id}）`);
-
-      // 🔽 登録完了を親に通知（モーダルを閉じ、選択状態をセット）
-      if (onRegistered && typeof onRegistered === 'function') {
-        onRegistered(registrationLocation);
-      }
+      onRegistered?.(registrationLocation);
     } catch (err) {
       alert('保存に失敗しました');
     }
@@ -147,6 +177,7 @@ const TuitionFormContent = ({ onRegistered }) => {
     return (
       <TuitionDetails
         data={selectedLocationData}
+        locationId={selectedLocationData.id}
         onBack={() => setSelectedLocationData(null)}
       />
     );
@@ -155,7 +186,7 @@ const TuitionFormContent = ({ onRegistered }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-12 overflow-x-auto">
       <ExistingLocationsList
-        onLocationClick={async (locationName) => {
+        onLocationClick={async (locationName: any) => {
           try {
             const docRef = doc(db, 'Tuition', locationName); // ← ドキュメントIDがlocationName
             const docSnap = await getDoc(docRef);

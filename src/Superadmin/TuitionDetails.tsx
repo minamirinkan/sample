@@ -3,14 +3,25 @@ import { updateTuitionSettings } from './updateTuitionSettings.js';
 
 const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'];
 
-const TuitionDetails = ({ data, locationId, onBack }) => {
+type TuitionDetailsProps = {
+  data?: any;
+  locationId?: string;
+  onBack?: () => void;
+};
+
+const TuitionDetails: React.FC<TuitionDetailsProps> = ({ data, locationId, onBack }) => {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState(data ? structuredClone(data) : {});
   const [isSaving, setIsSaving] = useState(false);
 
   if (!data) return <p className="text-red-500">データが読み込まれていません。</p>;
 
-  const handleChange = (type, rowIdx, grade, value) => {
+  const handleChange = (
+    type: string,
+    rowIdx: number,
+    grade: string,
+    value: number | string
+  ) => {
     const newData = { ...formData };
     newData[type][rowIdx][grade] = value;
     setFormData(newData);
@@ -31,10 +42,10 @@ const TuitionDetails = ({ data, locationId, onBack }) => {
     }
   };
 
-  const extractRow = (row) =>
+  const extractRow = (row: any) =>
     typeof row.scheduleLabel === 'object' ? row.scheduleLabel : row;
 
-  const renderTable = (label, type) => (
+  const renderTable = (label: string, type: string) => (
     <section>
       <h2 className="text-xl font-bold mb-2">{label}</h2>
       <table className="table-auto border border-collapse border-gray-400">
@@ -47,7 +58,7 @@ const TuitionDetails = ({ data, locationId, onBack }) => {
           </tr>
         </thead>
         <tbody>
-          {formData[type].map((row, rowIdx) => {
+          {formData[type].map((row: any, rowIdx: number) => {
             const rowData = extractRow(row);
             return (
               <tr key={rowIdx}>

@@ -12,14 +12,12 @@ const AdminLogin = () => {
     const [loading, setLoading] = useState(false);
     const { updateUserData, userData, setUserPassword } = useAuth();
     const navigate = useNavigate();
-console.log('userData', userData)
+    console.log('userData', userData)
     // userData が揃ったら自動でダッシュボードへ遷移
     useEffect(() => {
         if (!userData) return;
 
-        if (userData.role === 'superadmin') {
-            navigate('/superadmin/dashboard');
-        } else if (userData.role === 'admin') {
+        if (userData.role === 'admin') {
             navigate('/admin/dashboard');
         }
     }, [userData, navigate]);

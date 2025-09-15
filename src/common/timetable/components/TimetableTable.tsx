@@ -6,6 +6,7 @@ import useTeachers from '../../../contexts/hooks/useTeachers';
 import { useAuth } from '../../../contexts/AuthContext';
 import { RowData } from '../../../contexts/types/timetablerow';
 
+
 type Props = {
   rows: RowData[];
   onChange: (rowIdx: number, newRow: RowData) => void;

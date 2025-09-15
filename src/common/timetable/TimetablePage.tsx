@@ -296,11 +296,11 @@ export default function TimetablePage() {
 
       createRoot(root).render(
         <BrowserRouter>
-          <AuthProvider>
-            <AdminDataProvider>
-              <StudentList />
-            </AdminDataProvider>
-          </AuthProvider>
+        <AuthProvider>
+          <AdminDataProvider>
+            <StudentList />
+          </AdminDataProvider>
+        </AuthProvider>
         </BrowserRouter>
       );
     }
@@ -354,14 +354,14 @@ export default function TimetablePage() {
           この{selectedDate.type === 'date' ? '日付' : '曜日'}の時間割を保存
         </button>
         <PDFButton
-          ref={pdfButtonRef}
-          getData={() => ({
-            rows,
-            classroomName,
-            classroomData: classroom?.classroom // この行を追加
-          })}
-          isLoading={isLoadingData}
-        />
+  ref={pdfButtonRef}
+  getData={() => ({
+    rows,
+    classroomName,
+    classroomData: classroom?.classroom // この行を追加
+  })}
+  isLoading={isLoadingData}
+/>
         <button
           className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded"
           onClick={openStudentListWindow}
@@ -376,8 +376,8 @@ export default function TimetablePage() {
           onClick={openConfirmModal}
           disabled={!isTodayOrPast() || isProcessingConfirm || isSaved}
           className={`px-6 py-3 rounded text-white font-bold shadow-md transition ${!isTodayOrPast() || isProcessingConfirm || isSaved
-            ? 'bg-red-300 cursor-not-allowed'
-            : 'bg-red-600 hover:bg-red-700'
+              ? 'bg-red-300 cursor-not-allowed'
+              : 'bg-red-600 hover:bg-red-700'
             }`}
         >
           出席を確定
