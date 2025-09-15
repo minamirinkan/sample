@@ -13,6 +13,7 @@ import AdminRouteWrapper from "./routes/AdminRouteWrapper";
 import StudentList from "./common/timetable/components/StudentList";
 import LoadingSpinner from "./common/LoadingSpinner";
 import RoleBasedProvider from './contexts/providers/RoleBasedProvider';
+import AdminStudentCalendar from './common/StudentsSchedule/StudentSchedule';
 
 const App: React.FC = () => {
   const { userData, loading } = useAuth();
@@ -32,6 +33,7 @@ const App: React.FC = () => {
           <Route path="/teacher/change-password" element={<TeacherChangePassword />} />
           <Route path="/admin/timetable/studentlist" element={<StudentList />} />
           <Route path="/*" element={<AdminRouteWrapper />} />
+          <Route path="/admin/student-timetable" element={<AdminStudentCalendar />} />
         </Routes>
       </ProtectedRoute>
     </RoleBasedProvider>

@@ -9,7 +9,7 @@ import HolidayPage from '../common/Schedule/HolidayPage';
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
 import HookStatusPage from '../pages/HookStatusPage';
 import TestAdminDataFetch from "../TEST/testpage";
-import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalendar';
+//import AdminStudentCalendar from '../common/StudentsSchedule/StudentSchedule';
 import StudentChatManager from '../guardian/Dashboard/components/StudentChatManager';
 import StudentRegistrationForm from "../common/Students/StudentRegistrationForm/StudentRegistrationForm";
 import StudentDetail from "../common/Students/Detail/StudentDetail";
@@ -35,7 +35,6 @@ export const adminRoutes = (
         <Route path="welcome" element={<ToDoContent />} />
         <Route path="timetable" element={<TimetablePage />} />
         <Route path="holiday-page" element={<HolidayPage />} />
-        <Route path="student-timetable" element={<AdminStudentCalendar />} />
         <Route path="notification" element={<CeoMessagesAll />} />
         <Route path="tasks" element={<HookStatusPage />} />
         <Route path="schoolTest" element={<SchoolScoreTable />} />
