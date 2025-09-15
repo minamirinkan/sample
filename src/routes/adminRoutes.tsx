@@ -34,7 +34,6 @@ export const adminRoutes = (
         <Route path="welcome" element={<ToDoContent />} />
         <Route path="timetable" element={<TimetablePage />} />
         <Route path="holiday-page" element={<HolidayPage />} />
-        <Route path="student-timetable" element={<AdminStudentCalendar />} />
         <Route path="notification" element={<CeoMessagesAll />} />
         <Route path="tasks" element={<HookStatusPage />} />
         <Route path="schoolTest" element={<SchoolScoreTable />} />
