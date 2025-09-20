@@ -4,6 +4,7 @@ import { getFirestore, query, collection, where, getDocs } from 'firebase/firest
 import type { Teacher } from '@/schemas'; // パスはプロジェクトに合わせてください
 import TeacherInfoSection from './tabs/TeacherInfoSection';
 import ActionButtons from '../../../components/ActionButtons';
+import TeacherCalendar from './tabs/TeacherCalendar';
 
 const TABS = ['基本情報', '担当情報', 'スケジュール', '支払情報'];
 
@@ -94,11 +95,21 @@ const TeacherDetail: React.FC = () => {
                 );
             case '担当情報':
                 return (
-                    <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
+                    <div className="text-gray-500 italic">このセクションは現在準備中です</div>
                 );
             case 'スケジュール':
-                return (
-                    <div className="text-gray-500 italic">このセクションは現在準備中です。</div>
+                return formData?.code ? (
+                    <div className="space-y-4 w-full">
+                        <div className="p-3 rounded-md border border-gray-300 border-t-4 border-t-green-500 shadow-sm">
+                            <h2 className="text-lg font-semibold mb-3 text-green-600">講師スケジュール</h2>
+                            <TeacherCalendar
+                                teacherCode={formData.code}
+                                teacherName={`${formData.lastName ?? ""} ${formData.firstName ?? ""}`.trim()}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="text-gray-500 italic">講師コードが未取得のため予定を表示できません。</div>
                 );
             case '支払情報':
                 return (
