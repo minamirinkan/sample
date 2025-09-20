@@ -166,14 +166,6 @@ const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCan
                 registrationDate: Timestamp.fromDate(new Date()),
                 courses: courseFormData ?? [],
             },
-            courseFormData: courseFormData.map((course) => {
-                const updated = { ...course };
-                if (updated.subject === 'その他') {
-                    updated.subject = updated.subjectOther || '';
-                }
-                delete updated.subjectOther;
-                return updated;
-            }),
             userPassword: userPassword,
             setLoading: setSubmitting,
         });
