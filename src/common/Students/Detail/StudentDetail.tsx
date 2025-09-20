@@ -9,6 +9,7 @@ import StudentCourseTable from './Tabs/StudentCourseTable';
 import StudentGrades from './Tabs/StudentGrades';
 import { Student } from '../../../contexts/types/student';
 import { useCustomerByStudent } from '../../../contexts/hooks/useCustomerByStudent';
+import BillingPage from './BillingPage';
 
 const TAB_MAP: Record<string, string> = {
     '基本情報': 'basic',
@@ -28,9 +29,9 @@ const StudentDetail: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<Student | null>(null);
     const [originalData, setOriginalData] = useState<Student | null>(null);
-    const isAttendanceTab = (value: string | undefined): value is 'regular' | 'monthly' | 'seasonal' => {
-        return value === 'regular' || value === 'monthly' || value === 'seasonal';
-    };
+    // const isAttendanceTab = (value: string | undefined): value is 'regular' | 'monthly' | 'seasonal' => {
+    //     return value === 'regular' || value === 'monthly' || value === 'seasonal';
+    // };
 
     useEffect(() => {
         if (!studentId) return;
@@ -108,6 +109,17 @@ const StudentDetail: React.FC = () => {
                         classroomCode={formData.classroomCode}
                     />
                 );
+            case 'bill':
+                return (
+                    <BillingPage
+                        studentId={formData.id ?? ''}
+                        studentName={`${formData.lastName ?? ''} ${formData.firstName ?? ''}`}
+                        classroomCode={formData.classroomCode}
+                        grade={formData.grade}
+                        customerUid={formData.customerUid}
+                        targetMonth="2025-09"
+                    />
+                );
             default:
                 return <div className="text-gray-500 italic">このセクションは現在準備中です。</div>;
         }
@@ -117,7 +129,7 @@ const StudentDetail: React.FC = () => {
         <div className="p-6 bg-white rounded shadow-md max-w-5xl mx-auto">
             <div className="flex items-center mb-4 space-x-6">
                 <h1 className="text-2xl font-bold text-gray-800">生徒マスタ</h1>
-                <span className="text-2xl text-gray-500 font-normal">詳細</span>
+                <span className="text-1xl text-gray-500 font-normal">{formData?.studentId ?? ''} {formData?.lastName ?? ''} {formData?.firstName ?? ''}</span>
             </div>
 
             {/* タブナビゲーション */}

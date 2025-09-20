@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase'; // ← dbは正しいパスに合わせて調整してください
-import { saveTeacherFees } from './saveTeacherFees'; // ✅ 追加
+import { db } from '../firebase';
+import { saveTeacherFees } from './saveTeacherFees';
 import ExistingTeacherFeeLocationsList from './ExistingTeacherFeeLocationsList';
 
-const TeacherFeeRegistration = ({ onRegistered }) => {
+type TeacherFeeRegistrationProps = {
+  onRegistered?: (location: string) => void;
+};
+
+const TeacherFeeRegistration: React.FC<TeacherFeeRegistrationProps> = ({ onRegistered }) => {
   const categories = ['小学生', '中学生', '高校生'];
   const types = ['1対1', '1対2', '1対6まで'];
-
   const initialMatrix = () => categories.map(() => types.map(() => ''));
-  const [fees80, setFees80] = useState(initialMatrix());
-  const [fees70, setFees70] = useState(initialMatrix());
+  const [fees80, setFees80] = useState<string[][]>(initialMatrix());
+  const [fees70, setFees70] = useState<string[][]>(initialMatrix());
   const [registrationLocation, setRegistrationLocation] = useState('');
-
-
-  const [fees40, setFees40] = useState([types.map(() => '')]);
-
-  const [workFees, setWorkFees] = useState({
-    admin: ''
+  const [fees40, setFees40] = useState<string[][]>([types.map(() => '')]);
+  const [workFees, setWorkFees] = useState<{ admin: string; training?: string; other?: string }>({
+    admin: '',
   });
 
-  const handleChange = (rowIdx, colIdx, value, duration) => {
+  const handleChange = (rowIdx: number, colIdx: number, value: string, duration: '80' | '70' | '40') => {
     if (duration === '80') {
       const newFees = [...fees80];
       newFees[rowIdx][colIdx] = value;
@@ -36,11 +36,11 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
     }
   };
 
-  const handleWorkFeeChange = (field, value) => {
-    setWorkFees(prev => ({ ...prev, [field]: value }));
+  const handleWorkFeeChange = (field: string, value: string) => {
+    setWorkFees((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!registrationLocation.trim()) {
@@ -48,10 +48,9 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
       return;
     }
 
-    // 🔁 2次元配列 → オブジェクトに変換（Firestore対応）
-    const convertMatrixToObjectArray = (matrix) => {
+    const convertMatrixToObjectArray = (matrix: string[][]) => {
       return matrix.map((row) => {
-        const obj = {};
+        const obj: Record<string, string> = {};
         types.forEach((type, idx) => {
           obj[type] = row[idx] || '';
         });
@@ -59,8 +58,6 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
       });
     };
 
-
-    // 修正すべき箇所（convertMatrixToObject をやめる）
     const payload = {
       registrationLocation,
       '80minutes': convertMatrixToObjectArray(fees80),
@@ -69,13 +66,11 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
       workFees,
     };
 
-
-
     try {
       await saveTeacherFees(registrationLocation, payload);
       alert('講師料金と作業給を保存しました');
       if (onRegistered) {
-        onRegistered(registrationLocation); // ← 地名を親に渡す
+        onRegistered(registrationLocation);
       }
     } catch (error) {
       console.error('保存エラー:', error);
@@ -83,8 +78,8 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
     }
   };
 
-
-  const renderTable = (title, fees, duration) => (
+  // renderTable / renderTable40 は型をそのまま流用
+  const renderTable = (title: string, fees: string[][], duration: '80' | '70') => (
     <div className="mb-8">
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <table className="table-auto border border-collapse border-gray-400 w-full">
@@ -112,7 +107,7 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
                         pattern="[0-9]*"
                         value={fees[rowIdx][colIdx]}
                         onChange={(e) => handleChange(rowIdx, colIdx, e.target.value, duration)}
-                        onWheel={(e) => e.target.blur()}
+                        onWheel={(e) => e.currentTarget.blur()}
                         className="border w-[80px] px-1 py-0.5 text-blue-600 text-center appearance-none
                           [&::-webkit-outer-spin-button]:appearance-none 
                           [&::-webkit-inner-spin-button]:appearance-none"
@@ -156,7 +151,7 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
                       pattern="[0-9]*"
                       value={fees40[0][colIdx]}
                       onChange={(e) => handleChange(0, colIdx, e.target.value, '40')}
-                      onWheel={(e) => e.target.blur()}
+                      onWheel={(e) => e.currentTarget.blur()}
                       className="border w-[80px] px-1 py-0.5 text-blue-600 text-center appearance-none
                         [&::-webkit-outer-spin-button]:appearance-none 
                         [&::-webkit-inner-spin-button]:appearance-none"
@@ -175,22 +170,19 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6 p-4">
       <ExistingTeacherFeeLocationsList
-        onLocationClick={async (locationName) => {
+        onLocationClick={async (locationName: string) => {
           try {
             const docRef = doc(db, 'TeacherFees', locationName);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-              const data = docSnap.data();
-
-              // オブジェクト配列 → 2次元配列 に復元
-              const parseObjectArrayToMatrix = (objArray) =>
+              const data = docSnap.data() as any;
+              const parseObjectArrayToMatrix = (objArray: any[]) =>
                 objArray.map((obj) => types.map((type) => obj[type] || ''));
 
               setFees80(parseObjectArrayToMatrix(data['80minutes'] || []));
               setFees70(parseObjectArrayToMatrix(data['70minutes'] || []));
               setFees40(parseObjectArrayToMatrix(data['40minutes'] || []));
-
               setWorkFees({
                 admin: data.workFees?.admin || '',
                 training: data.workFees?.training || '',
@@ -205,7 +197,6 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
         }}
       />
 
-
       <h2 className="text-2xl font-bold mb-4">講師料金登録フォーム</h2>
 
       <div>
@@ -218,7 +209,7 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
           className="border px-2 py-1 w-full"
         />
       </div>
-      
+
       {renderTable('■ 80分コース', fees80, '80')}
       {renderTable('■ 70分コース', fees70, '70')}
       {renderTable40()}
@@ -232,20 +223,16 @@ const TeacherFeeRegistration = ({ onRegistered }) => {
                 type="number"
                 value={workFees.admin}
                 onChange={(e) => handleWorkFeeChange('admin', e.target.value)}
-                onWheel={(e) => e.target.blur()}
-                className="border px-2 py-1 w-[100px] text-center
-    appearance-none
-    [&::-webkit-inner-spin-button]:appearance-none 
-    [&::-webkit-outer-spin-button]:appearance-none"
+                onWheel={(e) => e.currentTarget.blur()}
+                className="border px-2 py-1 w-[100px] text-center appearance-none
+                    [&::-webkit-inner-spin-button]:appearance-none 
+                    [&::-webkit-outer-spin-button]:appearance-none"
               />
               <span className="ml-1 text-sm">円</span>
             </div>
           </div>
         </div>
       </div>
-
-
-
       <div className="mt-6">
         <button
           type="submit"

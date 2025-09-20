@@ -2,6 +2,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../../firebase';
+import { useSuperAdminData } from '../../../contexts/providers/SuperAdminDataProvider';
+import LoadingSpinner from '../../../common/LoadingSpinner';
 interface SuperAdminHeaderProps {
     onToggleSidebar: () => void;
     role: 'superadmin' | 'admin' | 'customer' | 'teacher';
@@ -10,6 +12,7 @@ interface SuperAdminHeaderProps {
 const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, role }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { classrooms } = useSuperAdminData();
     const navigate = useNavigate();
 
     const dashboardPath =
@@ -33,6 +36,8 @@ const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, ro
         };
     }, []);
 
+    if (!classrooms) return <LoadingSpinner />
+
     return (
         <div className="header flex justify-between items-center p-4 bg-gray-200">
             <div className="left-section flex items-center space-x-2">
@@ -51,7 +56,7 @@ const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, ro
                     className="px-4 py-2 bg-gray-300 rounded"
                     onClick={() => setIsDropdownOpen((prev) => !prev)}
                 >
-                    👤 管理者ページ
+                    👤  {classrooms?.[0]?.name ?? "教室名を取得中..."}
                 </button>
                 {isDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white border shadow z-50">
@@ -59,7 +64,7 @@ const SuperAdminHeader: React.FC<SuperAdminHeaderProps> = ({ onToggleSidebar, ro
                             className="block px-4 py-2 hover:bg-gray-100"
                             onClick={() => {
                                 setIsDropdownOpen(false); // まず閉じる
-                                navigate("/admin/profile"); // その後に遷移
+                                navigate("/superadmin/profile"); // その後に遷移
                             }}
                         >
                             管理者情報

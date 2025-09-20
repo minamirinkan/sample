@@ -3,15 +3,15 @@ import ExistingLocationsList from './ExistingLocationsList';
 import TuitionDetails from './TuitionDetails';
 import { db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { saveTuitionSettings } from './saveTuitionSettings';
+import { saveFeeMaster } from './saveFeeMaster';
 
 const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'] as const;
 
 export type Expenses = {
-  admissionFee: string;
-  materialFee: string;
-  testFee: { elementary: string; middle: string };
-  maintenanceFee: string;
+  admissionFee: number;
+  materialFee: number;
+  testFee: { elementary: number; middle: number };
+  maintenanceFee: number;
 };
 
 type TuitionFormContentProps = {
@@ -53,16 +53,25 @@ const TuitionFormContent: React.FC<TuitionFormContentProps> = ({ onRegistered })
   );
 
   const [expenses, setExpenses] = useState<Expenses>({
-    admissionFee: '',
-    materialFee: '',
-    testFee: { elementary: '', middle: '' },
-    maintenanceFee: '',
+    admissionFee: 0,
+    materialFee: 0,
+    testFee: { elementary: 0, middle: 0 },
+    maintenanceFee: 0,
   });
 
   const [testPrices, setTestPrices] = useState<string[]>(['', '']);
   const [registrationLocation, setRegistrationLocation] = useState('');
   const [selectedLocationData, setSelectedLocationData] =
     useState<null | { id: string;[key: string]: any }>(null);
+  // 年は今から±3年分くらい、月は1〜12を用意する
+  const years = Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i);
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+
+  const yyyyMM = `${year}${String(month).padStart(2, '0')}`;
+
 
   const handleChange = (
     data: string[][],
@@ -128,26 +137,10 @@ const TuitionFormContent: React.FC<TuitionFormContentProps> = ({ onRegistered })
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const tuitionDataW_flattened = schedulesW.map((label, rowIdx) => {
-      const row = tuitionDataW[rowIdx];
-      const obj: Record<string, string> = { scheduleLabel: label };
-      grades.forEach((grade, colIdx) => {
-        obj[grade] = row[colIdx];
-      });
-      return obj;
-    });
+    const numericTestPrices = testPrices.map((v) => Number(v));
 
-    const tuitionDataA_flattened = schedulesA.map((label, rowIdx) => {
-      const row = tuitionDataA[rowIdx];
-      const obj: Record<string, string> = { scheduleLabel: label };
-      grades.forEach((grade, colIdx) => {
-        obj[grade] = row[colIdx];
-      });
-      return obj;
-    });
-
-    // 数値型に変換
-    const expensesNum = {
+    // expenses の各値も string → number
+    const numericExpenses: Expenses = {
       admissionFee: Number(expenses.admissionFee),
       materialFee: Number(expenses.materialFee),
       testFee: {
@@ -156,20 +149,23 @@ const TuitionFormContent: React.FC<TuitionFormContentProps> = ({ onRegistered })
       },
       maintenanceFee: Number(expenses.maintenanceFee),
     };
-
     try {
-      const id = await saveTuitionSettings({
+      const docId = await saveFeeMaster({
         registrationLocation,
-        tuitionDataW: tuitionDataW_flattened,
-        tuitionDataA: tuitionDataA_flattened,
-        expenses: expensesNum,
-        testPreparationData: testPrices
+        yyyyMM,
+        tuitionDataW,
+        tuitionDataA,
+        schedulesW,
+        schedulesA,
+        grades,
+        testPrices: numericTestPrices,
+        expenses: numericExpenses,
       });
 
-      alert(`保存完了（tuitionCode: ${id}）`);
-      onRegistered?.(registrationLocation);
-    } catch (err) {
+      alert(`保存完了: ${docId}`);
+    } catch (error) {
       alert('保存に失敗しました');
+      console.error(error);
     }
   };
 
@@ -202,6 +198,74 @@ const TuitionFormContent: React.FC<TuitionFormContentProps> = ({ onRegistered })
           }
         }}
       />
+      <button
+        className="flex items-center px-6 py-3 bg-gradient-to-b from-blue-400 to-blue-600 text-white 
+                 font-semibold rounded-xl shadow-2xl hover:from-blue-500 hover:to-blue-700 
+                 transform hover:-translate-y-1 transition-all duration-300"
+      >
+        {/* 無料の丸 */}
+        <span className="flex items-center justify-center w-8 h-8 bg-white text-blue-600 rounded-full 
+                       mr-3 text-sm font-bold shadow-lg">
+          無料
+        </span>
+        {/* ボタンテキスト */}
+        <span className="flex-1 text-center">資料をダウンロード</span>
+        {/* ▶︎の丸 */}
+        <span className="flex items-center justify-center w-8 h-8 bg-white text-blue-600 rounded-full 
+                       ml-3 text-lg font-bold shadow-lg">
+          ▶︎
+        </span>
+      </button>
+      {/* ▼ 年月（左） と 登録地（右） を横並びにする */}
+      <div className="mb-6 flex flex-col md:flex-row items-end justify-between gap-4">
+        {/* 左：年/月 プルダウン */}
+        <div className="flex items-end gap-4">
+          <div className="flex flex-col">
+            <label htmlFor="year" className="text-sm font-medium mb-1">適用年</label>
+            <select
+              id="year"
+              value={year}
+              onChange={(e) => setYear(Number(e.target.value))}
+              className="border px-2 py-1 w-32 text-sm"
+            >
+              {years.map((y) => (
+                <option key={y} value={y}>{y}年</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="month" className="text-sm font-medium mb-1">適用月</label>
+            <select
+              id="month"
+              value={month}
+              onChange={(e) => setMonth(Number(e.target.value))}
+              className="border px-2 py-1 w-24 text-sm"
+            >
+              {months.map((m) => (
+                <option key={m} value={m}>{m}月</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* 右：登録地入力 */}
+        <div className="flex flex-col items-start md:items-end">
+          <label htmlFor="registrationLocation" className="block text-lg font-bold mb-2">
+            登録地
+          </label>
+          <input
+            type="text"
+            id="registrationLocation"
+            name="registrationLocation"
+            value={registrationLocation}
+            onChange={(e) => setRegistrationLocation(e.target.value)}
+            className="border border-gray-400 px-2 py-1 w-64 text-blue-600"
+            placeholder="例：TOKYO または 渋谷校"
+            required
+          />
+        </div>
+      </div>
 
       {/* ▼ Wコース */}
       <div>
@@ -431,24 +495,6 @@ const TuitionFormContent: React.FC<TuitionFormContentProps> = ({ onRegistered })
             </tr>
           </tbody>
         </table>
-      </div>
-
-
-      {/* ▼ 登録地入力欄 */}
-      <div className="mb-6">
-        <label htmlFor="registrationLocation" className="block text-lg font-bold mb-2">
-          登録地
-        </label>
-        <input
-          type="text"
-          id="registrationLocation"
-          name="registrationLocation"
-          value={registrationLocation}
-          onChange={(e) => setRegistrationLocation(e.target.value)}
-          className="border border-gray-400 px-2 py-1 w-64 text-blue-600"
-          placeholder="例：渋谷校"
-          required
-        />
       </div>
 
       {/* ▼ 一括登録ボタン */}
