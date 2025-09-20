@@ -1,7 +1,7 @@
 // types/schoolData.ts
 export type SchoolDataItem = {
   kind: string;
-  subject: string;
+  subject?: string;
   subjectOther?: string;
   classType: string;
   times: string;
@@ -13,6 +13,7 @@ export type SchoolDataItem = {
   note: string;
   weekday?: string;
   period?: string;
+  teacher?: string;
 };
 
 export type SchoolLevel = '小学校' | '中学校' | '高等学校' | '通信制';

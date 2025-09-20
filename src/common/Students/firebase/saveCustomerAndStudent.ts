@@ -14,10 +14,8 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
-import { saveToWeeklySchedules } from './saveToWeeklySchedules';
 import { Student } from '../../../contexts/types/student';
 import { Customer } from '../../../contexts/types/customer';
-import { SchoolDataItem } from '../../../contexts/types/schoolData';
 
 export const registerCustomerAndStudent = async ({
   uid,
@@ -25,25 +23,21 @@ export const registerCustomerAndStudent = async ({
   studentData,
   userPassword,
   isFirstLogin = true,
-  courseFormData,
   setLoading,
 }: {
   uid: string;
   phoneNumber: string;
   studentData: Student;
   userPassword: string;
-  isFirstLogin?: boolean;
-  courseFormData?: SchoolDataItem[];
   customerName?: string;
+  isFirstLogin?: boolean;
   setLoading?: (loading: boolean) => void;
 }): Promise<boolean> => {
-  const { guardianEmail } = studentData;
+  const { guardianEmail, courses } = studentData;
   const currentAdmin = auth.currentUser;
   const adminEmail = currentAdmin?.email ?? '';
-
-  // const adminPassword = prompt('管理者アカウントのパスワードを入力してください（認証復帰用）');
-  // if (!adminPassword) { ... }
   const adminPassword = userPassword;
+
   if (!adminPassword) {
     alert('管理者のパスワードが取得できません。再ログインしてください。');
     return false;
@@ -52,6 +46,7 @@ export const registerCustomerAndStudent = async ({
   try {
     setLoading?.(true);
 
+    // 保護者ユーザー作成
     const tempPassword = uid;
     const userCredential = await createUserWithEmailAndPassword(auth, guardianEmail, tempPassword);
     const customerUid = userCredential.user.uid;
@@ -84,36 +79,58 @@ export const registerCustomerAndStudent = async ({
       await setDoc(customerRef, customerData);
     }
 
+    // 生徒基本情報をセット
     const studentRef = doc(db, 'students', uid);
-    const { courses, ...restStudentData } = studentData;
+    const { courses: _ignoreCourses, ...restStudentData } = studentData;
     await setDoc(studentRef, {
       ...restStudentData,
       customerUid,
-      //courses,
     });
 
+    // courses サブコレクション作成
     if (Array.isArray(courses)) {
-      const coursesCollectionRef = collection(db, 'students', uid, 'courses');
+      const contractsCollectionRef = collection(db, 'customers', customerUid, 'contracts');
+
+      const createFeeCode = (kind: string, classType: string, times: string, duration: string) => {
+        const prefix = kind === '通常' ? 'N' : 'H';
+        const classNum = classType === '2名クラス' ? '2' : classType === '1名クラス' ? '1' : '0';
+        return `${prefix}${classNum}W${times}T${duration}`;
+      };
+
       for (const course of courses) {
         if (!course.kind || !course.startYear) continue;
-        const { kind, subject, startYear, startMonth } = course;
-        let docId = ['通常', '補習'].includes(kind) && startMonth
-          ? `${kind}-${subject}-${startYear}-${startMonth}`
-          : `${kind}-${subject}-${startYear}`;
-        await setDoc(doc(coursesCollectionRef, docId), course);
+
+        const studentGrade = studentData.grade;
+        const startMonthPart = course.startMonth ? `${course.startMonth.padStart(2, '0')}` : '';
+        const feeCode = createFeeCode(course.kind, course.classType, course.times, course.duration);
+        const docId = `${uid}-${course.startYear}${startMonthPart}-${feeCode}_${studentGrade}`;
+
+        const contractData = {
+          studentId: uid,
+          grade: studentGrade, // そのまま保存
+          feeCode,
+          kind: course.kind,
+          classType: course.classType,
+          times: course.times,
+          duration: course.duration,
+          startYear: course.startYear,
+          startMonth: course.startMonth,
+          endYear: course.endYear || '',
+          endMonth: course.endMonth || '',
+          note: course.note || '',
+          amount: course.amount || 0,
+          status: 'active',
+          createdAt: serverTimestamp(),
+        };
+
+        await setDoc(doc(contractsCollectionRef, docId), contractData);
       }
-      const scheduleData = {
-        ...studentData,
-        courseFormData: courses,
-      };
-      console.log('🧪 saveToWeeklySchedules に渡すデータ:', scheduleData);
-      await saveToWeeklySchedules({
-        ...studentData,
-        courseFormData: courses, // または courseFormData でも可
-      });
     }
+
+    // 管理者に戻る
     await signOut(auth);
     await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
+
     return true;
   } catch (error: any) {
     console.error('登録失敗:', error);

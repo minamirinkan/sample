@@ -1,8 +1,6 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
 import {
     collection,
-    query,
-    where,
     getDocs,
     addDoc,
     doc,
@@ -15,12 +13,17 @@ type StudentCourse = {
     studentId: string;
     startMonth: string;
     endMonth: string;
-    courseType: string;
-    classStyle: string;
+    kind?: string;
+    classType: string;
     weeklyCount: string;
     time: string;
     season: string;
     notes: string;
+    duration?: string;
+    startYear?: string;
+    subject?: string;
+    subjectOther?: string;
+    endYear?: string;
 };
 
 type Props = {
@@ -30,9 +33,10 @@ type Props = {
 const defaultNewCourse: Omit<StudentCourse, 'studentId'> = {
     startMonth: '',
     endMonth: '',
-    courseType: '',
-    classStyle: '',
+    kind: '',
+    classType: '',
     weeklyCount: '',
+    duration: '',
     time: '',
     season: '',
     notes: '',
@@ -44,31 +48,26 @@ const StudentCourseTable: React.FC<Props> = ({ studentId }) => {
 
     useEffect(() => {
         const fetchCourses = async () => {
-            const q = query(collection(db, 'studentCourses'), where('studentId', '==', studentId));
+            const q = collection(db, 'students', studentId, 'courses');
             const snapshot = await getDocs(q);
             const fetched: StudentCourse[] = snapshot.docs.map(doc => ({
                 id: doc.id,
-                ...doc.data()
-            } as StudentCourse));
+                ...doc.data(),
+            })) as StudentCourse[];
             setCourses(fetched);
         };
         fetchCourses();
     }, [studentId]);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setNewCourse(prev => ({ ...prev, [name]: value }));
-    };
-
     const handleAdd = async () => {
-        const courseToAdd: StudentCourse = { ...newCourse, studentId };
-        const docRef = await addDoc(collection(db, 'studentCourses'), courseToAdd);
+        const courseToAdd: Omit<StudentCourse, 'id'> = { ...newCourse, studentId };
+        const docRef = await addDoc(collection(db, 'students', studentId, 'courses'), courseToAdd);
         setCourses(prev => [...prev, { id: docRef.id, ...courseToAdd }]);
         setNewCourse(defaultNewCourse);
     };
 
     const handleDelete = async (id: string) => {
-        await deleteDoc(doc(db, 'studentCourses', id));
+        await deleteDoc(doc(db, 'students', studentId, 'courses', id));
         setCourses(prev => prev.filter(c => c.id !== id));
     };
 
@@ -94,7 +93,6 @@ const StudentCourseTable: React.FC<Props> = ({ studentId }) => {
                         <th className="border p-2">授業形態</th>
                         <th className="border p-2">週回数</th>
                         <th className="border p-2">授業時間</th>
-                        <th className="border p-2">講習時期</th>
                         <th className="border p-2">備考</th>
                         <th className="border p-2">操作</th>
                     </tr>
@@ -102,13 +100,16 @@ const StudentCourseTable: React.FC<Props> = ({ studentId }) => {
                 <tbody>
                     {courses.map(course => (
                         <tr key={course.id}>
-                            <td className="border p-2">{course.startMonth}</td>
-                            <td className="border p-2">{course.endMonth}</td>
-                            <td className="border p-2">{course.courseType}</td>
-                            <td className="border p-2">{course.classStyle}</td>
+                            <td className="border p-2">
+                                {course.startYear && course.startMonth ? `${course.startYear}/${String(course.startMonth).padStart(2, '0')}` : ''}
+                            </td>
+                            <td className="border p-2">
+                                {course.endYear && course.endMonth ? `${course.endYear}/${String(course.endMonth).padStart(2, '0')}` : ''}
+                            </td>
+                            <td className="border p-2">{course.kind}</td>
+                            <td className="border p-2">{course.classType}</td>
                             <td className="border p-2">{course.weeklyCount}</td>
-                            <td className="border p-2">{course.time}</td>
-                            <td className="border p-2">{course.season}</td>
+                            <td className="border p-2">{course.duration}</td>
                             <td className="border p-2">{course.notes}</td>
                             <td className="border px-4 py-2">
                                 <button className="text-blue-600 hover:underline">詳細</button>

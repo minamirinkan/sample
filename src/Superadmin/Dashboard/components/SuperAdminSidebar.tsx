@@ -57,7 +57,7 @@ const SuperAdminSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
                     subItems={[
                         { label: '教室', key: 'admin', path: '/superadmin/admin' },
                         { label: '料金', key: 'tuition', path: '/superadmin/tuition' },
-                        { label: '講師給与', key: 'TeacherFee', path: '/superadmin/TeacherFee' },
+                        { label: '講師給与', key: 'teacher-fee', path: '/superadmin/teacher-fee' },
                         { label: '生徒', key: 'students', path: '/superadmin/students' },
                         { label: '講師', key: 'teachers', path: '/superadmin/teachers' }
                     ]}
