@@ -1,6 +1,5 @@
 // routes/adminRoutes.tsx
 import { Route, Navigate, useParams } from "react-router-dom";
-import AdminProfile from '../common/pages/adminProfile'
 import ToDoContent from "../common/ToDo/ToDoContent";
 import TimetablePage from '../common/timetable/TimetablePage';
 import SuperAdminStudents from '../common/Students/SuperAdminStudents';
@@ -19,6 +18,9 @@ import PayrollSheet from "../common/Teachers/components/PayrollSheet";
 import TimetableDragDrop from "../common/sampleTimetable/TimetableFlat";
 import SchoolAccountAdmin from "../Superadmin/SchoolAccountAdmin";
 import TuitionFormContent from "../Superadmin/TuitionFormContent";
+import SuperAdminProfile from "../Superadmin/Dashboard/components/SuperAdminProfile";
+import TeacherFeeRegistration from "../Superadmin/TeacherFeeRegistration";
+import BillingPageWrapper from "../common/Students/Detail/BillingPageWrapper";
 
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
@@ -29,7 +31,7 @@ const RedirectToBasic: React.FC = () => {
 export const superadminRoutes = (
     <>
         <Route path="dashboard" element={<ToDoContent />} />
-        <Route path="profile" element={<AdminProfile />} />
+        <Route path="profile" element={<SuperAdminProfile />} />
         <Route path="todo" element={<ToDoContent />} />
         <Route path="welcome" element={<ToDoContent />} />
         <Route path="admin" element={<SchoolAccountAdmin />} />
@@ -45,10 +47,13 @@ export const superadminRoutes = (
         <Route path="students/new" element={<StudentRegistrationForm />} />
         <Route path="students/:studentId" element={<RedirectToBasic />} />
         <Route path="students/:studentId/:section/:tab?" element={<StudentDetail />} />
+        <Route path="students/:studentId/bill" element={<BillingPageWrapper />} />
+        <Route path="students/:studentId/bill/edit" element={<BillingPageWrapper />} />
         <Route path="teachers" element={<SuperAdminTeachers />} />
         <Route path="teachers/new" element={<TeacherRegistrationForm />} />
         <Route path="teachers/:code" element={<TeacherDetail />} />
         <Route path="teacher-shifts" element={<PayrollSheet />} />
+        <Route path="teacher-fee" element={<TeacherFeeRegistration />} />
         <Route path="sample" element={<TimetableDragDrop />} />
     </>
 );
