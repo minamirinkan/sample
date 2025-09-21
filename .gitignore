@@ -29,3 +29,5 @@ firebase-debug.log
 hosting.*.cache
 # Firebase Functions を無視
 functions/
+# npm ロックファイルを無視
+package-lock.json
