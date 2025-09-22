@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from '../../../firebase';
 import { useAuth } from '../../../contexts/AuthContext';
 import useCustomer from '../../../contexts/hooks/useCustomer';
-import { useStudents } from '../../../contexts/hooks/useStudents';
+// import { useStudents } from '../../../contexts/hooks/useStudents';
 
 interface CustomerHeaderProps {
     onToggleSidebar: () => void;

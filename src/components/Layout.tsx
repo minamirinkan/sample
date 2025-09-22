@@ -11,7 +11,9 @@ import CustomerSidebar from "../guardian/Dashboard/components/CustomerSidebar";
 import CustomerHeader from "../guardian/Dashboard/components/CustomerHeader";
 
 const Layout: React.FC<{ role: 'superadmin' | 'admin' | 'customer' | 'teacher' }> = ({ role }) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(
+        role === "teacher" || role === "customer" ? false : true
+    );
 
     const headers = {
         superadmin: SuperAdminHeader,
