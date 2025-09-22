@@ -8,7 +8,7 @@ import SuperAdminTeachers from '../common/Teachers/SuperAdminTeachers';
 import HolidayPage from '../common/Schedule/HolidayPage';
 import CeoMessagesAll from '../common/ceoMessage/CeoMessagesAll';
 import HookStatusPage from '../pages/HookStatusPage';
-import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalendar';
+// import AdminStudentCalendar from '../common/StudentsSchedule/AdminStudentCalendar';
 import StudentChatManager from '../guardian/Dashboard/components/StudentChatManager';
 import StudentRegistrationForm from "../common/Students/StudentRegistrationForm/StudentRegistrationForm";
 import StudentDetail from "../common/Students/Detail/StudentDetail";

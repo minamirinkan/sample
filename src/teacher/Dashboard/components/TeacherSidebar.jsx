@@ -103,9 +103,9 @@ const TeacherSidebar = ({ onSelectMenu }) => {
                 />
                 <SidebarSection
                     icon={FaYenSign}
-                    title="請求情報"
+                    title="給与情報"
                     subItems={[
-                        { label: '請求情報', key: 'billing' }
+                        { label: '給与情報', key: 'salary' }
                     ]}
                     onSelectMenu={onSelectMenu}
                 />
