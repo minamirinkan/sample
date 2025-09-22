@@ -7,15 +7,15 @@ import {
   FaDatabase,
 } from "react-icons/fa";
 import LoadingSpinner from "../../../common/LoadingSpinner";
-import useCustomer from "../../../contexts/hooks/useCustomer";
 import SidebarSection from "../../../admin/Dashboard/components/SidebarSection";
+import { useCustomerData } from "../../../contexts/providers/CustomerDataProvider";
 
 const CustomerSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
-  const { customer, loading } = useCustomer();
+  const { customers, loading } = useCustomerData();
 
   if (loading) return <LoadingSpinner />;
-  
-  const customerName = customer?.guardianfullName
+  console.log('customers', customers)
+  const customerName = customers[0]?.guardianfullName
 
   if (!isOpen) return null;
 
@@ -31,44 +31,44 @@ const CustomerSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
         icon={FaDatabase}
         title="テストデータ"
         subItems={[
-          { label: "authContext", key: "authTest", path: "/customer/authTest" },
-          { label: "userContext", key: "userTest", path: "/customer/userTest" },
+          { label: "authContext", key: "authTest", path: "/mypage/authTest" },
+          { label: "userContext", key: "userTest", path: "/mypage/userTest" },
         ]}
       />
       <ul className="sidebar-menu">
         <SidebarSection
           icon={FaBook}
           title="時間割"
-          subItems={[{ label: "時間割一覧", key: "timetable", path: "/customer/timetable" }]}
+          subItems={[{ label: "時間割一覧", key: "timetable", path: "/mypage/timetable" }]}
         />
         <SidebarSection
           icon={FaBell}
           title="成績管理"
           subItems={[
-            { label: "塾内テスト結果", key: "notification", path: "/customer/notification" },
-            { label: "模試結果", key: "notification", path: "/customer/notification" },
-            { label: "学校成績&テスト結果", key: "notification", path: "/customer/notification" },
+            { label: "塾内テスト結果", key: "notification", path: "/mypage/notification" },
+            { label: "模試結果", key: "notification", path: "/mypage/notification" },
+            { label: "学校成績&テスト結果", key: "notification", path: "/mypage/notification" },
           ]}
         />
         <SidebarSection
           icon={FaBell}
           title="通知管理"
           subItems={[
-            { label: "本部連絡", key: "tasks", path: "/customer/tasks" },
-            { label: "教室連絡", key: "notification", path: "/customer/notification" },
+            { label: "本部連絡", key: "tasks", path: "/mypage/tasks" },
+            { label: "教室連絡", key: "notification", path: "/mypage/notification" },
           ]}
         />
         <SidebarSection
           icon={FaYenSign}
           title="請求情報"
-          subItems={[{ label: "請求情報", key: "billing", path: "/customer/bill" }]}
+          subItems={[{ label: "請求情報", key: "billing", path: "/mypage/bill" }]}
         />
         <SidebarSection
           icon={FaBell}
           title="チャット"
           subItems={[
-            { label: "本部", key: "chat", path: "/customer/chat" },
-            { label: "教室", key: "chat", path: "/customer/chat" },
+            { label: "本部", key: "chat", path: "/mypage/chat" },
+            { label: "教室", key: "chat", path: "/mypage/chat" },
           ]}
         />
       </ul>
