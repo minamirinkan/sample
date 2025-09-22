@@ -13,7 +13,7 @@ export default function useCustomer(customerUid?: string) {
         if (!customerUid) return;
 
         // リアルタイム取得したい場合は onSnapshot を使用
-        const unsub = onSnapshot(doc(db, "teachers", customerUid), (docSnap) => {
+        const unsub = onSnapshot(doc(db, "customers", customerUid), (docSnap) => {
             if (docSnap.exists()) {
                 setCustomer(docSnap.data() as Customer);
             } else {

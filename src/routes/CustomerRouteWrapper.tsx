@@ -24,8 +24,8 @@ const CustomerRouteWrapper: React.FC = () => {
             <Route
                 path={`/*`}
                 element={
-                    <ProtectedRoute role="teacher">
-                        <Layout role="teacher" />
+                    <ProtectedRoute role="customer">
+                        <Layout role="customer" />
                     </ProtectedRoute>
                 }
             >

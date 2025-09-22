@@ -39,7 +39,8 @@ const CustomerHeader: React.FC<CustomerHeaderProps> = ({ onToggleSidebar, role }
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
+    console.log('userData', userData)
+console.log('customer', customer)
     return (
         <div className="header flex justify-between items-center p-4 bg-gray-200">
             <div className="left-section flex items-center space-x-2">
