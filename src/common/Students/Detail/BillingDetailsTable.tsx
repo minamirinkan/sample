@@ -1,8 +1,9 @@
 // src/pages/Students/Detail/BillingDetailsTable.tsx
 import React, { useState, useRef } from "react";
+import { doc, getDoc, collection } from "firebase/firestore";
+import { db } from "../../../firebase";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
-import BillingCodeSearchModal from "./BillingCodeSearchModal";
-
+import BillingCodeSearchModal, { BillingCode } from "./BillingCodeSearchModal";
 export interface BillingDetail {
     code: string;
     name: string;
@@ -18,6 +19,10 @@ interface BillingDetailsTableProps {
     isEditing: boolean;
     onChange: (index: number, field: keyof BillingDetail, value: string | number) => void;
     onDragEnd?: (result: DropResult) => void;
+    studentGrade: string;
+    month: string;
+    customerUid: string;
+    studentId: string;
 }
 
 const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
@@ -25,21 +30,49 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
     isEditing,
     onChange,
     onDragEnd,
+    studentGrade,
+    month,
+    customerUid,
+    studentId,
 }) => {
     const [searchIndex, setSearchIndex] = useState<number | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [columnWidths, setColumnWidths] = useState<number[]>([]);
     const tableRef = useRef<HTMLTableElement>(null);
 
-    const searchOptions = [
-        { code: "N0W1T80_中1", name: "授業料 中1" },
-        { code: "N0W2T80_中2", name: "授業料 中2" },
-        { code: "E0W1T80_中1", name: "演習クラス 中1" },
-    ];
+    const [searchOptions, setSearchOptions] = useState<BillingCode[]>([]);
 
-    const handleSearchCode = (index: number) => {
+    const handleSearchCode = async (index: number) => {
         setSearchIndex(index);
         setModalOpen(true);
+
+        try {
+            const yyyymm = "202509"; // 適宜 targetMonth に置き換え
+            const registrationLocation = "047"; // 適宜 classroomCode に置き換え
+            const feeMasterDocId = `${yyyymm}_${registrationLocation}`;
+            const feeMasterRef = doc(db, "FeeMaster", feeMasterDocId);
+            const tuitionRef = doc(collection(feeMasterRef, "categories"), "tuition");
+            const tuitionSnap = await getDoc(tuitionRef);
+
+            if (!tuitionSnap.exists()) {
+                console.log("tuitionが存在しません");
+                return;
+            }
+
+            const tuitionData = tuitionSnap.data() || {};
+
+            // Firestore のデータを BillingCode 形式に変換
+            const options: BillingCode[] = Object.entries(tuitionData).map(([code, v]: [string, any]) => ({
+                code,
+                name: v.lessonType === "通常" ? "授業料" : v.lessonType,
+                category: "授業料",
+            }));
+
+            setSearchOptions(options); // useState で searchOptions を保持しておく
+        } catch (err) {
+            console.error(err);
+            alert("授業料データの取得に失敗しました");
+        }
     };
 
     const handleSelectCode = (code: string) => {
@@ -178,6 +211,10 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
                 onClose={() => setModalOpen(false)}
                 options={searchOptions}
                 onSelect={handleSelectCode}
+                studentGrade={studentGrade}
+                month={month}
+                customerUid={customerUid}
+                studentId={studentId}
             />
         </>
     );

@@ -1,42 +1,137 @@
-// src/common/ui/BillingCodeSearchModal.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { generateTuitionName } from "./tuitionName";
+import useCustomer from "../../../contexts/hooks/useCustomer";
+
+export interface BillingCode {
+    code: string;
+    name: string;
+    category: string;
+}
 
 interface BillingCodeSearchModalProps {
     open: boolean;
     onClose: () => void;
-    options: { code: string; name: string }[];
+    options: BillingCode[];
     onSelect: (code: string) => void;
+    studentGrade: string;
+    month: string;
+    customerUid: string;
+    studentId: string;
 }
+
+const categories = [
+    "授業料",
+    "維持費",
+    "テスト",
+    "教材",
+    "教材(都度)",
+    "割引",
+    "違約金",
+];
+
+const getGradeCode = (grade: string) => {
+    if (grade.startsWith("小")) return "E";       // 小学生
+    if (grade.startsWith("中1") || grade.startsWith("中2")) return "J";  // 中1/中2
+    if (grade.startsWith("中3")) return "J3";    // 中3
+    if (grade.startsWith("高1") || grade.startsWith("高2")) return "H"; // 高1/高2
+    if (grade.startsWith("高3") || grade.includes("既卒")) return "H3"; // 高3/既卒
+    return "";
+};
 
 const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
     open,
     onClose,
     options,
     onSelect,
+    studentGrade,
+    month,
+    customerUid,
+    studentId,
 }) => {
+    const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+    const gradeCode = getGradeCode(studentGrade);
+    const customer = useCustomer(customerUid);
+
+    useEffect(() => {
+        if (open) setExpandedCategory(null);
+    }, [open]);
+
     if (!open) return null;
 
+    const filteredOptions = options.filter(opt => opt.code.includes(`_${gradeCode}_`));
+    const transformedOptions = filteredOptions.map(opt => {
+        if (opt.category === "授業料") {
+            return { ...opt, name: generateTuitionName(opt.code, month) };
+        }
+        return opt;
+    });
+
+
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
-            <div className="bg-white p-4 rounded shadow-md w-96 max-h-[80vh] overflow-auto">
-                <h2 className="text-lg font-bold mb-2">請求コード選択</h2>
-                <div className="space-y-2">
-                    {options.map((opt) => (
-                        <button
-                            key={opt.code}
-                            className="w-full px-3 py-2 border rounded hover:bg-gray-100 text-left"
-                            onClick={() => onSelect(opt.code)}
-                        >
-                            {opt.code} - {opt.name}
-                        </button>
-                    ))}
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-start z-50 p-6 overflow-auto">
+            <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                <h2 className="text-xl font-bold px-6 py-4 border-b border-gray-200">
+                    請求コード選択
+                </h2>
+
+                <div className="space-y-3 p-4">
+                    {categories.map((cat) => {
+                        const codes = transformedOptions.filter((o) => o.category === cat);
+                        const isExpanded = expandedCategory === cat;
+
+                        return (
+                            <div
+                                key={cat}
+                                className="rounded-lg overflow-hidden border border-gray-200"
+                            >
+                                {/* カテゴリ名 */}
+                                <button
+                                    className={`w-full text-left px-4 py-3 font-semibold text-gray-800 transition-colors duration-200 ${isExpanded
+                                        ? "bg-blue-100"
+                                        : "bg-gray-50 hover:bg-gray-100"
+                                        }`}
+                                    onClick={() =>
+                                        setExpandedCategory(isExpanded ? null : cat)
+                                    }
+                                >
+                                    {cat}
+                                </button>
+
+                                {/* コードリスト（表風） */}
+                                <div
+                                    className={`transition-[max-height] duration-300 ease-in-out overflow-auto ${isExpanded ? "max-h-[70vh]" : "max-h-0"
+                                        }`}
+                                >
+                                    <table className="w-full border-separate border-spacing-0">
+                                        <tbody>
+                                            {codes.map((opt, idx) => (
+                                                <tr
+                                                    key={opt.code}
+                                                    className={`cursor-pointer transition-colors duration-150 ${idx % 2 === 0 ? "bg-gray-50" : "bg-white"
+                                                        } hover:bg-blue-50`}
+                                                    onClick={() => onSelect(opt.code)}
+                                                >
+                                                    <td className="px-4 py-2 border-b border-gray-300 text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
+                                                        {opt.name}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
-                <button
-                    className="mt-4 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                    onClick={onClose}
-                >
-                    閉じる
-                </button>
+
+                <div className="px-4 pb-4">
+                    <button
+                        className="w-full px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                        onClick={onClose}
+                    >
+                        閉じる
+                    </button>
+                </div>
             </div>
         </div>
     );

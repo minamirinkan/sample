@@ -206,6 +206,10 @@ const BillingPage: React.FC<BillingPageProps> = ({
                     isEditing={isEditing}
                     onChange={handleChange}
                     onDragEnd={handleDragEnd}
+                    studentGrade={grade}
+                    month={targetMonth}
+                    customerUid={customerUid}
+                    studentId={studentId}
                 />
             </SimpleCard>
 

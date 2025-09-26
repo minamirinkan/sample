@@ -1,0 +1,1 @@
+export const grades = ['小学生', '中1／中2', '中3', '高1／高2', '高3／既卒'] as const;

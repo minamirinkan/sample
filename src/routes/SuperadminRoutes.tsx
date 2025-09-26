@@ -35,7 +35,8 @@ export const superadminRoutes = (
         <Route path="todo" element={<ToDoContent />} />
         <Route path="welcome" element={<ToDoContent />} />
         <Route path="admin" element={<SchoolAccountAdmin />} />
-        <Route path="tuition" element={<TuitionFormContent />} />        
+        <Route path="tuitions" element={<TuitionFormContent />} /> 
+        <Route path="tuitions/:section" element={<TuitionFormContent />} />        
         <Route path="timetable" element={<TimetablePage />} />
         <Route path="holiday-page" element={<HolidayPage />} />
         <Route path="student-timetable" element={<AdminStudentCalendar />} />
