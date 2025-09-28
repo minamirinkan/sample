@@ -90,11 +90,21 @@ export const registerCustomerAndStudent = async ({
     // courses サブコレクション作成
     if (Array.isArray(courses)) {
       const contractsCollectionRef = collection(db, 'customers', customerUid, 'contracts');
+      const getGradeCode = (grade: string): string => {
+        if (grade.startsWith("小")) return "E";       // 小学生
+        if (grade.startsWith("中1") || grade.startsWith("中2")) return "J";
+        if (grade.startsWith("中3")) return "J3";
+        if (grade.startsWith("高1") || grade.startsWith("高2")) return "H";
+        if (grade.startsWith("高3") || grade.includes("既卒")) return "H3";
+        return "";
+      };
 
-      const createFeeCode = (kind: string, classType: string, times: string, duration: string) => {
-        const prefix = kind === '通常' ? 'N' : 'H';
-        const classNum = classType === '2名クラス' ? '2' : classType === '1名クラス' ? '1' : '0';
-        return `${prefix}${classNum}W${times}T${duration}`;
+      const createFeeCode = (classType: string, grade: string, times: string, duration: string): string => {
+        const classTypeLetter = classType === "2名クラス" ? "W" : "A"; // W=2名, A=1名
+        const gradeCode = getGradeCode(grade);                        // E, J, J3, H, H3
+        const timesCode = `W${times}`;                                // W1, W2, W4
+        const durationCode = `T${duration}`;                          // T70, T80, T40
+        return `${classTypeLetter}_${gradeCode}_${timesCode}_${durationCode}`;
       };
 
       for (const course of courses) {
@@ -102,14 +112,14 @@ export const registerCustomerAndStudent = async ({
 
         const studentGrade = studentData.grade;
         const startMonthPart = course.startMonth ? `${course.startMonth.padStart(2, '0')}` : '';
-        const feeCode = createFeeCode(course.kind, course.classType, course.times, course.duration);
-        const docId = `${uid}-${course.startYear}${startMonthPart}-${feeCode}_${studentGrade}`;
+        const feeCode = createFeeCode(course.classType, studentData.grade, course.times, course.duration);
+        const docId = `${uid}-${course.startYear}${startMonthPart}-${feeCode}`;
 
         const contractData = {
           studentId: uid,
           grade: studentGrade, // そのまま保存
           feeCode,
-          kind: course.kind,
+          lessonType: course.kind,
           classType: course.classType,
           times: course.times,
           duration: course.duration,
@@ -118,7 +128,6 @@ export const registerCustomerAndStudent = async ({
           endYear: course.endYear || '',
           endMonth: course.endMonth || '',
           note: course.note || '',
-          amount: course.amount || 0,
           status: 'active',
           createdAt: serverTimestamp(),
         };

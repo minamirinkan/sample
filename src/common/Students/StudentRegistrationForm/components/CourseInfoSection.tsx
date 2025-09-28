@@ -62,7 +62,7 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
     };
 
     const classTypes = ['1名クラス', '2名クラス', '演習クラス'];
-    const TIMES_OPTIONS = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    const TIMES_OPTIONS = ['1', '2', '3', '4', '5', '6'];
     const years = [2025, 2026, 2027];
     const months = Array.from({ length: 12 }, (_, i) => i + 1);
 

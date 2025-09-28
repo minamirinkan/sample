@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { generateTuitionName } from "./tuitionName";
 import useCustomer from "../../../contexts/hooks/useCustomer";
 
@@ -6,13 +6,14 @@ export interface BillingCode {
     code: string;
     name: string;
     category: string;
+    amount: number;
 }
 
 interface BillingCodeSearchModalProps {
     open: boolean;
     onClose: () => void;
     options: BillingCode[];
-    onSelect: (code: string) => void;
+    onSelect: (selected: BillingCode) => void;
     studentGrade: string;
     month: string;
     customerUid: string;
@@ -52,24 +53,44 @@ const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
     const gradeCode = getGradeCode(studentGrade);
     const customer = useCustomer(customerUid);
 
-    useEffect(() => {
-        if (open) setExpandedCategory(null);
-    }, [open]);
-
     if (!open) return null;
 
-    const filteredOptions = options.filter(opt => opt.code.includes(`_${gradeCode}_`));
-    const transformedOptions = filteredOptions.map(opt => {
+    const filteredOptions = options.filter(opt => {
         if (opt.category === "授業料") {
-            return { ...opt, name: generateTuitionName(opt.code, month) };
+            return opt.code.includes(`_${gradeCode}_`);
         }
-        return opt;
+        return true; // 授業料以外はフィルタせず全部表示
+    });
+    const transformedOptions = filteredOptions.map(opt => {
+        let displayName = opt.name;
+
+        // 授業料は既存の generateTuitionName で加工
+        if (opt.category === "授業料") {
+            displayName = generateTuitionName(opt.code, month);
+        }
+
+        // 教室維持費も「◯月分」を付ける
+        if (opt.category === "維持費") {
+            const monthNum = month.includes("-") ? parseInt(month.split("-")[1], 10) : parseInt(month, 10);
+            displayName = `${monthNum}月分${opt.name}`;
+        }
+        const displayAmount = opt.amount ? opt.amount.toLocaleString() + "円" : "";
+
+        return { ...opt, name: displayName, displayAmount };
     });
 
+    const handleClose = (): void => {
+        if (expandedCategory) {
+            setExpandedCategory(null);
+            setTimeout(() => onClose(), 300);
+        } else {
+            onClose();
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-start z-50 p-6 overflow-auto">
-            <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-xl shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto">
                 <h2 className="text-xl font-bold px-6 py-4 border-b border-gray-200">
                     請求コード選択
                 </h2>
@@ -99,8 +120,7 @@ const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
 
                                 {/* コードリスト（表風） */}
                                 <div
-                                    className={`transition-[max-height] duration-300 ease-in-out overflow-auto ${isExpanded ? "max-h-[70vh]" : "max-h-0"
-                                        }`}
+                                    className={`transition-[max-height] duration-300 ease-in-out ${isExpanded ? "max-h-[70vh]" : "max-h-0"}`}
                                 >
                                     <table className="w-full border-separate border-spacing-0">
                                         <tbody>
@@ -109,10 +129,13 @@ const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
                                                     key={opt.code}
                                                     className={`cursor-pointer transition-colors duration-150 ${idx % 2 === 0 ? "bg-gray-50" : "bg-white"
                                                         } hover:bg-blue-50`}
-                                                    onClick={() => onSelect(opt.code)}
+                                                    onClick={() => onSelect(opt)}
                                                 >
                                                     <td className="px-4 py-2 border-b border-gray-300 text-gray-700 whitespace-nowrap overflow-hidden text-ellipsis">
                                                         {opt.name}
+                                                    </td>
+                                                    <td className="px-4 py-2 border-b border-gray-300 text-gray-700 whitespace-nowrap text-right">
+                                                        {opt.displayAmount}
                                                     </td>
                                                 </tr>
                                             ))}
@@ -127,7 +150,7 @@ const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
                 <div className="px-4 pb-4">
                     <button
                         className="w-full px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
-                        onClick={onClose}
+                        onClick={handleClose}
                     >
                         閉じる
                     </button>
