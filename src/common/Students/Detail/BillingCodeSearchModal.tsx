@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { generateTuitionName } from "./tuitionName";
-import useCustomer from "../../../contexts/hooks/useCustomer";
 
 export interface BillingCode {
     code: string;
@@ -46,12 +45,9 @@ const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
     onSelect,
     studentGrade,
     month,
-    customerUid,
-    studentId,
 }) => {
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const gradeCode = getGradeCode(studentGrade);
-    const customer = useCustomer(customerUid);
 
     if (!open) return null;
 

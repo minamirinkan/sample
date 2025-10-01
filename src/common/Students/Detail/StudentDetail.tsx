@@ -58,6 +58,7 @@ const StudentDetail: React.FC = () => {
 
     if (loading || customerLoading) return <div className="text-center text-gray-500">読み込み中...</div>;
     if (!student) return <div className="text-center text-red-500">生徒データが見つかりません</div>;
+    if (!customer) return <div className="text-center text-red-500">保護者データが見つかりません</div>;
     if (error) return <div className="text-center text-red-500">顧客データの取得に失敗しました</div>;
     if (!section && window.location.pathname.includes('/attendance') === false) {
         return <Navigate to={`/admin/students/${studentId}/basic`} replace />;
@@ -112,12 +113,8 @@ const StudentDetail: React.FC = () => {
             case 'bill':
                 return (
                     <BillingPage
-                        studentId={formData.id ?? ''}
-                        studentName={`${formData.lastName ?? ''} ${formData.firstName ?? ''}`}
-                        classroomCode={formData.classroomCode}
-                        grade={formData.grade}
-                        customerUid={formData.customerUid}
-                        targetMonth="2025-09"
+                        formData={formData}
+                        customer={customer}
                     />
                 );
             default:

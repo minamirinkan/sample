@@ -1,7 +1,7 @@
 const extractMonthNum = (month: string): number => {
     return month.includes("-")
         ? parseInt(month.split("-")[1], 10)
-        : parseInt(month, 10);
+        : parseInt(month.slice(4, 6), 10);
 };
 
 export const generateTuitionName = (code: string, month: string): string => {
@@ -18,7 +18,7 @@ export const generateTuitionName = (code: string, month: string): string => {
     const times = timesCode.startsWith("W")
         ? `${timesCode.slice(1)}回`
         : timesCode;
-
+    
     const monthNum = extractMonthNum(month);
 
     return `${monthNum}月分授業料 ${classType} ${times} ${duration}分`;

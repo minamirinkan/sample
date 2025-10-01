@@ -20,7 +20,7 @@ import SchoolAccountAdmin from "../Superadmin/SchoolAccountAdmin";
 import TuitionFormContent from "../Superadmin/TuitionFormContent";
 import SuperAdminProfile from "../Superadmin/Dashboard/components/SuperAdminProfile";
 import TeacherFeeRegistration from "../Superadmin/TeacherFeeRegistration";
-import BillingPageWrapper from "../common/Students/Detail/BillingPageWrapper";
+import BillingPageWrapper from "../common/Students/Detail/BillingDetailsWrapper";
 
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();

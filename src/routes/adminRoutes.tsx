@@ -19,6 +19,7 @@ import TuitionPage from "../admin/pages/TuitionPage";
 import TeacherWorkFeesPage from "../admin/pages/TeacherWorkFeesPage";
 import PayrollSheet from "../common/Teachers/components/PayrollSheet";
 import TimetableDragDrop from "../common/sampleTimetable/TimetableFlat";
+import BillingDetailsWrapper from "../common/Students/Detail/BillingDetailsWrapper";
 
 const RedirectToBasic: React.FC = () => {
     const { studentId } = useParams<{ studentId: string }>();
@@ -42,6 +43,8 @@ export const adminRoutes = (
         <Route path="students/new" element={<StudentRegistrationForm />} />
         <Route path="students/:studentId" element={<RedirectToBasic />} />
         <Route path="students/:studentId/:section/:tab?" element={<StudentDetail />} />
+        <Route path="students/:studentId/bill/:month" element={<BillingDetailsWrapper />} />
+        <Route path="students/:studentId/bill/:month/:edit" element={<BillingDetailsWrapper />} />
         <Route path="teachers" element={<SuperAdminTeachers />} />
         <Route path="teachers/new" element={<TeacherRegistrationForm />} />
         <Route path="teachers/:code" element={<TeacherDetail />} />

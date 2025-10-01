@@ -6,7 +6,7 @@ import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea
 import BillingCodeSearchModal, { BillingCode } from "./BillingCodeSearchModal";
 import { FaTrash } from "react-icons/fa";
 import { formatCodeForDisplay, generateTuitionName, generateTuitionNameShort } from "./tuitionName";
-import { FeeLesson } from "./BillingPage";
+import { FeeLesson } from "./BillingDetails";
 export interface BillingDetail {
     code: string;
     name: string;
