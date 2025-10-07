@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "MyApp",
+  "name": "My Juku App",
   "icons": [
     {
       "src": "favicon.ico",
@@ -13,7 +13,7 @@
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "favicon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

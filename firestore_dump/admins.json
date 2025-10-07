@@ -11,8 +11,25 @@
         "_nanoseconds": 90000000
       },
       "lastLogin": {
-        "_seconds": 1752482899,
-        "_nanoseconds": 263000000
+        "_seconds": 1756468106,
+        "_nanoseconds": 714000000
+      }
+    }
+  },
+  "8pGvD2vJTXNESsVBHIBrpzPsJm13": {
+    "__doc__": {
+      "uid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "name": "南林間",
+      "classroomCode": "047",
+      "email": "minamirinkan@tokyogakuseikai.co.jp",
+      "role": "admin",
+      "createdAt": {
+        "_seconds": 1755777719,
+        "_nanoseconds": 62000000
+      },
+      "lastLogin": {
+        "_seconds": 1759379715,
+        "_nanoseconds": 189000000
       }
     }
   },
@@ -28,8 +45,8 @@
         "_nanoseconds": 738000000
       },
       "lastLogin": {
-        "_seconds": 1752821033,
-        "_nanoseconds": 563000000
+        "_seconds": 1754548108,
+        "_nanoseconds": 780000000
       }
     }
   },
@@ -45,25 +62,8 @@
         "_nanoseconds": 621000000
       },
       "lastLogin": {
-        "_seconds": 1752819717,
-        "_nanoseconds": 197000000
-      }
-    }
-  },
-  "apJL9SD9X4YvYyWPOyTTcI7vWZp2": {
-    "__doc__": {
-      "uid": "apJL9SD9X4YvYyWPOyTTcI7vWZp2",
-      "classroomCode": "047",
-      "name": "南林間",
-      "email": "minamirinkan@admin.com",
-      "role": "admin",
-      "createdAt": {
-        "_seconds": 1749643088,
-        "_nanoseconds": 608000000
-      },
-      "lastLogin": {
-        "_seconds": 1752852884,
-        "_nanoseconds": 699000000
+        "_seconds": 1756224587,
+        "_nanoseconds": 380000000
       }
     }
   },
@@ -79,8 +79,25 @@
         "_nanoseconds": 673000000
       },
       "lastLogin": {
-        "_seconds": 1752826028,
-        "_nanoseconds": 93000000
+        "_seconds": 1757761228,
+        "_nanoseconds": 411000000
+      }
+    }
+  },
+  "epHJlcG0cwSe5VeHs6Jf1sPmjst1": {
+    "__doc__": {
+      "uid": "epHJlcG0cwSe5VeHs6Jf1sPmjst1",
+      "name": "藤沢",
+      "classroomCode": "256",
+      "email": "t.hirabayashi17@gmail.com",
+      "role": "admin",
+      "createdAt": {
+        "_seconds": 1752892323,
+        "_nanoseconds": 446000000
+      },
+      "lastLogin": {
+        "_seconds": 1755452728,
+        "_nanoseconds": 30000000
       }
     }
   },

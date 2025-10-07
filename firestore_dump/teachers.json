@@ -1,28 +1,555 @@
 {
-  "Y3HYryx5evaZfP5rykcdfe05QR82": {
+  "18LY1rcM3mQLHidqwo0SIoX9MxR2": {
     "__doc__": {
-      "uid": "Y3HYryx5evaZfP5rykcdfe05QR82",
-      "name": "星野 瑞稀",
-      "email": "hoshino@teacher.com",
-      "phone": "111-1111-1111",
+      "uid": "18LY1rcM3mQLHidqwo0SIoX9MxR2",
+      "name": "綱 啓永",
+      "email": "tuna.keito@admin.com",
+      "phone": "2420005",
       "role": "teacher",
-      "code": "t0470002",
-      "lastName": "星野",
-      "firstName": "瑞稀",
-      "kanalastName": "ホシノ",
-      "kanafirstName": "ミズキ",
-      "gender": "女性",
+      "isFirstLogin": true,
+      "code": "t2380001",
+      "lastName": "綱",
+      "firstName": "啓永",
+      "kanalastName": "ツナ",
+      "kanafirstName": "ケイト",
+      "gender": "",
+      "university": "",
+      "universityGrade": "大2",
+      "hireDate": "",
+      "status": "在職中",
+      "transportation": "",
+      "classroomCode": "238",
+      "classroomName": "humiya",
+      "registrationDate": {
+        "_seconds": 1752907250,
+        "_nanoseconds": 247000000
+      }
+    }
+  },
+  "1WJdCbjVauenmHU8aEbf82ZN64e2": {
+    "__doc__": {
+      "uid": "1WJdCbjVauenmHU8aEbf82ZN64e2",
+      "code": "t0470016",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "hirabayashi@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755845957,
+        "_nanoseconds": 862000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "利英",
+      "firstNameKana": "トシヒデ",
+      "gender": "男性",
+      "lastName": "平林",
+      "lastNameKana": "ヒラバヤシ",
+      "phone": "666-6666-6666",
+      "transportation": 0,
       "university": "講師大学",
-      "universityGrade": "大1",
-      "hireDate": "2025-06-17",
+      "universityGrade": "大3",
+      "fullnameKana": "ヒラバヤシ トシヒデ",
+      "fullname": "平林 利英",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "4WWtosGumOg2S2ucpIMdXEJXH0J3": {
+    "__doc__": {
+      "uid": "4WWtosGumOg2S2ucpIMdXEJXH0J3",
+      "code": "t0470013",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "kobayashi@teacher.com",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "registrationDate": {
+        "_seconds": 1755845542,
+        "_nanoseconds": 209000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "天真",
+      "firstNameKana": "テンシン",
+      "gender": "男性",
+      "lastName": "小林",
+      "lastNameKana": "コバヤシ",
+      "phone": "333-3333-3333",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "院2",
+      "fullnameKana": "コバヤシ テンシン",
+      "fullname": "小林 天真",
+      "status": "在職中",
+      "subject": ""
+    }
+  },
+  "4hlSgWnKFNU7gVJi5XhyxczmnWr2": {
+    "__doc__": {
+      "uid": "4hlSgWnKFNU7gVJi5XhyxczmnWr2",
+      "fullName": "田中 タロウ",
+      "fullNameKana": "たなか たなか",
+      "email": "po8@icloud.com",
+      "phone": "000-0000-0000",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "code": "t0240005",
+      "lastName": "田中",
+      "firstName": "タロウ",
+      "lastNameKana": "たなか",
+      "firstNameKana": "たなか",
+      "gender": "男性",
+      "university": "あお",
+      "universityGrade": "大2",
+      "hireDate": "2025-08-28",
       "status": "在職中",
       "transportation": "1000",
-      "classroomCode": "047",
+      "classroomCode": "024",
+      "classroomName": "座間",
       "registrationDate": {
-        "_seconds": 1750157048,
-        "_nanoseconds": 757000000
-      },
+        "_seconds": 1754983396,
+        "_nanoseconds": 492000000
+      }
+    }
+  },
+  "5kpEhqSii8fAVSojHUHVIABBuJ13": {
+    "__doc__": {
+      "uid": "5kpEhqSii8fAVSojHUHVIABBuJ13",
+      "code": "t0470005",
+      "classroomCode": "047",
       "classroomName": "南林間",
+      "email": "nakanishi@teacher.com",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "registrationDate": {
+        "_seconds": 1755843879,
+        "_nanoseconds": 648000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "耕平",
+      "firstNameKana": "コウヘイ",
+      "gender": "男性",
+      "lastName": "中西",
+      "lastNameKana": "ナカニシ",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大3",
+      "fullnameKana": "ナカニシ コウヘイ",
+      "fullname": "中西 耕平",
+      "status": "在職中",
+      "subject": ""
+    }
+  },
+  "9Mx0xKrDqzOkqIKuHj5wxWvexNT2": {
+    "__doc__": {
+      "uid": "9Mx0xKrDqzOkqIKuHj5wxWvexNT2",
+      "code": "t0470011",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "uemura@teacher.com",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "registrationDate": {
+        "_seconds": 1755844623,
+        "_nanoseconds": 133000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "あみ",
+      "firstNameKana": "アミ",
+      "gender": "女性",
+      "lastName": "上村",
+      "lastNameKana": "ウエムラ",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大1",
+      "fullnameKana": "ウエムラ アミ",
+      "fullname": "上村 あみ",
+      "status": "在職中",
+      "subject": ""
+    }
+  },
+  "A0YyhgOfZ4b5urVxbh7EG6ihOVA3": {
+    "__doc__": {
+      "uid": "A0YyhgOfZ4b5urVxbh7EG6ihOVA3",
+      "code": "t0470003",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "tamshiro@teacher.com",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "registrationDate": {
+        "_seconds": 1755843690,
+        "_nanoseconds": 617000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "亞廉",
+      "firstNameKana": "アレン",
+      "gender": "男性",
+      "lastName": "玉城",
+      "lastNameKana": "タマシロ",
+      "phone": "000-124-1234",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大4",
+      "fullnameKana": "タマシロ アレン",
+      "fullname": "玉城 亞廉",
+      "status": "在職中",
+      "subject": ""
+    }
+  },
+  "DiYoWBj0BoaQ7YnPe9W1Rmrnxs43": {
+    "__doc__": {
+      "uid": "DiYoWBj0BoaQ7YnPe9W1Rmrnxs43",
+      "code": "t0470014",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "tada@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755845671,
+        "_nanoseconds": 81000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "琥馬",
+      "firstNameKana": "クウマ",
+      "gender": "男性",
+      "lastName": "多田",
+      "lastNameKana": "タダ",
+      "phone": "444-4444-4444",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大1",
+      "fullnameKana": "タダ クウマ",
+      "fullname": "多田 琥馬",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "EGIto2VBJvPcrrdQkB06CRVlO5M2": {
+    "__doc__": {
+      "uid": "EGIto2VBJvPcrrdQkB06CRVlO5M2",
+      "code": "t0470007",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "mozaki@teacher.com",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "registrationDate": {
+        "_seconds": 1755844173,
+        "_nanoseconds": 956000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "颯矢",
+      "firstNameKana": "ソウヤ",
+      "gender": "男性",
+      "lastName": "茂崎",
+      "lastNameKana": "モザキ",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "fullnameKana": "モザキ ソウヤ",
+      "fullname": "茂崎 颯矢",
+      "status": "在職中",
+      "subject": "",
+      "universityGrade": "大1"
+    }
+  },
+  "HfDY5fSfCkTayKqhQvbmSvCzQRP2": {
+    "__doc__": {
+      "uid": "HfDY5fSfCkTayKqhQvbmSvCzQRP2",
+      "fullName": "高橋 一",
+      "fullNameKana": "タカハシ ハジメ",
+      "email": "testtesttesttesttesttest@gmail.com",
+      "phone": "046-111-1111",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "code": "t2460002",
+      "lastName": "高橋",
+      "firstName": "一",
+      "lastNameKana": "タカハシ",
+      "firstNameKana": "ハジメ",
+      "gender": "男性",
+      "university": "アトム大学",
+      "universityGrade": "大2",
+      "hireDate": "2025-08-05",
+      "status": "在職中",
+      "transportation": "",
+      "classroomCode": "246",
+      "classroomName": "大和",
+      "registrationDate": {
+        "_seconds": 1754990362,
+        "_nanoseconds": 185000000
+      }
+    }
+  },
+  "KhMJfDcShWaDpgxwWMzJq2A6zYY2": {
+    "__doc__": {
+      "uid": "KhMJfDcShWaDpgxwWMzJq2A6zYY2",
+      "code": "t0470010",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "hayashi@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755844532,
+        "_nanoseconds": 382000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "彩葉",
+      "firstNameKana": "アヤハ",
+      "gender": "女性",
+      "lastName": "林",
+      "lastNameKana": "ハヤシ",
+      "phone": "000-111-1234",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大1",
+      "fullnameKana": "ハヤシ アヤハ",
+      "fullname": "林 彩葉",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "KzuUOv4gt2bkIJqcIpiOr90kzlw2": {
+    "__doc__": {
+      "uid": "KzuUOv4gt2bkIJqcIpiOr90kzlw2",
+      "name": "鈴木 太郎",
+      "email": "kaito0726@gmail.com",
+      "phone": "1211211234",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "code": "t2460001",
+      "lastName": "鈴木",
+      "firstName": "太郎",
+      "kanalastName": "スズキ",
+      "kanafirstName": "タロウ",
+      "gender": "男性",
+      "university": "大和大学",
+      "universityGrade": "大1",
+      "hireDate": "2025-07-31",
+      "status": "在職中",
+      "transportation": "111",
+      "classroomCode": "246",
+      "classroomName": "大和",
+      "registrationDate": {
+        "_seconds": 1754560349,
+        "_nanoseconds": 930000000
+      }
+    }
+  },
+  "LoZ3aww7g7POaLyx3ThHYgwqTpG3": {
+    "__doc__": {
+      "uid": "LoZ3aww7g7POaLyx3ThHYgwqTpG3",
+      "code": "t0470001",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "igarashi@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755784254,
+        "_nanoseconds": 723000000
+      },
+      "hireDate": {
+        "_seconds": 1755734400,
+        "_nanoseconds": 0
+      },
+      "firstName": "雄飛",
+      "firstNameKana": "ユウト",
+      "gender": "男性",
+      "lastName": "五十嵐",
+      "lastNameKana": "イガラシ",
+      "phone": "000-0000-0000",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大4",
+      "fullnameKana": "イガラシ ユウト",
+      "fullname": "五十嵐 雄飛",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "eA8PI2geOegnFDc1rih27bHFuHK2": {
+    "__doc__": {
+      "uid": "eA8PI2geOegnFDc1rih27bHFuHK2",
+      "code": "t0470002",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "mastumoto@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755843408,
+        "_nanoseconds": 146000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "歩奈",
+      "firstNameKana": "アユナ",
+      "gender": "女性",
+      "lastName": "松本",
+      "lastNameKana": "マツモト",
+      "phone": "111-1111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大3",
+      "fullnameKana": "マツモト アユナ",
+      "fullname": "松本 歩奈",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "hFnopa1N3sdQdbFu2VV388qjW6f2": {
+    "__doc__": {
+      "uid": "hFnopa1N3sdQdbFu2VV388qjW6f2",
+      "fullName": "河野 快都",
+      "fullNameKana": "コウノ カイト",
+      "email": "g2331035@tcu.ac.jp",
+      "phone": "09012419588",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "code": "t2460003",
+      "lastName": "河野",
+      "firstName": "快都",
+      "lastNameKana": "コウノ",
+      "firstNameKana": "カイト",
+      "gender": "男性",
+      "university": "東京都市大学",
+      "universityGrade": "大3",
+      "hireDate": "2025-08-08",
+      "status": "在職中",
+      "transportation": "",
+      "classroomCode": "246",
+      "classroomName": "大和",
+      "registrationDate": {
+        "_seconds": 1755236386,
+        "_nanoseconds": 995000000
+      }
+    }
+  },
+  "hH1IptT8JXemWw1yqLvmjr1Nrly2": {
+    "__doc__": {
+      "uid": "hH1IptT8JXemWw1yqLvmjr1Nrly2",
+      "code": "t0470012",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "miyamoto@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755844780,
+        "_nanoseconds": 481000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "龍之介",
+      "firstNameKana": "リュウノスケ",
+      "gender": "男性",
+      "lastName": "宮本",
+      "lastNameKana": "ミヤモト",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大3",
+      "fullnameKana": "ミヤモト リュウノスケ",
+      "fullname": "宮本 龍之介",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "jWq1xtrmD3RzJsflPuP8BbqxJhs1": {
+    "__doc__": {
+      "uid": "jWq1xtrmD3RzJsflPuP8BbqxJhs1",
+      "code": "t0470008",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "takahashi@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755844378,
+        "_nanoseconds": 508000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "詩織",
+      "firstNameKana": "シオリ",
+      "gender": "女性",
+      "lastName": "高橋",
+      "lastNameKana": "タカハシ",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大2",
+      "fullnameKana": "タカハシ シオリ",
+      "fullname": "高橋 詩織",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "jkHUERZaVjZ0uLKUrusi3uNpUus2": {
+    "__doc__": {
+      "uid": "jkHUERZaVjZ0uLKUrusi3uNpUus2",
+      "code": "t0470009",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "gasegawa@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755844452,
+        "_nanoseconds": 220000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "楓",
+      "firstNameKana": "カエデ",
+      "gender": "女性",
+      "lastName": "長谷川",
+      "lastNameKana": "ハセガワ",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大1",
+      "fullnameKana": "ハセガワ カエデ",
+      "fullname": "長谷川 楓",
+      "status": "在職中",
+      "subject": "",
       "isFirstLogin": false
     }
   },
@@ -53,6 +580,70 @@
       }
     }
   },
+  "mpQbhEGO39bu5gqtNcZI9kq6W9y2": {
+    "__doc__": {
+      "uid": "mpQbhEGO39bu5gqtNcZI9kq6W9y2",
+      "code": "t0470015",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "kawashima@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755845749,
+        "_nanoseconds": 464000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "遼太",
+      "firstNameKana": "リョウタ",
+      "gender": "男性",
+      "lastName": "川島",
+      "lastNameKana": "カワシマ",
+      "phone": "555-5555-5555",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大1",
+      "fullnameKana": "カワシマ リョウタ",
+      "fullname": "川島 遼太",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
+  "tFsF3UZKzFYvcW2WTIdvKJOu1Eh2": {
+    "__doc__": {
+      "uid": "tFsF3UZKzFYvcW2WTIdvKJOu1Eh2",
+      "code": "t0470004",
+      "classroomCode": "047",
+      "classroomName": "南林間",
+      "email": "kouno@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755843784,
+        "_nanoseconds": 857000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "快都",
+      "firstNameKana": "カイト",
+      "gender": "男性",
+      "lastName": "河野",
+      "lastNameKana": "コウノ",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大3",
+      "fullnameKana": "コウノ カイト",
+      "fullname": "河野 快都",
+      "status": "在職中",
+      "subject": "",
+      "isFirstLogin": false
+    }
+  },
   "tL6CwfC1iReFemRT27EP6Bljr2r1": {
     "__doc__": {
       "uid": "tL6CwfC1iReFemRT27EP6Bljr2r1",
@@ -80,30 +671,35 @@
       }
     }
   },
-  "yCQbcK5cneOMJJABTjRsJtdbZ423": {
+  "unv8232gE6NpBdCBDgKBcgxayO32": {
     "__doc__": {
-      "lastName": "田中",
-      "email": "ryusei@teacher.com",
-      "status": "在職中",
-      "code": "t0470001",
-      "registrationDate": {
-        "_seconds": 1750142093,
-        "_nanoseconds": 566000000
-      },
-      "phone": "000-0000-0000",
-      "gender": "男性",
-      "kanalastName": "タナカ",
-      "role": "teacher",
-      "firstName": "流星",
-      "transportation": "800",
-      "universityGrade": "大2",
-      "name": "田中 流星",
-      "kanafirstName": "リュウセイ",
-      "uid": "yCQbcK5cneOMJJABTjRsJtdbZ423",
+      "uid": "unv8232gE6NpBdCBDgKBcgxayO32",
+      "code": "t0470006",
       "classroomCode": "047",
-      "hireDate": "2025-06-17",
-      "university": "講師大学",
       "classroomName": "南林間",
+      "email": "ogihara@teacher.com",
+      "role": "teacher",
+      "registrationDate": {
+        "_seconds": 1755844092,
+        "_nanoseconds": 434000000
+      },
+      "hireDate": {
+        "_seconds": 1755820800,
+        "_nanoseconds": 0
+      },
+      "firstName": "琉成",
+      "firstNameKana": "リュウセイ",
+      "gender": "男性",
+      "lastName": "荻原",
+      "lastNameKana": "オギハラ",
+      "phone": "000-111-1111",
+      "transportation": 0,
+      "university": "講師大学",
+      "universityGrade": "大4",
+      "fullnameKana": "オギハラ リュウセイ",
+      "fullname": "荻原 琉成",
+      "status": "在職中",
+      "subject": "",
       "isFirstLogin": false
     }
   },
@@ -132,6 +728,36 @@
         "_nanoseconds": 856000000
       },
       "isFirstLogin": false
+    }
+  },
+  "zvsxWGaTfZZnLo4hlEPNJdPN6j32": {
+    "__doc__": {
+      "uid": "zvsxWGaTfZZnLo4hlEPNJdPN6j32",
+      "fullName": "田中 タロウ",
+      "fullNameKana": " ",
+      "email": "po7@icloud.com",
+      "phone": "000-0000-0000",
+      "role": "teacher",
+      "isFirstLogin": true,
+      "code": "t0240004",
+      "lastName": "田中",
+      "firstName": "タロウ",
+      "lastNameKana": "",
+      "firstNameKana": "",
+      "gender": "男性",
+      "university": "あお",
+      "universityGrade": "大2",
+      "hireDate": "2025-08-28",
+      "status": "在職中",
+      "transportation": "1000",
+      "kanalastName": "たなか",
+      "kanafirstName": "たなか",
+      "classroomCode": "024",
+      "classroomName": "座間",
+      "registrationDate": {
+        "_seconds": 1754982963,
+        "_nanoseconds": 430000000
+      }
     }
   }
 }

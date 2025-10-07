@@ -7,6 +7,7 @@ import { fetchJapanHolidays } from "./fetchHolidays";
 import { saveSchoolClosures, Closure } from "./saveClosures";
 import { fetchSchoolClosures } from "./fetchSchoolClosures";
 import FullYearCalendar from "./components/FullYearCalendar";
+import type { UserRole } from "@/contexts/types/user"
 
 type Holiday = { name: string; date: string; type: "holiday" | "customClose" };
 
@@ -23,7 +24,9 @@ const HolidayPage = () => {
     const [activeTab, setActiveTab] = useState<'holidayList' | 'calendar'>('holidayList');
     const [addModalMonth, setAddModalMonth] = useState<string | null>(null);
     const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
-    const { role, classroomCode } = useAuth();
+    const { userData } = useAuth();
+    const classroomCode = userData?.classroomCode;
+    const role = userData?.role as UserRole | undefined;
 
     const load = async () => {
         if (!role) return;
@@ -79,13 +82,14 @@ const HolidayPage = () => {
         setDeleteConfirmOpen(false);
     };
 
-
     const changeYear = (delta: number) => setYear(prev => prev + delta);
 
     const handleSave = useCallback(async () => {
         const closures: Closure[] = holidays.map(h => ({ date: h.date, name: h.name, type: h.type }));
         const deleted: Closure[] = deletedHolidays.map(h => ({ date: h.date, name: h.name, type: h.type }));
         try {
+            console.log('role', role);
+            console.log('classroomCode', classroomCode);
             if (role === "superadmin") {
                 await saveSchoolClosures(`${year}`, closures, deleted, role);
             } else if (role === "admin" && classroomCode) {

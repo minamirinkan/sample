@@ -1,4 +1,4 @@
-// src/constants/periods.js
+// src/common/periods.js
 
 const periods = [
     { label: '1限', time: '09:50～11:10' },

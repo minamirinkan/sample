@@ -2,13 +2,12 @@ import React from 'react';
 import SUBJECT_OPTIONS from '../subjectOptions';
 import { SchoolDataItem } from '../../../../contexts/types/schoolData'; // 実際の型定義のパスに合わせて
 import { SchoolLevel } from '../../../../contexts/types/schoolData';
-
 interface CourseInfoSectionProps {
     formData: SchoolDataItem[];
     onChange: (newData: SchoolDataItem[]) => void;
     lessonType: string;
     schoolLevel: string | undefined;
-    setLessonType: React.Dispatch<React.SetStateAction<string>>; // ← これを追加
+    setLessonType: React.Dispatch<React.SetStateAction<'regular' | 'nonRegular'>>;
 }
 
 const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
@@ -38,8 +37,6 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
         kind,
         classType: '',
         times: '',
-        subject: '',
-        subjectOther: '',
         duration: '',
         startYear: '',
         startMonth: '',
@@ -53,7 +50,10 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
     };
 
     const handleAddRowWithKind = (kind: string) => {
-        onChange([...formData, createEmptyRow(kind)]);
+        console.log('追加する kind:', kind);
+        const newRow = createEmptyRow(kind);
+        console.log('追加される新規行:', newRow);
+        onChange([...formData, newRow]);
     };
 
     const handleRemoveRow = (index: number) => {
@@ -62,15 +62,13 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
     };
 
     const classTypes = ['1名クラス', '2名クラス', '演習クラス'];
-    const WEEKDAY_OPTIONS = ['日', '月', '火', '水', '木', '金', '土'];
-    const PERIOD_OPTIONS = ['1限', '2限', '3限', '4限', '5限', '6限', '7限', '8限'];
+    const TIMES_OPTIONS = ['1', '2', '3', '4', '5', '6'];
     const years = [2025, 2026, 2027];
     const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
     return (
         <div className="space-y-4">
             <h3 className="text-lg font-semibold">受講情報</h3>
-
             {lessonType ? (
                 <>
                     <div className="overflow-x-auto">
@@ -79,17 +77,14 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                 <tr className="bg-gray-100 text-sm text-left">
                                     <th className="border px-4 py-2 w-[100px] text-center whitespace-nowrap">授業種別</th>
                                     <th className="border px-4 py-2 w-[100px] text-center whitespace-nowrap">授業形態</th>
-                                    <th className="border px-4 py-2 w-[120px] text-center whitespace-nowrap">授業回数</th>
-                                    <th className="border px-4 py-2 w-[400px] text-center whitespace-nowrap">科目</th>
-                                    {lessonType === 'regular' && (
-                                        <>
-                                            <th className="border px-4 py-2 w-[600px] text-center whitespace-nowrap">曜日</th>
-                                            <th className="border px-4 py-2 w-[600px] text-center whitespace-nowrap">時限</th>
-                                        </>
+                                    {lessonType === 'regular' ? (
+                                        <th className="border px-4 py-2 w-[50px] text-center whitespace-nowrap">授業週回数</th>
+                                    ) : (
+                                        <th className="border px-4 py-2 w-[120px] text-center whitespace-nowrap">授業回数</th>
                                     )}
-                                    <th className="border px-4 py-2 w-[400px] text-center whitespace-nowrap">授業時間</th>
-                                    <th className="border px-4 py-2 w-[100px] text-center whitespace-nowrap">受講開始</th>
-                                    <th className="border px-4 py-2 w-[100px] text-center whitespace-nowrap">受講終了</th>
+                                    <th className="border px-4 py-2 w-[50px] text-center whitespace-nowrap">授業時間</th>
+                                    <th className="border px-4 py-2 w-[50px] text-center whitespace-nowrap">受講開始</th>
+                                    <th className="border px-4 py-2 w-[50px] text-center whitespace-nowrap">受講終了</th>
                                     <th className="border px-4 py-2 w-[150px]">備考</th>
                                     <th className="border px-4 py-2 w-[80px] text-center">操作</th>
                                 </tr>
@@ -112,96 +107,29 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                                 ))}
                                             </select>
                                         </td>
-                                        <td className="border px-4 py-2 min-w-[100px] text-center whitespace-nowrap text-ellipsis">
-                                            {lessonType === 'regular' ? (
-                                                <input
-                                                    type="text"
-                                                    value="1回"
-                                                    readOnly
-                                                    className="w-full border rounded px-2 py-1 bg-gray-100 text-center cursor-not-allowed"
-                                                />
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    value={data.times || ''}
-                                                    onChange={(e) => handleChange(index, { times: e.target.value })}
-                                                    className="w-full border rounded px-2 py-1 text-center"
-                                                    placeholder="例：1回"
-                                                />
-                                            )}
-                                        </td>
-                                        <td className="border px-1 py-2 min-w-[200px] text-center whitespace-nowrap text-ellipsis">
-                                            <div className="flex flex-col gap-1">
-                                                <select
-                                                    value={String(data.subject) || ''}
-                                                    onChange={(e) => {
-                                                        const newSubject = e.target.value;
-                                                        const updates: Partial<SchoolDataItem> = { subject: newSubject };
-                                                        if (newSubject !== 'その他') {
-                                                            updates.subjectOther = ''; // クリア
-                                                        }
-                                                        handleChange(index, updates);
-                                                    }}
-                                                    className="w-full min-w-[220px] px-100 py-100 border rounded"
-                                                >
-                                                    <option value="">選択してください</option>
-                                                    {subjects.map((subject) => (
-                                                        <option key={subject} value={subject}>
-                                                            {subject}
-                                                        </option>
-                                                    ))}
-                                                </select>
-
-                                                {data.subject === 'その他' && (
-                                                    <input
-                                                        type="text"
-                                                        value={data.subjectOther || ''}
-                                                        onChange={(e) => handleChange(index, { subjectOther: e.target.value })}
-                                                        className="w-full border rounded px-2 py-1"
-                                                        placeholder="科目名を入力"
-                                                    />
-                                                )}
-                                            </div>
-                                        </td>
-                                        {lessonType === 'regular' && (
-                                            <>
-                                                <td className="border px-1 py-2 min-w-[100px] text-center whitespace-nowrap text-ellipsis">
-                                                    <select
-                                                        value={data.weekday || ''}
-                                                        onChange={(e) => handleChange(index, { weekday: e.target.value })}
-                                                        className="w-full border rounded px-2 py-1"
-                                                    >
-                                                        <option value="">選択</option>
-                                                        {WEEKDAY_OPTIONS.map((day) => (
-                                                            <option key={day} value={day}>{day}</option>
+                                        <td className="border px-4 py-2 min-w-[70px] text-center whitespace-nowrap text-ellipsis">
+                                            週 <select
+                                                value={data.times || ''}
+                                                onChange={(e) => handleChange(index, { times: e.target.value })}
+                                                className="border rounded px-0.5 py-1 text-center"
+                                            >
+                                                <option value="">--</option>
+                                                        {TIMES_OPTIONS.map((times) => (
+                                                            <option key={times} value={times}>{times}</option>
                                                         ))}
-                                                    </select>
-                                                </td>
-                                                <td className="border min-w-[110px] px-100 py-100 whitespace-nowrap text-ellipsis">
-                                                    <select
-                                                        value={data.period || ''}
-                                                        onChange={(e) => handleChange(index, { period: e.target.value })}
-                                                        className="w-full border rounded px-2 py-1"
-                                                    >
-                                                        <option value="">選択</option>
-                                                        {PERIOD_OPTIONS.map((period) => (
-                                                            <option key={period} value={period}>{period}</option>
-                                                        ))}
-                                                    </select>
-                                                </td>
-                                            </>
-                                        )}
-                                        <td className="border px-2 py-2 min-w-[110px] whitespace-nowrap text-ellipsis">
+                                            </select> 回
+                                        </td>
+                                        <td className="border px-2 py-2 min-w-[50px] text-center whitespace-nowrap text-ellipsis">
                                             <select
                                                 value={data.duration || ''}
                                                 onChange={(e) => handleChange(index, { duration: e.target.value })}
-                                                className="w-full border rounded px-2 py-1"
+                                                className="border rounded px-3 py-1 text-center"
                                             >
                                                 <option value="">選択</option>
-                                                <option value="80分">80分</option>
-                                                <option value="70分">70分</option>
-                                                <option value="40分">40分</option>
-                                            </select>
+                                                <option value="80">80</option>
+                                                <option value="70">70</option>
+                                                <option value="40">40</option>
+                                            </select> 分
                                         </td>
                                         <td className="border px-4 py-2 text-center whitespace-nowrap text-ellipsis">
                                             <div className="flex gap-2">

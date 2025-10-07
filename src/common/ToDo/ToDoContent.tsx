@@ -12,24 +12,25 @@ import {
   getDocs,
   doc,
   updateDoc,
+  query,
+  onSnapshot,
+  orderBy,
+  limit
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { showErrorToast } from "..//ToastProvider";
+import { showErrorToast } from "../ToastProvider";
 import { toast } from "react-toastify";
 import { useAuth } from "../../contexts/AuthContext";
 
-type Props = {
-  logs: Log[];
-};
-
-const ToDoContent: React.FC<Props> = ({ logs }) => {
-  const { user, classroomCode, role } = useAuth();
+const ToDoContent: React.FC = () => {
+  const { user, role } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [classroomCodes, setClassroomCodes] = useState<string[]>([]);
-
+  const classroomCode = user?.classroomCode;
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const [logs, setLogs] = useState<Log[]>([]);
 
   // classroomCodes取得
   useEffect(() => {
@@ -60,6 +61,29 @@ const ToDoContent: React.FC<Props> = ({ logs }) => {
     });
     setMessages(fetchedMessages);
   }, [user, classroomCode]);
+
+  useEffect(() => {
+    const q = query(
+      collection(db, "logs"),
+      orderBy("timestamp", "desc"),
+      limit(10)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data: Log[] = snapshot.docs.map((doc) => {
+        const d = doc.data();
+        return {
+          id: doc.id,
+          timestamp: d.timestamp,
+          content: d.content ?? "",
+          editor: d.editor ?? "",
+        };
+      });
+      setLogs(data);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // 初回取得＋user,classroomCode変化時にfetchMessages呼ぶ
   useEffect(() => {

@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from "react";
+import { useAuth } from "../AuthContext";
 import { useAdmins } from "../hooks/useAdmins";
 import { useClassrooms } from "../hooks/useClassrooms";
 import { useCustomers } from "../hooks/useCustomers";
@@ -13,6 +14,7 @@ import type { Timestamp } from "firebase/firestore";
 const SuperAdminDataContext = createContext<SuperAdminDataContextType | null>(null);
 
 export const SuperAdminDataProvider = ({ children }: { children: React.ReactNode }) => {
+    const { userData } = useAuth();
     const { admins, loading: adminsLoading } = useAdmins();
     // エラーは使わないなら受け取らない
     const { classrooms, loading: classroomsLoading } = useClassrooms();
@@ -49,6 +51,7 @@ export const SuperAdminDataProvider = ({ children }: { children: React.ReactNode
     return (
         <SuperAdminDataContext.Provider
             value={{
+                userData,
                 admins,
                 adminsLoading,
                 classrooms,

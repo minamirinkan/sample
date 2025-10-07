@@ -1,0 +1,43 @@
+{
+  "202509_047_s0470167": {
+    "__doc__": {
+      "studentId": "s0470167",
+      "taxRate": 0.1,
+      "createdAt": {
+        "_seconds": 1759033683,
+        "_nanoseconds": 503000000
+      },
+      "customerUid": "rFA6WqQjaUVjQniaxC560lqTBvl2",
+      "total": 3151.5,
+      "classroomCode": "047",
+      "month": "202509",
+      "subtotal": 2865,
+      "studentName": "w w",
+      "details": [
+        {
+          "price": 13,
+          "qty": 1,
+          "name": "9月分授業料",
+          "total": 13,
+          "note": "",
+          "taxType": "課税",
+          "code": "W_J3_W2_T80"
+        },
+        {
+          "price": 2852,
+          "code": "維持費",
+          "total": 2852,
+          "name": "9月分維持費",
+          "taxType": "課税",
+          "qty": 1,
+          "note": ""
+        }
+      ],
+      "type": "月締",
+      "updatedAt": {
+        "_seconds": 1759033683,
+        "_nanoseconds": 503000000
+      }
+    }
+  }
+}

@@ -76,7 +76,9 @@ const SchoolAccountAdmin = () => {
                 leaderLastName,
                 leaderFirstName,
                 leaderLastKana,
-                leaderFirstKana
+                leaderFirstKana,
+                fullname: `${leaderLastName} ${leaderFirstName}`,
+                fullnameKana: `${leaderLastKana} ${leaderFirstKana}`
             });
 
             setSuccess('教室アカウントを登録しました。');

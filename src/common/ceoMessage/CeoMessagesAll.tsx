@@ -7,7 +7,8 @@ import SimpleCard from '../ToDo/ToDoContent/SimpleCard';
 import MessageDetailModal from '../ToDo/components/MessageDetailModal';
 
 const CeoMessagesAll: React.FC = () => {
-    const { user, classroomCode, role } = useAuth();
+    const { user, role } = useAuth();
+    const classroomCode = user?.classroomCode;
     const [messages, setMessages] = useState<(Message & { readStatus: Record<string, boolean> })[]>([]);
     const [selectedMessage, setSelectedMessage] = useState<(Message & { readStatus: Record<string, boolean> }) | null>(null);
     // 追加: 行ごとの未読教室表示用の状態

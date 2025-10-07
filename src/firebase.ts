@@ -1,9 +1,6 @@
-// firebase.ts
-
 import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-import { getAuth } from "firebase/auth"; // ← これが必要
 
 const firebaseConfig = {
     apiKey: "AIzaSyCAlEUW3KxQbXHVWEZ_W57d4OqgYS6KCJw",
@@ -16,9 +13,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
-const storage = getStorage(app);
-const auth = getAuth(app); // ← auth を取得
 
-export { db, storage, auth }; // ← ここで auth を追加
+export { auth, provider, db };

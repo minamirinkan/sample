@@ -24,7 +24,7 @@ export default function TimetableCustomerPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="w-screen p-0 overflow-x-hidden">
       <CustomerCalendar
         year={year}
         month={month}

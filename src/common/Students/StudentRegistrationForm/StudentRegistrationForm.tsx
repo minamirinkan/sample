@@ -1,5 +1,7 @@
 // src/components/StudentRegistrationForm/StudentRegistrationForm.tsx
-import { useEffect, useState, useMemo } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { serverTimestamp, addDoc, collection, getFirestore } from 'firebase/firestore';
 import { registerCustomerAndStudent } from '../firebase/saveCustomerAndStudent';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -12,14 +14,24 @@ import SchoolInfoSection from './components/SchoolInfoSection';
 import AddressInfoSection from './components/AddressInfoSection';
 import { Student } from '../../../contexts/types/student';
 import { SchoolDataItem } from '../../../contexts/types/schoolData';
-import { Timestamp, FieldValue } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { SchoolLevel } from '../../../contexts/types/schoolData';
+import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
+import LoadingSpinner from '../../../common/LoadingSpinner';
+import { toast } from 'react-toastify';
 
-const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
-    const { userData } = useAuth();
+// Propsの型を定義
+interface StudentRegistrationFormProps {
+    onCancel?: () => void;
+}
+
+const StudentRegistrationForm: React.FC<StudentRegistrationFormProps> = ({ onCancel }) => {
+    const { user, userPassword } = useAuth();
+    const currentAdminUid = user?.uid;
+    const { userData, loading: adminLoading } = useAdminData() ?? { userData: null, loading: true };
+    const navigate = useNavigate();
     const classroomCode = userData?.classroomCode ?? '';
-    const classroomName = 'a'
-
+    const classroomName = userData?.name ?? '';
     const initialFormData: Partial<Student> = {
         studentId: '',
         fullname: '',
@@ -80,28 +92,21 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
             period: '',
         },
     ]);
-    
 
     const isSchoolLevel = (value: any): value is SchoolLevel =>
         ['小学校', '中学校', '高等学校', '通信制'].includes(value);
 
     const [formData, setFormData] = useState(initialFormData);
-    const [loading, setLoading] = useState(true);
-    const [lessonType, setLessonType] = useState('');
+    const [lessonType, setLessonType] = React.useState<'regular' | 'nonRegular'>('regular');
     const [courseFormData, setCourseFormData] = useState<SchoolDataItem[]>([]);
+    const [submitting, setSubmitting] = useState(false);
 
     console.log('保存するデータ:', courseFormData);
     useEffect(() => {
-        if (lessonType === 'regular') {
-            if (courseFormData.length === 0) {
-                setCourseFormData([...schoolData]);
-            }
-        } else {
-            if (courseFormData.length > 0) {
-                setCourseFormData([]);
-            }
+        if (lessonType === 'regular' && courseFormData.length === 0) {
+            setCourseFormData([...schoolData]);
         }
-    }, [lessonType, courseFormData.length, ...schoolData]);
+    }, [lessonType, schoolData]);
 
     useEffect(() => {
         if (formData.schoolLevel) {
@@ -111,9 +116,12 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
         }
     }, [formData.schoolLevel]);
 
-    const handleLessonTypeChange = (value: string) => {
+    const handleLessonTypeChange = (value: 'regular' | 'nonRegular') => {
         setLessonType(value);
-        setCourseFormData([]);
+        // 非レギュラーの時だけリセットする（←これは任意）
+        if (value === 'nonRegular') {
+            setCourseFormData([]);
+        }
     };
 
     useEffect(() => {
@@ -121,7 +129,6 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
             if (!classroomCode) return;
             const newId = await generateStudentCode(classroomCode);
             setFormData((prev) => ({ ...prev, studentId: newId }));
-            setLoading(false);
         };
         fetchAndSetStudentId();
     }, [classroomCode]);
@@ -130,17 +137,19 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    const { user } = useAuth();
-    const currentAdminUid = user?.uid;
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formData.lastName || !formData.firstName) {
-            alert('氏名を入力してください');
+            toast.error('氏名を入力してください');
             return;
         }
 
+        if (!userPassword) {
+            alert("管理者パスワードが取得できません。再ログインしてください。");
+            return;
+        }
         // 登録用の関数呼び出し
+        setSubmitting(true);
         const success = await registerCustomerAndStudent({
             uid: formData.studentId ?? '',
             customerName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
@@ -151,22 +160,16 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 classroomCode,
                 classroomName,
                 fullname: `${formData.lastName} ${formData.firstName}`,
-                fullnameKana:`${formData.lastNameKana} ${formData.firstNameKana}`,
+                fullnameKana: `${formData.lastNameKana} ${formData.firstNameKana}`,
                 guardianfullName: `${formData.guardianLastName} ${formData.guardianFirstName}`,
-                guardianfullNameKana:`${formData.guardianLastNameKana} ${formData.guardianFirstNameKana}`,
+                guardianfullNameKana: `${formData.guardianLastNameKana} ${formData.guardianFirstNameKana}`,
                 registrationDate: Timestamp.fromDate(new Date()),
                 courses: courseFormData ?? [],
             },
-            courseFormData: courseFormData.map((course) => {
-                const updated = { ...course };
-                if (updated.subject === 'その他') {
-                    updated.subject = updated.subjectOther || '';
-                }
-                delete updated.subjectOther;
-                return updated;
-            }),
+            userPassword: userPassword,
+            setLoading: setSubmitting,
         });
-
+        setSubmitting(false);
 
         if (success) {
             const db = getFirestore();
@@ -177,17 +180,16 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 detail: `教室: ${classroomName} / 氏名: ${formData.lastName} ${formData.firstName}`,
                 timestamp: serverTimestamp(),
             });
-            alert('登録が完了しました');
-
-            setLessonType("");
 
             const newStudentId = await generateStudentCode(classroomCode);
             setFormData({
                 ...initialFormData,
                 studentId: newStudentId,
             });
+            toast.success('登録が完了しました！');
+            navigate('/admin/students/new');
         } else {
-            alert('登録に失敗しました');
+            toast.error('登録に失敗しました');
         }
     };
 
@@ -198,13 +200,18 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
             ...initialFormData,
             studentId: newCode,
         });
-
-        if (typeof onCancel === 'function') {
-            onCancel();
-        }
     };
 
-    if (!userData || !classroomCode || loading) {
+    // ローディング中（データ取得中）
+    if (adminLoading) {
+        return <div className="text-center text-gray-500">読み込み中...</div>;
+    }
+    // データは取得できたけど存在しなかった場合（エラーハンドリング）
+    if (!userData) {
+        return <div className="text-center text-red-500">ユーザーデータが見つかりません</div>;
+    }
+    // classroomCode がまだ取れてない場合もローディング扱い
+    if (!classroomCode) {
         return <div className="text-center text-gray-500">読み込み中...</div>;
     }
 
@@ -241,9 +248,9 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm">
                         <SchoolInfoSection
                             schoolData={{
-                                schoolingStatus: formData.schoolingStatus,
-                                schoolType: formData.schoolType,
-                                schoolLevel: formData.schoolLevel,
+                                schoolingStatus: formData.schoolingStatus || undefined,
+                                schoolType: formData.schoolType || undefined,
+                                schoolLevel: formData.schoolLevel || undefined,
                                 schoolName: formData.schoolName,
                                 schoolKana: formData.schoolKana,
                                 grade: formData.grade,
@@ -274,15 +281,18 @@ const StudentRegistrationForm = ({ onCancel }: { onCancel?: () => void }) => {
                 </div>
             </div>
             <div className="flex justify-center gap-6 mt-8">
-                <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-                >
-                    登録する
-                </button>
+                <>
+                    {adminLoading && <LoadingSpinner />}
+                    <button
+                        type="submit"
+                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                    >
+                        登録する
+                    </button>
+                </>
                 <button
                     type="button"
-                    onClick={handleCancel}
+                    onClick={onCancel ? onCancel : handleCancel}
                     className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
                 >
                     キャンセル

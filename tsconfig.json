@@ -2,36 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@src/*": [
-        "src/*"
-      ],
-      "@admin/*": [
-        "src/admin/*"
-      ],
-      "@common/*": [
-        "src/common/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@contexts/*": [
-        "src/contexts/*"
-      ],
-      "@guardian/*": [
-        "src/guardian/*"
-      ],
-      "@firebase/*": [
-        "src/firebase/*"
-      ],
-      "@pages/*": [
-        "src/pages/*"
-      ],
-      "@superadmin/*": [
-        "src/Superadmin/*"
-      ],
-      "@teacher/*": [
-        "src/teacher/*"
-      ]
+      "@/*": ["./src/*"] // パスのエイリアスは，簡単のためこれに統一
     },
     // --- 基本的な設定 ---
     /**
@@ -49,11 +20,7 @@
      * "DOM.Iterable": for...ofループなどでDOM要素を扱えるようにします。
      * "ESNext": 最新のJavaScript機能（Promise, Map, Setなど）の型を扱えるようにします。
      */
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     /**
      * "allowJs": true
      * プロジェクト内で.jsファイルを許可するかどうか。
@@ -136,7 +103,5 @@
    * ここでは "src" フォルダ配下のすべてのファイル（.ts, .tsx, .js）を対象にしています。
    * テストファイルなど、対象外にしたいものは "exclude" で指定することもできます。
    */
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

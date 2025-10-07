@@ -1,13 +1,997 @@
 {
-  "wBbKeRrbrW7TD8FD33UO": {
+  "0J4tb6fwYet4tSCQfTOX": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "辻 琳子",
+      "detail": "教室: 南林間 / 氏名: 辻 琳子",
+      "timestamp": {
+        "_seconds": 1756108788,
+        "_nanoseconds": 621000000
+      }
+    }
+  },
+  "0mNLflyaSx2IXnTCBzzi": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "い い",
+      "detail": "教室: 南林間 / 氏名: い い",
+      "timestamp": {
+        "_seconds": 1756357513,
+        "_nanoseconds": 513000000
+      }
+    }
+  },
+  "1XKs09mTnWz7QzlxTrTI": {
+    "__doc__": {
+      "target": "栗原 美咲",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "detail": "教室: 南林間 / 氏名: 栗原 美咲",
+      "timestamp": {
+        "_seconds": 1757407763,
+        "_nanoseconds": 949000000
+      }
+    }
+  },
+  "2TfL6aa4yTwYNML87NpY": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "塩野 心音",
+      "detail": "教室: 南林間 / 氏名: 塩野 心音",
+      "timestamp": {
+        "_seconds": 1757402963,
+        "_nanoseconds": 729000000
+      }
+    }
+  },
+  "2YBlETVEoYT4yzDVVb2b": {
+    "__doc__": {
+      "target": "あ あ",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "detail": "教室: 南林間 / 氏名: あ あ",
+      "action": "生徒新規登録",
+      "timestamp": {
+        "_seconds": 1758087225,
+        "_nanoseconds": 500000000
+      }
+    }
+  },
+  "48Vup5ZJXIXwZQg93evn": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "高橋 美月",
+      "detail": "教室: 南林間 / 氏名: 高橋 美月",
+      "timestamp": {
+        "_seconds": 1756101359,
+        "_nanoseconds": 579000000
+      }
+    }
+  },
+  "4Gk152QWlR9u3WqKk1Is": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "山下 春翔",
+      "detail": "教室: 南林間 / 氏名: 山下 春翔",
+      "timestamp": {
+        "_seconds": 1757377194,
+        "_nanoseconds": 13000000
+      }
+    }
+  },
+  "63wh9DmVeeKra1zd44MW": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "杉本 真唯",
+      "detail": "教室: 南林間 / 氏名: 杉本 真唯",
+      "timestamp": {
+        "_seconds": 1756098732,
+        "_nanoseconds": 923000000
+      }
+    }
+  },
+  "6ePOj5m9VrfJtro58gLZ": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "田中 莉帆",
+      "detail": "教室: 南林間 / 氏名: 田中 莉帆",
+      "timestamp": {
+        "_seconds": 1756101643,
+        "_nanoseconds": 47000000
+      }
+    }
+  },
+  "8hLf2XgI524stAkzwNn5": {
+    "__doc__": {
+      "adminUid": "WBdKPpKmWafjLQOZFM3ROfuaBRv1",
+      "action": "生徒新規登録",
+      "target": "小林 ハナコ",
+      "detail": "教室:  / 氏名: 小林 ハナコ",
+      "timestamp": {
+        "_seconds": 1755003165,
+        "_nanoseconds": 149000000
+      }
+    }
+  },
+  "91A0yiVDjKfwh51OG1OB": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "鎗目 紘士朗",
+      "detail": "教室: 南林間 / 氏名: 鎗目 紘士朗",
+      "timestamp": {
+        "_seconds": 1756100408,
+        "_nanoseconds": 766000000
+      }
+    }
+  },
+  "9DRxJQH58kBXvNoi6uwa": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "阿部 友己洋",
+      "detail": "教室: 南林間 / 氏名: 阿部 友己洋",
+      "timestamp": {
+        "_seconds": 1756101538,
+        "_nanoseconds": 777000000
+      }
+    }
+  },
+  "9b8TkKpoVfKDhADdgGdA": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "佐々木 芽生",
+      "detail": "教室: 南林間 / 氏名: 佐々木 芽生",
+      "timestamp": {
+        "_seconds": 1756094785,
+        "_nanoseconds": 186000000
+      }
+    }
+  },
+  "A49hO8mxGlOVmXffjzas": {
+    "__doc__": {
+      "detail": "教室: 南林間 / 氏名: 田村 一郎",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "田村 一郎",
+      "timestamp": {
+        "_seconds": 1758868024,
+        "_nanoseconds": 201000000
+      }
+    }
+  },
+  "AFXEJtSTJ1cJkjLJIHOR": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "detail": "教室: 南林間 / 氏名: q q",
+      "action": "生徒新規登録",
+      "target": "q q",
+      "timestamp": {
+        "_seconds": 1758868638,
+        "_nanoseconds": 914000000
+      }
+    }
+  },
+  "C0geT5En7OJhuqlHeBf9": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "鎌田 瑠璃香",
+      "detail": "教室: 南林間 / 氏名: 鎌田 瑠璃香",
+      "timestamp": {
+        "_seconds": 1756098514,
+        "_nanoseconds": 98000000
+      }
+    }
+  },
+  "CFwYSNlZh9W8rJgXFI7v": {
+    "__doc__": {
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "action": "生徒新規登録",
+      "target": "中村 敬斗",
+      "detail": "教室: 座間 / 氏名: 中村 敬斗",
+      "timestamp": {
+        "_seconds": 1753629314,
+        "_nanoseconds": 220000000
+      }
+    }
+  },
+  "DnJPMh2WNL5xLD9N8DUH": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "中島 楓珂",
+      "detail": "教室: 南林間 / 氏名: 中島 楓珂",
+      "timestamp": {
+        "_seconds": 1756095425,
+        "_nanoseconds": 929000000
+      }
+    }
+  },
+  "DqkJMpwERvK5Y4malb3D": {
+    "__doc__": {
+      "detail": "教室: 南林間 / 氏名: w w",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "target": "w w",
+      "action": "生徒新規登録",
+      "timestamp": {
+        "_seconds": 1758870592,
+        "_nanoseconds": 258000000
+      }
+    }
+  },
+  "Ec4S0parFmzXmTpDUL5Z": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "松本 和心実",
+      "detail": "教室: 南林間 / 氏名: 松本 和心実",
+      "timestamp": {
+        "_seconds": 1756095573,
+        "_nanoseconds": 143000000
+      }
+    }
+  },
+  "Ei7kR4exnjpWIokEhLoU": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "川合 陸都",
+      "detail": "教室: 南林間 / 氏名: 川合 陸都",
+      "timestamp": {
+        "_seconds": 1756095129,
+        "_nanoseconds": 629000000
+      }
+    }
+  },
+  "Hd97frtcMuhftYdRUxJo": {
+    "__doc__": {
+      "adminUid": "epHJlcG0cwSe5VeHs6Jf1sPmjst1",
+      "action": "生徒新規登録",
+      "target": "山田 太郎",
+      "detail": "教室: 藤沢 / 氏名: 山田 太郎",
+      "timestamp": {
+        "_seconds": 1752893219,
+        "_nanoseconds": 485000000
+      }
+    }
+  },
+  "J0mX8PumjttX8lErQYA1": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "detail": "教室: 南林間 / 氏名: か か",
+      "target": "か か",
+      "action": "生徒新規登録",
+      "timestamp": {
+        "_seconds": 1758279066,
+        "_nanoseconds": 526000000
+      }
+    }
+  },
+  "JRjrjTlu7ElDLYVRC7Gh": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "小野 柚香",
+      "detail": "教室: 南林間 / 氏名: 小野 柚香",
+      "timestamp": {
+        "_seconds": 1756095713,
+        "_nanoseconds": 799000000
+      }
+    }
+  },
+  "JWL7tQvwZ1FrV0zDQG0a": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "常盤 來愛",
+      "detail": "教室: 南林間 / 氏名: 常盤 來愛",
+      "timestamp": {
+        "_seconds": 1756107691,
+        "_nanoseconds": 956000000
+      }
+    }
+  },
+  "KFGLaB3sQTohnLk3ozsI": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "菊池 新",
+      "detail": "教室: 南林間 / 氏名: 菊池 新",
+      "timestamp": {
+        "_seconds": 1756119029,
+        "_nanoseconds": 184000000
+      }
+    }
+  },
+  "KTdUZn6oQTtsWfA9knmU": {
+    "__doc__": {
+      "target": "あ あ",
+      "detail": "教室: 南林間 / 氏名: あ あ",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "timestamp": {
+        "_seconds": 1758273076,
+        "_nanoseconds": 616000000
+      }
+    }
+  },
+  "KwI7VjycDOUwzzTWhsYw": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "奥山 広大",
+      "detail": "教室: 南林間 / 氏名: 奥山 広大",
+      "timestamp": {
+        "_seconds": 1756101781,
+        "_nanoseconds": 985000000
+      }
+    }
+  },
+  "LLpOIZyXXhFkKOfaD1wJ": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "横山 咲葵",
+      "detail": "教室: 南林間 / 氏名: 横山 咲葵",
+      "timestamp": {
+        "_seconds": 1756105733,
+        "_nanoseconds": 159000000
+      }
+    }
+  },
+  "M6NxzaAbwUFXaIU6YujN": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "松本 煌成",
+      "detail": "教室: 南林間 / 氏名: 松本 煌成",
+      "timestamp": {
+        "_seconds": 1756100638,
+        "_nanoseconds": 845000000
+      }
+    }
+  },
+  "N4BVeENJGabbBUhchocp": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "森内 琥太郎",
+      "detail": "教室: 南林間 / 氏名: 森内 琥太郎",
+      "timestamp": {
+        "_seconds": 1756970027,
+        "_nanoseconds": 499000000
+      }
+    }
+  },
+  "PnRXq8FnQYX9wuCyI0Xe": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "大沼 佑士",
+      "detail": "教室: 南林間 / 氏名: 大沼 佑士",
+      "timestamp": {
+        "_seconds": 1756098399,
+        "_nanoseconds": 535000000
+      }
+    }
+  },
+  "Po52zoSXVi1YMeAExPiS": {
+    "__doc__": {
+      "adminUid": "WBdKPpKmWafjLQOZFM3ROfuaBRv1",
+      "action": "生徒新規登録",
+      "target": "大和 タロウ",
+      "detail": "教室: 大和 / 氏名: 大和 タロウ",
+      "timestamp": {
+        "_seconds": 1754881779,
+        "_nanoseconds": 645000000
+      }
+    }
+  },
+  "Q75JVdAg1hv32TJCoOw4": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "あ あ",
+      "detail": "教室: 南林間 / 氏名: あ あ",
+      "timestamp": {
+        "_seconds": 1756355563,
+        "_nanoseconds": 355000000
+      }
+    }
+  },
+  "RaovXDrAK1hnV7bLRHHK": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "う う",
+      "detail": "教室: 南林間 / 氏名: う う",
+      "timestamp": {
+        "_seconds": 1756357557,
+        "_nanoseconds": 595000000
+      }
+    }
+  },
+  "RlIWbgvnWDVjQLSlNPuA": {
+    "__doc__": {
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "action": "生徒新規登録",
+      "target": "高井 広大",
+      "detail": "教室: 座間 / 氏名: 高井 広大",
+      "timestamp": {
+        "_seconds": 1753597274,
+        "_nanoseconds": 589000000
+      }
+    }
+  },
+  "SlbYLnvigNJyFOtSQOCQ": {
+    "__doc__": {
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "action": "生徒新規登録",
+      "target": "dcs fsa",
+      "detail": "教室: 座間 / 氏名: dcs fsa",
+      "timestamp": {
+        "_seconds": 1753529618,
+        "_nanoseconds": 242000000
+      }
+    }
+  },
+  "UF5nJQwyXjkzFH1npxy6": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "小林 璃乃",
+      "detail": "教室: 南林間 / 氏名: 小林 璃乃",
+      "timestamp": {
+        "_seconds": 1756182548,
+        "_nanoseconds": 5000000
+      }
+    }
+  },
+  "V3yp2AtWwVASzGzXcJqP": {
+    "__doc__": {
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "action": "生徒新規登録",
+      "target": "田中 太郎",
+      "detail": "教室:  / 氏名: 田中 太郎",
+      "timestamp": {
+        "_seconds": 1753525284,
+        "_nanoseconds": 795000000
+      }
+    }
+  },
+  "VVPP1XBdZfzviP2QVvos": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "渡邉 れな",
+      "detail": "教室: 南林間 / 氏名: 渡邉 れな",
+      "timestamp": {
+        "_seconds": 1756092959,
+        "_nanoseconds": 85000000
+      }
+    }
+  },
+  "WUfcdNjmPtN2tC33nadC": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "大隅 桜",
+      "detail": "教室: 南林間 / 氏名: 大隅 桜",
+      "timestamp": {
+        "_seconds": 1756093876,
+        "_nanoseconds": 743000000
+      }
+    }
+  },
+  "XaURrWCIiW7sQY5FpfMc": {
+    "__doc__": {
+      "adminUid": "epHJlcG0cwSe5VeHs6Jf1sPmjst1",
+      "action": "生徒新規登録",
+      "target": "っっっっc っっっっっっっd",
+      "detail": "教室:  / 氏名: っっっっc っっっっっっっd",
+      "timestamp": {
+        "_seconds": 1755241990,
+        "_nanoseconds": 144000000
+      }
+    }
+  },
+  "YCyuLSHzNOSvurkn5gZu": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "吉田 琉海",
+      "detail": "教室: 南林間 / 氏名: 吉田 琉海",
+      "timestamp": {
+        "_seconds": 1756095271,
+        "_nanoseconds": 132000000
+      }
+    }
+  },
+  "YckRcuZe6KTwxsyogivu": {
+    "__doc__": {
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "action": "生徒新規登録",
+      "target": "hd ndj",
+      "detail": "教室: 座間 / 氏名: hd ndj",
+      "timestamp": {
+        "_seconds": 1753531284,
+        "_nanoseconds": 739000000
+      }
+    }
+  },
+  "d8gJelAvuSCuJiTNCFDs": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "常盤 聖愛",
+      "detail": "教室: 南林間 / 氏名: 常盤 聖愛",
+      "timestamp": {
+        "_seconds": 1756107422,
+        "_nanoseconds": 514000000
+      }
+    }
+  },
+  "dZijj61WJpgYtEYMBmwN": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "小島 碧葉",
+      "detail": "教室: 南林間 / 氏名: 小島 碧葉",
+      "timestamp": {
+        "_seconds": 1756094625,
+        "_nanoseconds": 688000000
+      }
+    }
+  },
+  "dajWUcNcGESMiQ8w5rVh": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "木下 みのり",
+      "detail": "教室: 南林間 / 氏名: 木下 みのり",
+      "timestamp": {
+        "_seconds": 1756177785,
+        "_nanoseconds": 274000000
+      }
+    }
+  },
+  "e8SQGDxGKP4jhsGTd1bZ": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "山田 大我",
+      "detail": "教室: 南林間 / 氏名: 山田 大我",
+      "timestamp": {
+        "_seconds": 1756101917,
+        "_nanoseconds": 944000000
+      }
+    }
+  },
+  "eOGF2C8jTqYDj9F2Qg6z": {
+    "__doc__": {
+      "adminUid": "WBdKPpKmWafjLQOZFM3ROfuaBRv1",
+      "action": "生徒新規登録",
+      "target": "木村 巧",
+      "detail": "教室:  / 氏名: 木村 巧",
+      "timestamp": {
+        "_seconds": 1755003539,
+        "_nanoseconds": 78000000
+      }
+    }
+  },
+  "eScJDeUaQmAQDJZZLwke": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "山下 春翔",
+      "detail": "教室: 南林間 / 氏名: 山下 春翔",
+      "timestamp": {
+        "_seconds": 1756178124,
+        "_nanoseconds": 199000000
+      }
+    }
+  },
+  "f0Wki6sawMz8AiqLR7hF": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "浪内 結菜",
+      "detail": "教室: 南林間 / 氏名: 浪内 結菜",
+      "timestamp": {
+        "_seconds": 1756182656,
+        "_nanoseconds": 935000000
+      }
+    }
+  },
+  "glzWffIGi0nh7bJWqMjn": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "舛本 陽菜",
+      "detail": "教室: 南林間 / 氏名: 舛本 陽菜",
+      "timestamp": {
+        "_seconds": 1756101183,
+        "_nanoseconds": 817000000
+      }
+    }
+  },
+  "hV6oG3UXnDp8fOq9uLwy": {
+    "__doc__": {
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "action": "生徒新規登録",
+      "target": "dada fsgs",
+      "detail": "教室: 座間 / 氏名: dada fsgs",
+      "timestamp": {
+        "_seconds": 1753529498,
+        "_nanoseconds": 377000000
+      }
+    }
+  },
+  "hb3dVdo3UhJSmS1vTREX": {
+    "__doc__": {
+      "adminUid": "WBdKPpKmWafjLQOZFM3ROfuaBRv1",
+      "action": "生徒新規登録",
+      "target": "鈴木 一郎",
+      "detail": "教室: a / 氏名: 鈴木 一郎",
+      "timestamp": {
+        "_seconds": 1754914713,
+        "_nanoseconds": 312000000
+      }
+    }
+  },
+  "hx6BRj83OteVqhdQERnl": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "田中 涼介",
+      "detail": "教室: 南林間 / 氏名: 田中 涼介",
+      "timestamp": {
+        "_seconds": 1757381121,
+        "_nanoseconds": 622000000
+      }
+    }
+  },
+  "iuy7vR7oemx3t0zSXZc9": {
     "__doc__": {
       "adminUid": "apJL9SD9X4YvYyWPOyTTcI7vWZp2",
       "action": "生徒新規登録",
-      "target": "進藤 光",
-      "detail": "教室: 南林間 / 氏名: 進藤 光",
+      "target": "髙橋 大輝",
+      "detail": "教室:  / 氏名: 髙橋 大輝",
       "timestamp": {
-        "_seconds": 1752648396,
-        "_nanoseconds": 605000000
+        "_seconds": 1754566422,
+        "_nanoseconds": 877000000
+      }
+    }
+  },
+  "jYwLmKmr4DCI92BfyliL": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "中村 陽優",
+      "detail": "教室: 南林間 / 氏名: 中村 陽優",
+      "timestamp": {
+        "_seconds": 1756118898,
+        "_nanoseconds": 887000000
+      }
+    }
+  },
+  "kNsqwA232p3LlH4XkIH4": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "外崎 遥陽",
+      "detail": "教室: 南林間 / 氏名: 外崎 遥陽",
+      "timestamp": {
+        "_seconds": 1756089620,
+        "_nanoseconds": 271000000
+      }
+    }
+  },
+  "l3BvH82pL3crxKwmRPK9": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "柿元 秀斗",
+      "detail": "教室: 南林間 / 氏名: 柿元 秀斗",
+      "timestamp": {
+        "_seconds": 1756087149,
+        "_nanoseconds": 292000000
+      }
+    }
+  },
+  "llk7lGrZR3JCH4zXOhUm": {
+    "__doc__": {
+      "adminUid": "dzZtlDBKXid1C1f6zDir4IAZZ9l2",
+      "action": "生徒新規登録",
+      "target": "da dsa",
+      "detail": "教室: 座間 / 氏名: da dsa",
+      "timestamp": {
+        "_seconds": 1753532601,
+        "_nanoseconds": 333000000
+      }
+    }
+  },
+  "mVIc8T38c7yrfhnmx5EH": {
+    "__doc__": {
+      "adminUid": "epHJlcG0cwSe5VeHs6Jf1sPmjst1",
+      "action": "生徒新規登録",
+      "target": "aaaaaaa bbbbbbbb",
+      "detail": "教室:  / 氏名: aaaaaaa bbbbbbbb",
+      "timestamp": {
+        "_seconds": 1754996721,
+        "_nanoseconds": 187000000
+      }
+    }
+  },
+  "mZSVHApnqnaaRDAyHJPQ": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "堀江 成喜",
+      "detail": "教室: 南林間 / 氏名: 堀江 成喜",
+      "timestamp": {
+        "_seconds": 1756102080,
+        "_nanoseconds": 317000000
+      }
+    }
+  },
+  "mrc2I0Qk7N3Dgmq91Ena": {
+    "__doc__": {
+      "target": "横山 結真",
+      "detail": "教室: 南林間 / 氏名: 横山 結真",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "timestamp": {
+        "_seconds": 1758078687,
+        "_nanoseconds": 944000000
+      }
+    }
+  },
+  "muT33l1xP7lS3IUxOllK": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "比留川 絢音",
+      "detail": "教室: 南林間 / 氏名: 比留川 絢音",
+      "timestamp": {
+        "_seconds": 1756102378,
+        "_nanoseconds": 148000000
+      }
+    }
+  },
+  "njT48WPFLmOoh9GUa0mV": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "中谷 桜",
+      "detail": "教室: 南林間 / 氏名: 中谷 桜",
+      "timestamp": {
+        "_seconds": 1756108513,
+        "_nanoseconds": 131000000
+      }
+    }
+  },
+  "oRk9NAmEhti32DHEKFrq": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "大坪 優杏",
+      "detail": "教室: 南林間 / 氏名: 大坪 優杏",
+      "timestamp": {
+        "_seconds": 1757410278,
+        "_nanoseconds": 895000000
+      }
+    }
+  },
+  "p6ezMber3NpLYyBmWa13": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "吉本 陽菜",
+      "detail": "教室: 南林間 / 氏名: 吉本 陽菜",
+      "timestamp": {
+        "_seconds": 1756095860,
+        "_nanoseconds": 388000000
+      }
+    }
+  },
+  "p8jqAM2JGJVYGnWrdjfc": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "貝塚 靖菜",
+      "detail": "教室: 南林間 / 氏名: 貝塚 靖菜",
+      "timestamp": {
+        "_seconds": 1756098261,
+        "_nanoseconds": 73000000
+      }
+    }
+  },
+  "pEh7dXr0tTPLDs8irC2D": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "譲原 佳菜",
+      "detail": "教室: 南林間 / 氏名: 譲原 佳菜",
+      "timestamp": {
+        "_seconds": 1756118312,
+        "_nanoseconds": 79000000
+      }
+    }
+  },
+  "q3SFoBKFcUkQRhAkplXL": {
+    "__doc__": {
+      "action": "生徒新規登録",
+      "target": "横山 結真",
+      "detail": "教室: 南林間 / 氏名: 横山 結真",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "timestamp": {
+        "_seconds": 1758087440,
+        "_nanoseconds": 609000000
+      }
+    }
+  },
+  "qNW8v1t2f4XIb5z3u8PK": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "濵田 敬人",
+      "detail": "教室: 南林間 / 氏名: 濵田 敬人",
+      "timestamp": {
+        "_seconds": 1757402045,
+        "_nanoseconds": 150000000
+      }
+    }
+  },
+  "siuu0BhTRftWBNyxZBR0": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "竹田 瀬玲奈",
+      "detail": "教室: 南林間 / 氏名: 竹田 瀬玲奈",
+      "timestamp": {
+        "_seconds": 1756095995,
+        "_nanoseconds": 251000000
+      }
+    }
+  },
+  "tAM5ZRTMJsWlKWP6rz6M": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "花田 紗希",
+      "detail": "教室: 南林間 / 氏名: 花田 紗希",
+      "timestamp": {
+        "_seconds": 1756178359,
+        "_nanoseconds": 121000000
+      }
+    }
+  },
+  "tcG3vQZViHJIatIZGmzd": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "木村 友耶",
+      "detail": "教室: 南林間 / 氏名: 木村 友耶",
+      "timestamp": {
+        "_seconds": 1756101057,
+        "_nanoseconds": 332000000
+      }
+    }
+  },
+  "thajbZstMGzkbFtZUqQJ": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "猪狩 和佳奈",
+      "detail": "教室: 南林間 / 氏名: 猪狩 和佳奈",
+      "timestamp": {
+        "_seconds": 1756105538,
+        "_nanoseconds": 916000000
+      }
+    }
+  },
+  "ufFxR8B5d4zbrxuhq4yI": {
+    "__doc__": {
+      "adminUid": "apJL9SD9X4YvYyWPOyTTcI7vWZp2",
+      "action": "生徒新規登録",
+      "target": "田中 太郎",
+      "detail": "教室:  / 氏名: 田中 太郎",
+      "timestamp": {
+        "_seconds": 1754372866,
+        "_nanoseconds": 667000000
+      }
+    }
+  },
+  "vZwvHc7V2ZjvSSMxCwCU": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "松田 一花",
+      "detail": "教室: 南林間 / 氏名: 松田 一花",
+      "timestamp": {
+        "_seconds": 1756107194,
+        "_nanoseconds": 971000000
+      }
+    }
+  },
+  "voJE2k4Gvd3VXYUUBvKv": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "森角 桜彩",
+      "detail": "教室: 南林間 / 氏名: 森角 桜彩",
+      "timestamp": {
+        "_seconds": 1756093738,
+        "_nanoseconds": 994000000
+      }
+    }
+  },
+  "wOCncdgcgoLaiucM3sjQ": {
+    "__doc__": {
+      "adminUid": "WBdKPpKmWafjLQOZFM3ROfuaBRv1",
+      "action": "生徒新規登録",
+      "target": "火野 明",
+      "detail": "教室:  / 氏名: 火野 明",
+      "timestamp": {
+        "_seconds": 1754996191,
+        "_nanoseconds": 476000000
+      }
+    }
+  },
+  "wWwjor3giq7vO9qQDYG7": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "志村 凛子",
+      "detail": "教室: 南林間 / 氏名: 志村 凛子",
+      "timestamp": {
+        "_seconds": 1756100771,
+        "_nanoseconds": 816000000
+      }
+    }
+  },
+  "xh1fJN5PeEwiAGegPTGR": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "あ あ",
+      "detail": "教室: 南林間 / 氏名: あ あ",
+      "timestamp": {
+        "_seconds": 1756357412,
+        "_nanoseconds": 590000000
+      }
+    }
+  },
+  "y7Z8Ujp76BAPAck7bRZT": {
+    "__doc__": {
+      "target": "松岡 みゆ",
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "detail": "教室: 南林間 / 氏名: 松岡 みゆ",
+      "timestamp": {
+        "_seconds": 1758175239,
+        "_nanoseconds": 667000000
+      }
+    }
+  },
+  "yo5zTfOnr3fPeIkKMQfX": {
+    "__doc__": {
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "action": "生徒新規登録",
+      "target": "永谷 悠太",
+      "detail": "教室: 南林間 / 氏名: 永谷 悠太",
+      "timestamp": {
+        "_seconds": 1756094189,
+        "_nanoseconds": 502000000
       }
     }
   }

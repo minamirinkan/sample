@@ -154,7 +154,7 @@ export default function CustomerCalendar() {
               fixedWeekCount={true}
               expandRows={false}
               height="auto"
-              aspectRatio={1.2}
+              aspectRatio={1}
               headerToolbar={false}
               dayMaxEventRows={true}
               dayMaxEvents={2}

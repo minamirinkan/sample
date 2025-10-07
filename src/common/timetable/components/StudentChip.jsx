@@ -1,3 +1,5 @@
+import { FiMoreVertical } from 'react-icons/fi';
+
 export default function StudentChip({
     student,
     periodIdx,
@@ -37,18 +39,13 @@ export default function StudentChip({
                 className="w-8 border border-blue-300 rounded px-1 text-xs text-center p-0.5"
             />
 
-            {/* 学年 */}
-            <div className="w-10 text-xs text-center font-semibold text-blue-800">
-                {student.grade}
-            </div>
-
             {/* 氏名 */}
             <div
                 className="text-xs font-semibold text-blue-800 px-1 whitespace-nowrap max-w-[100px] overflow-hidden text-ellipsis"
                 style={{ lineHeight: 1 }}
                 title={student.name}
             >
-                {student.name}
+                {student.grade} {student.name}
             </div>
 
             {/* 科目 */}
@@ -65,10 +62,10 @@ export default function StudentChip({
             <button
                 type="button"
                 onClick={() => handleRemove(periodIdx, studentIdx)}
-                className="text-red-600 font-bold px-2 hover:text-red-800"
-                title="削除"
+                className="text-black-600 font-bold px-2 hover:text-black-800"
+                title="操作メニュー"
             >
-                ✕
+                <FiMoreVertical size={16} />
             </button>
         </div>
     );
