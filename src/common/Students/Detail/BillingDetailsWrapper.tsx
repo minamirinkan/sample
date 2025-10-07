@@ -5,7 +5,6 @@ const BillingDetailsWrapper = () => {
     const { month } = useParams();
     const location = useLocation();
     const isEditMode = location.pathname.endsWith("/edit");
-
     const billing = location.state?.billing;
     const formData = location.state?.formData;
     const customer = location.state?.customer
