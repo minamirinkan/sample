@@ -1,18 +1,17 @@
-// src/pages/BillingPage.tsx
+// src/pages/BillingDetails.tsx
 import React, { useEffect, useState } from 'react';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../firebase';
 import SimpleCard from '../../ToDo/ToDoContent/SimpleCard';
 import EditButton from './EditButton';
 import { useNavigate, useLocation } from "react-router-dom";
 import { DropResult } from "@hello-pangea/dnd";
-import BillingDetailsTable, { BillingDetail } from "./BillingDetailsTable";
-import { generateTuitionName, generateTuitionNameShort } from './tuitionName';
+import BillingDetailsTable from "./BillingDetailsTable";
 import AddDetailButton from './AddDetailButton';
 import { saveBilling } from "./billingService";
 import { Student } from '../../../contexts/types/student';
 import { Customer } from '../../../contexts/types/customer';
 import { Billing } from './BillingPage';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
 export interface FeeLesson {
     feeCode: string;
@@ -22,6 +21,16 @@ export interface FeeLesson {
     grade: string;
     lessonType: string;
     times: string;
+}
+
+export interface BillingDetail {
+    code: string;
+    name: string;
+    taxType: string;
+    price: number;
+    qty: number;
+    total: number;
+    note: string;
 }
 
 export interface BillingDetailProps {
@@ -35,136 +44,75 @@ export interface BillingDetailProps {
 const BillingDetails: React.FC<BillingDetailProps> = ({
     billing,
     formData,
-    month,
     customer,
-    isEditMode
+    isEditMode,
+    month
 }) => {
-    const [feeLessons, setFeeLessons] = useState<FeeLesson[]>([]);
-    const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState<BillingDetail[]>([]);
     const [isEditing, setIsEditing] = useState(isEditMode);
     const navigate = useNavigate();
     const location = useLocation();
+    const [targetMonth, setTargetMonth] = useState(billing?.month || '');
+
     const studentId = formData?.studentId ?? '';
     const studentName = formData.fullname;
     const grade = formData.grade;
     const classroomCode = formData.classroomCode;
     const customerUid = customer.uid;
-    const targetMonth = month;
+
+    // 🔹 ここから追加: Firestoreから明細取得
+    useEffect(() => {
+        const fetchBillingDetails = async () => {
+            if (!customer || !month || !studentId) return;
+
+            try {
+                const classroomCode = customer.classroomCode || "000";
+                const billingDocId = `${month}_${classroomCode}_${studentId}`;
+                const billingRef = doc(db, "billings", billingDocId);
+                const billingSnap = await getDoc(billingRef);
+
+                if (billingSnap.exists()) {
+                    const data = billingSnap.data();
+                    setDetails(data.details || []);
+                } else {
+                    setDetails([]);
+                }
+            } catch (err) {
+                console.error("請求明細の取得に失敗しました:", err);
+            }
+        };
+
+        fetchBillingDetails();
+    }, [customer, month, studentId]);
+    // 🔹 ここまで追加
 
     useEffect(() => {
         setIsEditing(isEditMode); // URL変更に追従
     }, [isEditMode]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const yyyymm = targetMonth.replace("-", "");
-                const code = classroomCode || "000";
-                let feeMasterDocId = `${yyyymm}_${code}`;
-                let feeMasterRef = doc(db, "FeeMaster", feeMasterDocId);
-                let tuitionRef = doc(collection(feeMasterRef, "categories"), "tuition");
-                let tuitionSnap = await getDoc(tuitionRef);
-
-                if (!tuitionSnap.exists()) {
-                    feeMasterRef = doc(db, "FeeMaster", `${yyyymm}_000`);
-                    tuitionRef = doc(collection(feeMasterRef, "categories"), "tuition");
-                    tuitionSnap = await getDoc(tuitionRef);
-                }
-
-                if (!tuitionSnap.exists()) {
-                    console.log("tuitionが存在しません");
-                    return;
-                }
-
-                const feeData = tuitionSnap.data() || {};
-
-                // 顧客契約取得
-                const contractsRef = collection(db, "customers", customerUid, "contracts");
-                const contractsSnap = await getDocs(contractsRef);
-
-                const contractFeeCodes = new Set<string>();
-                contractsSnap.forEach((doc) => {
-                    const id = doc.id;
-                    // uid-YYYYMM-feeCode の形式なので最後の feeCode を抜き出す
-                    const idMatch = id.match(/^.+-(\d{6})-(.+)$/);
-                    if (!idMatch) return;
-                    const [, contractYyyymm, contractFeeCode] = idMatch;
-                    if (contractYyyymm === yyyymm && doc.data().studentId === studentId) {
-                        contractFeeCodes.add(contractFeeCode);
-                    }
-                });
-
-                const lessons: FeeLesson[] = Object.entries(feeData)
-                    .map(([feeCode, v]) => {
-                        const lesson = v as FeeLesson;
-                        // 通常・演習クラスは契約がある feeCode だけ残す
-                        if (
-                            (lesson.lessonType === "通常" || lesson.lessonType === "演習クラス") &&
-                            !contractFeeCodes.has(feeCode)
-                        ) {
-                            return null;
-                        }
-                        return { ...lesson, feeCode };
-                    })
-                    .filter(Boolean) as FeeLesson[];
-
-                setFeeLessons(lessons);
-
-                // details に変換
-                const newDetails: BillingDetail[] = lessons.map((lesson) => ({
-                    code: lesson.feeCode,
-                    name:
-                        lesson.lessonType === "通常" || lesson.lessonType === "演習クラス"
-                            ? (isEditing
-                                ? generateTuitionNameShort(lesson.feeCode, yyyymm) // 編集モード用（短縮版）
-                                : generateTuitionName(lesson.feeCode, yyyymm))    // 通常モード用（詳細版）
-                            : "諸費用",
-                    taxType: "課税",
-                    price: lesson.amount,
-                    qty: 1,
-                    total: lesson.amount,
-                    note: lesson.grade,
-                }));
-                setDetails(newDetails);
-            } catch (error) {
-                console.error(error);
-                alert("データ取得に失敗しました");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [classroomCode, targetMonth, studentId, customerUid]);
-
-    if (loading) return <div>読み込み中...</div>;
+    const subtotal = details.reduce((acc, d) => acc + d.price, 0);
+    const taxRate = 0.1;
+    const taxAmount = subtotal * taxRate;
+    const totalAmount = subtotal + taxAmount;
 
     const handleBack = () => {
         setIsEditing(false);
-
-        // URLを /edit なしに戻す
         if (location.pathname.endsWith("/edit")) {
             navigate(location.pathname.replace(/\/edit$/, ""), {
                 replace: true,
-                state: { billing, formData, customer } // ← ここでstateを再度渡す
+                state: { billing, formData, customer }
             });
         } else {
-            // それ以外は一つ前に戻る
             navigate(-1);
         }
     };
 
     const handleEdit = () => {
-        // 編集モードに切替
         setIsEditing(true);
-
-        // URLを /edit に変更
         if (!location.pathname.endsWith("/edit")) {
             navigate(`${location.pathname}/edit`, {
                 replace: true,
-                state: { billing, formData, customer } // ← ここでstateを再度渡す
+                state: { billing, formData, customer }
             });
         }
     };
@@ -179,7 +127,8 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
                 targetMonth,
                 details,
                 subtotal,
-                taxRate
+                taxRate,
+                billing.type
             );
             alert("請求書を保存しました");
             setIsEditing(false);
@@ -220,7 +169,6 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
         setDetails((prev) => prev.filter((_, i) => i !== index));
     };
 
-    // ドラッグ＆ドロップ
     const handleDragEnd = (result: DropResult) => {
         if (!result.destination) return;
         const newDetails = Array.from(details);
@@ -229,14 +177,8 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
         setDetails(newDetails);
     };
 
-    const subtotal = details.reduce((acc, d) => acc + d.price, 0);
-    const taxRate = 0.1;
-    const taxAmount = subtotal * taxRate;
-    const totalAmount = subtotal + taxAmount;
-
     return (
         <div className="space-y-4">
-            {/* ボタン */}
             <EditButton
                 isEditing={isEditing}
                 onBack={handleBack}
@@ -258,8 +200,8 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
             {/* 請求種別・年月 */}
             <SimpleCard title="請求種別・年月">
                 <div className="space-y-1">
-                    <div>請求種別: 通常授業</div>
-                    <div>請求対象年月: {targetMonth}</div>
+                    <div>請求種別: {billing.type === "monthly" ? "月締" : "都度"}</div>
+                    <div>請求対象年月: {targetMonth.slice(0, 4)}年{targetMonth.slice(4, 6)}月</div>
                     <div>締日: 25日</div>
                 </div>
             </SimpleCard>
@@ -281,25 +223,24 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
                     onDeleteRow={handleDeleteRow}
                     studentGrade={grade}
                     month={targetMonth}
-                    customerUid={customerUid}
+                    customer={customer}
                     studentId={studentId}
-                    studentLessons={feeLessons}
                 />
             </SimpleCard>
 
             {/* 備考・合計 */}
             <div className="flex gap-4">
                 <SimpleCard title="備考" className="flex-1">
-                    {targetMonth}分の授業料
+                    {targetMonth.slice(0, 4)}年{targetMonth.slice(4, 6)}月分の授業料
                 </SimpleCard>
                 <SimpleCard title="合計金額" className="flex-1">
-                    <div>小計: {subtotal.toLocaleString()}円</div>
+                    <div>小計: {Math.floor(subtotal).toLocaleString()}円</div>
                     <div>消費税率: {taxRate * 100}%</div>
-                    <div>消費税額: {taxAmount.toLocaleString()}円</div>
-                    <div>合計金額: {totalAmount.toLocaleString()}円</div>
+                    <div>消費税額: {Math.floor(taxAmount).toLocaleString()}円</div>
+                    <div>合計金額: {Math.floor(totalAmount).toLocaleString()}円</div>
                 </SimpleCard>
             </div>
-            {/* ボタン */}
+
             <EditButton
                 isEditing={isEditing}
                 onBack={handleBack}
@@ -308,7 +249,6 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
                 onDelete={handleDelete}
             />
         </div>
-
     );
 };
 

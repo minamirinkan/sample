@@ -1,4 +1,32 @@
 {
+  "024_2025-04_2": {
+    "__doc__": {
+      "rows": [
+        {
+          "status": "未定",
+          "teacher": null,
+          "periods": {
+            "period1": [
+              {
+                "name": "dada fsgs",
+                "studentId": "s0240014",
+                "subject": "数学",
+                "grade": "中3",
+                "seat": "",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": {
+        "_seconds": 1753529497,
+        "_nanoseconds": 789000000
+      }
+    }
+  },
   "024_2025-06_2": {
     "__doc__": {
       "rows": [
@@ -191,91 +219,121 @@
   },
   "024_2025-07_2": {
     "__doc__": {
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      },
       "rows": [
         {
-          "teacher": {
-            "name": "伊藤 広",
-            "code": "t0240002"
-          },
           "periods": {
+            "period3": [],
+            "period7": [],
+            "period1": [],
+            "period8": [],
+            "period4": [],
+            "period6": [],
+            "period5": [],
             "period2": [
               {
                 "seat": "3",
-                "name": "佐藤 恵美",
+                "subject": "社会",
                 "studentId": "s0240003",
-                "status": "予定",
+                "name": "佐藤 恵美",
                 "grade": "中2",
-                "subject": "社会"
-              }
-            ],
-            "period4": [],
-            "period7": [],
-            "period3": [],
-            "period6": [],
-            "period5": [],
-            "period1": [],
-            "period8": []
-          },
-          "status": "予定"
-        },
-        {
-          "teacher": null,
-          "periods": {
-            "period7": [],
-            "period8": [],
-            "period1": [],
-            "period4": [],
-            "period3": [],
-            "period2": [],
-            "period6": [],
-            "period5": [
-              {
-                "name": "長谷部 誠",
-                "studentId": "s0240005",
-                "subject": "英語",
-                "grade": "中3",
-                "seat": "",
-                "status": "未定",
-                "classType": "1名クラス",
-                "duration": "80分"
+                "status": "予定"
               }
             ]
           },
-          "status": "未定"
+          "status": "予定",
+          "teacher": {
+            "name": "伊藤 広",
+            "code": "t0240002"
+          }
         },
         {
-          "status": "振替",
+          "status": "未定",
           "teacher": null,
           "periods": {
-            "period4": [],
-            "period1": [],
-            "period2": [],
-            "period7": [],
-            "period3": [],
             "period6": [],
-            "period5": [],
+            "period5": [
+              {
+                "classType": "1名クラス",
+                "subject": "英語",
+                "grade": "中3",
+                "name": "長谷部 誠",
+                "duration": "80分",
+                "seat": "",
+                "status": "未定",
+                "studentId": "s0240005"
+              }
+            ],
+            "period3": [
+              {
+                "status": "未定",
+                "seat": "",
+                "name": "dcs fsa",
+                "classType": "2名クラス",
+                "studentId": "s0240015",
+                "duration": "70分",
+                "subject": "数学I",
+                "grade": "高3"
+              }
+            ],
+            "period1": [
+              {
+                "classType": "2名クラス",
+                "subject": "英語",
+                "duration": "80分",
+                "name": "da dsa",
+                "grade": "中1",
+                "status": "未定",
+                "studentId": "s0240019"
+              }
+            ],
+            "period4": [
+              {
+                "name": "高井 広大",
+                "studentId": "s0240010",
+                "subject": "数学",
+                "grade": "中3",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ],
+            "period7": [],
+            "period2": [],
             "period8": []
           }
         },
         {
           "periods": {
-            "period6": [],
-            "period5": [],
             "period4": [],
-            "period1": [],
-            "period2": [],
+            "period7": [],
+            "period5": [],
             "period3": [],
             "period8": [],
-            "period7": []
+            "period2": [],
+            "period1": [],
+            "period6": []
           },
+          "teacher": null,
+          "status": "振替"
+        },
+        {
           "status": "欠席",
-          "teacher": null
+          "teacher": null,
+          "periods": {
+            "period1": [],
+            "period4": [],
+            "period5": [],
+            "period7": [],
+            "period8": [],
+            "period2": [],
+            "period3": [],
+            "period6": []
+          }
         }
-      ],
-      "updatedAt": {
-        "_seconds": 1752216275,
-        "_nanoseconds": 806000000
-      }
+      ]
     }
   },
   "024_2025-07_3": {
@@ -284,23 +342,23 @@
         {
           "status": "予定",
           "periods": {
-            "period7": [],
+            "period5": [],
             "period2": [
               {
-                "studentId": "s0240004",
-                "name": "三苫 薫",
-                "subject": "数学",
+                "status": "予定",
                 "seat": "3",
+                "studentId": "s0240004",
                 "grade": "高3",
-                "status": "予定"
+                "subject": "数学",
+                "name": "三苫 薫"
               }
             ],
-            "period3": [],
-            "period5": [],
-            "period1": [],
-            "period8": [],
             "period6": [],
-            "period4": []
+            "period4": [],
+            "period1": [],
+            "period3": [],
+            "period8": [],
+            "period7": []
           },
           "teacher": {
             "name": "伊藤 広",
@@ -314,110 +372,118 @@
             "name": "五十嵐 雄飛"
           },
           "periods": {
-            "period1": [],
+            "period8": [],
             "period5": [],
+            "period2": [],
             "period3": [
               {
-                "seat": "3",
-                "status": "予定",
-                "grade": "高3",
-                "name": "三苫 薫",
+                "subject": "英語",
                 "studentId": "s0240004",
-                "subject": "英語"
+                "status": "予定",
+                "name": "三苫 薫",
+                "seat": "3",
+                "grade": "高3"
               }
             ],
-            "period2": [],
-            "period7": [],
-            "period8": [],
+            "period4": [],
+            "period1": [],
             "period6": [],
-            "period4": []
+            "period7": []
           }
         },
         {
-          "teacher": null,
+          "status": "未定",
           "periods": {
-            "period4": [
-              {
-                "name": "内田 篤人",
-                "studentId": "s0240009",
-                "subject": "数学",
-                "grade": "中3",
-                "seat": "",
-                "status": "未定",
-                "classType": "演習クラス",
-                "duration": "80分"
-              }
-            ],
+            "period1": [],
             "period5": [
               {
-                "name": "長谷部 誠",
                 "duration": "80分",
-                "classType": "2名クラス",
-                "studentId": "s0240005",
+                "name": "長谷部 誠",
+                "grade": "中3",
+                "status": "未定",
                 "subject": "数学",
                 "seat": "",
-                "status": "未定",
-                "grade": "中3"
+                "studentId": "s0240005",
+                "classType": "2名クラス"
               },
               {
-                "grade": "中2",
+                "name": "長友 佑都",
+                "subject": "数学",
+                "classType": "1名クラス",
+                "duration": "80分",
+                "status": "未定",
+                "studentId": "s0240006",
+                "seat": "",
+                "grade": "中2"
+              }
+            ],
+            "period2": [],
+            "period7": [],
+            "period6": [
+              {
+                "seat": "",
+                "studentId": "s0240007",
+                "grade": "中3",
+                "name": "香川 真司",
                 "status": "未定",
                 "duration": "80分",
-                "classType": "1名クラス",
-                "studentId": "s0240006",
+                "classType": "演習クラス",
+                "subject": "英語"
+              },
+              {
+                "duration": "80分",
+                "grade": "中3",
+                "seat": "",
+                "classType": "2名クラス",
+                "status": "未定",
                 "subject": "数学",
-                "name": "長友 佑都",
-                "seat": ""
+                "studentId": "s0240009",
+                "name": "内田 篤人"
               }
             ],
             "period8": [],
-            "period1": [],
-            "period2": [],
-            "period7": [],
             "period3": [],
-            "period6": [
+            "period4": [
               {
                 "grade": "中3",
-                "studentId": "s0240007",
+                "studentId": "s0240009",
                 "status": "未定",
-                "classType": "演習クラス",
+                "name": "内田 篤人",
                 "seat": "",
-                "subject": "英語",
-                "name": "香川 真司",
-                "duration": "80分"
+                "duration": "80分",
+                "subject": "数学",
+                "classType": "演習クラス"
               },
               {
-                "name": "内田 篤人",
-                "studentId": "s0240009",
-                "subject": "数学",
-                "grade": "中3",
-                "seat": "",
+                "name": "中村 敬斗",
+                "studentId": "s0240011",
+                "subject": "国語",
+                "grade": "中1",
                 "status": "未定",
                 "classType": "2名クラス",
                 "duration": "80分"
               }
             ]
           },
-          "status": "未定"
+          "teacher": null
         },
         {
+          "status": "欠席",
+          "teacher": null,
           "periods": {
             "period8": [],
-            "period4": [],
-            "period5": [],
             "period6": [],
-            "period1": [],
+            "period4": [],
             "period2": [],
-            "period3": [],
-            "period7": []
-          },
-          "teacher": null,
-          "status": "欠席"
+            "period1": [],
+            "period5": [],
+            "period7": [],
+            "period3": []
+          }
         }
       ],
       "updatedAt": {
-        "_seconds": 1752633746,
-        "_nanoseconds": 57000000
+        "_methodName": "serverTimestamp"
       }
     }
   },
@@ -535,6 +601,115 @@
         "_seconds": 1751531253,
         "_nanoseconds": 115000000
       }
+    }
+  },
+  "024_2025-08_2": {
+    "__doc__": {
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      },
+      "rows": [
+        {
+          "status": "予定",
+          "periods": {
+            "period7": [],
+            "period4": [],
+            "period6": [],
+            "period3": [],
+            "period1": [],
+            "period8": [],
+            "period5": [],
+            "period2": [
+              {
+                "name": "佐藤 恵美",
+                "studentId": "s0240003",
+                "seat": "3",
+                "subject": "社会",
+                "status": "予定",
+                "grade": "中2"
+              }
+            ]
+          },
+          "teacher": {
+            "name": "伊藤 広",
+            "code": "t0240002"
+          }
+        },
+        {
+          "status": "未定",
+          "periods": {
+            "period8": [],
+            "period7": [],
+            "period2": [],
+            "period4": [],
+            "period3": [
+              {
+                "name": "dcs fsa",
+                "grade": "高3",
+                "studentId": "s0240015",
+                "subject": "数学I",
+                "status": "未定",
+                "seat": "",
+                "duration": "70分",
+                "classType": "2名クラス"
+              },
+              {
+                "subject": "数学",
+                "seat": "",
+                "duration": "80分",
+                "classType": "2名クラス",
+                "status": "未定",
+                "grade": "中2",
+                "studentId": "s0240018",
+                "name": "hd ndj"
+              }
+            ],
+            "period6": [],
+            "period5": [
+              {
+                "status": "未定",
+                "studentId": "s0240005",
+                "classType": "1名クラス",
+                "seat": "",
+                "duration": "80分",
+                "name": "長谷部 誠",
+                "subject": "英語",
+                "grade": "中3"
+              }
+            ],
+            "period1": []
+          },
+          "teacher": null
+        },
+        {
+          "teacher": null,
+          "periods": {
+            "period1": [],
+            "period8": [],
+            "period4": [],
+            "period6": [],
+            "period5": [],
+            "period2": [],
+            "period3": [],
+            "period7": []
+          },
+          "status": "振替"
+        },
+        {
+          "periods": {
+            "period7": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [],
+            "period2": [],
+            "period8": [],
+            "period1": []
+          },
+          "status": "欠席",
+          "teacher": null
+        }
+      ]
     }
   },
   "024_2025-08_3": {
@@ -887,478 +1062,342 @@
       }
     }
   },
-  "047_2025-06_4": {
+  "047_2025-09_1": {
     "__doc__": {
       "rows": [
         {
           "teacher": {
-            "code": "t0470002",
-            "name": "星野 瑞稀"
+            "code": "t0470000",
+            "name": ""
           },
           "periods": {
-            "period1": [],
-            "period2": [
+            "period8": [],
+            "period2": [],
+            "period4": [],
+            "period3": [],
+            "period6": [],
+            "period7": [
               {
-                "studentId": "s0470001",
+                "subject": "英語",
+                "name": "永谷 悠太",
+                "seat": "",
                 "grade": "中2",
-                "name": "井上 由佳",
-                "seat": "1",
-                "subject": "数学",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "studentId": "s0470074",
                 "status": "予定"
               }
             ],
-            "period3": [],
-            "period4": [],
-            "period5": [],
-            "period6": [],
-            "period7": [],
-            "period8": []
+            "period5": [
+              {
+                "duration": "80分",
+                "name": "渡邉 れな",
+                "grade": "中1",
+                "classType": "2名クラス",
+                "seat": "",
+                "status": "予定",
+                "studentId": "s0470050",
+                "subject": "数学"
+              },
+              {
+                "classType": "2名クラス",
+                "seat": "",
+                "subject": "数学",
+                "name": "佐々木 芽生",
+                "studentId": "s0470092",
+                "duration": "80分",
+                "grade": "中1",
+                "status": "予定"
+              }
+            ],
+            "period1": []
           },
           "status": "予定"
         },
         {
-          "teacher": null,
+          "status": "予定",
           "periods": {
-            "period1": [],
-            "period2": [],
-            "period3": [],
-            "period4": [],
-            "period5": [],
-            "period6": [],
-            "period7": [],
-            "period8": []
-          },
-          "status": "未定"
-        },
-        {
-          "teacher": null,
-          "periods": {
-            "period1": [],
-            "period2": [],
-            "period3": [],
-            "period4": [],
-            "period5": [],
-            "period6": [],
-            "period7": [],
-            "period8": []
-          },
-          "status": "振替"
-        },
-        {
-          "teacher": null,
-          "periods": {
-            "period1": [],
-            "period2": [],
-            "period3": [],
-            "period4": [],
-            "period5": [],
-            "period6": [],
-            "period7": [],
-            "period8": []
-          },
-          "status": "欠席"
-        }
-      ],
-      "updatedAt": {
-        "_seconds": 1750924101,
-        "_nanoseconds": 392000000
-      }
-    }
-  },
-  "047_2025-06_5": {
-    "__doc__": {
-      "rows": [
-        {
-          "teacher": {
-            "code": "t0470001",
-            "name": "田中 流星"
-          },
-          "periods": {
-            "period1": [],
-            "period2": [],
-            "period3": [],
             "period4": [],
             "period5": [
               {
-                "studentId": "s0470001",
-                "grade": "中2",
-                "name": "井上 由佳",
-                "seat": "2",
-                "subject": "理科",
-                "status": "予定"
-              }
-            ],
-            "period6": [],
-            "period7": [],
-            "period8": []
-          },
-          "status": "予定"
-        },
-        {
-          "teacher": null,
-          "periods": {
-            "period1": [],
-            "period2": [],
-            "period3": [],
-            "period4": [],
-            "period5": [],
-            "period6": [],
-            "period7": [],
-            "period8": []
-          },
-          "status": "未定"
-        },
-        {
-          "teacher": null,
-          "periods": {
-            "period1": [],
-            "period2": [],
-            "period3": [],
-            "period4": [],
-            "period5": [],
-            "period6": [],
-            "period7": [],
-            "period8": []
-          },
-          "status": "振替"
-        },
-        {
-          "teacher": null,
-          "periods": {
-            "period1": [],
-            "period2": [],
-            "period3": [],
-            "period4": [],
-            "period5": [],
-            "period6": [],
-            "period7": [],
-            "period8": []
-          },
-          "status": "欠席"
-        }
-      ],
-      "updatedAt": {
-        "_seconds": 1750925661,
-        "_nanoseconds": 150000000
-      }
-    }
-  },
-  "047_2025-07_1": {
-    "__doc__": {
-      "rows": [
-        {
-          "teacher": {
-            "name": "田中 流星",
-            "code": "t0470001"
-          },
-          "status": "予定",
-          "periods": {
-            "period2": [
-              {
-                "name": "井上 由佳",
-                "status": "予定",
-                "studentId": "s0470001",
-                "subject": "",
-                "grade": "中2",
-                "seat": ""
-              }
-            ],
-            "period3": [],
-            "period8": [],
-            "period1": [],
-            "period7": [],
-            "period4": [],
-            "period6": [],
-            "period5": []
-          }
-        },
-        {
-          "teacher": null,
-          "periods": {
-            "period6": [],
-            "period3": [
-              {
-                "name": "志村 けん",
-                "studentId": "s0470008",
-                "subject": "英語",
-                "grade": "中2",
                 "seat": "",
-                "status": "未定",
                 "classType": "2名クラス",
-                "duration": "80分"
-              }
-            ],
-            "period5": [],
-            "period2": [
-              {
-                "studentId": "s0470002",
-                "grade": "中3",
-                "name": "吉田 拓実",
-                "status": "未定",
-                "subject": "",
-                "seat": ""
-              },
-              {
-                "name": "清水 美香",
-                "duration": "70分",
-                "studentId": "s0470006",
-                "subject": "英語",
-                "seat": "",
-                "grade": "中2",
-                "classType": "1名クラス",
-                "status": "未定"
-              },
-              {
-                "seat": "",
-                "name": "村田 健二",
-                "status": "未定",
+                "name": "川合 陸都",
                 "duration": "80分",
+                "status": "予定",
+                "subject": "算数",
+                "studentId": "s0470094",
+                "grade": "小6"
+              }
+            ],
+            "period6": [
+              {
+                "name": "貝塚 靖菜",
+                "duration": "80分",
+                "subject": "数学",
+                "status": "予定",
+                "seat": "",
+                "studentId": "s0470107",
                 "classType": "2名クラス",
+                "grade": "中1"
+              },
+              {
+                "duration": "80分",
+                "grade": "中2",
+                "status": "予定",
+                "subject": "英語",
+                "studentId": "s0470153",
+                "classType": "2名クラス",
+                "seat": "",
+                "name": "花田 紗希"
+              }
+            ],
+            "period7": [
+              {
+                "duration": "80分",
+                "status": "予定",
+                "name": "杉本 真唯",
+                "studentId": "s0470112",
                 "grade": "中3",
-                "studentId": "s0470007",
+                "classType": "2名クラス",
+                "seat": "",
                 "subject": "英語"
-              }
-            ],
-            "period8": [],
-            "period1": [],
-            "period7": [],
-            "period4": []
-          },
-          "status": "未定"
-        },
-        {
-          "status": "欠席",
-          "teacher": null,
-          "periods": {
-            "period5": [],
-            "period4": [],
-            "period1": [],
-            "period6": [],
-            "period2": [],
-            "period8": [],
-            "period3": [],
-            "period7": []
-          }
-        }
-      ],
-      "updatedAt": {
-        "_seconds": 1752188145,
-        "_nanoseconds": 539000000
-      }
-    }
-  },
-  "047_2025-07_2": {
-    "__doc__": {
-      "rows": [
-        {
-          "status": "未定",
-          "teacher": null,
-          "periods": {
-            "period3": [
-              {
-                "grade": "中2",
-                "subject": "数学",
-                "duration": "80分",
-                "studentId": "s0470008",
-                "classType": "1名クラス",
-                "status": "未定",
-                "seat": "",
-                "name": "志村 けん"
               },
               {
-                "name": "村田 慎二",
-                "studentId": "s0470007",
-                "subject": "数学",
-                "grade": "中3",
                 "seat": "",
-                "status": "未定",
-                "classType": "2名クラス",
-                "duration": "80分"
-              }
-            ],
-            "period2": [
-              {
-                "subject": "数学",
-                "grade": "中2",
-                "name": "清水 美香",
+                "name": "山田 大我",
+                "studentId": "s0470129",
                 "duration": "80分",
-                "status": "未定",
-                "classType": "1名クラス",
-                "studentId": "s0470006",
-                "seat": ""
-              }
-            ]
-          }
-        }
-      ],
-      "updatedAt": {
-        "_seconds": 1752208384,
-        "_nanoseconds": 201000000
-      }
-    }
-  },
-  "047_2025-07_3": {
-    "__doc__": {
-      "rows": [
-        {
-          "periods": {
-            "period1": [],
-            "period5": [],
-            "period6": [],
-            "period8": [],
-            "period2": [
-              {
+                "subject": "英語",
                 "grade": "中2",
-                "seat": "",
-                "name": "井上 由佳",
-                "subject": "",
-                "studentId": "s0470001",
-                "status": "予定"
-              },
-              {
                 "status": "予定",
-                "subject": "",
-                "name": "吉田 拓実",
-                "studentId": "s0470002",
+                "classType": "2名クラス"
+              }
+            ],
+            "period3": [],
+            "period1": [],
+            "period8": [
+              {
+                "classType": "2名クラス",
+                "duration": "80分",
+                "studentId": "s0470099",
                 "seat": "",
+                "name": "中島 楓珂",
+                "subject": "数学",
+                "status": "予定",
                 "grade": "中3"
               }
             ],
-            "period3": [],
-            "period7": [],
-            "period4": []
+            "period2": []
           },
-          "status": "予定",
           "teacher": {
-            "name": "星野 瑞稀",
-            "code": "t0470002"
+            "code": "t0470001",
+            "name": ""
           }
         },
         {
           "periods": {
-            "period6": [],
+            "period3": [],
+            "period5": [],
+            "period4": [],
             "period8": [],
-            "period2": [
+            "period7": [
               {
-                "subject": "国語",
-                "name": "清水 美香",
-                "duration": "80分",
-                "status": "未定",
-                "classType": "2名クラス",
+                "status": "予定",
+                "grade": "高2",
+                "name": "大隈 桜",
+                "studentId": "s0470066",
                 "seat": "",
-                "grade": "中2",
-                "studentId": "s0470006"
+                "classType": "2名クラス",
+                "subject": "数学",
+                "duration": "80分"
               },
               {
-                "name": "村田 健二",
-                "studentId": "s0470007",
-                "subject": "数学",
+                "classType": "2名クラス",
                 "grade": "中3",
+                "subject": "国語",
+                "studentId": "s0470106",
                 "seat": "",
-                "status": "未定",
-                "classType": "1名クラス",
+                "duration": "80分",
+                "name": "竹田 瀬玲奈",
+                "status": "予定"
+              }
+            ],
+            "period6": [],
+            "period2": [],
+            "period1": []
+          },
+          "teacher": {
+            "name": "松本 歩奈",
+            "code": "t0470002"
+          },
+          "status": "予定"
+        },
+        {
+          "status": "予定",
+          "periods": {
+            "period6": [
+              {
+                "classType": "2名クラス",
+                "seat": "",
+                "name": "小島 碧葉",
+                "status": "予定",
+                "grade": "中3",
+                "studentId": "s0470083",
+                "duration": "80分",
+                "subject": "英語"
+              },
+              {
+                "grade": "中3",
+                "name": "小野 柚香",
+                "seat": "",
+                "classType": "2名クラス",
+                "studentId": "s0470104",
+                "subject": "英語",
+                "status": "予定",
                 "duration": "80分"
               }
             ],
-            "period4": [],
-            "period1": [],
-            "period3": [
+            "period7": [
               {
-                "subject": "英",
-                "status": "未定",
-                "name": "清水 美香",
-                "classType": "2名クラス",
+                "status": "予定",
+                "grade": "中3",
                 "seat": "",
+                "subject": "数学",
+                "classType": "2名クラス",
                 "duration": "80分",
-                "grade": "中2",
-                "studentId": "s0470006"
+                "name": "吉田 琉海",
+                "studentId": "s0470097"
               }
             ],
-            "period7": [],
-            "period5": []
+            "period4": [],
+            "period8": [
+              {
+                "grade": "中3",
+                "duration": "80分",
+                "seat": "",
+                "subject": "英語",
+                "name": "吉田 琉海",
+                "status": "予定",
+                "classType": "2名クラス",
+                "studentId": "s0470097"
+              },
+              {
+                "name": "大沼 佑士",
+                "duration": "80分",
+                "classType": "2名クラス",
+                "seat": "",
+                "studentId": "s0470109",
+                "subject": "英語",
+                "grade": "中3",
+                "status": "予定"
+              }
+            ],
+            "period5": [],
+            "period2": [],
+            "period1": [],
+            "period3": []
           },
+          "teacher": {
+            "name": "玉城 亞廉",
+            "code": "t0470003"
+          }
+        },
+        {
+          "periods": {
+            "period1": [],
+            "period8": [],
+            "period6": [
+              {
+                "name": "吉本 陽菜",
+                "subject": "古文",
+                "grade": "高3",
+                "studentId": "s0470105",
+                "classType": "2名クラス",
+                "status": "予定",
+                "duration": "80分",
+                "seat": ""
+              }
+            ],
+            "period3": [],
+            "period7": [
+              {
+                "studentId": "s0470141",
+                "name": "常盤 聖愛",
+                "status": "予定",
+                "duration": "80分",
+                "subject": "国語",
+                "seat": "",
+                "grade": "中3",
+                "classType": "2名クラス"
+              }
+            ],
+            "period5": [],
+            "period4": [],
+            "period2": []
+          },
+          "status": "予定",
+          "teacher": {
+            "code": "t0470007",
+            "name": "茂崎 颯矢"
+          }
+        },
+        {
           "status": "未定",
+          "periods": {
+            "period8": [],
+            "period3": [],
+            "period1": [],
+            "period4": [],
+            "period6": [
+              {
+                "name": "森内 琥太郎",
+                "studentId": "s0470159",
+                "subject": "英語",
+                "grade": "高2",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ],
+            "period5": [],
+            "period2": [],
+            "period7": []
+          },
           "teacher": null
         },
         {
           "status": "欠席",
-          "periods": {
-            "period5": [],
-            "period6": [],
-            "period1": [],
-            "period2": [],
-            "period8": [],
-            "period3": [],
-            "period4": [],
-            "period7": []
-          },
-          "teacher": null
-        }
-      ],
-      "updatedAt": {
-        "_seconds": 1752187680,
-        "_nanoseconds": 8000000
-      }
-    }
-  },
-  "047_2025-07_4": {
-    "__doc__": {
-      "rows": [
-        {
-          "status": "未定",
           "teacher": null,
           "periods": {
-            "period2": [
-              {
-                "name": "清水 美香",
-                "studentId": "s0470006",
-                "subject": "数",
-                "grade": "中2",
-                "seat": "",
-                "status": "未定",
-                "classType": "2名クラス",
-                "duration": "40分"
-              }
-            ]
+            "period5": [],
+            "period4": [],
+            "period3": [],
+            "period8": [],
+            "period2": [],
+            "period1": [],
+            "period7": [],
+            "period6": []
           }
         }
       ],
       "updatedAt": {
-        "_seconds": 1752142523,
-        "_nanoseconds": 807000000
+        "_methodName": "serverTimestamp"
       }
     }
   },
-  "047_2025-07_5": {
+  "047_2025-09_2": {
     "__doc__": {
       "rows": [
         {
           "teacher": {
-            "code": "t0470001",
-            "name": "田中 流星"
+            "code": "t0470000",
+            "name": ""
           },
           "periods": {
             "period1": [],
-            "period2": [
-              {
-                "studentId": "s0470001",
-                "grade": "中2",
-                "name": "井上 由佳",
-                "seat": "2",
-                "subject": "理科",
-                "status": "予定"
-              }
-            ],
-            "period3": [
-              {
-                "studentId": "s0470002",
-                "grade": "中3",
-                "name": "吉田 拓実",
-                "seat": "",
-                "subject": "",
-                "status": "予定"
-              }
-            ],
+            "period2": [],
+            "period3": [],
             "period4": [],
             "period5": [],
             "period6": [],
@@ -1368,21 +1407,246 @@
           "status": "予定"
         },
         {
+          "teacher": {
+            "code": "t0470004",
+            "name": "河野 快都"
+          },
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [],
+            "period7": [
+              {
+                "studentId": "s0470153",
+                "grade": "中3",
+                "name": "山下 春翔",
+                "seat": "",
+                "subject": "英語",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              },
+              {
+                "studentId": "s0470139",
+                "grade": "中3",
+                "name": "横山 咲葵",
+                "seat": "",
+                "subject": "理科",
+                "classType": "演習クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period8": [
+              {
+                "studentId": "s0470117",
+                "grade": "高1",
+                "name": "松本 煌成",
+                "seat": "",
+                "subject": "英語",
+                "classType": "1名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ]
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": {
+            "code": "t0470005",
+            "name": "中西 耕平"
+          },
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [],
+            "period7": [
+              {
+                "studentId": "s0470099",
+                "grade": "中3",
+                "name": "中島 楓珂",
+                "seat": "",
+                "subject": "英語",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period8": [
+              {
+                "studentId": "s0470122",
+                "grade": "中3",
+                "name": "舛本 陽菜",
+                "seat": "",
+                "subject": "英語",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              },
+              {
+                "studentId": "s0470148",
+                "grade": "中1",
+                "name": "中村 陽優",
+                "seat": "",
+                "subject": "英語",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ]
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": {
+            "code": "t0470009",
+            "name": "長谷川 楓"
+          },
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [
+              {
+                "studentId": "s0470140",
+                "grade": "中1",
+                "name": "松田 一花",
+                "seat": "",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period7": [
+              {
+                "studentId": "s0470126",
+                "grade": "中3",
+                "name": "阿部 友己洋",
+                "seat": "",
+                "subject": "英語",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period8": []
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": {
+            "code": "t0470010",
+            "name": "林 彩葉"
+          },
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [
+              {
+                "studentId": "s0470137",
+                "grade": "小6",
+                "name": "猪狩 和佳奈",
+                "seat": "",
+                "subject": "算数",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              },
+              {
+                "studentId": "s0470142",
+                "grade": "中2",
+                "name": "常盤 來愛",
+                "seat": "",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period7": [
+              {
+                "studentId": "s0470144",
+                "grade": "中2",
+                "name": "安藤 ゆら",
+                "seat": "",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period8": [
+              {
+                "studentId": "s0470036",
+                "grade": "中3",
+                "name": "柿元 秀斗",
+                "seat": "",
+                "subject": "英語",
+                "classType": "1名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ]
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": {
+            "code": "t0470013",
+            "name": "小林 天真"
+          },
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [],
+            "period7": [
+              {
+                "studentId": "s0470046",
+                "grade": "高3",
+                "name": "外崎 遥陽",
+                "seat": "",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period8": [
+              {
+                "studentId": "s0470128",
+                "grade": "高2",
+                "name": "奥山 広大",
+                "seat": "",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ]
+          },
+          "status": "予定"
+        },
+        {
           "teacher": null,
           "periods": {
             "period1": [],
-            "period2": [
-              {
-                "name": "清水 美香",
-                "studentId": "s0470006",
-                "subject": "理科",
-                "grade": "中2",
-                "seat": "",
-                "status": "未定",
-                "classType": "演習クラス",
-                "duration": "80分"
-              }
-            ],
+            "period2": [],
             "period3": [],
             "period4": [],
             "period5": [],
@@ -1408,76 +1672,955 @@
         }
       ],
       "updatedAt": {
-        "_seconds": 1752142523,
-        "_nanoseconds": 916000000
+        "_seconds": 1756194283,
+        "_nanoseconds": 14000000
       }
     }
   },
-  "047_2025-07_6": {
+  "047_2025-09_3": {
     "__doc__": {
       "rows": [
         {
-          "status": "未定",
-          "teacher": null,
+          "status": "予定",
+          "teacher": {
+            "code": "t0470000",
+            "name": ""
+          },
           "periods": {
-            "period2": [
+            "period4": [],
+            "period8": [],
+            "period6": [],
+            "period2": [],
+            "period1": [],
+            "period5": [],
+            "period7": [
               {
-                "name": "清水 美香",
-                "studentId": "s0470006",
-                "subject": "社会",
-                "grade": "中2",
                 "seat": "",
-                "status": "未定",
-                "classType": "演習クラス",
-                "duration": "80分"
-              }
-            ]
-          }
-        }
-      ],
-      "updatedAt": {
-        "_seconds": 1752142524,
-        "_nanoseconds": 16000000
-      }
-    }
-  },
-  "047_2025-08_4": {
-    "__doc__": {
-      "rows": [
-        {
-          "status": "未定",
-          "teacher": null,
-          "periods": {
-            "period2": [
-              {
-                "name": "清水 美香",
-                "seat": "",
-                "status": "未定",
-                "grade": "中2",
-                "studentId": "s0470006",
+                "name": "小野 柚香",
+                "grade": "中3",
+                "status": "予定",
+                "duration": "80分",
+                "subject": "数学",
                 "classType": "2名クラス",
-                "duration": "40分",
-                "subject": "数"
+                "studentId": "s0470104"
               }
             ],
-            "period4": [
+            "period3": []
+          }
+        },
+        {
+          "status": "予定",
+          "periods": {
+            "period6": [
               {
-                "name": "村田 慎二",
-                "studentId": "s0470007",
-                "subject": "国語",
+                "classType": "2名クラス",
+                "studentId": "s0470151",
+                "name": "木下 みのり",
                 "grade": "中3",
+                "status": "予定",
+                "subject": "英語",
                 "seat": "",
+                "duration": "80分"
+              }
+            ],
+            "period2": [],
+            "period8": [
+              {
+                "name": "菊池 新",
+                "classType": "2名クラス",
+                "seat": "",
+                "subject": "国語",
+                "duration": "80分",
+                "studentId": "s0470150",
+                "status": "予定",
+                "grade": "中3"
+              },
+              {
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定",
+                "studentId": "s0470061",
+                "name": "森角 桜彩",
+                "seat": "",
+                "subject": "数学",
+                "grade": "中3"
+              }
+            ],
+            "period4": [],
+            "period1": [],
+            "period3": [],
+            "period5": [],
+            "period7": [
+              {
+                "duration": "80分",
+                "subject": "英語",
+                "grade": "中3",
+                "studentId": "s0470139",
+                "seat": "",
+                "status": "予定",
+                "classType": "2名クラス",
+                "name": "横山 咲葵"
+              },
+              {
+                "status": "予定",
+                "seat": "",
+                "classType": "2名クラス",
+                "subject": "英語",
+                "duration": "80分",
+                "name": "鎗目 紘士朗",
+                "grade": "中2",
+                "studentId": "s0470115"
+              }
+            ]
+          },
+          "teacher": {
+            "name": "五十嵐 雄飛",
+            "code": "t0470001"
+          }
+        },
+        {
+          "teacher": {
+            "name": "河野 快都",
+            "code": "t0470004"
+          },
+          "status": "予定",
+          "periods": {
+            "period4": [],
+            "period6": [
+              {
+                "duration": "80分",
+                "studentId": "s0470130",
+                "subject": "算数",
+                "classType": "2名クラス",
+                "seat": "",
+                "grade": "小6",
+                "status": "予定",
+                "name": "堀江 成喜"
+              }
+            ],
+            "period7": [
+              {
+                "subject": "英語",
+                "classType": "2名クラス",
+                "name": "志村 凛子",
+                "grade": "中3",
+                "duration": "80分",
+                "studentId": "s0470120",
+                "seat": "",
+                "status": "予定"
+              },
+              {
+                "grade": "中3",
+                "duration": "80分",
+                "classType": "2名クラス",
+                "name": "比留川 絢音",
+                "subject": "数学",
+                "status": "予定",
+                "studentId": "s0470135",
+                "seat": ""
+              }
+            ],
+            "period3": [],
+            "period8": [
+              {
+                "status": "予定",
+                "name": "柿元 秀斗",
+                "seat": "",
+                "studentId": "s0470036",
+                "grade": "中3",
+                "subject": "数学",
+                "duration": "80分",
+                "classType": "1名クラス"
+              }
+            ],
+            "period5": [
+              {
+                "grade": "小4",
+                "seat": "",
+                "studentId": "s0470147",
+                "name": "譲原 佳菜",
+                "subject": "算数",
+                "duration": "80分",
+                "status": "予定",
+                "classType": "2名クラス"
+              }
+            ],
+            "period2": [],
+            "period1": []
+          }
+        },
+        {
+          "teacher": {
+            "code": "t0470007",
+            "name": "茂崎 颯矢"
+          },
+          "periods": {
+            "period5": [],
+            "period2": [],
+            "period1": [],
+            "period4": [],
+            "period7": [],
+            "period6": [],
+            "period8": [],
+            "period3": []
+          },
+          "status": "予定"
+        },
+        {
+          "status": "予定",
+          "teacher": null,
+          "periods": {
+            "period1": [],
+            "period4": [],
+            "period7": [],
+            "period2": [],
+            "period3": [],
+            "period6": [],
+            "period8": [],
+            "period5": []
+          }
+        },
+        {
+          "periods": {
+            "period7": [
+              {
+                "studentId": "s0470142",
+                "classType": "2名クラス",
+                "name": "常盤 來愛",
+                "subject": "国語",
+                "duration": "80分",
+                "seat": "",
+                "grade": "中2",
+                "status": "未定"
+              },
+              {
+                "grade": "中1",
+                "status": "未定",
+                "seat": "",
+                "duration": "80分",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "studentId": "s0470157",
+                "name": "小林 璃乃"
+              }
+            ],
+            "period1": [],
+            "period2": [],
+            "period8": [],
+            "period5": [],
+            "period3": [],
+            "period4": [],
+            "period6": [
+              {
+                "name": "濵田 敬人",
+                "studentId": "s0470154",
+                "subject": "算数",
+                "grade": "小5",
                 "status": "未定",
                 "classType": "2名クラス",
                 "duration": "80分"
               }
             ]
+          },
+          "teacher": null,
+          "status": "未定"
+        },
+        {
+          "status": "欠席",
+          "periods": {
+            "period2": [],
+            "period8": [],
+            "period1": [],
+            "period4": [],
+            "period5": [],
+            "period6": [],
+            "period7": [],
+            "period3": []
+          },
+          "teacher": null
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "047_2025-09_4": {
+    "__doc__": {
+      "rows": [
+        {
+          "teacher": {
+            "name": "",
+            "code": "t0470000"
+          },
+          "status": "予定",
+          "periods": {
+            "period6": [],
+            "period7": [],
+            "period5": [
+              {
+                "grade": "小6",
+                "classType": "2名クラス",
+                "name": "川合 陸都",
+                "duration": "80分",
+                "subject": "国語",
+                "status": "予定",
+                "seat": "",
+                "studentId": "s0470094"
+              },
+              {
+                "seat": "",
+                "classType": "2名クラス",
+                "name": "浪内 結菜",
+                "grade": "中1",
+                "studentId": "s0470158",
+                "subject": "数学",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period4": [],
+            "period3": [],
+            "period2": [],
+            "period1": [],
+            "period8": []
+          }
+        },
+        {
+          "status": "予定",
+          "teacher": {
+            "code": "t0470004",
+            "name": "河野 快都"
+          },
+          "periods": {
+            "period8": [
+              {
+                "status": "予定",
+                "subject": "数学",
+                "duration": "80分",
+                "seat": "",
+                "name": "松本 煌成",
+                "classType": "1名クラス",
+                "grade": "高1",
+                "studentId": "s0470117"
+              }
+            ],
+            "period7": [
+              {
+                "name": "松本 和心実",
+                "classType": "2名クラス",
+                "grade": "中3",
+                "subject": "英語",
+                "studentId": "s0470103",
+                "status": "予定",
+                "seat": "",
+                "duration": "80分"
+              },
+              {
+                "classType": "2名クラス",
+                "name": "山田 大我",
+                "subject": "数学",
+                "studentId": "s0470129",
+                "status": "予定",
+                "grade": "中2",
+                "duration": "80分",
+                "seat": ""
+              }
+            ],
+            "period2": [],
+            "period4": [],
+            "period6": [],
+            "period3": [],
+            "period5": [],
+            "period1": []
+          }
+        },
+        {
+          "teacher": {
+            "code": "t0470008",
+            "name": "高橋 詩織"
+          },
+          "periods": {
+            "period1": [],
+            "period3": [],
+            "period2": [],
+            "period8": [
+              {
+                "classType": "2名クラス",
+                "name": "中村 陽優",
+                "seat": "",
+                "subject": "数学",
+                "status": "予定",
+                "studentId": "s0470148",
+                "grade": "中1",
+                "duration": "80分"
+              }
+            ],
+            "period6": [],
+            "period7": [],
+            "period5": [],
+            "period4": []
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": {
+            "code": "t0470009",
+            "name": "長谷川 楓"
+          },
+          "periods": {
+            "period2": [],
+            "period5": [],
+            "period8": [
+              {
+                "seat": "",
+                "grade": "中3",
+                "duration": "80分",
+                "status": "予定",
+                "studentId": "s0470036",
+                "classType": "1名クラス",
+                "subject": "英語",
+                "name": "柿元 秀斗"
+              }
+            ],
+            "period4": [],
+            "period6": [],
+            "period1": [],
+            "period7": [
+              {
+                "status": "予定",
+                "grade": "中1",
+                "studentId": "s0470157",
+                "name": "小林 璃乃",
+                "seat": "",
+                "subject": "英語",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ],
+            "period3": []
+          },
+          "status": "予定"
+        },
+        {
+          "periods": {
+            "period2": [],
+            "period4": [],
+            "period8": [
+              {
+                "duration": "80分",
+                "studentId": "s0470061",
+                "status": "予定",
+                "seat": "",
+                "classType": "2名クラス",
+                "grade": "中3",
+                "name": "森角 桜彩",
+                "subject": "英語"
+              },
+              {
+                "duration": "80分",
+                "subject": "数学",
+                "status": "予定",
+                "seat": "",
+                "classType": "2名クラス",
+                "grade": "中3",
+                "studentId": "s0470122",
+                "name": "舛本 陽菜"
+              }
+            ],
+            "period3": [],
+            "period7": [
+              {
+                "studentId": "s0470083",
+                "status": "予定",
+                "seat": "",
+                "subject": "数学",
+                "duration": "80分",
+                "grade": "中3",
+                "classType": "2名クラス",
+                "name": "小島 碧葉"
+              },
+              {
+                "studentId": "s0470153",
+                "seat": "",
+                "grade": "中3",
+                "classType": "2名クラス",
+                "subject": "数学",
+                "name": "山下 春翔",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period6": [
+              {
+                "studentId": "s0470145",
+                "status": "予定",
+                "duration": "80分",
+                "classType": "2名クラス",
+                "name": "辻 琳子",
+                "grade": "中3",
+                "subject": "数学",
+                "seat": ""
+              }
+            ],
+            "period5": [],
+            "period1": []
+          },
+          "teacher": {
+            "name": "林 彩葉",
+            "code": "t0470010"
+          },
+          "status": "予定"
+        },
+        {
+          "periods": {
+            "period1": [],
+            "period7": [
+              {
+                "name": "外崎 遥陽",
+                "studentId": "s0470046",
+                "grade": "高3",
+                "duration": "80分",
+                "status": "予定",
+                "subject": "英語",
+                "seat": "",
+                "classType": "2名クラス"
+              }
+            ],
+            "period4": [],
+            "period3": [],
+            "period6": [],
+            "period5": [],
+            "period8": [
+              {
+                "name": "奥山 広大",
+                "studentId": "s0470128",
+                "grade": "高2",
+                "duration": "80分",
+                "seat": "",
+                "subject": "物理",
+                "status": "予定",
+                "classType": "2名クラス"
+              }
+            ],
+            "period2": []
+          },
+          "teacher": {
+            "code": "t0470013",
+            "name": "小林 天真"
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": null,
+          "periods": {
+            "period1": [],
+            "period7": [],
+            "period8": [
+              {
+                "name": "森内 琥太郎",
+                "studentId": "s0470159",
+                "subject": "古文",
+                "grade": "高2",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ],
+            "period5": [],
+            "period6": [],
+            "period4": [],
+            "period2": [],
+            "period3": []
+          },
+          "status": "未定"
+        },
+        {
+          "teacher": null,
+          "status": "欠席",
+          "periods": {
+            "period5": [],
+            "period3": [],
+            "period7": [],
+            "period6": [],
+            "period1": [],
+            "period4": [],
+            "period2": [],
+            "period8": []
           }
         }
       ],
       "updatedAt": {
-        "_seconds": 1752208384,
-        "_nanoseconds": 299000000
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "047_2025-09_5": {
+    "__doc__": {
+      "rows": [
+        {
+          "teacher": {
+            "name": "",
+            "code": "t0470000"
+          },
+          "periods": {
+            "period7": [
+              {
+                "studentId": "s0470115",
+                "status": "予定",
+                "name": "鎗目 紘士朗",
+                "seat": "",
+                "duration": "80分",
+                "subject": "数学",
+                "grade": "中2",
+                "classType": "2名クラス"
+              }
+            ],
+            "period4": [],
+            "period8": [],
+            "period2": [],
+            "period5": [],
+            "period1": [],
+            "period3": [],
+            "period6": [
+              {
+                "status": "予定",
+                "subject": "数学",
+                "grade": "中2",
+                "seat": "",
+                "studentId": "s0470074",
+                "name": "永谷 悠太",
+                "duration": "80分",
+                "classType": "2名クラス"
+              }
+            ]
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": {
+            "code": "t0470001",
+            "name": "五十嵐 雄飛"
+          },
+          "status": "予定",
+          "periods": {
+            "period8": [],
+            "period5": [],
+            "period3": [],
+            "period6": [
+              {
+                "studentId": "s0470069",
+                "subject": "数学",
+                "seat": "",
+                "name": "大坪 愛実",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "grade": "中2",
+                "status": "予定"
+              }
+            ],
+            "period2": [],
+            "period4": [],
+            "period1": [],
+            "period7": [
+              {
+                "subject": "数学",
+                "name": "松本 和心実",
+                "status": "予定",
+                "classType": "2名クラス",
+                "seat": "",
+                "grade": "中3",
+                "duration": "80分",
+                "studentId": "s0470103"
+              },
+              {
+                "status": "予定",
+                "name": "鎌田 瑠璃香",
+                "subject": "数学",
+                "seat": "",
+                "duration": "80分",
+                "classType": "2名クラス",
+                "studentId": "s0470111",
+                "grade": "中3"
+              }
+            ]
+          }
+        },
+        {
+          "status": "予定",
+          "periods": {
+            "period2": [],
+            "period8": [
+              {
+                "name": "木村 友耶",
+                "status": "予定",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "seat": "",
+                "grade": "中3",
+                "subject": "英語",
+                "studentId": "s0470121"
+              }
+            ],
+            "period5": [],
+            "period7": [
+              {
+                "grade": "中3",
+                "seat": "",
+                "duration": "80分",
+                "name": "杉本 真唯",
+                "subject": "数学",
+                "studentId": "s0470112",
+                "classType": "2名クラス",
+                "status": "予定"
+              },
+              {
+                "studentId": "s0470127",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "name": "田中 莉帆",
+                "grade": "中3",
+                "status": "予定",
+                "seat": "",
+                "duration": "80分"
+              }
+            ],
+            "period1": [],
+            "period3": [],
+            "period6": [],
+            "period4": []
+          },
+          "teacher": {
+            "name": "荻原 琉成",
+            "code": "t0470006"
+          }
+        },
+        {
+          "status": "予定",
+          "teacher": {
+            "name": "林 彩葉",
+            "code": "t0470010"
+          },
+          "periods": {
+            "period1": [],
+            "period3": [],
+            "period2": [],
+            "period8": [],
+            "period7": [
+              {
+                "grade": "中3",
+                "classType": "2名クラス",
+                "name": "比留川 絢音",
+                "duration": "80分",
+                "seat": "",
+                "studentId": "s0470135",
+                "subject": "英語",
+                "status": "予定"
+              },
+              {
+                "classType": "2名クラス",
+                "studentId": "s0470139",
+                "duration": "80分",
+                "status": "予定",
+                "grade": "中3",
+                "seat": "",
+                "name": "横山 咲葵",
+                "subject": "数学"
+              }
+            ],
+            "period5": [],
+            "period4": [],
+            "period6": [
+              {
+                "duration": "80分",
+                "studentId": "s0470125",
+                "subject": "算数",
+                "classType": "2名クラス",
+                "seat": "",
+                "status": "予定",
+                "name": "高橋 美月",
+                "grade": "小6"
+              },
+              {
+                "subject": "英語",
+                "status": "予定",
+                "studentId": "s0470144",
+                "name": "安藤 ゆら",
+                "seat": "",
+                "classType": "2名クラス",
+                "grade": "中2",
+                "duration": "80分"
+              }
+            ]
+          }
+        },
+        {
+          "status": "予定",
+          "teacher": {
+            "code": "t0470012",
+            "name": "宮本 龍之介"
+          },
+          "periods": {
+            "period2": [],
+            "period7": [
+              {
+                "seat": "",
+                "studentId": "s0470106",
+                "grade": "中3",
+                "classType": "2名クラス",
+                "subject": "数学",
+                "status": "予定",
+                "name": "竹田 瀬玲奈",
+                "duration": "80分"
+              },
+              {
+                "name": "常盤 聖愛",
+                "seat": "",
+                "status": "予定",
+                "classType": "2名クラス",
+                "subject": "数学",
+                "duration": "80分",
+                "grade": "中3",
+                "studentId": "s0470141"
+              }
+            ],
+            "period8": [
+              {
+                "grade": "中3",
+                "classType": "2名クラス",
+                "status": "予定",
+                "duration": "80分",
+                "studentId": "s0470120",
+                "seat": "",
+                "subject": "数学",
+                "name": "志村 凛子"
+              }
+            ],
+            "period5": [],
+            "period6": [],
+            "period1": [],
+            "period3": [],
+            "period4": []
+          }
+        },
+        {
+          "teacher": null,
+          "periods": {
+            "period5": [],
+            "period8": [],
+            "period4": [],
+            "period3": [],
+            "period1": [],
+            "period2": [],
+            "period6": [
+              {
+                "name": "濵田 敬人",
+                "studentId": "s0470154",
+                "subject": "国語",
+                "grade": "小5",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ],
+            "period7": []
+          },
+          "status": "未定"
+        },
+        {
+          "periods": {
+            "period1": [],
+            "period8": [],
+            "period7": [],
+            "period2": [],
+            "period3": [],
+            "period6": [],
+            "period5": [],
+            "period4": []
+          },
+          "status": "欠席",
+          "teacher": null
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "047_2025-09_6": {
+    "__doc__": {
+      "rows": [
+        {
+          "teacher": {
+            "code": "t0470000",
+            "name": ""
+          },
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [
+              {
+                "studentId": "s0470151",
+                "grade": "中3",
+                "name": "木下 みのり",
+                "seat": "",
+                "subject": "数学",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period4": [],
+            "period5": [
+              {
+                "studentId": "s0470143",
+                "grade": "小4",
+                "name": "中谷 桜",
+                "seat": "",
+                "subject": "算数",
+                "classType": "2名クラス",
+                "duration": "80分",
+                "status": "予定"
+              }
+            ],
+            "period6": [],
+            "period7": [],
+            "period8": []
+          },
+          "status": "予定"
+        },
+        {
+          "teacher": null,
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [],
+            "period7": [],
+            "period8": []
+          },
+          "status": "未定"
+        },
+        {
+          "teacher": null,
+          "periods": {
+            "period1": [],
+            "period2": [],
+            "period3": [],
+            "period4": [],
+            "period5": [],
+            "period6": [],
+            "period7": [],
+            "period8": []
+          },
+          "status": "欠席"
+        }
+      ],
+      "updatedAt": {
+        "_seconds": 1756194725,
+        "_nanoseconds": 454000000
       }
     }
   },
@@ -1534,6 +2677,192 @@
       "updatedAt": {
         "_seconds": 1752319447,
         "_nanoseconds": 39000000
+      }
+    }
+  },
+  "246_2025-01_1": {
+    "__doc__": {
+      "rows": [
+        {
+          "status": "未定",
+          "teacher": null,
+          "periods": {
+            "period3": [
+              {
+                "name": "鈴木 一郎",
+                "studentId": "s2460003",
+                "subject": "英語",
+                "grade": "中2",
+                "status": "未定",
+                "classType": "1名クラス",
+                "duration": "80分"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "246_2025-05_1": {
+    "__doc__": {
+      "rows": [
+        {
+          "status": "未定",
+          "teacher": null,
+          "periods": {
+            "period2": [
+              {
+                "name": "大和 タロウ",
+                "studentId": "s2460002",
+                "subject": "理科",
+                "grade": "小3",
+                "status": "未定",
+                "classType": "1名クラス",
+                "duration": "80分"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "246_2025-08_2": {
+    "__doc__": {
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      },
+      "rows": [
+        {
+          "periods": {
+            "period3": [
+              {
+                "grade": "中1",
+                "classType": "1名クラス",
+                "subject": "数学",
+                "studentId": "s2460004",
+                "status": "未定",
+                "duration": "80分",
+                "name": "火野 明"
+              }
+            ],
+            "period5": [
+              {
+                "name": "木村 巧",
+                "studentId": "s2460006",
+                "subject": "英語",
+                "grade": "中2",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ]
+          },
+          "status": "未定",
+          "teacher": null
+        }
+      ]
+    }
+  },
+  "246_2025-12_2": {
+    "__doc__": {
+      "rows": [
+        {
+          "status": "未定",
+          "teacher": null,
+          "periods": {
+            "period5": [
+              {
+                "name": "小林 ハナコ",
+                "studentId": "s2460005",
+                "subject": "国語",
+                "grade": "中3",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "80分"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "256_-00_1": {
+    "__doc__": {
+      "rows": [
+        {
+          "status": "未定",
+          "teacher": null,
+          "periods": {
+            "period": [
+              {
+                "name": "aaaaaaa bbbbbbbb",
+                "studentId": "s2560002",
+                "status": "未定",
+                "classType": "1名クラス"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "256_2025-07_5": {
+    "__doc__": {
+      "rows": [
+        {
+          "status": "未定",
+          "teacher": null,
+          "periods": {
+            "period7": [
+              {
+                "name": "っっっっc っっっっっっっd",
+                "studentId": "s2560003",
+                "status": "未定",
+                "classType": "1名クラス",
+                "duration": "80分"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
+      }
+    }
+  },
+  "256_2025-10_2": {
+    "__doc__": {
+      "rows": [
+        {
+          "status": "未定",
+          "teacher": null,
+          "periods": {
+            "period3": [
+              {
+                "name": "っっっっc っっっっっっっd",
+                "studentId": "s2560003",
+                "status": "未定",
+                "classType": "2名クラス",
+                "duration": "70分"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": {
+        "_methodName": "serverTimestamp"
       }
     }
   }

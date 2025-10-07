@@ -1,0 +1,232 @@
+{
+  "s0470069": {
+    "__doc__": {
+      "testRows3": [
+        {
+          "name": "第一回",
+          "deviations": {
+            "数学": null,
+            "英語": null,
+            "社会": null,
+            "理科": null,
+            "国語": null
+          },
+          "grades": {
+            "理科": null,
+            "社会": null,
+            "英語": null,
+            "数学": null,
+            "国語": null
+          }
+        }
+      ]
+    }
+  },
+  "s2380001": {
+    "__doc__": {
+      "studentId": "s2380001",
+      "studentName": "高橋 文哉",
+      "classroomCode": "238",
+      "grades1": {
+        "1年3学期": {
+          "理科": null,
+          "社会": null,
+          "数学": null,
+          "保体": null,
+          "国語": null,
+          "技家": null,
+          "美術": null,
+          "英語": null,
+          "音楽": null
+        },
+        "3年1学期": {
+          "国語": null,
+          "音楽": null,
+          "美術": null,
+          "技家": null,
+          "数学": null,
+          "社会": null,
+          "英語": null,
+          "保体": null,
+          "理科": null
+        },
+        "1年1学期": {
+          "保体": 3,
+          "技家": 2,
+          "理科": 5,
+          "英語": 6,
+          "数学": 4,
+          "国語": 36,
+          "美術": 6,
+          "社会": 35,
+          "音楽": 5
+        },
+        "1年2学期": {
+          "数学": null,
+          "社会": null,
+          "英語": null,
+          "美術": null,
+          "国語": null,
+          "音楽": null,
+          "理科": null,
+          "技家": null,
+          "保体": null
+        },
+        "2年3学期": {
+          "音楽": null,
+          "国語": null,
+          "理科": null,
+          "数学": null,
+          "美術": null,
+          "保体": null,
+          "技家": null,
+          "英語": null,
+          "社会": null
+        },
+        "3年2学期": {
+          "英語": null,
+          "音楽": null,
+          "技家": null,
+          "理科": null,
+          "社会": null,
+          "美術": null,
+          "保体": null,
+          "国語": null,
+          "数学": null
+        },
+        "2年2学期": {
+          "美術": null,
+          "音楽": null,
+          "数学": null,
+          "社会": null,
+          "国語": null,
+          "理科": null,
+          "技家": null,
+          "保体": null,
+          "英語": null
+        },
+        "2年1学期": {
+          "社会": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "数学": null,
+          "保体": null,
+          "美術": null,
+          "国語": null,
+          "技家": null
+        }
+      },
+      "grades2": {
+        "1年1学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        },
+        "1年2学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        },
+        "1年3学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        },
+        "2年1学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        },
+        "2年2学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        },
+        "2年3学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        },
+        "3年1学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        },
+        "3年2学期": {
+          "国語": null,
+          "社会": null,
+          "数学": null,
+          "理科": null,
+          "英語": null,
+          "音楽": null,
+          "美術": null,
+          "保体": null,
+          "技家": null
+        }
+      },
+      "testRows3": [
+        {
+          "name": "第一回",
+          "avgDeviation": null,
+          "grades": {
+            "国語": null,
+            "社会": null,
+            "数学": null,
+            "英語": null,
+            "理科": null
+          },
+          "deviations": {
+            "社会": null,
+            "英語": null,
+            "理科": null,
+            "数学": null,
+            "国語": null
+          }
+        }
+      ]
+    }
+  }
+}

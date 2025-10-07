@@ -4,6 +4,8 @@ import { db } from "../../../firebase";
 import { useNavigate } from "react-router-dom";
 import { Student } from "../../../contexts/types/student";
 import { Customer } from "../../../contexts/types/customer";
+import SelectBillingTypeModal from "./SelectBillingTypeModal";
+import { BillingDetail } from "./BillingDetails";
 
 export type Billing = {
     id: string;
@@ -15,6 +17,7 @@ export type Billing = {
     total: number;
     note?: string;
     createdAt: any;
+    details?: BillingDetail[];
 };
 
 type Props = {
@@ -24,6 +27,7 @@ type Props = {
 
 const BillingPage: React.FC<Props> = ({ customer, formData }) => {
     const [billings, setBillings] = useState<Billing[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const studentId = formData.studentId ?? ''
     const customerUid = customer.uid ?? ''
@@ -53,9 +57,72 @@ const BillingPage: React.FC<Props> = ({ customer, formData }) => {
         fetchBillings();
     }, [customerUid]);
 
+    const handleCreateBilling = () => {
+        setIsModalOpen(true); // ✅ モーダルを開く
+    };
+
+    const handleSelectBillingType = (type: "monthly" | "spot") => {
+        setIsModalOpen(false);
+
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const targetMonth = `${yyyy}${mm}`;
+
+        // ✅ 月締のみ重複チェック
+        if (type === "monthly") {
+            const exists = billings.some(
+                (b) => b.type === "monthly" && b.month === targetMonth
+            );
+
+            if (exists) {
+                alert(`${targetMonth.slice(0, 4)}年${targetMonth.slice(4, 6)}月の請求書はすでに作成されています。`);
+                return;
+            }
+        }
+
+        // ✅ FirestoreドキュメントIDを生成
+        const classroomCode = formData.classroomCode ?? "unknown";
+        const baseId = `${targetMonth}_${classroomCode}_${studentId}_${type}`;
+        const docId = type === "spot" ? `${baseId}_${Date.now()}` : baseId;
+
+        const newBilling = {
+            id: docId,
+            studentId,
+            month: targetMonth,
+            type,
+            subtotal: 0,
+            taxAmount: 0,
+            total: 0,
+            note: "",
+            createdAt: new Date(),
+        };
+
+        navigate(`/admin/students/${studentId}/bill/${targetMonth}/edit`, {
+            state: { billing: newBilling, formData, customer, isNewBilling: true },
+        });
+    };
+
     return (
         <div className="space-y-4">
-            <h2 className="text-lg font-semibold">請求書一覧</h2>
+            <h2 className="text-lg font-semibold flex justify-between items-center">
+                請求書一覧
+                <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    onClick={handleCreateBilling}
+                >
+                    新規請求書作成
+                </button>
+            </h2>
+
+            {/* ✅ モーダル */}
+            {isModalOpen && (
+                <SelectBillingTypeModal
+                    onClose={() => setIsModalOpen(false)}
+                    onSelect={handleSelectBillingType}
+                />
+            )}
+
             <table className="w-full table-auto border">
                 <thead>
                     <tr className="bg-blue-50">
@@ -70,41 +137,49 @@ const BillingPage: React.FC<Props> = ({ customer, formData }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {billings.map((b) => (
-                        <tr key={b.id}>
-                            <td className="border p-2">
-                                {b.createdAt ? b.createdAt.toLocaleDateString() : "-"}
-                            </td>
-                            <td className="border p-2">
-                                {b.type === "monthly" ? "月締" : "都度"}
-                            </td>
-                            <td className="border p-2">
-                                {b.month
-                                    ? `${b.month.slice(0, 4)}年${b.month.slice(4, 6)}月`
-                                    : "-"}
-                            </td>
-                            <td className="border p-2">{Math.floor(b.subtotal).toLocaleString()}円</td>
-                            <td className="border p-2">{Math.floor(b.taxAmount).toLocaleString()}円</td>
-                            <td className="border p-2">{Math.floor(b.total).toLocaleString()}円</td>
-                            <td className="border p-2">{b.note || "-"}</td>
-                            <td className="border p-2">
-                                <button
-                                    className="text-blue-600 hover:underline"
-                                    onClick={() =>
-                                        navigate(`/admin/students/${studentId}/bill/${b.month}`, {
-                                            state: {
-                                                billing: b,
-                                                formData,
-                                                customer
-                                            }
-                                        })
-                                    }
-                                >
-                                    詳細
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
+                    {billings
+                        .sort((a, b) => Number(b.month) - Number(a.month)) // ← ここで新しい順にソート！
+                        .map((b) => (
+                            <tr key={b.id}>
+                                <td className="border p-2">
+                                    {b.createdAt ? b.createdAt.toLocaleDateString() : "-"}
+                                </td>
+                                <td className="border p-2">
+                                    {b.type === "monthly" ? "月締" : "都度"}
+                                </td>
+                                <td className="border p-2">
+                                    {b.month
+                                        ? `${b.month.slice(0, 4)}年${b.month.slice(4, 6)}月`
+                                        : "-"}
+                                </td>
+                                <td className="border p-2">
+                                    {Math.floor(b.subtotal).toLocaleString()}円
+                                </td>
+                                <td className="border p-2">
+                                    {Math.floor(b.taxAmount).toLocaleString()}円
+                                </td>
+                                <td className="border p-2">
+                                    {Math.floor(b.total).toLocaleString()}円
+                                </td>
+                                <td className="border p-2">{b.note || "-"}</td>
+                                <td className="border p-2">
+                                    <button
+                                        className="text-blue-600 hover:underline"
+                                        onClick={() =>
+                                            navigate(`/admin/students/${studentId}/bill/${b.month}`, {
+                                                state: {
+                                                    billing: b,
+                                                    formData,
+                                                    customer
+                                                }
+                                            })
+                                        }
+                                    >
+                                        詳細
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
         </div >

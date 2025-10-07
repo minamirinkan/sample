@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import SidebarSection from './SidebarSection';
 import {
-    FaBell, FaDatabase, FaTasks, FaBook, FaComments, FaYenSign, FaChartBar, FaFileAlt
+    FaBell, FaDatabase, FaTasks, FaBook, FaComments, FaYenSign, FaChartBar, FaFileAlt,
+    FaLine
 } from 'react-icons/fa';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 import LoadingSpinner from '../../../common/LoadingSpinner';
@@ -27,6 +28,19 @@ const AdminSidebar: FC<{ isOpen?: boolean }> = ({ isOpen = true }) => {
                     subItems={[
                         { label: '本部', key: 'chats', path: '/admin/chat' },
                         { label: '教室', key: 'chat', path: '/admin/chat' }
+                    ]}
+                />
+                <SidebarSection
+                    icon={FaLine}
+                    title="LINE連携"
+                    subItems={[
+                        {
+                            label: '公式LINEを開く',
+                            key: 'line-link',
+                            // 🔗 あなたのLINE公式アカウントURLに変更してください
+                            path: 'https://chat.line.biz/U0df982eb144a800f89f3b8d59ffb2775',
+                            external: true, // ←外部リンクとして処理（後述）
+                        },
                     ]}
                 />
                 <SidebarSection

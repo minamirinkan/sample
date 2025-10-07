@@ -7,6 +7,7 @@ interface SidebarItem {
     label: string;
     key: string;
     path: string;
+    external?: boolean;
 }
 
 interface SidebarSectionProps {
@@ -49,13 +50,26 @@ const SidebarSection: FC<SidebarSectionProps> = ({ icon: Icon, title, subItems }
                 <ul className="ml-6 mt-1">
                     {subItems.map(item => (
                         <li key={item.key}>
-                            <a
-                                href={item.path}       // 右クリック・新しいタブ用
-                                onClick={(e) => handleClick(e, item.path)} // 左クリック SPA 用
-                                className="block p-1 hover:bg-gray-200 rounded"
-                            >
-                                {item.label}
-                            </a>
+                            {item.external ? (
+                                // 外部リンクは新しいタブで開く
+                                <a
+                                    href={item.path}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block p-1 hover:bg-gray-200 rounded"
+                                >
+                                    {item.label}
+                                </a>
+                            ) : (
+                                // 内部リンクは SPA ナビゲーション
+                                <a
+                                    href={item.path}
+                                    onClick={(e) => handleClick(e, item.path)}
+                                    className="block p-1 hover:bg-gray-200 rounded"
+                                >
+                                    {item.label}
+                                </a>
+                            )}
                         </li>
                     ))}
                 </ul>

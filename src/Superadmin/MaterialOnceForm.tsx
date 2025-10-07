@@ -1,38 +1,71 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { saveTuitionSettings } from './saveTuitionSettings';
 import { FaPlus, FaTrash } from 'react-icons/fa';
+import { collection, doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 interface MaterialOnceFormProps {
     yyyyMM: string;
     registrationLocation: string;
 }
 
-interface Material_onceRow {
+interface MaterialOnceRow {
+    code: string; // 自動生成コード
     item: string;
     amount: number | string;
 }
 
 const MaterialOnceForm: React.FC<MaterialOnceFormProps> = ({ yyyyMM, registrationLocation }) => {
-    const [material_onceRows, setmaterial_onceRows] = useState<Material_onceRow[]>([
-        { item: '', amount: '' },
+    const [materialOnceRows, setMaterialOnceRows] = useState<MaterialOnceRow[]>([
+        { code: '7001', item: '', amount: '' },
     ]);
 
-    const handleChange = (index: number, field: keyof Material_onceRow, value: string) => {
-        const updated = [...material_onceRows];
+    // Firestoreから読み込み
+    useEffect(() => {
+        const fetchData = async () => {
+            const baseRef = doc(db, 'FeeMaster', `${yyyyMM}_${registrationLocation}`);
+            const docRef = doc(collection(baseRef, 'categories'), 'materialOnce');
+            const snapshot = await getDoc(docRef);
+
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                const rows: MaterialOnceRow[] = Object.entries(data).map(([id, value]: any) => ({
+                    code: id,
+                    item: value.item,
+                    amount: value.amount,
+                }));
+                rows.sort((a, b) => Number(a.code) - Number(b.code));
+                setMaterialOnceRows(rows);
+            } else {
+                // デフォルト2行
+                setMaterialOnceRows([
+                    { code: '7001', item: '', amount: '' },
+                ]);
+            }
+        };
+
+        fetchData();
+    }, [yyyyMM, registrationLocation]);
+
+    const handleChange = (index: number, field: keyof MaterialOnceRow, value: string) => {
+        const updated = [...materialOnceRows];
         if (field === 'amount') {
             updated[index][field] = value === '' ? '' : Number(value);
         } else {
             updated[index][field] = value;
         }
-        setmaterial_onceRows(updated);
+        setMaterialOnceRows(updated);
     };
 
     const addRow = () => {
-        setmaterial_onceRows([...material_onceRows, { item: '', amount: '' }]);
+        const nextCode = String(7000 + materialOnceRows.length + 1); // 7001, 7002, ...
+        setMaterialOnceRows([...materialOnceRows, { code: nextCode, item: '', amount: '' }]);
     };
 
     const removeRow = (index: number) => {
-        setmaterial_onceRows(material_onceRows.filter((_, i) => i !== index));
+        const updated = materialOnceRows.filter((_, i) => i !== index);
+        const renumbered = updated.map((r, i) => ({ ...r, code: String(7000 + i + 1) }));
+        setMaterialOnceRows(renumbered);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -45,13 +78,14 @@ const MaterialOnceForm: React.FC<MaterialOnceFormProps> = ({ yyyyMM, registratio
                 tuitionDataA: [],
                 schedulesW: [],
                 schedulesA: [],
-                material_onceRows: material_onceRows.map(r => ({
-                    id: r.item || crypto.randomUUID(),
+                material_onceRows: materialOnceRows.map(r => ({
+                    id: r.code,
+                    code: r.code,
                     item: r.item,
                     amount: Number(r.amount),
                 })),
             });
-            alert('保存完了');
+            alert('教材費(都度)データを保存しました');
         } catch (error) {
             console.error(error);
             alert('保存に失敗しました');
@@ -74,14 +108,16 @@ const MaterialOnceForm: React.FC<MaterialOnceFormProps> = ({ yyyyMM, registratio
             <table className="table-auto border border-gray-300 w-full">
                 <thead>
                     <tr className="bg-gray-200">
+                        <th className="border px-4 py-2 text-left">コード</th>
                         <th className="border px-4 py-2 text-left">項目</th>
                         <th className="border px-4 py-2 text-left">金額 (円)</th>
                         <th className="border px-4 py-2 text-center">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {material_onceRows.map((row, idx) => (
+                    {materialOnceRows.map((row, idx) => (
                         <tr key={idx} className="hover:bg-gray-50">
+                            <td className="border px-2 py-1 text-left font-mono">{row.code}</td>
                             <td className="border px-2 py-1">
                                 <input
                                     type="text"

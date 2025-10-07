@@ -58,8 +58,8 @@
         "_nanoseconds": 153000000
       },
       "lastLogin": {
-        "_seconds": 1752482899,
-        "_nanoseconds": 322000000
+        "_seconds": 1756468106,
+        "_nanoseconds": 781000000
       }
     },
     "closures": {
@@ -372,8 +372,340 @@
         "_nanoseconds": 694000000
       },
       "lastLogin": {
-        "_seconds": 1752819717,
-        "_nanoseconds": 256000000
+        "_seconds": 1756224587,
+        "_nanoseconds": 439000000
+      }
+    },
+    "closures": {
+      "2025": {
+        "__doc__": {
+          "closures": [
+            {
+              "date": "2025-01-01",
+              "name": "元日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-13",
+              "name": "成人の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-11",
+              "name": "建国記念の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-23",
+              "name": "天皇誕生日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-24",
+              "name": "天皇誕生日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-20",
+              "name": "春分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-04-29",
+              "name": "昭和の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-03",
+              "name": "憲法記念日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-04",
+              "name": "みどりの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-05",
+              "name": "こどもの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-06",
+              "name": "みどりの日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-21",
+              "name": "海の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-08-11",
+              "name": "山の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-15",
+              "name": "敬老の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-09-23",
+              "name": "秋分の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-10-13",
+              "name": "スポーツの日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-03",
+              "name": "文化の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-23",
+              "name": "勤労感謝の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-24",
+              "name": "勤労感謝の日 振替休日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-31",
+              "name": "大晦日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-06-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-07",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-03-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-04-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-01",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-05-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-19",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-07-26",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-12",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-13",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-14",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-15",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-16",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-09-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-10-31",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-11-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-20",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-29",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-12-30",
+              "name": "指定休講日",
+              "type": "customClose"
+            }
+          ],
+          "deletedClosures": [
+            {
+              "date": "2025-01-02",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "銀行休業日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-02-02",
+              "name": "節分",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-03-03",
+              "name": "雛祭り",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-05-11",
+              "name": "母の日",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-07-07",
+              "name": "七夕",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-11-15",
+              "name": "七五三",
+              "type": "holiday"
+            },
+            {
+              "date": "2025-12-25",
+              "name": "クリスマス",
+              "type": "holiday"
+            }
+          ],
+          "updatedAt": {
+            "_seconds": 1754560427,
+            "_nanoseconds": 570000000
+          }
+        }
+      }
+    }
+  },
+  "256": {
+    "__doc__": {
+      "code": "256",
+      "name": "藤沢",
+      "adminUid": "epHJlcG0cwSe5VeHs6Jf1sPmjst1",
+      "email": "t.hirabayashi17@gmail.com",
+      "addressInfo": {
+        "postalCode": "2510875",
+        "prefecture": "神奈川県",
+        "city": "藤沢市",
+        "streetAddress": "本藤沢6-5-15",
+        "cityKana": "フジサワシ",
+        "streetAddressKana": "ホンフジサワ6-5-15"
+      },
+      "faxNumber": "",
+      "minimumWage": 1200,
+      "tuitionName": "南",
+      "phoneNumber": "08046722010",
+      "teacherFeeName": "新宿",
+      "periodTimeName": "新宿",
+      "leaderLastName": "平林",
+      "leaderFirstName": "利英",
+      "leaderLastKana": "ヒラバヤシ",
+      "leaderFirstKana": "トシヒデ",
+      "createdAt": {
+        "_seconds": 1752892323,
+        "_nanoseconds": 513000000
+      },
+      "lastLogin": {
+        "_seconds": 1755452728,
+        "_nanoseconds": 91000000
+      }
+    }
+  },
+  "000": {
+    "__doc__": {
+      "adminUid": "gJWq03P4oDTI4JoFRiN02V8YnEw2",
+      "email": "superadmin@admin.com",
+      "role": "superadmin",
+      "code": "000",
+      "phoneNumber": "",
+      "faxNumber": "",
+      "name": "本部",
+      "createdAt": {
+        "_seconds": 1757997600,
+        "_nanoseconds": 129000000
+      },
+      "lastLogin": {
+        "_seconds": 1757997695,
+        "_nanoseconds": 663000000
       }
     }
   },
@@ -388,8 +720,8 @@
         "_nanoseconds": 817000000
       },
       "lastLogin": {
-        "_seconds": 1752821033,
-        "_nanoseconds": 602000000
+        "_seconds": 1754548108,
+        "_nanoseconds": 822000000
       }
     }
   },
@@ -1764,8 +2096,8 @@
         "_nanoseconds": 720000000
       },
       "lastLogin": {
-        "_seconds": 1752826028,
-        "_nanoseconds": 173000000
+        "_seconds": 1757761228,
+        "_nanoseconds": 489000000
       }
     },
     "closures": {
@@ -3645,16 +3977,37 @@
   "047": {
     "__doc__": {
       "code": "047",
-      "email": "minamirinkan@admin.com",
-      "adminUid": "apJL9SD9X4YvYyWPOyTTcI7vWZp2",
       "name": "南林間",
-      "createdAt": {
-        "_seconds": 1749643088,
-        "_nanoseconds": 690000000
+      "adminUid": "8pGvD2vJTXNESsVBHIBrpzPsJm13",
+      "email": "minamirinkan@tokyogakuseikai.co.jp",
+      "addressInfo": {
+        "postalCode": "2420006",
+        "prefecture": "神奈川県",
+        "city": "大和市",
+        "streetAddress": "南林間1-7-9",
+        "cityKana": "ヤマトシ",
+        "streetAddressKana": "ミナミリンカン",
+        "buildingName": "南林間西口第3ビル3F"
       },
+      "faxNumber": "046-240-6997",
+      "minimumWage": 1162,
+      "tuitionName": "南林間",
+      "phoneNumber": "046-272-8355",
+      "teacherFeeName": "南林間",
+      "periodTimeName": "南林間",
+      "leaderLastName": "鞆",
+      "leaderFirstName": "満佐裕",
+      "leaderLastKana": "トモ",
+      "leaderFirstKana": "マサヒロ",
+      "createdAt": {
+        "_seconds": 1755777719,
+        "_nanoseconds": 140000000
+      },
+      "fullname": "鞆 満佐裕",
+      "feeMaster": "南林間",
       "lastLogin": {
-        "_seconds": 1752852884,
-        "_nanoseconds": 741000000
+        "_seconds": 1759379715,
+        "_nanoseconds": 254000000
       }
     },
     "closures": {
@@ -3767,6 +4120,16 @@
               "type": "customClose"
             },
             {
+              "date": "2025-01-02",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-01-03",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
               "date": "2025-01-07",
               "name": "指定休講日",
               "type": "customClose"
@@ -3803,6 +4166,31 @@
             },
             {
               "date": "2025-07-26",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-12",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-13",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-14",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-15",
+              "name": "指定休講日",
+              "type": "customClose"
+            },
+            {
+              "date": "2025-08-16",
               "name": "指定休講日",
               "type": "customClose"
             },
@@ -3850,41 +4238,6 @@
               "date": "2025-12-30",
               "name": "指定休講日",
               "type": "customClose"
-            },
-            {
-              "date": "2025-01-02",
-              "name": "指定休講日",
-              "type": "customClose"
-            },
-            {
-              "date": "2025-01-03",
-              "name": "指定休講日",
-              "type": "customClose"
-            },
-            {
-              "date": "2025-08-12",
-              "name": "指定休講日",
-              "type": "customClose"
-            },
-            {
-              "date": "2025-08-13",
-              "name": "指定休講日",
-              "type": "customClose"
-            },
-            {
-              "date": "2025-08-14",
-              "name": "指定休講日",
-              "type": "customClose"
-            },
-            {
-              "date": "2025-08-15",
-              "name": "指定休講日",
-              "type": "customClose"
-            },
-            {
-              "date": "2025-08-16",
-              "name": "指定休講日",
-              "type": "customClose"
             }
           ],
           "deletedClosures": [
@@ -3930,1523 +4283,8 @@
             }
           ],
           "updatedAt": {
-            "_seconds": 1752506501,
-            "_nanoseconds": 703000000
-          }
-        }
-      }
-    },
-    "timetables": {
-      "2025-06-03": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750607449,
-            "_nanoseconds": 564000000
-          }
-        }
-      },
-      "2025-06-16": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": {
-                "code": "t0470002",
-                "name": "星野 瑞稀"
-              },
-              "periods": {
-                "period1": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "",
-                    "subject": "",
-                    "status": "予定"
-                  }
-                ],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750437623,
-            "_nanoseconds": 778000000
-          }
-        }
-      },
-      "2025-06-20": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750476725,
-            "_nanoseconds": 870000000
-          }
-        }
-      },
-      "2025-06-21": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": {
-                "code": "t0470002",
-                "name": "星野 瑞稀"
-              },
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [
-                  {
-                    "studentId": "s0470002",
-                    "grade": "中3",
-                    "name": "吉田 拓実",
-                    "seat": "",
-                    "subject": "",
-                    "status": "予定"
-                  }
-                ],
-                "period4": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "",
-                    "subject": "",
-                    "status": "予定"
-                  }
-                ],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": {
-                "code": "t0470001",
-                "name": "田中 流星"
-              },
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "7",
-                    "subject": "社会",
-                    "status": "未定"
-                  }
-                ],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "2",
-                    "subject": "数学",
-                    "status": "振替"
-                  }
-                ],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "",
-                    "subject": "",
-                    "status": "欠席"
-                  }
-                ],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "time": "12:50〜14:10",
-              "label": "3限"
-            },
-            {
-              "time": "14:20〜15:40",
-              "label": "4限"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "time": "18:50〜20:10",
-              "label": "7限"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750665597,
-            "_nanoseconds": 860000000
-          }
-        }
-      },
-      "2025-06-22": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750476719,
-            "_nanoseconds": 427000000
-          }
-        }
-      },
-      "2025-06-23": {
-        "__doc__": {
-          "periodLabels": [
-            {
-              "time": "09:50〜11:10",
-              "label": "1限"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "time": "15:50〜17:10",
-              "label": "5限"
-            },
-            {
-              "time": "17:20〜18:40",
-              "label": "6限"
-            },
-            {
-              "time": "18:50〜20:10",
-              "label": "7限"
-            },
-            {
-              "time": "20:20〜21:40",
-              "label": "8限"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750664400,
-            "_nanoseconds": 191000000
-          },
-          "rows": [
-            {
-              "teacher": null,
-              "status": "予定",
-              "periods": {
-                "period1": [],
-                "period6": [],
-                "period4": [],
-                "period5": [],
-                "period2": [],
-                "period8": [],
-                "period3": [],
-                "period7": []
-              }
-            },
-            {
-              "teacher": null,
-              "status": "未定",
-              "periods": {
-                "period4": [],
-                "period3": [],
-                "period5": [],
-                "period6": [],
-                "period8": [],
-                "period2": [],
-                "period1": [],
-                "period7": []
-              }
-            },
-            {
-              "status": "振替",
-              "teacher": null,
-              "periods": {
-                "period2": [],
-                "period7": [],
-                "period3": [],
-                "period4": [],
-                "period8": [],
-                "period5": [],
-                "period1": [],
-                "period6": []
-              }
-            },
-            {
-              "periods": {
-                "period3": [],
-                "period2": [],
-                "period8": [],
-                "period5": [],
-                "period7": [],
-                "period6": [],
-                "period1": [],
-                "period4": []
-              },
-              "status": "欠席",
-              "teacher": null
-            },
-            {
-              "studentId": "s0470001",
-              "name": "井上 由佳",
-              "grade": "中2",
-              "seat": "",
-              "status": "未定",
-              "date": "2025-06-23",
-              "periodLabel": "1限",
-              "subject": "－",
-              "teacher": {
-                "code": "",
-                "name": ""
-              }
-            }
-          ]
-        }
-      },
-      "2025-06-24": {
-        "__doc__": {
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750476722,
-            "_nanoseconds": 327000000
-          },
-          "rows": [
-            {
-              "status": "予定",
-              "periods": {
-                "period5": [],
-                "period8": [],
-                "period7": [],
-                "period6": [],
-                "period3": [],
-                "period1": [],
-                "period2": [],
-                "period4": []
-              },
-              "teacher": null
-            },
-            {
-              "periods": {
-                "period2": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period3": [],
-                "period8": [],
-                "period1": [],
-                "period7": []
-              },
-              "status": "未定",
-              "teacher": null
-            },
-            {
-              "teacher": null,
-              "status": "振替",
-              "periods": {
-                "period4": [],
-                "period2": [],
-                "period6": [],
-                "period1": [],
-                "period3": [],
-                "period8": [],
-                "period7": [],
-                "period5": []
-              }
-            },
-            {
-              "teacher": null,
-              "status": "欠席",
-              "periods": {
-                "period5": [],
-                "period2": [],
-                "period6": [],
-                "period4": [],
-                "period7": [],
-                "period3": [],
-                "period8": [],
-                "period1": []
-              }
-            },
-            {
-              "studentId": "s0470001",
-              "name": "井上 由佳",
-              "grade": "中2",
-              "seat": "",
-              "status": "未定",
-              "date": "2025-06-24",
-              "periodLabel": "4限",
-              "subject": "－",
-              "teacher": {
-                "code": "",
-                "name": ""
-              }
-            }
-          ]
-        }
-      },
-      "2025-06-27": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750607442,
-            "_nanoseconds": 11000000
-          }
-        }
-      },
-      "2025-06-29": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750607442,
-            "_nanoseconds": 517000000
-          }
-        }
-      }
-    },
-    "weekdayTemplates": {
-      "2025-06-1": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": {
-                "code": "t0470001",
-                "name": "田中 流星"
-              },
-              "periods": {
-                "period1": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "",
-                    "subject": "",
-                    "status": "予定"
-                  }
-                ],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750826435,
-            "_nanoseconds": 880000000
-          }
-        }
-      },
-      "2025-06-3": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": {
-                "code": "t0470002",
-                "name": "星野 瑞稀"
-              },
-              "periods": {
-                "period1": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "5",
-                    "subject": "理科",
-                    "status": "予定"
-                  }
-                ],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750437460,
-            "_nanoseconds": 352000000
-          }
-        }
-      },
-      "2025-06-4": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750438634,
-            "_nanoseconds": 425000000
-          }
-        }
-      },
-      "2025-06-5": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": {
-                "code": "t0470001",
-                "name": "田中 流星"
-              },
-              "periods": {
-                "period1": [],
-                "period2": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "4",
-                    "subject": "数学",
-                    "status": "予定"
-                  }
-                ],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750826463,
-            "_nanoseconds": 372000000
-          }
-        }
-      },
-      "2025-06-6": {
-        "__doc__": {
-          "rows": [
-            {
-              "teacher": {
-                "code": "t0470002",
-                "name": "星野 瑞稀"
-              },
-              "periods": {
-                "period1": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "1",
-                    "subject": "英語",
-                    "status": "予定"
-                  }
-                ],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": {
-                "code": "t0470001",
-                "name": "田中 流星"
-              },
-              "periods": {
-                "period1": [],
-                "period2": [
-                  {
-                    "studentId": "s0470001",
-                    "grade": "中2",
-                    "name": "井上 由佳",
-                    "seat": "2",
-                    "subject": "数学",
-                    "status": "予定"
-                  }
-                ],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "予定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "未定"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "振替"
-            },
-            {
-              "teacher": null,
-              "periods": {
-                "period1": [],
-                "period2": [],
-                "period3": [],
-                "period4": [],
-                "period5": [],
-                "period6": [],
-                "period7": [],
-                "period8": []
-              },
-              "status": "欠席"
-            }
-          ],
-          "periodLabels": [
-            {
-              "label": "1限",
-              "time": "09:50〜11:10"
-            },
-            {
-              "label": "2限",
-              "time": "11:20〜12:40"
-            },
-            {
-              "label": "3限",
-              "time": "12:50〜14:10"
-            },
-            {
-              "label": "4限",
-              "time": "14:20〜15:40"
-            },
-            {
-              "label": "5限",
-              "time": "15:50〜17:10"
-            },
-            {
-              "label": "6限",
-              "time": "17:20〜18:40"
-            },
-            {
-              "label": "7限",
-              "time": "18:50〜20:10"
-            },
-            {
-              "label": "8限",
-              "time": "20:20〜21:40"
-            }
-          ],
-          "updatedAt": {
-            "_seconds": 1750437429,
-            "_nanoseconds": 415000000
+            "_seconds": 1755853381,
+            "_nanoseconds": 333000000
           }
         }
       }

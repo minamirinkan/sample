@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { saveTuitionSettings } from './saveTuitionSettings';
 import { FaPlus, FaTrash } from 'react-icons/fa';
+import { collection, doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 interface PenaltyFormProps {
     yyyyMM: string;
@@ -8,12 +10,40 @@ interface PenaltyFormProps {
 }
 
 interface PenaltyRow {
+    code: string; // 自動生成コード
     item: string;
     amount: number | string;
 }
 
 const PenaltyForm: React.FC<PenaltyFormProps> = ({ yyyyMM, registrationLocation }) => {
-    const [penaltyRows, setPenaltyRows] = useState<PenaltyRow[]>([{ item: '', amount: '' }]);
+    const [penaltyRows, setPenaltyRows] = useState<PenaltyRow[]>([{ code: '6001', item: '', amount: '' }]);
+
+    // Firestoreから読み込み
+    useEffect(() => {
+        const fetchData = async () => {
+            const baseRef = doc(db, 'FeeMaster', `${yyyyMM}_${registrationLocation}`);
+            const docRef = doc(collection(baseRef, 'categories'), 'penalty');
+            const snapshot = await getDoc(docRef);
+
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                const rows: PenaltyRow[] = Object.entries(data).map(([id, value]: any) => ({
+                    code: id,
+                    item: value.item,
+                    amount: value.amount,
+                }));
+                rows.sort((a, b) => Number(a.code) - Number(b.code));
+                setPenaltyRows(rows);
+            } else {
+                // デフォルト2行
+                setPenaltyRows([
+                    { code: '6001', item: '', amount: '' },
+                ]);
+            }
+        };
+
+        fetchData();
+    }, [yyyyMM, registrationLocation]);
 
     const handleChange = (index: number, field: keyof PenaltyRow, value: string) => {
         const updated = [...penaltyRows];
@@ -25,13 +55,20 @@ const PenaltyForm: React.FC<PenaltyFormProps> = ({ yyyyMM, registrationLocation 
         setPenaltyRows(updated);
     };
 
-    const addRow = () => setPenaltyRows([...penaltyRows, { item: '', amount: '' }]);
-    const removeRow = (index: number) => setPenaltyRows(penaltyRows.filter((_, i) => i !== index));
+    const addRow = () => {
+        const nextCode = String(6000 + penaltyRows.length + 1); // 6001, 6002, ...
+        setPenaltyRows([...penaltyRows, { code: nextCode, item: '', amount: '' }]);
+    };
+
+    const removeRow = (index: number) => {
+        const updated = penaltyRows.filter((_, i) => i !== index);
+        const renumbered = updated.map((r, i) => ({ ...r, code: String(6000 + i + 1) }));
+        setPenaltyRows(renumbered);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // サブコレクション保存方式に変更
             await saveTuitionSettings({
                 registrationLocation,
                 yyyyMM,
@@ -40,7 +77,8 @@ const PenaltyForm: React.FC<PenaltyFormProps> = ({ yyyyMM, registrationLocation 
                 schedulesW: [],
                 schedulesA: [],
                 penaltyRows: penaltyRows.map(r => ({
-                    id: r.item || crypto.randomUUID(), // IDは行名をベースに、なければUUID
+                    id: r.code,
+                    code: r.code,
                     item: r.item,
                     amount: Number(r.amount),
                 })),
@@ -64,6 +102,7 @@ const PenaltyForm: React.FC<PenaltyFormProps> = ({ yyyyMM, registrationLocation 
             <table className="table-auto border border-gray-300 w-full">
                 <thead>
                     <tr className="bg-gray-200">
+                        <th className="border px-4 py-2 text-left">コード</th>
                         <th className="border px-4 py-2 text-left">項目</th>
                         <th className="border px-4 py-2 text-left">金額 (円)</th>
                         <th className="border px-4 py-2 text-center">操作</th>
@@ -72,14 +111,34 @@ const PenaltyForm: React.FC<PenaltyFormProps> = ({ yyyyMM, registrationLocation 
                 <tbody>
                     {penaltyRows.map((row, idx) => (
                         <tr key={idx} className="hover:bg-gray-50">
+                            <td className="border px-2 py-1 text-left font-mono">{row.code}</td>
                             <td className="border px-2 py-1">
-                                <input type="text" value={row.item} onChange={e => handleChange(idx, 'item', e.target.value)} className="w-full border px-1 py-0.5" placeholder="違約金項目" required />
+                                <input
+                                    type="text"
+                                    value={row.item}
+                                    onChange={e => handleChange(idx, 'item', e.target.value)}
+                                    className="w-full border px-1 py-0.5"
+                                    placeholder="違約金項目"
+                                    required
+                                />
                             </td>
                             <td className="border px-2 py-1">
-                                <input type="number" value={row.amount} onChange={e => handleChange(idx, 'amount', e.target.value)} className="w-full border px-1 py-0.5 text-right" placeholder="0" required />
+                                <input
+                                    type="number"
+                                    value={row.amount}
+                                    onChange={e => handleChange(idx, 'amount', e.target.value)}
+                                    className="w-full border px-1 py-0.5 text-right"
+                                    placeholder="0"
+                                    required
+                                />
                             </td>
                             <td className="border px-2 py-1 text-center">
-                                <button type="button" onClick={() => removeRow(idx)} className="text-red-600 hover:text-red-800" title="行を削除">
+                                <button
+                                    type="button"
+                                    onClick={() => removeRow(idx)}
+                                    className="text-red-600 hover:text-red-800"
+                                    title="行を削除"
+                                >
                                     <FaTrash />
                                 </button>
                             </td>

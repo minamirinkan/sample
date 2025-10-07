@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { saveTuitionSettings } from './saveTuitionSettings';
 import { FaPlus, FaTrash } from 'react-icons/fa';
+import { db } from '../firebase';
+import { doc, collection, getDoc } from 'firebase/firestore';
 
 interface MaintenanceFormProps {
     yyyyMM: string;
@@ -8,14 +10,39 @@ interface MaintenanceFormProps {
 }
 
 interface MaintenanceRow {
+    code: string; // 自動付番
     item: string;
     amount: number | string;
 }
 
 const MaintenanceForm: React.FC<MaintenanceFormProps> = ({ yyyyMM, registrationLocation }) => {
-    const [maintenanceRows, setMaintenanceRows] = useState<MaintenanceRow[]>([
-        { item: '教室維持費', amount: '' },
-    ]);
+    const [maintenanceRows, setMaintenanceRows] = useState<MaintenanceRow[]>([]);
+
+    // Firestoreから読み込み
+    useEffect(() => {
+        const fetchData = async () => {
+            const baseRef = doc(db, 'FeeMaster', `${yyyyMM}_${registrationLocation}`);
+            const docRef = doc(collection(baseRef, 'categories'), 'maintenance');
+            const snapshot = await getDoc(docRef);
+
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                const rows: MaintenanceRow[] = Object.entries(data).map(([id, value]: any) => ({
+                    code: id,
+                    item: value.item,
+                    amount: value.amount,
+                }));
+                // 連番順に並べ替え（任意）
+                rows.sort((a, b) => Number(a.code) - Number(b.code));
+                setMaintenanceRows(rows);
+            } else {
+                // デフォルト1行
+                setMaintenanceRows([{ code: '2001', item: '維持費', amount: '' }]);
+            }
+        };
+
+        fetchData();
+    }, [yyyyMM, registrationLocation]);
 
     const handleChange = (index: number, field: keyof MaintenanceRow, value: string) => {
         const updated = [...maintenanceRows];
@@ -28,11 +55,14 @@ const MaintenanceForm: React.FC<MaintenanceFormProps> = ({ yyyyMM, registrationL
     };
 
     const addRow = () => {
-        setMaintenanceRows([...maintenanceRows, { item: '', amount: '' }]);
+        const nextCode = String(2000 + maintenanceRows.length + 1);
+        setMaintenanceRows([...maintenanceRows, { code: nextCode, item: '', amount: '' }]);
     };
 
     const removeRow = (index: number) => {
-        setMaintenanceRows(maintenanceRows.filter((_, i) => i !== index));
+        const updated = maintenanceRows.filter((_, i) => i !== index);
+        const renumbered = updated.map((r, i) => ({ ...r, code: String(2000 + i + 1) }));
+        setMaintenanceRows(renumbered);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -44,7 +74,7 @@ const MaintenanceForm: React.FC<MaintenanceFormProps> = ({ yyyyMM, registrationL
                 tuitionDataW: [],
                 tuitionDataA: [],
                 maintenanceRows: maintenanceRows.map(r => ({
-                    id: r.item || crypto.randomUUID(),
+                    id: r.code,
                     item: r.item,
                     amount: Number(r.amount),
                 })),
@@ -75,6 +105,7 @@ const MaintenanceForm: React.FC<MaintenanceFormProps> = ({ yyyyMM, registrationL
             <table className="table-auto border border-gray-300 w-full">
                 <thead>
                     <tr className="bg-gray-200">
+                        <th className="border px-4 py-2 text-left">コード</th>
                         <th className="border px-4 py-2 text-left">項目</th>
                         <th className="border px-4 py-2 text-left">金額 (円)</th>
                         <th className="border px-4 py-2 text-center">操作</th>
@@ -83,6 +114,7 @@ const MaintenanceForm: React.FC<MaintenanceFormProps> = ({ yyyyMM, registrationL
                 <tbody>
                     {maintenanceRows.map((row, idx) => (
                         <tr key={idx} className="hover:bg-gray-50">
+                            <td className="border px-2 py-1 text-left font-mono">{row.code}</td>
                             <td className="border px-2 py-1">
                                 <input
                                     type="text"

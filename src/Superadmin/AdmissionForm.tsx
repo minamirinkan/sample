@@ -4,67 +4,61 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { db } from '../firebase';
 import { doc, collection, getDoc } from 'firebase/firestore';
 
-interface TestFormProps {
+interface AdmissionFormProps {
     yyyyMM: string;
     registrationLocation: string;
 }
 
-interface TestFeeRow {
-    code: string;   // 自動生成コード
+interface AdmissionRow {
+    code: string; // 自動付番
     item: string;
     amount: number | string;
 }
 
-const TestForm: React.FC<TestFormProps> = ({ yyyyMM, registrationLocation }) => {
-    const [testRows, setTestRows] = useState<TestFeeRow[]>([]);
+const AdmissionForm: React.FC<AdmissionFormProps> = ({ yyyyMM, registrationLocation }) => {
+    const [admissionRows, setAdmissionRows] = useState<AdmissionRow[]>([]);
 
     // Firestoreから読み込み
     useEffect(() => {
         const fetchData = async () => {
             const baseRef = doc(db, 'FeeMaster', `${yyyyMM}_${registrationLocation}`);
-            const docRef = doc(collection(baseRef, 'categories'), 'test');
+            const docRef = doc(collection(baseRef, 'categories'), 'admission');
             const snapshot = await getDoc(docRef);
 
             if (snapshot.exists()) {
                 const data = snapshot.data();
-                const rows: TestFeeRow[] = Object.entries(data).map(([id, value]: any) => ({
+                const rows: AdmissionRow[] = Object.entries(data).map(([id, value]: any) => ({
                     code: id,
                     item: value.item,
                     amount: value.amount,
                 }));
                 rows.sort((a, b) => Number(a.code) - Number(b.code));
-                setTestRows(rows);
+                setAdmissionRows(rows);
             } else {
-                // デフォルト2行
-                setTestRows([
-                    { code: '3001', item: '小学生', amount: '' },
-                    { code: '3002', item: '中学生', amount: '' },
-                ]);
+                // デフォルト1行
+                setAdmissionRows([{ code: '1001', item: '入会金', amount: '' }]);
             }
         };
 
         fetchData();
     }, [yyyyMM, registrationLocation]);
 
-    const handleChange = (index: number, field: keyof TestFeeRow, value: string) => {
-        const updated = [...testRows];
-        if (field === 'amount') {
-            updated[index][field] = value === '' ? '' : Number(value);
-        } else {
-            updated[index][field] = value;
-        }
-        setTestRows(updated);
+    const handleChange = (index: number, field: keyof AdmissionRow, value: string) => {
+        const updated = [...admissionRows];
+        if (field === 'amount') updated[index][field] = value === '' ? '' : Number(value);
+        else updated[index][field] = value;
+        setAdmissionRows(updated);
     };
 
     const addRow = () => {
-        const nextCode = String(3000 + testRows.length + 1);
-        setTestRows([...testRows, { code: nextCode, item: '', amount: '' }]);
+        const nextCode = String(1000 + admissionRows.length + 1);
+        setAdmissionRows([...admissionRows, { code: nextCode, item: '', amount: '' }]);
     };
 
     const removeRow = (index: number) => {
-        const updated = testRows.filter((_, i) => i !== index);
-        const renumbered = updated.map((r, i) => ({ ...r, code: String(3000 + i + 1) }));
-        setTestRows(renumbered);
+        const updated = admissionRows.filter((_, i) => i !== index);
+        const renumbered = updated.map((r, i) => ({ ...r, code: String(1000 + i + 1) }));
+        setAdmissionRows(renumbered);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -75,27 +69,32 @@ const TestForm: React.FC<TestFormProps> = ({ yyyyMM, registrationLocation }) => 
                 yyyyMM,
                 tuitionDataW: [],
                 tuitionDataA: [],
-                testRows: testRows.map(r => ({
+                maintenanceRows: [], // 維持費は空
+                discountRows: [],
+                penaltyRows: [],
+                materialRows: [],
+                testRows: [],
+                material_onceRows: [],
+                // 入会金を admissionRows として送る
+                admissionRows: admissionRows.map(r => ({
                     id: r.code,
-                    code: r.code,
                     item: r.item,
                     amount: Number(r.amount),
                 })),
                 schedulesW: [],
                 schedulesA: [],
             });
-
-            alert('テスト料金データ保存完了');
+            alert('入会金データ保存完了');
         } catch (error) {
             console.error(error);
-            alert('テスト料金データの保存に失敗しました');
+            alert('入会金データの保存に失敗しました');
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">テスト料金登録</h2>
+                <h2 className="text-xl font-bold">入会金登録</h2>
                 <button
                     type="button"
                     onClick={addRow}
@@ -109,13 +108,13 @@ const TestForm: React.FC<TestFormProps> = ({ yyyyMM, registrationLocation }) => 
                 <thead>
                     <tr className="bg-gray-200">
                         <th className="border px-4 py-2 text-left">コード</th>
-                        <th className="border px-4 py-2 text-left">学年</th>
-                        <th className="border px-4 py-2 text-left">料金 (円)</th>
+                        <th className="border px-4 py-2 text-left">項目</th>
+                        <th className="border px-4 py-2 text-left">金額 (円)</th>
                         <th className="border px-4 py-2 text-center">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {testRows.map((row, idx) => (
+                    {admissionRows.map((row, idx) => (
                         <tr key={idx} className="hover:bg-gray-50">
                             <td className="border px-2 py-1 text-left font-mono">{row.code}</td>
                             <td className="border px-2 py-1">
@@ -124,7 +123,7 @@ const TestForm: React.FC<TestFormProps> = ({ yyyyMM, registrationLocation }) => 
                                     value={row.item}
                                     onChange={e => handleChange(idx, 'item', e.target.value)}
                                     className="w-full border px-1 py-0.5"
-                                    placeholder="学年"
+                                    placeholder="入会金項目"
                                     required
                                 />
                             </td>
@@ -160,4 +159,4 @@ const TestForm: React.FC<TestFormProps> = ({ yyyyMM, registrationLocation }) => 
     );
 };
 
-export default TestForm;
+export default AdmissionForm;

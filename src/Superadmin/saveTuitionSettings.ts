@@ -15,6 +15,7 @@ interface SaveTuitionSettingsParams {
   schedulesA: string[];
   durationW?: string; // Wコースのラジオ選択（2行目以降に反映）
   durationA?: string; // Aコースのラジオ選択
+  admissionRows?: FeeRow[];
   maintenanceRows?: FeeRow[];
   discountRows?: FeeRow[];
   penaltyRows?: FeeRow[];
@@ -34,6 +35,7 @@ export async function saveTuitionSettings({
   schedulesA,
   durationW = '80',
   durationA = '80',
+  admissionRows = [],
   maintenanceRows = [],
   discountRows = [],
   penaltyRows = [],
@@ -83,19 +85,25 @@ export async function saveTuitionSettings({
   await setDoc(tuitionDocRef, { ...tuitionWMap, ...tuitionAMap }, { merge: true });
 
   // W/A以外の料金
-  const saveMapCategory = async (collectionName: string, rows: FeeRow[]) => {
+  const saveMapCategory = async (collectionName: string, rows: FeeRow[], startDigit: number) => {
     if (!rows.length) return;
+
     const docRef = doc(collection(baseRef, 'categories'), collectionName);
     const mapData = Object.fromEntries(
-      rows.map(r => [r.item.replace(/\s/g, '_'), { item: r.item, amount: Number(r.amount) }])
+      rows.map((r, idx) => {
+        const id = `${startDigit}${String(idx + 1).padStart(3, '0')}`; // 例: 2001, 2002...
+        return [id, { id, item: r.item, amount: Number(r.amount) }];
+      })
     );
     await setDoc(docRef, mapData, { merge: true });
   };
 
-  await saveMapCategory('maintenance', maintenanceRows);
-  await saveMapCategory('discount', discountRows);
-  await saveMapCategory('penalty', penaltyRows);
-  await saveMapCategory('material', materialRows);
-  await saveMapCategory('test', testRows);
-  await saveMapCategory('material_once', material_onceRows);
+  await saveMapCategory('admission', admissionRows, 1);
+  await saveMapCategory('maintenance', maintenanceRows, 2);
+  await saveMapCategory('test', testRows, 3);
+  await saveMapCategory('material', materialRows, 4);
+  await saveMapCategory('discount', discountRows, 5);
+  await saveMapCategory('penalty', penaltyRows, 6);
+  await saveMapCategory('material_once', material_onceRows, 7);
+
 }

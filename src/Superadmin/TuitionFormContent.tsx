@@ -7,10 +7,13 @@ import MaterialForm from './MaterialForm';
 import MaterialOnceForm from './MaterialOnceForm';
 import DiscountForm from './DiscountForm';
 import PenaltyForm from './PenaltyForm';
+import ClassroomSelector from './ClassroomSelector';
+import AdmissionForm from './AdmissionForm';
 
 const TAB_MAP: Record<string, string> = {
   通常授業料: 'tuition',
   維持費: 'maintenance',
+  入会金: 'admission',
   テスト: 'test',
   教材: 'material',
   '教材(都度)': 'material_once',
@@ -64,6 +67,10 @@ const TuitionFormContent: React.FC = () => {
             />
           </div>
         </div>
+        <ClassroomSelector
+          yyyyMM={yyyyMM}
+          onSelect={(loc) => setRegistrationLocation(loc)}
+        />
       </div>
 
       {/* タブナビゲーション */}
@@ -87,6 +94,7 @@ const TuitionFormContent: React.FC = () => {
       <div>
         {section === 'tuition' && <TuitionForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'maintenance' && <MaintenanceForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
+        {section === 'admission' && <AdmissionForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'test' && <TestForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'material' && <MaterialForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'material_once' && <MaterialOnceForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}

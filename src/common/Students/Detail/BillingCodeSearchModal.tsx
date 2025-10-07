@@ -20,6 +20,7 @@ interface BillingCodeSearchModalProps {
 }
 
 const categories = [
+    "入会金",
     "授業料",
     "維持費",
     "テスト",
@@ -67,8 +68,8 @@ const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
 
         // 教室維持費も「◯月分」を付ける
         if (opt.category === "維持費") {
-            const monthNum = month.includes("-") ? parseInt(month.split("-")[1], 10) : parseInt(month, 10);
-            displayName = `${monthNum}月分${opt.name}`;
+            const yyyymm = parseInt(month.slice(4, 6), 10);
+            displayName = `${yyyymm}月分${opt.name}`;
         }
         const displayAmount = opt.amount ? opt.amount.toLocaleString() + "円" : "";
 

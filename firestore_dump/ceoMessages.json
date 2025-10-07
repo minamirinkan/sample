@@ -9,11 +9,32 @@
       },
       "readStatus": {
         "189": false,
-        "238": false,
+        "238": true,
         "246": false,
         "002": false,
         "024": false,
         "023": false,
+        "047": true,
+        "dzZtlDBKXid1C1f6zDir4IAZZ9l2": true
+      }
+    }
+  },
+  "QHkZ9Uu5xmajat8b2edG": {
+    "__doc__": {
+      "subject": "git更新",
+      "content": "yuaが作っていたカレンダー等をupしました",
+      "createdAt": {
+        "_seconds": 1753065594,
+        "_nanoseconds": 903000000
+      },
+      "readStatus": {
+        "189": false,
+        "238": true,
+        "246": false,
+        "256": false,
+        "002": false,
+        "023": false,
+        "024": true,
         "047": true
       }
     }
@@ -28,12 +49,12 @@
       },
       "readStatus": {
         "189": false,
-        "238": false,
+        "238": true,
         "246": false,
         "002": false,
-        "024": false,
         "023": false,
-        "047": true
+        "047": true,
+        "024": true
       }
     }
   }
