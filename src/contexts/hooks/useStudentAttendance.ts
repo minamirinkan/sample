@@ -1,23 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { doc, getFirestore, onSnapshot } from 'firebase/firestore';
 import { getJapaneseDayOfWeek } from '../../common/dateFormatter';
 import { fetchPeriodLabels } from './usePeriodLabels';
-import { getLatestExistingWeeklySchedule } from './useWeeklySchedules';
+import { useWeeklySchedules } from './useWeeklySchedules';
 
 export interface AttendanceEntry {
     studentId: string;
-    student?: {
-        name?: string;
-        [key: string]: any;
-    };
-    status: string; // '振替' | '予定' | '未定' | '欠席' など
+    student?: { name?: string;[key: string]: any };
+    status: string;
     periodLabel: string;
     period?: number;
-    date: string; // 'YYYY-MM-DD' 想定
-    teacher?: {
-        code: string;
-        name: string;
-    } | null;
+    date: string;
+    teacher?: { code: string; name: string } | null;
     classType?: string;
     duration?: string;
     seat?: string;
@@ -30,34 +24,41 @@ export const useStudentAttendance = (
     classroomCode: string,
     studentId: string,
     selectedMonth: string
-  ) => {
+) => {
     const [loading, setLoading] = useState(true);
     const [attendanceList, setAttendanceList] = useState<AttendanceEntry[]>([]);
 
+    // ✅ トップレベルで Hook を呼ぶ
+    const { schedules: weeklySchedules, loading: weeklyLoading } = useWeeklySchedules(classroomCode);
+
+    // 週予定を曜日ごとに Map に変換
+    const weeklySchedulesCache = useMemo(() => {
+        const map = new Map<number, any>();
+        weeklySchedules.forEach(schedule => {
+            schedule.rows.forEach((row: any) => {
+                if (typeof row.weekday === 'number') {
+                    map.set(row.weekday, row);
+                }
+            });
+        });
+        return map;
+    }, [weeklySchedules]);
+
     useEffect(() => {
-        if (!classroomCode || !studentId || !selectedMonth) return;
+        if (!classroomCode || !studentId || !selectedMonth || weeklyLoading) return;
 
         const db = getFirestore();
         let unsubscribeList: (() => void)[] = [];
 
         const fetchAndSubscribe = async () => {
             setLoading(true);
-            setAttendanceList([]); // ← 月が変わったらリセット
+            setAttendanceList([]);
 
             try {
                 const periodLabels = await fetchPeriodLabels(db, classroomCode);
                 const [selectedYear, selectedMonthNum] = selectedMonth.split('-').map(Number);
                 const monthStart = new Date(selectedYear, selectedMonthNum - 1, 1);
                 const monthEnd = new Date(selectedYear, selectedMonthNum, 0);
-
-                // 週予定キャッシュ
-                const weeklySchedulesCache = new Map();
-                for (let weekday = 0; weekday <= 6; weekday++) {
-                    const data = await getLatestExistingWeeklySchedule(db, classroomCode, selectedMonth, weekday);
-                    if (data) {
-                        weeklySchedulesCache.set(weekday, data);
-                    }
-                }
 
                 for (let d = new Date(monthStart); d <= monthEnd; d.setDate(d.getDate() + 1)) {
                     const yyyy = d.getFullYear();
@@ -66,25 +67,21 @@ export const useStudentAttendance = (
                     const weekdayIndex = d.getDay();
                     const yyyyMMdd = `${yyyy}-${mm}-${dd}`;
 
-                    // ✅ 修正：曜日インデックスを含めた ID を構築
                     const dailyDocId = `${classroomCode}_${yyyy}-${mm}-${dd}_${weekdayIndex}`;
                     const dailyDocRef = doc(db, 'dailySchedules', dailyDocId);
 
-
                     const unsubscribe = onSnapshot(
                         dailyDocRef,
-                        async (docSnap) => {
+                        (docSnap) => {
                             let data;
                             if (docSnap.exists()) {
                                 data = docSnap.data();
                             } else if (weeklySchedulesCache.has(weekdayIndex)) {
                                 data = weeklySchedulesCache.get(weekdayIndex);
                             } else {
-                                // データが存在しない日 → 削除
                                 setAttendanceList(prev =>
                                     prev.filter(entry =>
-                                        entry.date !== yyyyMMdd &&
-                                        entry.date.startsWith(selectedMonth) // ← この月のデータ以外は残す
+                                        entry.date !== yyyyMMdd && entry.date.startsWith(selectedMonth)
                                     )
                                 );
                                 return;
@@ -99,7 +96,7 @@ export const useStudentAttendance = (
                                     const key = `period${i + 1}`;
                                     const students = periods[key] || [];
 
-                                    students.forEach((student:any) => {
+                                    students.forEach((student: any) => {
                                         if (student.studentId?.trim().toLowerCase() === studentId.trim().toLowerCase()) {
                                             newResults.push({
                                                 date: yyyyMMdd,
@@ -121,7 +118,6 @@ export const useStudentAttendance = (
                                 });
                             });
 
-                            // 指定月だけ反映
                             setAttendanceList(prev => {
                                 const filtered = prev.filter(
                                     entry => entry.date !== yyyyMMdd && entry.date.startsWith(selectedMonth)
@@ -129,9 +125,7 @@ export const useStudentAttendance = (
                                 return [...filtered, ...newResults].sort((a, b) => a.date.localeCompare(b.date));
                             });
                         },
-                        (error) => {
-                            console.error(`Error fetching ${yyyyMMdd}:`, error);
-                        }
+                        (error) => console.error(`Error fetching ${yyyyMMdd}:`, error)
                     );
 
                     unsubscribeList.push(unsubscribe);
@@ -146,10 +140,8 @@ export const useStudentAttendance = (
 
         fetchAndSubscribe();
 
-        return () => {
-            unsubscribeList.forEach(unsub => unsub());
-        };
-    }, [classroomCode, studentId, selectedMonth]);
+        return () => unsubscribeList.forEach(unsub => unsub());
+    }, [classroomCode, studentId, selectedMonth, weeklySchedulesCache, weeklyLoading]);
 
     return { loading, attendanceList, setAttendanceList };
 };
