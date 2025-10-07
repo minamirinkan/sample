@@ -1,10 +1,17 @@
 // /api/line-webhook.ts
-// import type { VercelRequest, VercelResponse } from '@vercel/node';
 import admin from 'firebase-admin';
 
-type VercelRequest = any;
-type VercelResponse = any;
+// VercelRequest / VercelResponse を自前で定義
+type VercelRequest = {
+    method?: string;
+    body?: any;
+};
 
+type VercelResponse = {
+    status: (code: number) => VercelResponse;
+    send: (body: any) => void;
+    end: () => void;
+};
 
 if (!admin.apps.length) {
     admin.initializeApp({
@@ -15,12 +22,13 @@ if (!admin.apps.length) {
         }),
     });
 }
+
 const db = admin.firestore();
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (req.method !== 'POST') return res.status(405).end();
 
-    const events = req.body.events || [];
+    const events = req.body?.events || [];
 
     try {
         for (const event of events) {
