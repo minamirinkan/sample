@@ -6,6 +6,7 @@ import { Student } from "../../../contexts/types/student";
 import { Customer } from "../../../contexts/types/customer";
 import SelectBillingTypeModal from "./SelectBillingTypeModal";
 import { BillingDetail } from "./BillingDetails";
+import { FiFilePlus } from "react-icons/fi";
 
 export type Billing = {
     id: string;
@@ -65,8 +66,13 @@ const BillingPage: React.FC<Props> = ({ customer, formData }) => {
         setIsModalOpen(false);
 
         const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, "0");
+
+        const targetDate = new Date(today);
+        if (type === "monthly") {
+            targetDate.setMonth(targetDate.getMonth() + 2);
+        }
+        const yyyy = targetDate.getFullYear();
+        const mm = String(targetDate.getMonth() + 1).padStart(2, "0");
         const targetMonth = `${yyyy}${mm}`;
 
         // ✅ 月締のみ重複チェック
@@ -108,10 +114,11 @@ const BillingPage: React.FC<Props> = ({ customer, formData }) => {
             <h2 className="text-lg font-semibold flex justify-between items-center">
                 請求書一覧
                 <button
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                     onClick={handleCreateBilling}
+                    className="inline-flex items-center gap-1.5 bg-orange-400 text-white text-sm px-3 py-1.5 rounded hover:bg-orange-600 active:scale-95 transition-all shadow-sm"
                 >
-                    新規請求書作成
+                    <FiFilePlus className="w-4 h-4" />
+                    請求情報の登録
                 </button>
             </h2>
 

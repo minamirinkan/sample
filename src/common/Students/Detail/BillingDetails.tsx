@@ -59,15 +59,16 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
     const grade = formData.grade;
     const classroomCode = formData.classroomCode;
     const customerUid = customer.uid;
+    const [taxRate, setTaxRate] = useState(10); // 初期値はとりあえず 10%
 
     // 🔹 ここから追加: Firestoreから明細取得
     useEffect(() => {
         const fetchBillingDetails = async () => {
-            if (!customer || !month || !studentId) return;
+            if (!customer || !month || !studentId || !billing) return;
 
             try {
                 const classroomCode = customer.classroomCode || "000";
-                const billingDocId = `${month}_${classroomCode}_${studentId}`;
+                const billingDocId = `${month}_${classroomCode}_${studentId}_${billing.type}`;
                 const billingRef = doc(db, "billings", billingDocId);
                 const billingSnap = await getDoc(billingRef);
 
@@ -83,16 +84,31 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
         };
 
         fetchBillingDetails();
-    }, [customer, month, studentId]);
-    // 🔹 ここまで追加
+    }, [customer, month, studentId, billing]);
+
+    useEffect(() => {
+        const fetchTaxRate = async () => {
+            try {
+                const ref = doc(db, "Tax", "current");
+                const snap = await getDoc(ref);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    setTaxRate(data.taxRate ?? 10); // データがなければ10%
+                }
+            } catch (err) {
+                console.error("消費税の取得に失敗しました:", err);
+            }
+        };
+
+        fetchTaxRate();
+    }, []);
 
     useEffect(() => {
         setIsEditing(isEditMode); // URL変更に追従
     }, [isEditMode]);
 
     const subtotal = details.reduce((acc, d) => acc + d.price, 0);
-    const taxRate = 0.1;
-    const taxAmount = subtotal * taxRate;
+    const taxAmount = subtotal * taxRate / 100;
     const totalAmount = subtotal + taxAmount;
 
     const handleBack = () => {
@@ -132,6 +148,13 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
             );
             alert("請求書を保存しました");
             setIsEditing(false);
+
+            if (location.pathname.endsWith("/edit")) {
+                navigate(location.pathname.replace(/\/edit$/, ""), {
+                    replace: true,
+                    state: { billing, formData, customer }
+                });
+            }
         } catch (err) {
             console.error(err);
             alert("保存に失敗しました");
@@ -235,7 +258,7 @@ const BillingDetails: React.FC<BillingDetailProps> = ({
                 </SimpleCard>
                 <SimpleCard title="合計金額" className="flex-1">
                     <div>小計: {Math.floor(subtotal).toLocaleString()}円</div>
-                    <div>消費税率: {taxRate * 100}%</div>
+                    <div>消費税率: {taxRate}%</div>
                     <div>消費税額: {Math.floor(taxAmount).toLocaleString()}円</div>
                     <div>合計金額: {Math.floor(totalAmount).toLocaleString()}円</div>
                 </SimpleCard>

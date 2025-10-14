@@ -14,8 +14,6 @@ const AuthContext = createContext<AuthContextType>({
     classroomCode: null,
     loading: true,
     updateUserData: () => { },
-    userPassword: null,
-    setUserPassword: () => { },
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -23,7 +21,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [role, setRole] = useState<UserRole>(null);
     const [userData, setUserData] = useState<UserData | null>(null);
     const [loading, setLoading] = useState(true);
-    const [userPassword, setUserPassword] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const updateUserData = (newData: UserData) => {
@@ -74,8 +71,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // 自動ログイン画面遷移
     useEffect(() => {
         if (!loading && !user) {
+            // ここでは「フォームなど処理中の画面」は除外する
             const pathname = window.location.pathname;
-            if (!pathname.includes("-login") && pathname !== '/admin/students/new') navigate("/");
+            const ignorePaths = ['/admin/students/new']; // 登録フォームなど
+            if (!pathname.includes("-login") && !ignorePaths.includes(pathname)) {
+                navigate("/");
+            }
         }
     }, [user, loading, navigate]);
 
@@ -88,7 +89,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 const expiry = (user as any).claims?.expiry as number | undefined;
                 if (expiry && Date.now() > expiry) {
                     await signOut(auth);
-                    setUserPassword(null);
                     resetAuthState();
                     alert("セッションが期限切れです。再ログインしてください。");
                 }
@@ -120,10 +120,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             classroomCode: userData?.classroomCode ?? null,
             loading,
             updateUserData,
-            userPassword,
-            setUserPassword,
         }),
-        [user, role, userData, loading, userPassword]
+        [user, role, userData, loading]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

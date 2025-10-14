@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../../firebase';
-import { useAuth } from '../../../contexts/AuthContext';
 import { useTeacherData } from '../../../contexts/providers/TeacherDataProvider';
 
 interface TeacherHeaderProps {
@@ -11,7 +10,6 @@ interface TeacherHeaderProps {
 }
 
 const TeacherHeader: React.FC<TeacherHeaderProps> = ({ onToggleSidebar, role }) => {
-    const { setUserPassword } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const { teacher } = useTeacherData();
@@ -73,7 +71,6 @@ const TeacherHeader: React.FC<TeacherHeaderProps> = ({ onToggleSidebar, role }) 
                             className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
                             onClick={async () => {
                                 await auth.signOut();
-                                setUserPassword(null)
                             }}
                         >
                             ログアウト

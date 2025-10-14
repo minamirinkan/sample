@@ -7,6 +7,7 @@ import {
     deleteDoc
 } from 'firebase/firestore';
 import { db } from '../../../../firebase';
+import { FiFilePlus } from 'react-icons/fi';
 
 type StudentCourse = {
     id?: string;
@@ -73,17 +74,18 @@ const StudentCourseTable: React.FC<Props> = ({ studentId }) => {
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">受講情報</h2>
+            <h2 className="text-lg font-semibold flex justify-between items-center">
+                受講情報
                 <button
-                    className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 text-sm"
+                    className="inline-flex items-center gap-1.5 bg-orange-400 text-white text-sm px-3 py-1.5 rounded hover:bg-orange-600 active:scale-95 transition-all shadow-sm"
                     onClick={() => {
                         console.log('受講情報の登録クリック');
                     }}
                 >
+                    <FiFilePlus className="w-4 h-4" />
                     受講情報の登録
                 </button>
-            </div>
+            </h2>
             <table className="w-full table-auto border">
                 <thead>
                     <tr className="bg-blue-50">

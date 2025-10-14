@@ -28,7 +28,7 @@ export const saveBilling = async (
     }));
 
     // ✅ 消費税・合計計算（小数点以下切り捨て）
-    const taxAmount = Math.floor((subtotal ?? 0) * (taxRate ?? 0));
+    const taxAmount = Math.floor((subtotal ?? 0) * (taxRate ?? 0) / 100);
     const total = Math.floor((subtotal ?? 0) + taxAmount);
 
     // ✅ データ本体

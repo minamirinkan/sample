@@ -12,7 +12,7 @@ interface CustomerHeaderProps {
 }
 
 const CustomerHeader: React.FC<CustomerHeaderProps> = ({ onToggleSidebar, role }) => {
-    const { setUserPassword, userData } = useAuth();
+    const { userData } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const customerUid = userData?.uid
@@ -76,7 +76,6 @@ console.log('customer', customer)
                             className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
                             onClick={async () => {
                                 await auth.signOut();
-                                setUserPassword(null)
                             }}
                         >
                             ログアウト

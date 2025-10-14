@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import TuitionForm from './TuitionForm';
 import MaintenanceForm from './MaintenanceForm';
@@ -9,6 +9,10 @@ import DiscountForm from './DiscountForm';
 import PenaltyForm from './PenaltyForm';
 import ClassroomSelector from './ClassroomSelector';
 import AdmissionForm from './AdmissionForm';
+import { useAuth } from '../contexts/AuthContext';
+import { saveTaxRate } from './saveTaxRate';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const TAB_MAP: Record<string, string> = {
   通常授業料: 'tuition',
@@ -22,21 +26,58 @@ const TAB_MAP: Record<string, string> = {
 };
 
 const TuitionFormContent: React.FC = () => {
-  const { section } = useParams<{ section: string }>(); // URL から現在タブを取得
+  const { section } = useParams<{ section: string }>();
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [registrationLocation, setRegistrationLocation] = useState('');
+  const [taxRate, setTaxRate] = useState<number | ''>('');
+  const [isSaving, setIsSaving] = useState(false);
+  const { user } = useAuth(); // 🔹 uidを取得
   const yyyyMM = `${year}${String(month).padStart(2, '0')}`;
 
   const years = Array.from({ length: 7 }, (_, i) => new Date().getFullYear() - 3 + i);
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  useEffect(() => {
+    const fetchTaxRate = async () => {
+      const ref = doc(db, "Tax", "current");
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const data = snap.data();
+        setTaxRate(data.taxRate ?? '');
+      }
+    };
+
+    fetchTaxRate();
+  }, []);
+
+  // 🔹 消費税登録処理
+  const handleSaveTax = async () => {
+    if (taxRate === '') {
+      alert('消費税率を入力してください。');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const userId = user?.uid ?? "unknown"; // useAuth()などから取得できる想定
+      await saveTaxRate(Number(taxRate), userId);
+      alert('消費税を登録しました。');
+    } catch (error) {
+      console.error('Error saving tax:', error);
+      alert('保存に失敗しました。');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <div>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-4">料金登録フォーム</h1>
 
-        <div className="flex items-end gap-6">
+        {/* === 上部設定バー === */}
+        <div className="flex items-end gap-6 flex-wrap">
           {/* 年・月セレクト */}
           <div className="flex gap-2">
             <select
@@ -44,14 +85,18 @@ const TuitionFormContent: React.FC = () => {
               onChange={e => setYear(Number(e.target.value))}
               className="border rounded px-2 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
-              {years.map(y => <option key={y} value={y}>{y}年</option>)}
+              {years.map(y => (
+                <option key={y} value={y}>{y}年</option>
+              ))}
             </select>
             <select
               value={month}
               onChange={e => setMonth(Number(e.target.value))}
               className="border rounded px-2 py-1 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
-              {months.map(m => <option key={m} value={m}>{m}月</option>)}
+              {months.map(m => (
+                <option key={m} value={m}>{m}月</option>
+              ))}
             </select>
           </div>
 
@@ -66,21 +111,46 @@ const TuitionFormContent: React.FC = () => {
               className="border rounded px-2 py-1 w-36 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
+
+          {/* 💰 消費税登録（右寄せ） */}
+          <div className="flex items-center gap-2 ml-auto">
+            <label className="font-semibold">消費税</label>
+            <div className="flex items-center border rounded px-2 py-1 bg-white">
+              <input
+                type="number"
+                value={taxRate}
+                onChange={(e) => setTaxRate(e.target.value === '' ? '' : Number(e.target.value))}
+                className="w-16 text-right focus:outline-none"
+                min="0"
+                max="20"
+              />
+              <span className="ml-1 text-gray-700">%</span>
+            </div>
+            <button
+              onClick={handleSaveTax}
+              className="bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700 transition"
+            >
+              登録
+            </button>
+          </div>
         </div>
+
         <ClassroomSelector
           yyyyMM={yyyyMM}
           onSelect={(loc) => setRegistrationLocation(loc)}
         />
       </div>
 
-      {/* タブナビゲーション */}
+      {/* === タブナビゲーション === */}
       <div className="flex gap-3 border-b border-gray-300 mb-6 bg-gray-50 rounded-t">
         {Object.entries(TAB_MAP).map(([label, key]) => (
           <Link
             key={key}
             to={`/superadmin/tuitions/${key}`}
             className={`px-5 py-2 text-sm font-semibold border-t-[2px] transition-all duration-200
-              ${section === key ? 'border-blue-600 text-blue-700 bg-white' : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-400'}
+              ${section === key
+                ? 'border-blue-600 text-blue-700 bg-white'
+                : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-400'}
             `}
             aria-selected={section === key}
             role="tab"
@@ -90,7 +160,7 @@ const TuitionFormContent: React.FC = () => {
         ))}
       </div>
 
-      {/* タブごとにフォームを表示 */}
+      {/* === タブごとのフォーム === */}
       <div>
         {section === 'tuition' && <TuitionForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'maintenance' && <MaintenanceForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}

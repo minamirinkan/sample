@@ -1,19 +1,21 @@
 // types/schoolData.ts
 export type SchoolDataItem = {
-  kind: string;
+  kind?: string;
   subject?: string;
   subjectOther?: string;
-  classType: string;
-  times: string;
-  duration: string;
-  startMonth: string;
-  endMonth: string;
-  startYear: string;
-  endYear: string;
-  note: string;
+  classType?: string;
+  times?: string;
+  duration?: string;
+  startMonth?: string;
+  endMonth?: string;
+  startYear?: string;
+  endYear?: string;
+  note?: string;
   weekday?: string;
   period?: string;
   teacher?: string;
+  selected?: boolean;
+  lecturePeriod?: string;
 };
 
 export type SchoolLevel = '小学校' | '中学校' | '高等学校' | '通信制';

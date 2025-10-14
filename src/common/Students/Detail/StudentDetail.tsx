@@ -10,6 +10,7 @@ import StudentGrades from './Tabs/StudentGrades';
 import { Student } from '../../../contexts/types/student';
 import { useCustomerByStudent } from '../../../contexts/hooks/useCustomerByStudent';
 import BillingPage from './BillingPage';
+import EnrollmentPage from './EnrollmentPage';
 
 const TAB_MAP: Record<string, string> = {
     '基本情報': 'basic',
@@ -88,6 +89,8 @@ const StudentDetail: React.FC = () => {
                         <GuardianInfoSection formData={formData} customer={customer} isEditing={isEditing} onChange={handleChange} />
                     </div>
                 );
+            case 'enrollment':
+                return <EnrollmentPage studentId={formData.id ?? ""} />;
             case 'course':
                 return <StudentCourseTable studentId={formData.id ?? ""} />;
             case 'attendance':

@@ -10,7 +10,7 @@ const AdminLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const { updateUserData, userData, setUserPassword } = useAuth();
+    const { updateUserData, userData } = useAuth();
     const navigate = useNavigate();
     console.log('userData', userData)
     // userData が揃ったら自動でダッシュボードへ遷移
@@ -36,8 +36,6 @@ const AdminLogin = () => {
             // Firestore から管理者データ取得
             const adminRef = doc(db, 'admins', user.uid);
             const adminSnap = await getDoc(adminRef);
-
-            setUserPassword(password);
 
             if (!adminSnap.exists()) {
                 alert('管理者データが見つかりません');

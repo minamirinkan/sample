@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { auth } from '../../../firebase';
-import { useAuth } from '../../../contexts/AuthContext';
 import { useAdminData } from '../../../contexts/providers/AdminDataProvider';
 interface AdminHeaderProps {
     onToggleSidebar: () => void;
@@ -10,7 +9,6 @@ interface AdminHeaderProps {
 }
 
 const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleSidebar, role }) => {
-    const { setUserPassword } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const { classroom } = useAdminData();
@@ -72,7 +70,6 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ onToggleSidebar, role }) => {
                             className="block px-4 py-2 hover:bg-gray-100 w-full text-left"
                             onClick={async () => {
                                 await auth.signOut();
-                                setUserPassword(null)
                             }}
                         >
                             ログアウト
