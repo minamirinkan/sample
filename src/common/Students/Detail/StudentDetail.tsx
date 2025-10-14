@@ -90,9 +90,9 @@ const StudentDetail: React.FC = () => {
                     </div>
                 );
             case 'enrollment':
-                return <EnrollmentPage studentId={formData.id ?? ""} />;
+                return <EnrollmentPage formData={formData} />;
             case 'course':
-                return <StudentCourseTable studentId={formData.id ?? ""} />;
+                return <StudentCourseTable customer={customer} formData={formData} />;
             case 'attendance':
                 const initialAttendanceTab: 'regular' | 'monthly' | 'seasonal' =
                     tab === 'regular' || tab === 'monthly' || tab === 'seasonal' ? tab : 'monthly';

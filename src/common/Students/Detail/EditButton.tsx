@@ -6,7 +6,7 @@ type EditButtonProps = {
     onBack: () => void;
     onEdit: () => void;
     onSave: () => void;
-    onDelete: () => void;
+    onDelete?: () => void;
 };
 
 const EditButton: React.FC<EditButtonProps> = ({ isEditing, onBack, onEdit, onSave, onDelete }) => (
@@ -38,13 +38,15 @@ const EditButton: React.FC<EditButtonProps> = ({ isEditing, onBack, onEdit, onSa
                     <FaEdit />
                     <span>編集</span>
                 </button>
-                <button
-                    onClick={onDelete}
-                    className="px-5 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 transition flex items-center space-x-2"
-                >
-                    <FaTrash />
-                    <span>削除</span>
-                </button>
+                {onDelete && (
+                    <button
+                        onClick={onDelete}
+                        className="px-5 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 transition flex items-center space-x-2"
+                    >
+                        <FaTrash />
+                        <span>削除</span>
+                    </button>
+                )}
             </>
         )}
     </div >
