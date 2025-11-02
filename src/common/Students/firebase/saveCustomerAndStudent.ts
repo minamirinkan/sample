@@ -102,59 +102,71 @@ export const registerCustomerAndStudent = async ({
 
     // --- コース登録（contracts） ---
     if (Array.isArray(courses)) {
-      const contractsCollectionRef = collection(db, 'customers', customerUid, 'contracts');
+      const contractsCollectionRef = collection(db, "customers", customerUid, "contracts");
+
+      const getLessonPrefix = (lessonType: string): string => {
+        switch (lessonType) {
+          case "通常": return "N";
+          case "補習": return "H";
+          case "春季講習": return "SP";
+          case "夏季講習": return "SU";
+          case "冬季講習": return "WI";
+          default: return "";
+        }
+      };
+
+      const createFeeCode = (
+        kind: string,
+        classType: string,
+        grade: string,
+        times: string,
+        duration: string
+      ): string => {
+        const lessonPrefix = getLessonPrefix(kind);
+
+        const classCode =
+          classType === "1名クラス" ? "A"
+            : classType === "2名クラス" ? "W"
+              : "E";
+
+        // 個別クラスだけ "N_E_SET1" の形にする
+        if (classType === "個別クラス") {
+          return `${lessonPrefix}_${classCode}_SET${times}`;
+        }
+
+        const getGradeCode = (grade: string) => {
+          if (grade.startsWith("小")) return "E";
+          if (grade.startsWith("中1") || grade.startsWith("中2")) return "J";
+          if (grade.startsWith("中3")) return "J3";
+          if (grade.startsWith("高1") || grade.startsWith("高2")) return "H";
+          if (grade.startsWith("高3") || grade.includes("既卒")) return "H3";
+          return "";
+        };
+        const gradeCode = getGradeCode(grade);
+
+        const timesCode = times ? `W${times}` : "";
+        const durationCode = duration ? `T${duration}` : "";
+
+        // 通常クラスは従来通り
+        return `${lessonPrefix}_${classCode}_${gradeCode}${timesCode ? `_${timesCode}` : ""}${durationCode ? `_${durationCode}` : ""}`;
+      };
 
       for (const course of courses) {
         if (!course.kind || !course.startYear) continue;
 
         const studentGrade = studentData.grade;
-        const startMonthPart = course.startMonth ? `${course.startMonth.padStart(2, '0')}` : '';
+        const startMonthPart = course.startMonth
+          ? `${course.startMonth.padStart(2, "0")}`
+          : "";
 
-        const createFeeCode = (
-          kind: string,
-          classType: string,
-          grade: string,
-          times: string,
-          duration: string,
-          lecturePeriod?: string
-        ): string => {
-          let classCode = '';
+        const feeCode = createFeeCode(
+          course.kind,
+          course.classType,
+          studentData.grade,
+          course.times,
+          course.duration
+        );
 
-          if (kind === '通常') {
-            if (classType === '1名クラス') classCode = 'A';
-            else if (classType === '2名クラス') classCode = 'W';
-            else classCode = 'E';
-          } else if (kind === '補習') {
-            if (classType === '1名クラス') classCode = 'EA';
-            else if (classType === '2名クラス') classCode = 'EW';
-            else classCode = 'EE';
-          } else if (kind === '講習') {
-            let prefix = '';
-            if (lecturePeriod === '春季講習') prefix = 'SP';
-            else if (lecturePeriod === '夏季講習') prefix = 'SU';
-            else if (lecturePeriod === '冬季講習') prefix = 'WI';
-
-            if (classType === '1名クラス') classCode = `${prefix}_A`;
-            else if (classType === '2名クラス') classCode = `${prefix}_W`;
-            else classCode = `${prefix}_E`;
-          }
-
-          const getGradeCode = (grade: string) => {
-            if (grade.startsWith("小")) return "E";
-            if (grade.startsWith("中1") || grade.startsWith("中2")) return "J";
-            if (grade.startsWith("中3")) return "J3";
-            if (grade.startsWith("高1") || grade.startsWith("高2")) return "H";
-            if (grade.startsWith("高3") || grade.includes("既卒")) return "H3";
-            return "";
-          };
-          const gradeCode = getGradeCode(grade);
-          const timesCode = times ? `W${times}` : '';
-          const durationCode = duration ? `T${duration}` : '';
-
-          return `${classCode}_${gradeCode}${timesCode ? `_${timesCode}` : ''}${durationCode ? `_${durationCode}` : ''}`;
-        };
-
-        const feeCode = createFeeCode(course.kind, course.classType, studentData.grade, course.times, course.duration, course.lecturePeriod);
         const docId = `${uid}-${course.startYear}${startMonthPart}-${feeCode}`;
 
         const contractData = {
@@ -163,15 +175,15 @@ export const registerCustomerAndStudent = async ({
           feeCode,
           lessonType: course.kind,
           classType: course.classType,
-          times: course.times,
+          times: course.times || "",
           duration: course.duration,
           startYear: course.startYear,
           startMonth: course.startMonth,
-          endYear: course.endYear || '',
-          endMonth: course.endMonth || '',
-          lecturePeriod: course.lecturePeriod || '',
-          note: course.note || '',
-          status: 'active',
+          endYear: course.endYear || "",
+          endMonth: course.endMonth || "",
+          season: course.season || "",
+          note: course.note || "",
+          status: "active",
           createdAt: serverTimestamp(),
         };
 

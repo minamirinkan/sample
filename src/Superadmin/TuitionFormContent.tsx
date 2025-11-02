@@ -13,9 +13,13 @@ import { useAuth } from '../contexts/AuthContext';
 import { saveTaxRate } from './saveTaxRate';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import SpringForm from './SpringForm';
 
 const TAB_MAP: Record<string, string> = {
   通常授業料: 'tuition',
+  春季講習: 'spring',
+  夏季講習: 'summer',
+  冬季講習: 'winter',
   維持費: 'maintenance',
   入会金: 'admission',
   テスト: 'test',
@@ -142,27 +146,32 @@ const TuitionFormContent: React.FC = () => {
       </div>
 
       {/* === タブナビゲーション === */}
-      <div className="flex gap-3 border-b border-gray-300 mb-6 bg-gray-50 rounded-t">
-        {Object.entries(TAB_MAP).map(([label, key]) => (
-          <Link
-            key={key}
-            to={`/superadmin/tuitions/${key}`}
-            className={`px-5 py-2 text-sm font-semibold border-t-[2px] transition-all duration-200
-              ${section === key
-                ? 'border-blue-600 text-blue-700 bg-white'
-                : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-400'}
-            `}
-            aria-selected={section === key}
-            role="tab"
-          >
-            {label}
-          </Link>
-        ))}
+      <div className="overflow-x-auto">
+        <div className="flex gap-3 border-b border-gray-300 mb-6 bg-gray-50 rounded-t min-w-max px-2">
+          {Object.entries(TAB_MAP).map(([label, key]) => (
+            <Link
+              key={key}
+              to={`/superadmin/tuitions/${key}`}
+              className={`whitespace-nowrap px-5 py-2 text-sm font-semibold border-t-[2px] transition-all duration-200
+          ${section === key
+                  ? 'border-blue-600 text-blue-700 bg-white'
+                  : 'border-transparent text-gray-600 hover:text-blue-600 hover:border-blue-400'}
+        `}
+              aria-selected={section === key}
+              role="tab"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* === タブごとのフォーム === */}
       <div>
         {section === 'tuition' && <TuitionForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
+        {section === 'spring' && <SpringForm seasonCode="SP" yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
+        {section === 'summer' && <PenaltyForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
+        {section === 'winter' && <PenaltyForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'maintenance' && <MaintenanceForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'admission' && <AdmissionForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'test' && <TestForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}

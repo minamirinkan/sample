@@ -56,17 +56,18 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
             let detectedDurationW: '70' | '80' = '80';
             let detectedDurationA: '70' | '80' = '80';
 
-            // --- tuition（通常）を処理: T40 は先頭(0)に入れる ---
+            // --- tuition（通常・講習など）を処理 ---
             if (tuitionSnap.exists()) {
                 const data = tuitionSnap.data();
                 Object.entries(data).forEach(([key, value]) => {
-                    // W_/A_ のキーだけ処理（E_ は個別クラスとして後で処理）
-                    if (!(key.startsWith("W_") || key.startsWith("A_"))) return;
+                    // 例: N_W_H3_W2_T80, SP_W_H3_W3_T80 など
+                    if (!key.match(/^[A-Z]+_W_|^[A-Z]+_A_/)) return;
 
                     const parts = key.split("_");
-                    // 期待: ["W","J","W1","T80"] のような形式
-                    if (parts.length < 4) return;
-                    const [classType, gradeCode, weekStr, durationStr] = parts;
+                    // 期待: ["N","W","H3","W2","T80"] のような形式
+                    if (parts.length < 5) return;
+
+                    const [lessonPrefix, classType, gradeCode, weekStr, durationStr] = parts;
                     const colIdx = gradeMap[gradeCode];
                     if (colIdx === undefined) return;
 
@@ -74,11 +75,12 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
                     let rowIdx = -1;
 
                     if (classType === "W") {
-                        // T40 は先頭行（1回40分固定）
                         if (durationStr === "T40") {
-                            rowIdx = 0;
+                            rowIdx = 0; // 40分は先頭
                         } else {
-                            rowIdx = schedulesW.findIndex((s, idx) => idx > 0 && s.startsWith(`週${weekNum}回`));
+                            rowIdx = schedulesW.findIndex(
+                                (s, idx) => idx > 0 && s.startsWith(`週${weekNum}回`)
+                            );
                         }
                         if (durationStr === "T70" || durationStr === "T80") {
                             detectedDurationW = durationStr === "T70" ? "70" : "80";
@@ -102,25 +104,38 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
             if (extraSnap.exists()) {
                 const data = extraSnap.data();
                 Object.entries(data).forEach(([key, value]) => {
-                    if (!(key.startsWith("W_") || key.startsWith("A_"))) return;
-
+                    // 例: "H_W_H3_W1_T80" や "E_E_SET1"
                     const parts = key.split("_");
-                    // W_J_W1_T80 などを想定。最低限 classType と gradeCode を読む
                     if (parts.length < 2) return;
-                    const [classType, gradeCode] = parts;
-                    const colIdx = gradeMap[gradeCode];
-                    if (colIdx === undefined) return;
 
-                    if (classType === "W") {
-                        const lastIdx = schedulesW.length; // 最終行インデックス（追加1コマ）
-                        if (!wData[lastIdx]) wData.push(new Array(grades.length).fill(''));
+                    const [lessonPrefix, classType, gradeCode] = parts;
+
+                    // --- 通常補習（W/A） ---
+                    if (["W", "A"].includes(classType)) {
+                        const colIdx = gradeMap[gradeCode];
+                        if (colIdx === undefined) return;
+
+                        const scheduleList = classType === "W" ? schedulesW : schedulesA;
+                        const dataList = classType === "W" ? wData : aData;
+                        const lastIdx = scheduleList.length; // 最終行インデックス
+                        if (!dataList[lastIdx]) dataList.push(new Array(grades.length).fill(""));
+
                         const amount = (value as any).amount ?? "";
-                        wData[lastIdx][colIdx] = amount.toString();
-                    } else if (classType === "A") {
-                        const lastIdx = schedulesA.length;
-                        if (!aData[lastIdx]) aData.push(new Array(grades.length).fill(''));
+                        dataList[lastIdx][colIdx] = amount.toString();
+                    }
+
+                    // --- 個別補習 (E_E_SET1など) ---
+                    else if (key.startsWith("E_E_SET")) {
+                        const m = key.match(/SET(\d+)/);
+                        if (!m) return;
+                        const idx = parseInt(m[1], 10) - 1;
+                        if (idx < 0 || idx >= individualData.length) return;
+
                         const amount = (value as any).amount ?? "";
-                        aData[lastIdx][colIdx] = amount.toString();
+                        // すでに tuition に同じ SET がある場合は上書きしない
+                        if (!individualData[idx][0]) {
+                            individualData[idx][0] = amount.toString();
+                        }
                     }
                 });
             }
@@ -132,17 +147,17 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
             setDurationA(detectedDurationA);
 
             // --- 個別クラス (E) を取得して individualData に反映 ---
-            // 優先順: tuition -> extra（tuition にあればそれを使い、なければ extra で補う）
             const newIndiv = createEmptyData(individualSets.map(s => s.name), ['料金']);
 
             const fillFrom = (source: Record<string, any>, allowOverwrite: boolean) => {
                 Object.entries(source || {}).forEach(([key, value]) => {
-                    // E_J_SET1, E_J_SET2 の形式を想定
-                    if (!key.startsWith("E_J_SET")) return;
+                    // N_E_SET1, H_E_SET2, SP_E_SET1 など対応
+                    if (!key.match(/^[A-Z]+_E_SET\d+$/)) return;
                     const m = key.match(/SET(\d+)/);
                     if (!m) return;
                     const idx = parseInt(m[1], 10) - 1;
                     if (idx < 0 || idx >= newIndiv.length) return;
+
                     const amount = (value as any).amount ?? "";
                     if (!amount && amount !== 0) return;
                     if (allowOverwrite || !newIndiv[idx][0]) {
@@ -151,8 +166,8 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
                 });
             };
 
-            if (tuitionSnap.exists()) fillFrom(tuitionSnap.data() as any, true);   // 優先的に埋める
-            if (extraSnap.exists()) fillFrom(extraSnap.data() as any, false);      // 足りない分だけ補填
+            if (tuitionSnap.exists()) fillFrom(tuitionSnap.data() as any, true);
+            if (extraSnap.exists()) fillFrom(extraSnap.data() as any, false);
 
             setIndividualData(newIndiv);
         };
@@ -218,7 +233,8 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
     const renderTable = (
         rows: string[],
         data: string[][],
-        setData: React.Dispatch<React.SetStateAction<string[][]>>
+        setData: React.Dispatch<React.SetStateAction<string[][]>>,
+        courseType: "W" | "A" // ✅ 追加
     ) => (
         <table className="table-auto border border-collapse border-gray-400 rounded-lg overflow-hidden">
             <thead>
@@ -234,16 +250,21 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
                     <tr key={rowIdx}>
                         <td className="border px-2 py-1 font-medium bg-gray-100">{schedule}</td>
                         {grades.map((grade, colIdx) => {
-                            const isDisabled = rowIdx === 0 && grade !== '小学生'; // 入力不可判定
+                            // ✅ Wコースのみ1行目を制限、Aコースは自由
+                            const isDisabled =
+                                courseType === "W" && rowIdx === 0 && grade !== "小学生";
+
                             return (
                                 <td key={colIdx} className="border px-2 py-1 text-center">
                                     <input
                                         type="text"
-                                        value={isDisabled ? '-' : data[rowIdx][colIdx]} // 入力不可は'-'
+                                        value={isDisabled ? "-" : data[rowIdx][colIdx]}
                                         onChange={e =>
                                             handleChange(data, setData, rowIdx, colIdx, e.target.value)
                                         }
-                                        className={`border w-[80px] px-1 py-0.5 text-center appearance-none ${isDisabled ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''
+                                        className={`border w-[80px] px-1 py-0.5 text-center appearance-none ${isDisabled
+                                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                                            : ""
                                             }`}
                                         required={!isDisabled}
                                         disabled={isDisabled}
@@ -261,11 +282,11 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
                         <td key={colIdx} className="border px-2 py-1 text-center">
                             <input
                                 type="number"
-                                value={data[rows.length]?.[colIdx] ?? ''}
+                                value={data[rows.length]?.[colIdx] ?? ""}
                                 onChange={e => {
                                     const updated = [...data];
                                     if (!updated[rows.length]) {
-                                        updated.push(new Array(grades.length).fill(''));
+                                        updated.push(new Array(grades.length).fill(""));
                                     }
                                     updated[rows.length][colIdx] = e.target.value;
                                     setData(updated);
@@ -294,7 +315,7 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
                     <label className="mr-4"><input type="radio" value="70" checked={durationW === '70'} onChange={() => setDurationW('70')} />70分</label>
                     <label><input type="radio" value="80" checked={durationW === '80'} onChange={() => setDurationW('80')} />80分</label>
                 </div>
-                {renderTable(schedulesW, tuitionDataW, setTuitionDataW)}
+                {renderTable(schedulesW, tuitionDataW, setTuitionDataW, "W")}
             </div>
 
             {/* Aコース */}
@@ -304,7 +325,7 @@ const TuitionForm: React.FC<TuitionFormProps> = ({ yyyyMM, registrationLocation 
                     <label className="mr-4"><input type="radio" value="70" checked={durationA === '70'} onChange={() => setDurationA('70')} />70分</label>
                     <label><input type="radio" value="80" checked={durationA === '80'} onChange={() => setDurationA('80')} />80分</label>
                 </div>
-                {renderTable(schedulesA, tuitionDataA, setTuitionDataA)}
+                {renderTable(schedulesA, tuitionDataA, setTuitionDataA, "A")}
             </div>
 
             {/* ✅ 個別クラス */}

@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword, signOut, setPersistence, browserSessionPers
 import { useAuth } from '../contexts/AuthContext';
 
 const SuperAdminLogin = () => {
-    const { setUserPassword, updateUserData } = useAuth();
+    const { updateUserData } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -32,7 +32,6 @@ const SuperAdminLogin = () => {
             if (!userSnap.exists()) {
                 alert('ユーザー情報が見つかりません');
                 await signOut(auth);
-                setUserPassword(null);
                 setLoading(false);
                 return;
             }
@@ -41,12 +40,10 @@ const SuperAdminLogin = () => {
             if (userData.role !== 'superadmin') {
                 alert('このアカウントにはSuperAdminの権限がありません');
                 await signOut(auth);
-                setUserPassword(null);
                 setLoading(false);
                 return;
             }
 
-            setUserPassword(password);
             updateUserData({ ...userData, uid: user.uid });
 
             alert('SuperAdminとしてログイン成功！');

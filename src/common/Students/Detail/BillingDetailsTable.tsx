@@ -46,13 +46,14 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
         setModalOpen(true);
 
         try {
-            // ✅ まず契約情報を取得
+            // まず契約情報を取得
             const contractsSnap = await getDocs(collection(db, "customers", customerUid, "contracts"));
             const studentLessons: FeeLesson[] = [];
 
             contractsSnap.forEach((doc) => {
                 const data = doc.data();
-                if (data.studentId === studentId && (data.lessonType === "通常" || data.lessonType === "演習クラス")) {
+
+                if (data.studentId === studentId && (data.lessonType === "通常" || data.lessonType === "補習")) {
                     studentLessons.push({
                         feeCode: data.feeCode,
                         lessonType: data.lessonType,
@@ -65,7 +66,7 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
                 }
             });
 
-            // ✅ FeeMaster の最新データを取得（targetMonth以前）
+            // FeeMaster の最新データを取得（targetMonth以前）
             const code = classroomCode || "000";
             const feeMasterSnap = await getDocs(collection(db, "FeeMaster"));
 
@@ -84,28 +85,68 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
                 return;
             }
 
-            // ✅ カテゴリごとにFeeMasterを展開
-            const categories = ["admission", "tuition", "discount", "maintenance", "material", "penalty", "test"];
+            // カテゴリごとにFeeMasterを展開
+            const categories = ["admission", "tuition", "discount", "maintenance", "material", "penalty", "test", "extra"];
             let allOptions: BillingCode[] = [];
 
             for (const category of categories) {
-                const categoryRef = doc(collection(latestFeeMasterDoc.ref, "categories"), category);
-                const categorySnap = await getDoc(categoryRef);
-                if (!categorySnap.exists()) continue;
-
-                const data = categorySnap.data() || {};
-
                 if (category === "tuition") {
-                    if (studentLessons.length > 0) {
-                        const tuitionOptions: BillingCode[] = studentLessons.map((lesson) => ({
-                            code: lesson.feeCode,
-                            name: lesson.lessonType === "通常" ? "授業料" : lesson.lessonType,
-                            category: "授業料",
-                            amount: lesson.amount,
-                        }));
+                    // 🟦 tuition ドキュメントを取得
+                    const tuitionDocRef = doc(latestFeeMasterDoc.ref, "categories", "tuition");
+                    const tuitionDocSnap = await getDoc(tuitionDocRef);
+
+                    if (tuitionDocSnap.exists()) {
+                        const tuitionData = tuitionDocSnap.data();
+
+                        // 🟩 顧客契約（contracts）に含まれる feeCode のみ抽出
+                        const targetFeeCodes = studentLessons.map((lesson) => lesson.feeCode);
+
+                        const tuitionOptions: BillingCode[] = Object.entries(tuitionData)
+                            .filter(([code]) => targetFeeCodes.includes(code)) // ← ここがポイント！
+                            .map(([code, v]: [string, any]) => ({
+                                code,
+                                name: generateTuitionName(code, month),
+                                category: "授業料",
+                                amount: v.amount ?? 0,
+                            }));
+
                         allOptions = [...allOptions, ...tuitionOptions];
+                    } else {
+                        console.warn("⚠️ tuition ドキュメントが存在しません");
                     }
+                } else if (category === "extra") {
+                    // 🟦 extra ドキュメントを取得（補習授業用）
+                    const extraDocRef = doc(latestFeeMasterDoc.ref, "categories", "extra");
+                    const extraDocSnap = await getDoc(extraDocRef);
+
+                    if (extraDocSnap.exists()) {
+                        const extraData = extraDocSnap.data();
+
+                        // 補習の feeCode だけ抽出
+                        const extraFeeCodes = studentLessons
+                            .filter((lesson) => lesson.lessonType === "補習")
+                            .map((lesson) => lesson.feeCode);
+
+                        const extraOptions: BillingCode[] = Object.entries(extraData)
+                            .filter(([code]) => extraFeeCodes.includes(code))
+                            .map(([code, v]: [string, any]) => ({
+                                code,
+                                name: generateTuitionName(code, month),
+                                category: "授業料(補習)",
+                                amount: v.amount ?? 0,
+                            }));
+
+                        allOptions = [...allOptions, ...extraOptions];
+                    }
+
                 } else {
+                    // その他カテゴリ（維持費・教材など）は従来通り
+                    const categoryRef = doc(collection(latestFeeMasterDoc.ref, "categories"), category);
+                    const categorySnap = await getDoc(categoryRef);
+                    if (!categorySnap.exists()) continue;
+
+                    const data = categorySnap.data() || {};
+
                     const otherOptions: BillingCode[] = Object.entries(data).map(([code, v]: [string, any]) => ({
                         code,
                         name: v.item || code,
@@ -123,12 +164,14 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
                                                 : category === "test"
                                                     ? "テスト"
                                                     : "その他",
-                        amount: v.amount,
+                        amount: v.amount ?? 0,
                     }));
+
                     allOptions = [...allOptions, ...otherOptions];
                 }
             }
 
+            console.log("📘 allOptions (searchOptions):", allOptions);
             setSearchOptions(allOptions);
         } catch (err) {
             console.error(err);
@@ -149,9 +192,25 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
 
         onChange(searchIndex, "name", displayName);
 
-        if (selected.amount !== undefined) {
-            onChange(searchIndex, "price", selected.amount);
-            onChange(searchIndex, "total", selected.amount);
+        // 🟦 金額の補完処理
+        let amount = selected.amount;
+
+        // 授業料カテゴリでamountがundefinedなら、契約情報から探す
+        if (selected.category === "授業料" && amount === undefined) {
+            const matchedLesson = searchOptions.find(
+                (opt) => opt.code === selected.code && opt.amount !== undefined
+            );
+            if (matchedLesson) {
+                amount = matchedLesson.amount;
+            }
+        }
+
+        // amountが取得できた場合にprice/totalを更新
+        if (amount !== undefined) {
+            onChange(searchIndex, "price", amount);
+            onChange(searchIndex, "total", amount);
+        } else {
+            console.warn("⚠️ 授業料金額が見つかりません:", selected.code);
         }
 
         setSearchIndex(null);
@@ -170,12 +229,16 @@ const BillingDetailsTable: React.FC<BillingDetailsTableProps> = ({
     const isTuitionCode = (code?: string) => {
         if (!code) return false;
         const parts = code.split("_");
-        return parts.length >= 4 && (parts[0] === "W" || parts[0] === "A");
+        return parts.length >= 3 && (parts[0] === "N" || parts[0] === "H");
     };
 
     const renderRow = (d: BillingDetail, index: number) => {
+        const isExtra = d.code.startsWith("H");
+
         const displayName = isTuitionCode(d.code)
-            ? (isEditing ? generateTuitionNameShort(d.code, month) : generateTuitionName(d.code, month))
+            ? (isEditing
+                ? generateTuitionNameShort(d.code, month, isExtra)
+                : generateTuitionName(d.code, month, isExtra))
             : d.name;
 
         return (

@@ -29,6 +29,7 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
     lessonType,
     setLessonType,
 }) => {
+    const [seasonSelected, setSeasonSelected] = React.useState<string | null>(null);
     const TIMES_OPTIONS = ['1', '2', '3', '4', '5', '6'];
     const years = [2025, 2026, 2027];
     const months = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -48,13 +49,11 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                     endMonth: '',
                     note: '',
                     selected: false,
-                    lecturePeriod: '',
                 }))
                 : NON_REGULAR_INITIAL_ROWS.map((row) => ({
                     kind: row.kind,
                     classType: row.classType,
                     duration: '',
-                    lecturePeriod: '',
                     startYear: '',
                     startMonth: '',
                     endYear: '',
@@ -79,7 +78,6 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                 ...updated[index],
                 times: '',
                 duration: '',
-                lecturePeriod: '',
                 startYear: '',
                 startMonth: '',
                 endYear: '',
@@ -93,9 +91,38 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
         onChange(updated);
     };
 
+    // 講習ボタンを押したときに 4〜6行目の kind を変更
+    const handleSeasonClick = (season: string) => {
+        const newData = formData.map((row, index) => {
+            if (lessonType === 'nonRegular' && index >= 3 && index <= 5) {
+                return { ...row, kind: season };
+            }
+            return row;
+        });
+        onChange(newData);
+        setSeasonSelected(season); // ここで押したことを記録
+    };
+
     return (
         <div className="space-y-4">
-            <h3 className="text-lg font-semibold">受講情報</h3>
+            <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">受講情報</h3>
+                {lessonType === 'nonRegular' && (
+                    <div className="flex gap-2">
+                        {['春季講習', '夏季講習', '冬季講習'].map((season) => (
+                            <button
+                                key={season}
+                                type="button"
+                                className="px-3 py-1 border rounded bg-gray-100 hover:bg-blue-100"
+                                onClick={() => handleSeasonClick(season)}
+                            >
+                                {season}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+
             <div className="overflow-x-auto">
                 <table className="min-w-[1000px] table-auto border-collapse">
                     <thead>
@@ -105,7 +132,6 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                             <th className="border px-2 py-2 w-[120px] text-center whitespace-nowrap">授業形態</th>
                             {lessonType === 'regular' && <th className="border px-2 py-2 w-[100px] text-center whitespace-nowrap">授業週回数</th>}
                             <th className="border px-2 py-2 w-[100px] text-center whitespace-nowrap">授業時間</th>
-                            {lessonType === 'nonRegular' && <th className="border px-2 py-2 w-[140px] text-center whitespace-nowrap">講習時期</th>}
                             <th className="border px-2 py-2 w-[140px] text-center whitespace-nowrap">受講開始</th>
                             <th className="border px-2 py-2 w-[140px] text-center whitespace-nowrap">受講終了</th>
                             <th className="border px-2 py-2 w-[200px] text-center whitespace-nowrap">備考</th>
@@ -119,6 +145,7 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                         type="checkbox"
                                         checked={data.selected}
                                         onChange={(e) => handleCheckboxChange(index, e.target.checked)}
+                                        disabled={lessonType === 'nonRegular' && index >= 3 && index <= 5 && !seasonSelected}
                                     />
                                 </td>
                                 <td className="border px-2 py-2 text-center whitespace-nowrap">{data.kind}</td>
@@ -126,25 +153,21 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
 
                                 {lessonType === 'regular' && (
                                     <td className="border px-2 py-2 text-center whitespace-nowrap">
-                                        週
                                         <select
                                             value={data.times}
                                             onChange={(e) => handleChange(index, { times: e.target.value })}
                                             disabled={!data.selected}
                                             className={`border rounded px-1 py-1 text-center ${data.selected
-                                                    ? 'bg-white text-gray-900'
-                                                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                ? 'bg-white text-gray-900'
+                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                                 }`}
-
                                         >
-                                            <span className="whitespace-nowrap">週</span>
                                             <option value="">--</option>
                                             {TIMES_OPTIONS.map((t) => (
                                                 <option key={t} value={t}>
                                                     {t}
                                                 </option>
                                             ))}
-                                            <span className="whitespace-nowrap">回</span>
                                         </select>回
                                     </td>
                                 )}
@@ -155,8 +178,8 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                         onChange={(e) => handleChange(index, { duration: e.target.value })}
                                         disabled={!data.selected}
                                         className={`border rounded px-1 py-1 text-center ${data.selected
-                                                ? 'bg-white text-gray-900'
-                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-white text-gray-900'
+                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                             }`}
                                     >
                                         <option value="">選択</option>
@@ -166,44 +189,19 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                     </select> 分
                                 </td>
 
-                                {lessonType === 'nonRegular' && (
-                                    <td className="border px-2 py-2 text-center whitespace-nowrap">
-                                        {data.kind === '補習' ? (
-                                            <span>-</span>
-                                        ) : (
-                                            <select
-                                                value={data.lecturePeriod}
-                                                onChange={(e) => handleChange(index, { lecturePeriod: e.target.value })}
-                                                disabled={!data.selected}
-                                                className={`border rounded px-1 py-1 text-center ${data.selected
-                                                        ? 'bg-white text-gray-900'
-                                                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                    }`}
-                                            >
-                                                <option value="">選択</option>
-                                                <option value="春季講習">春季講習</option>
-                                                <option value="夏季講習">夏季講習</option>
-                                                <option value="冬季講習">冬季講習</option>
-                                            </select>
-                                        )}
-                                    </td>
-                                )}
-
                                 <td className="border px-2 py-2 text-center whitespace-nowrap">
                                     <select
                                         value={data.startYear}
                                         onChange={(e) => handleChange(index, { startYear: e.target.value })}
                                         disabled={!data.selected}
                                         className={`border rounded px-1 py-1 text-center ${data.selected
-                                                ? 'bg-white text-gray-900'
-                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-white text-gray-900'
+                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                             }`}
                                     >
                                         <option value="">年</option>
                                         {years.map((y) => (
-                                            <option key={y} value={y}>
-                                                {y}年
-                                            </option>
+                                            <option key={y} value={y}>{y}年</option>
                                         ))}
                                     </select>
                                     <select
@@ -211,15 +209,13 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                         onChange={(e) => handleChange(index, { startMonth: e.target.value })}
                                         disabled={!data.selected}
                                         className={`border rounded px-1 py-1 text-center ${data.selected
-                                                ? 'bg-white text-gray-900'
-                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-white text-gray-900'
+                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                             }`}
                                     >
                                         <option value="">月</option>
                                         {months.map((m) => (
-                                            <option key={m} value={m}>
-                                                {m}月
-                                            </option>
+                                            <option key={m} value={m}>{m}月</option>
                                         ))}
                                     </select>
                                 </td>
@@ -230,15 +226,13 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                         onChange={(e) => handleChange(index, { endYear: e.target.value })}
                                         disabled={!data.selected}
                                         className={`border rounded px-1 py-1 text-center ${data.selected
-                                                ? 'bg-white text-gray-900'
-                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-white text-gray-900'
+                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                             }`}
                                     >
                                         <option value="">年</option>
                                         {years.map((y) => (
-                                            <option key={y} value={y}>
-                                                {y}年
-                                            </option>
+                                            <option key={y} value={y}>{y}年</option>
                                         ))}
                                     </select>
                                     <select
@@ -246,15 +240,13 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                         onChange={(e) => handleChange(index, { endMonth: e.target.value })}
                                         disabled={!data.selected}
                                         className={`border rounded px-1 py-1 text-center ${data.selected
-                                                ? 'bg-white text-gray-900'
-                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-white text-gray-900'
+                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                             }`}
                                     >
                                         <option value="">月</option>
                                         {months.map((m) => (
-                                            <option key={m} value={m}>
-                                                {m}月
-                                            </option>
+                                            <option key={m} value={m}>{m}月</option>
                                         ))}
                                     </select>
                                 </td>
@@ -266,8 +258,8 @@ const CourseInfoSection: React.FC<CourseInfoSectionProps> = ({
                                         onChange={(e) => handleChange(index, { note: e.target.value })}
                                         disabled={!data.selected}
                                         className={`border rounded px-1 py-1 text-center ${data.selected
-                                                ? 'bg-white text-gray-900'
-                                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-white text-gray-900'
+                                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                                             }`}
                                     />
                                 </td>

@@ -26,9 +26,28 @@ interface SaveTuitionSettingsParams {
   material_onceRows?: FeeRow[];
   extraRowsW?: string[][]; // Wコース追加1コマ
   extraRowsA?: string[][]; // Aコース追加1コマ
+  lessonType?: '通常' | '補習' | '春季講習' | '夏季講習' | '冬季講習';
 }
 
 const gradeCodes = ['E', 'J', 'J3', 'H', 'H3'];
+
+// ✅ lessonTypeに応じたプレフィックス
+const getLessonPrefix = (lessonType: string = '通常') => {
+  switch (lessonType) {
+    case '通常':
+      return 'N';
+    case '補習':
+      return 'H';
+    case '春季講習':
+      return 'SP';
+    case '夏季講習':
+      return 'SU';
+    case '冬季講習':
+      return 'WI';
+    default:
+      return 'N';
+  }
+};
 
 export async function saveTuitionSettings({
   registrationLocation,
@@ -50,9 +69,12 @@ export async function saveTuitionSettings({
   material_onceRows = [],
   extraRowsW = [],
   extraRowsA = [],
+  lessonType = '通常',
 }: SaveTuitionSettingsParams) {
   const baseRef = doc(db, 'FeeMaster', `${yyyyMM}_${registrationLocation}`);
-  // === 年月フィールドを FeeMaster ドキュメントに保存 ===
+  const prefix = getLessonPrefix(lessonType);
+
+  // === 年月をFeeMasterドキュメントに保存 ===
   await setDoc(baseRef, { yearMonth: yyyyMM }, { merge: true });
 
   const tuitionDocRef = doc(collection(baseRef, 'categories'), 'tuition');
@@ -74,15 +96,11 @@ export async function saveTuitionSettings({
         if (!matches) return;
         const [, times, durationMatch] = matches;
 
-        let duration = '80';
-        if (classType === 'W' && rowIdx === 0) duration = '40';
-        else if (durationMatch) duration = durationMatch;
-        else duration = radioDuration;
-
+        const duration = durationMatch || radioDuration;
         const gradeCode = gradeCodes[colIdx] || 'E';
-        const fieldId = `${classType}_${gradeCode}_W${times}_T${duration}`;
+        const fieldId = `${prefix}_${classType}_${gradeCode}_W${times}_T${duration}`;
 
-        map[fieldId] = { amount, classType, times, duration, lessonType: '通常' };
+        map[fieldId] = { amount, classType, times, duration, lessonType };
       });
     });
     return map;
@@ -91,39 +109,51 @@ export async function saveTuitionSettings({
   const tuitionWMap = createTuitionMap(schedulesW, 'W', tuitionDataW, durationW);
   const tuitionAMap = createTuitionMap(schedulesA, 'A', tuitionDataA, durationA);
 
-  // === 個別クラス (E: 中学生のみ) ===
-  const createIndividualMap = (sets: { name: string; description: string }[], tuitionData: string[][]) => {
+  // === 個別クラス (中学生のみ, SET構造) ===
+  const createIndividualMap = (
+    sets: { name: string; description: string }[],
+    tuitionData: string[][],
+    type: 'tuition' | 'extra'
+  ) => {
     const map: Record<string, any> = {};
     sets.forEach((set, rowIdx) => {
-      tuitionData[rowIdx]?.forEach((amountStr, colIdx) => {
+      tuitionData[rowIdx]?.forEach((amountStr) => {
         const amount = Number(amountStr);
         if (!amount) return;
 
-        const gradeCode = 'J'; // ✅ 中学生に固定
-        const fieldId = `E_${gradeCode}_SET${rowIdx + 1}`;
         const durationMatch = set.description.match(/(\d+)分×(\d+)回/);
         const duration = durationMatch ? durationMatch[1] : '80';
         const times = durationMatch ? durationMatch[2] : '4';
 
-        map[fieldId] = { amount, classType: 'E', times, duration, lessonType: '個別' };
+        const lesson = type === 'tuition' ? lessonType : '補習';
+        const prefixCode = getLessonPrefix(lesson);
+        const fieldId = `${prefixCode}_E_SET${rowIdx + 1}`;
+
+        map[fieldId] = {
+          amount,
+          classType: 'E',
+          times,
+          duration,
+          lessonType: lesson,
+        };
       });
     });
     return map;
   };
 
-  const tuitionEMap = createIndividualMap(individualSets, tuitionDataE);
-  const extraEMap = createIndividualMap(individualSets, tuitionDataE);
+  const individualTuitionMap = createIndividualMap(individualSets, tuitionDataE, 'tuition');
+  const individualExtraMap = createIndividualMap(individualSets, tuitionDataE, 'extra');
 
-  // === 保存: tuition コレクション ===
+  // === tuitionカテゴリに保存 ===
   await setDoc(
     tuitionDocRef,
-    { ...tuitionWMap, ...tuitionAMap, ...tuitionEMap },
+    { ...tuitionWMap, ...tuitionAMap, ...individualTuitionMap },
     { merge: true }
   );
 
-  // === 追加1コマ（補習）を categories/extra に保存 ===
+  // === extraカテゴリに保存 ===
   const extraDocRef = doc(collection(baseRef, 'categories'), 'extra');
-  const extraMap: Record<string, any> = { ...extraEMap }; // ← 個別クラスも追加
+  const extraMap: Record<string, any> = { ...individualExtraMap };
 
   const addExtraRows = (extraData: string[][], classType: 'W' | 'A', schedules: string[], radioDuration: string) => {
     extraData.forEach((row, rowIdx) => {
@@ -133,12 +163,18 @@ export async function saveTuitionSettings({
 
         const schedule = schedules[rowIdx] || '追加1コマ';
         const matches = schedule.match(/週(\d+)回(?:（(\d+)分）)?/);
-        const [, times, durationMatch] = matches || [null, '1', radioDuration];
-        const duration = durationMatch || radioDuration;
+        const times = matches ? matches[1] : '1';
+        const duration = radioDuration;
         const gradeCode = gradeCodes[colIdx] || 'E';
-        const fieldId = `${classType}_${gradeCode}_W${times}_T${duration}`;
+        const fieldId = `${getLessonPrefix('補習')}_${classType}_${gradeCode}_W${times}_T${duration}`;
 
-        extraMap[fieldId] = { amount, classType, times, duration, lessonType: '補習' }; // ← lessonTypeも個別に
+        extraMap[fieldId] = {
+          amount,
+          classType,
+          times,
+          duration,
+          lessonType: '補習',
+        };
       });
     });
   };

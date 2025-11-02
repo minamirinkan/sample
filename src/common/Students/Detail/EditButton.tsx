@@ -4,8 +4,8 @@ import { FaArrowLeft, FaEdit, FaSave, FaTrash } from 'react-icons/fa';
 type EditButtonProps = {
     isEditing: boolean;
     onBack: () => void;
-    onEdit: () => void;
-    onSave: () => void;
+    onEdit?: () => void;
+    onSave?: () => void;
     onDelete?: () => void;
 };
 
@@ -21,6 +21,7 @@ const EditButton: React.FC<EditButtonProps> = ({ isEditing, onBack, onEdit, onSa
 
         {isEditing ? (
             <>
+            {onSave && (
                 <button
                     onClick={onSave}
                     className="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition flex items-center space-x-2"
@@ -28,9 +29,11 @@ const EditButton: React.FC<EditButtonProps> = ({ isEditing, onBack, onEdit, onSa
                     <FaSave />
                     <span>保存</span>
                 </button>
-            </>
+            )}
+                        </>
         ) : (
             <>
+            {onEdit && (
                 <button
                     onClick={onEdit}
                     className="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition flex items-center space-x-2"
@@ -38,6 +41,7 @@ const EditButton: React.FC<EditButtonProps> = ({ isEditing, onBack, onEdit, onSa
                     <FaEdit />
                     <span>編集</span>
                 </button>
+                )}
                 {onDelete && (
                     <button
                         onClick={onDelete}

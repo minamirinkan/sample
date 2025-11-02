@@ -22,6 +22,7 @@ interface BillingCodeSearchModalProps {
 const categories = [
     "入会金",
     "授業料",
+    "授業料(補習)",
     "維持費",
     "テスト",
     "教材",
@@ -30,48 +31,39 @@ const categories = [
     "違約金",
 ];
 
-const getGradeCode = (grade: string) => {
-    if (grade.startsWith("小")) return "E";       // 小学生
-    if (grade.startsWith("中1") || grade.startsWith("中2")) return "J";  // 中1/中2
-    if (grade.startsWith("中3")) return "J3";    // 中3
-    if (grade.startsWith("高1") || grade.startsWith("高2")) return "H"; // 高1/高2
-    if (grade.startsWith("高3") || grade.includes("既卒")) return "H3"; // 高3/既卒
-    return "";
-};
-
 const BillingCodeSearchModal: React.FC<BillingCodeSearchModalProps> = ({
     open,
     onClose,
     options,
     onSelect,
-    studentGrade,
     month,
 }) => {
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-    const gradeCode = getGradeCode(studentGrade);
 
     if (!open) return null;
 
-    const filteredOptions = options.filter(opt => {
-        if (opt.category === "授業料") {
-            return opt.code.includes(`_${gradeCode}_`);
-        }
-        return true; // 授業料以外はフィルタせず全部表示
-    });
+    const filteredOptions = options;
     const transformedOptions = filteredOptions.map(opt => {
         let displayName = opt.name;
 
-        // 授業料は既存の generateTuitionName で加工
+        // 授業料は generateTuitionName で表示名を加工
         if (opt.category === "授業料") {
             displayName = generateTuitionName(opt.code, month);
         }
 
-        // 教室維持費も「◯月分」を付ける
+        // 🔹 授業料(補習)は generateTuitionName の授業料部分を "(補習)" に置換
+        if (opt.category === "授業料(補習)") {
+            displayName = generateTuitionName(opt.code, month, true);
+        }
+
+        // 維持費は「◯月分」を付ける
         if (opt.category === "維持費") {
             const yyyymm = parseInt(month.slice(4, 6), 10);
             displayName = `${yyyymm}月分${opt.name}`;
         }
-        const displayAmount = opt.amount ? opt.amount.toLocaleString() + "円" : "";
+
+        // amount は handleSearchCode ですでに保証されているので undefined チェック不要
+        const displayAmount = opt.amount.toLocaleString() + "円";
 
         return { ...opt, name: displayName, displayAmount };
     });

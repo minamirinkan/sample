@@ -15,7 +15,7 @@ export type SchoolDataItem = {
   period?: string;
   teacher?: string;
   selected?: boolean;
-  lecturePeriod?: string;
+  season?: string;
 };
 
 export type SchoolLevel = '小学校' | '中学校' | '高等学校' | '通信制';
