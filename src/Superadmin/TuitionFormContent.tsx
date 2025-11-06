@@ -14,6 +14,8 @@ import { saveTaxRate } from './saveTaxRate';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import SpringForm from './SpringForm';
+import SummerForm from './SummerForm';
+import WinterForm from './WinterForm';
 
 const TAB_MAP: Record<string, string> = {
   通常授業料: 'tuition',
@@ -170,8 +172,8 @@ const TuitionFormContent: React.FC = () => {
       <div>
         {section === 'tuition' && <TuitionForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'spring' && <SpringForm seasonCode="SP" yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
-        {section === 'summer' && <PenaltyForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
-        {section === 'winter' && <PenaltyForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
+        {section === 'summer' && <SummerForm seasonCode="SU" yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
+        {section === 'winter' && <WinterForm seasonCode="WI" yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'maintenance' && <MaintenanceForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'admission' && <AdmissionForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}
         {section === 'test' && <TestForm yyyyMM={yyyyMM} registrationLocation={registrationLocation} />}

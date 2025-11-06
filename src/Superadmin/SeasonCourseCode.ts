@@ -21,6 +21,7 @@ export const GRADE_CODES = {
     J3: "中3",
     H: "高1/高2",
     H3: "高3/既卒",
+    EX: "個別クラス",
 } as const;
 export type GradeCode = keyof typeof GRADE_CODES;
 
@@ -42,7 +43,7 @@ export const generateSeasonCourseCode = (
     setCount: number,
     labelCode: CourseLabel
 ) => {
-    return `${season}_${classType}_${grade}_SET${setCount}_${labelCode}`;
+    return `${season}_${classType}_${grade}_K${setCount}_T80_${labelCode}`;
 };
 
 // 個別クラス専用コード生成
@@ -52,5 +53,10 @@ export const generateIndividualCourseCode = (
     setCount: number,
     labelCode: CourseLabel
 ) => {
-    return `${season}_${classType}_SET${setCount}_${labelCode}`;
+    return `${season}_${classType}_SET${setCount}_T80_${labelCode}`;
 };
+
+export const LABEL_TO_COURSE_CODE: Record<string, CourseLabel> = Object.entries(COURSE_LABELS).reduce((acc, [key, label]) => {
+    acc[label] = key as CourseLabel;
+    return acc;
+}, {} as Record<string, CourseLabel>);
